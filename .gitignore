@@ -1,0 +1,6 @@
+.agents/
+backup*
+*.bak
+scratch*
+assets/
+data/

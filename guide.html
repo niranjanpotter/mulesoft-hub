@@ -979,10 +979,13 @@ body {
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   background: rgba(9, 13, 22, 0.5);
+  overflow: hidden;
+  visibility: hidden;
 }
 
 .answer-drawer.is-revealed {
   grid-template-rows: 1fr;
+  visibility: visible;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -3045,12 +3048,21 @@ body {
 
 .answer-drawer-inner {
   min-height: 0 !important;
-  padding: 0 24px 24px 24px !important;
+  overflow: hidden !important;
+  padding: 0 24px 0 24px !important;
+  box-sizing: border-box !important;
+}
+
+.answer-drawer.is-revealed .answer-drawer-inner {
+  padding: 16px 24px 24px 24px !important;
 }
 
 @media (max-width: 768px) {
   .answer-drawer-inner {
-    padding: 0 18px 18px 18px !important;
+    padding: 0 16px 0 16px !important;
+  }
+  .answer-drawer.is-revealed .answer-drawer-inner {
+    padding: 12px 16px 18px 16px !important;
   }
 }
 
@@ -3428,42 +3440,86 @@ html, body, .main-content, .container, .app-layout {
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.7);
 }
 
-/* 2. Card Scroll Fade-Up Animation */
+/* 2. Card Presentation & Zero-Blank-Space Polish */
 .faq-card {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  margin-bottom: 18px !important;
+  background: var(--bg-card-dark) !important;
+  border: 1px solid var(--border-card-dark) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+  overflow: hidden !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
               border-color 0.25s ease, 
               box-shadow 0.25s ease !important;
-  will-change: opacity, transform;
 }
 
 .faq-card.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 /* 3. Hover Lift & Glow (Desktop only) */
 @media (hover: hover) and (min-width: 1024px) {
-  .faq-card.is-visible:hover {
-    transform: translateY(-4px);
+  .faq-card:hover {
+    transform: translateY(-3px) !important;
     border-color: #38BDF8 !important;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 18px rgba(56, 189, 248, 0.2) !important;
   }
 }
 
-/* 4. Smooth Slide-Down for Answer Drawer */
+.faq-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+.faq-header:hover {
+  background: rgba(22, 34, 58, 0.5) !important;
+}
+
+/* 4. Smooth Slide-Down for Answer Drawer (Zero Ghost Padding when Closed) */
 .answer-drawer {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease !important;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
   opacity: 0;
+  overflow: hidden !important;
+  visibility: hidden;
+  background: transparent !important;
 }
 
 .answer-drawer.is-revealed {
   grid-template-rows: 1fr;
   opacity: 1;
+  visibility: visible;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.answer-drawer-inner {
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 24px 0 24px !important;
+  box-sizing: border-box !important;
+  transition: padding-bottom 0.25s ease;
+}
+
+.answer-drawer.is-revealed .answer-drawer-inner {
+  padding: 16px 24px 24px 24px !important;
+}
+
+@media (max-width: 768px) {
+  .answer-drawer-inner {
+    padding: 0 16px 0 16px !important;
+  }
+  .answer-drawer.is-revealed .answer-drawer-inner {
+    padding: 12px 16px 18px 16px !important;
+  }
+}
+
+/* Prevent empty table cells from rendering as blank stacked rows on mobile */
+.responsive-table td:empty {
+  display: none !important;
 }
 
 .reveal-answer-btn {
@@ -4024,10 +4080,22 @@ pre:hover {
               <div class="profile-badge-row">
                 <span class="profile-badge badge-exp">⚡ 5.5 Years Enterprise MuleSoft</span>
                 <span class="profile-badge badge-enterprise">🏛️ Fortune 500 Energy &amp; Utility Enterprise</span>
-                <span class="profile-badge badge-date">📅 October 2026 Edition</span>
+                <span class="profile-badge badge-date">📅 November 2026 Edition</span>
                 <span class="profile-badge badge-prod">✓ Production Ready</span>
               </div>
             </div>
+          </div>
+          <div class="profile-actions-cluster" style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+            <a href="https://www.linkedin.com/posts/niranjan-potter-551b49171_opentowork-mulesoft-mulesoftdeveloper-share-7525977197598101504-ZuPW/" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:#0A66C2; color:#fff; border:none; display:inline-flex; align-items:center; gap:6px; font-weight:700; border-radius:8px; padding:8px 14px; text-decoration:none;" title="View LinkedIn Post & Recommendations">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.69-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+              <span>LinkedIn Profile</span>
+            </a>
+            <a href="mailto:niranjanpotter1997@gmail.com" class="btn btn-sm" style="background:rgba(255,255,255,0.06); color:#f8fafc; border:1px solid rgba(255,255,255,0.18); display:inline-flex; align-items:center; gap:6px; font-weight:600; border-radius:8px; padding:8px 14px; text-decoration:none;" title="Send Direct Email">
+              <span>✉️ niranjanpotter1997@gmail.com</span>
+            </a>
+            <a href="tel:+918562096041" class="btn btn-sm" style="background:rgba(255,255,255,0.06); color:#f8fafc; border:1px solid rgba(255,255,255,0.18); display:inline-flex; align-items:center; gap:6px; font-weight:600; border-radius:8px; padding:8px 14px; text-decoration:none;" title="Call Directly">
+              <span>📞 +91 8562096041</span>
+            </a>
           </div>
         </div>
 
@@ -21172,6 +21240,19 @@ function executeDataWeave(scriptText, inputText, inputFormat = 'json', varsText 
 // ==========================================
 // 1. Accordion & Practice Mode Controllers
 // ==========================================
+
+
+// Clickable FAQ Header: clicking the question header toggles the answer drawer
+document.addEventListener('click', (e) => {
+  const header = e.target.closest('.faq-header');
+  if (header && !e.target.closest('button') && !e.target.closest('a')) {
+    const card = header.closest('.faq-card');
+    if (card) {
+      const btn = card.querySelector('.reveal-answer-btn');
+      if (btn) toggleAnswerDrawer(btn);
+    }
+  }
+});
 
 function toggleAnswerDrawer(btn) {
   const card = btn.closest('.faq-card');
