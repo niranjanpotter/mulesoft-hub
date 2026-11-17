@@ -7567,6 +7567,303 @@ paperless:     dynamoData.paperless default false
     <p class="article-excerpt">Sequential vs parallel record processing, exception isolation, payload mutability, and memory impact.</p>
   </div>
 
+<div class="diagram-container" id="diagram-parallel-processing" style="margin-top:20px; margin-bottom:28px;">
+  <div class="diagram-header">
+    <div class="diagram-badge" style="background:rgba(0,242,254,0.15); color:#00F2FE; border-color:rgba(0,242,254,0.3);">⚡ Concurrency Architecture</div>
+    <div class="diagram-title">Mule 4 Parallel Processing Architecture: Scatter-Gather &amp; Parallel ForEach</div>
+    <div class="diagram-subtitle">Non-Blocking Project Reactor Threads · Concurrent Route Execution · maxConcurrency Throttling · Order Preservation</div>
+  </div>
+  <div class="diagram-svg-wrapper">
+    <svg class="responsive-svg" xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="parallel-title parallel-desc">
+  <title id="parallel-title">Mule 4 Parallel Processing Architecture | Scatter-Gather &amp; Parallel For Each</title>
+  <desc id="parallel-desc">Comprehensive visual architecture diagram of Mule 4 parallel processing showing Scatter-Gather concurrent routes, Parallel For Each thread throttling, non-blocking reactive thread handoffs, and composite aggregation.</desc>
+  
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="par-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071321"/>
+      <stop offset="55%" stop-color="#0B2033"/>
+      <stop offset="100%" stop-color="#124052"/>
+    </linearGradient>
+    <radialGradient id="par-glow-left" cx="20%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="par-glow-right" cx="80%" cy="70%" r="50%">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Grid Pattern -->
+    <pattern id="par-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#53CADD" stroke-opacity="0.06"/>
+    </pattern>
+
+    <!-- Shading Gradients -->
+    <linearGradient id="card-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#112233" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0B1622" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="sg-box-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#3E63DD" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="pfe-box-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.06"/>
+    </linearGradient>
+
+    <!-- Accent Lines -->
+    <linearGradient id="cyan-accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#00F2FE" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#00F2FE" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="purple-accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D65DB1" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#D65DB1" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#D65DB1" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Flow Particle Filters -->
+    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .par-title { font-family: 'Plus Jakarta Sans', Georgia, sans-serif; font-weight: 700; }
+    .par-mono { font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace; }
+    .par-sans { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    
+    /* Flowing Packet Animations */
+    .pkt-flow { stroke-dasharray: 6 94; animation: flow-anim 4.5s linear infinite; }
+    .pkt-flow-2 { stroke-dasharray: 6 94; animation: flow-anim 4.5s linear infinite; animation-delay: -1.5s; }
+    .pkt-flow-3 { stroke-dasharray: 6 94; animation: flow-anim 4.5s linear infinite; animation-delay: -3s; }
+    .pkt-fast { stroke-dasharray: 8 92; animation: flow-anim 3s linear infinite; }
+    
+    @keyframes flow-anim {
+      from { stroke-dashoffset: 100; }
+      to { stroke-dashoffset: 0; }
+    }
+    
+    .pulse-glow { animation: pulse-anim 6s ease-in-out infinite; }
+    @keyframes pulse-anim {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pkt-flow, .pkt-flow-2, .pkt-flow-3, .pkt-fast, .pulse-glow { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- Frame Background -->
+  <rect width="1200" height="640" rx="24" fill="url(#par-bg)"/>
+  <rect width="1200" height="640" rx="24" fill="url(#par-grid)"/>
+  <ellipse class="pulse-glow" cx="240" cy="220" rx="280" ry="240" fill="url(#par-glow-left)"/>
+  <ellipse class="pulse-glow" cx="960" cy="420" rx="300" ry="260" fill="url(#par-glow-right)"/>
+  <rect x="1" y="1" width="1198" height="638" rx="23" fill="none" stroke="#53CADD" stroke-opacity="0.25"/>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <g class="par-sans" transform="translate(48, 38)">
+    <rect width="250" height="28" rx="14" fill="#124052" stroke="#53CADD" stroke-opacity="0.35"/>
+    <circle cx="16" cy="14" r="5" fill="#00F2FE"/>
+    <text x="30" y="18" fill="#A6EAF4" font-size="11" font-weight="700" letter-spacing="1.5">PARALLEL PROCESSING ENGINE</text>
+    
+    <text x="0" y="58" fill="#F0F9FF" class="par-title" font-size="26">Mule 4 High-Concurrency Architecture</text>
+    <text x="0" y="80" fill="#94A3B8" font-size="13">Non-Blocking Project Reactor Threads · Scatter-Gather Router · Parallel For Each Scope · Zero Thread Starvation</text>
+  </g>
+
+  <!-- ==================== SECTION 1: SCATTER-GATHER ROUTER ==================== -->
+  <g transform="translate(48, 140)">
+    <!-- Container Box -->
+    <rect width="530" height="455" rx="16" fill="url(#sg-box-grad)" stroke="#845EC2" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <path d="M20 0H510" stroke="url(#purple-accent)" stroke-width="2"/>
+
+    <!-- Section Badge -->
+    <rect x="20" y="16" width="190" height="24" rx="6" fill="#845EC2" fill-opacity="0.2" stroke="#845EC2" stroke-opacity="0.4"/>
+    <text x="30" y="32" fill="#E0A4E8" class="par-sans" font-size="11" font-weight="700" letter-spacing="1">PATTERN 1: SCATTER-GATHER</text>
+    <text x="220" y="32" fill="#94A3B8" class="par-mono" font-size="10">timeout="3000ms" | maxConcurrency="3"</text>
+
+    <!-- Inbound Event Node -->
+    <g transform="translate(24, 60)">
+      <rect width="140" height="64" rx="8" fill="url(#card-grad)" stroke="#00A1E0" stroke-width="1.2"/>
+      <text x="14" y="24" fill="#00F2FE" class="par-mono" font-size="10" font-weight="700">INBOUND EVENT</text>
+      <text x="14" y="42" fill="#FFFFFF" class="par-sans" font-size="12" font-weight="700">OrderRequest</text>
+      <text x="14" y="55" fill="#94A3B8" class="par-mono" font-size="9">vars.txId = "TX-992"</text>
+    </g>
+
+    <!-- Event Cloner Hub -->
+    <g transform="translate(195, 76)">
+      <circle cx="16" cy="16" r="16" fill="#845EC2" fill-opacity="0.3" stroke="#D65DB1" stroke-width="1.5"/>
+      <path d="M11 16H21M16 11V21" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <text x="16" y="44" fill="#D65DB1" class="par-sans" font-size="9" font-weight="700" text-anchor="middle">EVENT CLONE</text>
+    </g>
+
+    <!-- Connecting Trunk -->
+    <path d="M164 92H195" stroke="#00F2FE" stroke-width="1.5"/>
+
+    <!-- Parallel Branch Lines -->
+    <path d="M227 92 H250 V82 H270" fill="none" stroke="#D65DB1" stroke-width="1.5"/>
+    <path d="M227 92 H270" fill="none" stroke="#D65DB1" stroke-width="1.5"/>
+    <path d="M227 92 H250 V202 H270" fill="none" stroke="#D65DB1" stroke-width="1.5"/>
+
+    <!-- Animated Packets on SG Branches -->
+    <path class="pkt-flow" pathLength="100" d="M227 92 H250 V82 H270" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#glow-cyan)"/>
+    <path class="pkt-flow-2" pathLength="100" d="M227 92 H270" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#glow-cyan)"/>
+    <path class="pkt-flow-3" pathLength="100" d="M227 92 H250 V202 H270" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#glow-cyan)"/>
+
+    <!-- Route 0: SAP S/4HANA -->
+    <g transform="translate(270, 52)">
+      <rect width="235" height="56" rx="8" fill="url(#card-grad)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="14" cy="18" r="5" fill="#00A1E0"/>
+      <text x="26" y="22" fill="#FFFFFF" class="par-sans" font-size="11" font-weight="700">Route [0]: SAP S/4HANA ERP</text>
+      <text x="26" y="38" fill="#94A3B8" class="par-mono" font-size="9">BAPI_SALESORDER_CREATE</text>
+      <rect x="175" y="10" width="50" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="200" y="22" fill="#00F2FE" class="par-mono" font-size="9" text-anchor="middle">⏱️ 240ms</text>
+    </g>
+
+    <!-- Route 1: Salesforce CRM -->
+    <g transform="translate(270, 118)">
+      <rect width="235" height="56" rx="8" fill="url(#card-grad)" stroke="#F59E0B" stroke-width="1"/>
+      <circle cx="14" cy="18" r="5" fill="#F59E0B"/>
+      <text x="26" y="22" fill="#FFFFFF" class="par-sans" font-size="11" font-weight="700">Route [1]: Salesforce CRM</text>
+      <text x="26" y="38" fill="#94A3B8" class="par-mono" font-size="9">Upsert Account By ExternalID</text>
+      <rect x="175" y="10" width="50" height="18" rx="4" fill="#F59E0B" fill-opacity="0.15"/>
+      <text x="200" y="22" fill="#FBBF24" class="par-mono" font-size="9" text-anchor="middle">⏱️ 160ms</text>
+    </g>
+
+    <!-- Route 2: AWS DynamoDB -->
+    <g transform="translate(270, 184)">
+      <rect width="235" height="56" rx="8" fill="url(#card-grad)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="14" cy="18" r="5" fill="#10B981"/>
+      <text x="26" y="22" fill="#FFFFFF" class="par-sans" font-size="11" font-weight="700">Route [2]: AWS DynamoDB</text>
+      <text x="26" y="38" fill="#94A3B8" class="par-mono" font-size="9">PutItem (TTL Audit Record)</text>
+      <rect x="175" y="10" width="50" height="18" rx="4" fill="#10B981" fill-opacity="0.15"/>
+      <text x="200" y="22" fill="#34D399" class="par-mono" font-size="9" text-anchor="middle">⏱️ 45ms</text>
+    </g>
+
+    <!-- Aggregation Barrier Box -->
+    <g transform="translate(24, 260)">
+      <rect width="481" height="88" rx="10" fill="#0E1B2A" stroke="#10B981" stroke-width="1.2"/>
+      <path d="M12 0H469" stroke="#10B981" stroke-width="1.5" opacity="0.6"/>
+      <text x="16" y="24" fill="#10B981" class="par-sans" font-size="11" font-weight="700">BARRIER AGGREGATION RESULT (COMPOSITE MAP)</text>
+      <text x="16" y="44" fill="#FFFFFF" class="par-mono" font-size="10">payload["0"].payload  ➔  SAP Order Confirmation #{9921}</text>
+      <text x="16" y="60" fill="#FFFFFF" class="par-mono" font-size="10">payload["1"].payload  ➔  Salesforce Account Updated (200)</text>
+      <text x="16" y="76" fill="#FFFFFF" class="par-mono" font-size="10">payload["2"].payload  ➔  DynamoDB Audit Stored (HTTP 200)</text>
+    </g>
+
+    <!-- Execution Metric Box -->
+    <g transform="translate(24, 362)">
+      <rect width="481" height="74" rx="8" fill="#0A141F" stroke="rgba(255,255,255,0.08)"/>
+      <text x="16" y="24" fill="#A6EAF4" class="par-sans" font-size="11" font-weight="700">EXECUTION TIME BENEFIT</text>
+      <text x="16" y="44" fill="#94A3B8" class="par-sans" font-size="11">Sequential: 240ms + 160ms + 45ms = <tspan fill="#EF4444" font-weight="700">445ms</tspan></text>
+      <text x="16" y="62" fill="#F0F9FF" class="par-sans" font-size="12" font-weight="700">Parallel Scatter-Gather: MAX(240, 160, 45) = <tspan fill="#10B981" font-weight="700">240ms (46% FASTER)</tspan></text>
+    </g>
+  </g>
+
+  <!-- ==================== SECTION 2: PARALLEL FOR EACH ==================== -->
+  <g transform="translate(622, 140)">
+    <!-- Container Box -->
+    <rect width="530" height="455" rx="16" fill="url(#pfe-box-grad)" stroke="#00F2FE" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <path d="M20 0H510" stroke="url(#cyan-accent)" stroke-width="2"/>
+
+    <!-- Section Badge -->
+    <rect x="20" y="16" width="210" height="24" rx="6" fill="#00F2FE" fill-opacity="0.15" stroke="#00F2FE" stroke-opacity="0.4"/>
+    <text x="30" y="32" fill="#53CADD" class="par-sans" font-size="11" font-weight="700" letter-spacing="1">PATTERN 2: PARALLEL FOR EACH</text>
+    <text x="240" y="32" fill="#94A3B8" class="par-mono" font-size="10">collection="#[payload]" | maxConcurrency="4"</text>
+
+    <!-- Inbound Array Node -->
+    <g transform="translate(24, 60)">
+      <rect width="140" height="64" rx="8" fill="url(#card-grad)" stroke="#00F2FE" stroke-width="1.2"/>
+      <text x="14" y="24" fill="#00F2FE" class="par-mono" font-size="10" font-weight="700">INPUT ARRAY</text>
+      <text x="14" y="42" fill="#FFFFFF" class="par-sans" font-size="12" font-weight="700">[Item_0, Item_1, ...]</text>
+      <text x="14" y="55" fill="#94A3B8" class="par-mono" font-size="9">Total Size: 1,000 items</text>
+    </g>
+
+    <!-- Concurrency Throttle Pool Node -->
+    <g transform="translate(195, 60)">
+      <rect width="105" height="64" rx="8" fill="#124052" stroke="#53CADD" stroke-width="1"/>
+      <text x="52" y="24" fill="#A6EAF4" class="par-mono" font-size="9" font-weight="700" text-anchor="middle">THREAD POOL</text>
+      <text x="52" y="42" fill="#00F2FE" class="par-title" font-size="16" text-anchor="middle">max=4</text>
+      <text x="52" y="56" fill="#94A3B8" class="par-mono" font-size="8" text-anchor="middle">NON-BLOCKING</text>
+    </g>
+
+    <!-- Connecting Trunk -->
+    <path d="M164 92H195" stroke="#00F2FE" stroke-width="1.5"/>
+    <path d="M300 92H330" stroke="#00F2FE" stroke-width="1.5"/>
+
+    <!-- Concurrent Processing Lanes -->
+    <g transform="translate(330, 48)">
+      <!-- Lane 1 -->
+      <g transform="translate(0, 0)">
+        <rect width="175" height="34" rx="6" fill="url(#card-grad)" stroke="#53CADD" stroke-opacity="0.4"/>
+        <text x="10" y="21" fill="#FFFFFF" class="par-mono" font-size="9">Thread-1 ➔ Item[0..249]</text>
+        <circle cx="160" cy="17" r="4" fill="#10B981"/>
+      </g>
+      <!-- Lane 2 -->
+      <g transform="translate(0, 42)">
+        <rect width="175" height="34" rx="6" fill="url(#card-grad)" stroke="#53CADD" stroke-opacity="0.4"/>
+        <text x="10" y="21" fill="#FFFFFF" class="par-mono" font-size="9">Thread-2 ➔ Item[250..499]</text>
+        <circle cx="160" cy="17" r="4" fill="#10B981"/>
+      </g>
+      <!-- Lane 3 -->
+      <g transform="translate(0, 84)">
+        <rect width="175" height="34" rx="6" fill="url(#card-grad)" stroke="#53CADD" stroke-opacity="0.4"/>
+        <text x="10" y="21" fill="#FFFFFF" class="par-mono" font-size="9">Thread-3 ➔ Item[500..749]</text>
+        <circle cx="160" cy="17" r="4" fill="#10B981"/>
+      </g>
+      <!-- Lane 4 -->
+      <g transform="translate(0, 126)">
+        <rect width="175" height="34" rx="6" fill="url(#card-grad)" stroke="#53CADD" stroke-opacity="0.4"/>
+        <text x="10" y="21" fill="#FFFFFF" class="par-mono" font-size="9">Thread-4 ➔ Item[750..999]</text>
+        <circle cx="160" cy="17" r="4" fill="#10B981"/>
+      </g>
+    </g>
+
+    <!-- Animated Packets on Lanes -->
+    <path class="pkt-fast" pathLength="100" d="M300 92 L330 65" fill="none" stroke="#00F2FE" stroke-width="2" filter="url(#glow-cyan)"/>
+    <path class="pkt-fast" pathLength="100" d="M300 92 L330 107" fill="none" stroke="#00F2FE" stroke-width="2" filter="url(#glow-cyan)"/>
+    <path class="pkt-fast" pathLength="100" d="M300 92 L330 149" fill="none" stroke="#00F2FE" stroke-width="2" filter="url(#glow-cyan)"/>
+    <path class="pkt-fast" pathLength="100" d="M300 92 L330 191" fill="none" stroke="#00F2FE" stroke-width="2" filter="url(#glow-cyan)"/>
+
+    <!-- Order Preservation Guarantee -->
+    <g transform="translate(24, 235)">
+      <rect width="481" height="85" rx="10" fill="#0E1B2A" stroke="#00F2FE" stroke-width="1.2"/>
+      <text x="16" y="24" fill="#00F2FE" class="par-sans" font-size="11" font-weight="700">DETERMINISTIC AGGREGATION &amp; ORDER PRESERVATION</text>
+      <text x="16" y="44" fill="#FFFFFF" class="par-sans" font-size="11">Even if Item #5 finishes before Item #1, Mule maintains original index order:</text>
+      <text x="16" y="64" fill="#A6EAF4" class="par-mono" font-size="10">outputPayload = [Result_0, Result_1, Result_2, ... Result_999]</text>
+      <text x="16" y="78" fill="#94A3B8" class="par-sans" font-size="9">Target variable scoping: target="vars.parallelResults"</text>
+    </g>
+
+    <!-- Error Handling Matrix -->
+    <g transform="translate(24, 335)">
+      <rect width="481" height="100" rx="8" fill="#0A141F" stroke="rgba(255,255,255,0.08)"/>
+      <text x="16" y="24" fill="#EF4444" class="par-sans" font-size="11" font-weight="700">ERROR BOUNDARY BEHAVIOR</text>
+      <text x="16" y="44" fill="#94A3B8" class="par-sans" font-size="10">• If 1 item fails: All other running threads COMPLETE their execution.</text>
+      <text x="16" y="60" fill="#94A3B8" class="par-sans" font-size="10">• After all threads finish, Mule throws: <tspan fill="#EF4444" class="par-mono">MULE:COMPOSITE_ROUTING</tspan></text>
+      <text x="16" y="76" fill="#94A3B8" class="par-sans" font-size="10">• Access individual failure reasons via: <tspan fill="#00F2FE" class="par-mono">error.childErrors['index']</tspan></text>
+      <text x="16" y="92" fill="#94A3B8" class="par-sans" font-size="10">• Variables created inside scope do NOT propagate outside the scope.</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER CALLOUT ==================== -->
+  <g transform="translate(48, 608)">
+    <text x="0" y="16" fill="#64748B" class="par-sans" font-size="11">⚡ <tspan fill="#ADC6D6" font-weight="600">Enterprise Rule:</tspan> Always configure <tspan fill="#00F2FE" class="par-mono">timeout</tspan> on Scatter-Gather to prevent slow routes from stalling caller threads, and tune <tspan fill="#00F2FE" class="par-mono">maxConcurrency</tspan> to match downstream API rate limits.</text>
+    <text x="1104" y="16" fill="#53CADD" class="par-mono" font-size="10" text-anchor="end">MULE 4.6+ ARCHITECTURE</text>
+  </g>
+</svg>
+  </div>
+  <div class="diagram-footer">
+    <span>💡 <strong>Architectural Rule:</strong> Scatter-Gather executes fixed design-time routes concurrently; Parallel ForEach divides a runtime collection across throttled non-blocking worker threads while guaranteeing output index order.</span>
+  </div>
+</div>
+
 <div class="article-body-intro" style="margin-bottom:28px;"><div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 
 <div class="table-responsive">
@@ -7801,6 +8098,247 @@ paperless:     dynamoData.paperless default false
     <h2 class="article-title">📊 Batch Processing Deep Dive</h2>
     <p class="article-excerpt">Input, Process, and On Complete phases, Batch Aggregator sizing, maxFailedRecords, and commit rollbacks.</p>
   </div>
+
+<div class="diagram-container" id="diagram-batch-processing" style="margin-top:20px; margin-bottom:28px;">
+  <div class="diagram-header">
+    <div class="diagram-badge" style="background:rgba(168,85,247,0.15); color:#C084FC; border-color:rgba(168,85,247,0.3);">⚙️ High-Throughput Processing</div>
+    <div class="diagram-title">MuleSoft Batch Job Architecture &amp; Lifecycle Phases</div>
+    <div class="diagram-subtitle">Input Stage ➔ Multi-Threaded Process Steps (vars vs recordVars) ➔ Aggregator ➔ On Complete Summary</div>
+  </div>
+  <div class="diagram-svg-wrapper">
+    <svg class="responsive-svg" xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="batch-title batch-desc">
+  <title id="batch-title">Mule 4 Batch Job Internal Processing &amp; Scoping Engine</title>
+  <desc id="batch-desc">Visual architecture diagram of Mule 4 Batch Processing showing the 3 phases: Input Stage, Process Records with Persistent Disk Queue and Record-Level Variable isolation, Batch Aggregator, and On-Complete Phase.</desc>
+
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="b-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071321"/>
+      <stop offset="55%" stop-color="#0B2033"/>
+      <stop offset="100%" stop-color="#124052"/>
+    </linearGradient>
+    <radialGradient id="b-glow-left" cx="20%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#00A1E0" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="b-glow-right" cx="80%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="b-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#53CADD" stroke-opacity="0.06"/>
+    </pattern>
+
+    <!-- Card Backgrounds -->
+    <linearGradient id="b-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#112233" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#081420" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="phase-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#845EC2" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <filter id="b-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .b-title { font-family: 'Plus Jakarta Sans', Georgia, sans-serif; font-weight: 700; }
+    .b-mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+    .b-sans { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+
+    /* Animated Traces */
+    .b-trace { stroke-dasharray: 6 94; animation: b-flow 4.2s linear infinite; }
+    .b-trace-2 { stroke-dasharray: 6 94; animation: b-flow 4.2s linear infinite; animation-delay: -1.4s; }
+    .b-trace-3 { stroke-dasharray: 6 94; animation: b-flow 4.2s linear infinite; animation-delay: -2.8s; }
+
+    @keyframes b-flow {
+      from { stroke-dashoffset: 100; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .b-pulse { animation: b-pulse-anim 6s ease-in-out infinite; }
+    @keyframes b-pulse-anim {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .b-trace, .b-trace-2, .b-trace-3, .b-pulse { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- Frame Background -->
+  <rect width="1200" height="620" rx="24" fill="url(#b-bg)"/>
+  <rect width="1200" height="620" rx="24" fill="url(#b-grid)"/>
+  <ellipse class="b-pulse" cx="200" cy="200" rx="260" ry="200" fill="url(#b-glow-left)"/>
+  <ellipse class="b-pulse" cx="1000" cy="400" rx="260" ry="200" fill="url(#b-glow-right)"/>
+  <rect x="1" y="1" width="1198" height="618" rx="23" fill="none" stroke="#53CADD" stroke-opacity="0.25"/>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <g class="b-sans" transform="translate(48, 34)">
+    <rect width="250" height="26" rx="13" fill="#124052" stroke="#53CADD" stroke-opacity="0.35"/>
+    <circle cx="14" cy="13" r="4.5" fill="#00F2FE"/>
+    <text x="26" y="17" fill="#A6EAF4" font-size="10.5" font-weight="700" letter-spacing="1.5">BATCH PROCESSING ENGINE</text>
+    
+    <text x="0" y="52" fill="#F0F9FF" class="b-title" font-size="24">Mule 4 Batch Job Architecture &amp; Variable Scoping</text>
+    <text x="0" y="70" fill="#94A3B8" font-size="12">Persistent Disk Queue · Record-Level Variable Isolation · Split-Phase Workers · Chunked Aggregators · On-Complete SLA</text>
+  </g>
+
+  <!-- ==================== PHASE 1: INPUT / INITIALIZE ==================== -->
+  <g transform="translate(48, 125)">
+    <rect width="240" height="435" rx="14" fill="url(#phase-grad)" stroke="#00A1E0" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#00F2FE" class="b-sans" font-size="11" font-weight="800" letter-spacing="1">PHASE 1: INPUT STAGE</text>
+    <text x="20" y="42" fill="#94A3B8" class="b-mono" font-size="9.5">Payload Hydration &amp; Snapshot</text>
+
+    <!-- Source Extractor Card -->
+    <g transform="translate(18, 60)">
+      <rect width="204" height="74" rx="8" fill="url(#b-card)" stroke="#00A1E0" stroke-width="1"/>
+      <text x="14" y="22" fill="#FFFFFF" class="b-sans" font-size="11" font-weight="700">Source Extraction</text>
+      <text x="14" y="38" fill="#94A3B8" class="b-mono" font-size="9">SELECT 100k Records</text>
+      <text x="14" y="52" fill="#94A3B8" class="b-mono" font-size="9">Streams into Batch Queue</text>
+      <circle cx="186" cy="20" r="5" fill="#00F2FE"/>
+    </g>
+
+    <!-- Variable Snapshot Card -->
+    <g transform="translate(18, 150)">
+      <rect width="204" height="110" rx="8" fill="url(#b-card)" stroke="#845EC2" stroke-width="1"/>
+      <text x="14" y="22" fill="#D65DB1" class="b-sans" font-size="11" font-weight="700">Flow Variables Snapshot</text>
+      <text x="14" y="40" fill="#94A3B8" class="b-mono" font-size="9">vars.batchId = "RUN_992"</text>
+      <text x="14" y="56" fill="#94A3B8" class="b-mono" font-size="9">vars.startTime = now()</text>
+      <path d="M14 68H190" stroke="rgba(255,255,255,0.1)"/>
+      <text x="14" y="84" fill="#E0A4E8" class="b-sans" font-size="9" font-weight="600">RULE: Cloned to all records</text>
+      <text x="14" y="98" fill="#EF4444" class="b-sans" font-size="9">NOT accessible in On-Complete!</text>
+    </g>
+
+    <!-- Queue Dispatcher -->
+    <g transform="translate(18, 280)">
+      <rect width="204" height="135" rx="8" fill="#0A1624" stroke="#53CADD" stroke-width="1"/>
+      <text x="14" y="24" fill="#A6EAF4" class="b-sans" font-size="11" font-weight="700">Persistent Disk Queue</text>
+      <text x="14" y="42" fill="#94A3B8" class="b-mono" font-size="9">• Serializes to local disk</text>
+      <text x="14" y="58" fill="#94A3B8" class="b-mono" font-size="9">• Prevents OutOfMemoryError</text>
+      <text x="14" y="74" fill="#94A3B8" class="b-mono" font-size="9">• 100 records / block chunk</text>
+      <rect x="14" y="88" width="176" height="32" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.4"/>
+      <text x="102" y="108" fill="#00F2FE" class="b-mono" font-size="9.5" text-anchor="middle">BLOCK SIZE = 100</text>
+    </g>
+  </g>
+
+  <!-- Connector: Phase 1 to Phase 2 -->
+  <path d="M288 340 H315" stroke="#00F2FE" stroke-width="1.8"/>
+  <path class="b-trace" pathLength="100" d="M288 340 H315" fill="none" stroke="#00F2FE" stroke-width="3" filter="url(#b-glow)"/>
+
+  <!-- ==================== PHASE 2: PROCESS RECORDS ==================== -->
+  <g transform="translate(315, 125)">
+    <rect width="570" height="435" rx="14" fill="url(#phase-grad)" stroke="#845EC2" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#D65DB1" class="b-sans" font-size="11" font-weight="800" letter-spacing="1">PHASE 2: PROCESS RECORDS (ISOLATED WORKER THREADS)</text>
+    <text x="550" y="24" fill="#94A3B8" class="b-mono" font-size="9.5" text-anchor="end">maxFailedRecords="-1" (Unlimited Tolerance)</text>
+
+    <!-- Thread Pool Header -->
+    <g transform="translate(20, 38)">
+      <rect width="530" height="34" rx="6" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+      <text x="14" y="21" fill="#A6EAF4" class="b-mono" font-size="9.5">Concurrent Threads: Sized by CPU cores · Chunk 1..N processed in parallel</text>
+      <circle cx="510" cy="17" r="4" fill="#10B981"/>
+    </g>
+
+    <!-- Step 1: Rating & Record Variable -->
+    <g transform="translate(20, 84)">
+      <rect width="530" height="85" rx="8" fill="url(#b-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#00A1E0"/>
+      <text x="28" y="24" fill="#FFFFFF" class="b-sans" font-size="12" font-weight="700">Batch Step 1: Calculate Tax &amp; Enrich</text>
+      <text x="28" y="42" fill="#94A3B8" class="b-mono" font-size="9.5">vars.recordTax = payload.amount * 0.0825 (RECORD-LEVEL VARIABLE)</text>
+      <text x="28" y="58" fill="#00F2FE" class="b-sans" font-size="9.5">🔒 Scoped strictly to this record · Accessible in Step 2 · Invisible to other records</text>
+      <rect x="430" y="12" width="85" height="20" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="472" y="26" fill="#00F2FE" class="b-mono" font-size="9" text-anchor="middle">NO_FAILURES</text>
+    </g>
+
+    <!-- Step 2: Aggregator Chunking -->
+    <g transform="translate(20, 180)">
+      <rect width="530" height="135" rx="8" fill="url(#b-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#10B981"/>
+      <text x="28" y="24" fill="#FFFFFF" class="b-sans" font-size="12" font-weight="700">Batch Step 2: Batch Aggregator Bulk Commit</text>
+      <rect x="430" y="12" width="85" height="20" rx="4" fill="#10B981" fill-opacity="0.15"/>
+      <text x="472" y="26" fill="#34D399" class="b-mono" font-size="9" text-anchor="middle">SIZE = 500</text>
+
+      <!-- Sub-Box: Aggregator Body -->
+      <g transform="translate(20, 36)">
+        <rect width="490" height="85" rx="6" fill="#091420" stroke="#10B981" stroke-opacity="0.5"/>
+        <text x="14" y="22" fill="#10B981" class="b-sans" font-size="11" font-weight="700">batch:aggregator (Accumulates 500 records into memory array)</text>
+        <text x="14" y="40" fill="#FFFFFF" class="b-mono" font-size="9.5">db:bulk-insert: INSERT INTO orders VALUES (:id, :tax, :total)</text>
+        <text x="14" y="56" fill="#94A3B8" class="b-mono" font-size="9">Streams 500 records in 1 single network roundtrip</text>
+        <text x="14" y="72" fill="#34D399" class="b-sans" font-size="9.5">⚡ Reduces database IOPS by 92% compared to single-record inserts</text>
+      </g>
+    </g>
+
+    <!-- Step 3: Error Handler (ONLY_FAILURES) -->
+    <g transform="translate(20, 326)">
+      <rect width="530" height="92" rx="8" fill="url(#b-card)" stroke="#EF4444" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#EF4444"/>
+      <text x="28" y="24" fill="#FFFFFF" class="b-sans" font-size="12" font-weight="700">Batch Step 3: Dead-Letter Queue (acceptPolicy="ONLY_FAILURES")</text>
+      <rect x="420" y="12" width="95" height="20" rx="4" fill="#EF4444" fill-opacity="0.15"/>
+      <text x="467" y="26" fill="#F87171" class="b-mono" font-size="9" text-anchor="middle">ONLY_FAILURES</text>
+
+      <text x="28" y="44" fill="#FCA5A5" class="b-sans" font-size="10">• Catches ONLY poisoned/failed records from Step 1 and Step 2</text>
+      <text x="28" y="60" fill="#94A3B8" class="b-mono" font-size="9.5">Retains vars.recordTax + payload + error.description</text>
+      <text x="28" y="76" fill="#FFFFFF" class="b-mono" font-size="9.5">Dispatches to Anypoint MQ 'order-dlq' for automated reprocessing</text>
+    </g>
+  </g>
+
+  <!-- Connector: Phase 2 to Phase 3 -->
+  <path d="M885 340 H915" stroke="#10B981" stroke-width="1.8"/>
+  <path class="b-trace-2" pathLength="100" d="M885 340 H915" fill="none" stroke="#10B981" stroke-width="3" filter="url(#b-glow)"/>
+
+  <!-- ==================== PHASE 3: ON-COMPLETE ==================== -->
+  <g transform="translate(915, 125)">
+    <rect width="237" height="435" rx="14" fill="url(#phase-grad)" stroke="#10B981" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="18" y="24" fill="#10B981" class="b-sans" font-size="11" font-weight="800" letter-spacing="1">PHASE 3: ON-COMPLETE</text>
+    <text x="18" y="42" fill="#94A3B8" class="b-mono" font-size="9.5">Summary Report &amp; Alerts</text>
+
+    <!-- BatchJobResult Card -->
+    <g transform="translate(16, 60)">
+      <rect width="205" height="150" rx="8" fill="#0A1624" stroke="#10B981" stroke-width="1"/>
+      <text x="14" y="22" fill="#10B981" class="b-sans" font-size="11" font-weight="700">BatchJobResult Object</text>
+      <text x="14" y="42" fill="#FFFFFF" class="b-mono" font-size="9.5">totalRecords: 100,000</text>
+      <text x="14" y="58" fill="#34D399" class="b-mono" font-size="9.5">successful: 99,850</text>
+      <text x="14" y="74" fill="#EF4444" class="b-mono" font-size="9.5">failedRecords: 150</text>
+      <text x="14" y="90" fill="#94A3B8" class="b-mono" font-size="9.5">elapsedTime: 4.2 min</text>
+      <path d="M14 102H191" stroke="rgba(255,255,255,0.1)"/>
+      <text x="14" y="118" fill="#FBBF24" class="b-mono" font-size="9">failureRate: 0.15%</text>
+      <text x="14" y="134" fill="#10B981" class="b-sans" font-size="9" font-weight="700">STATUS: HEALTHY (&lt;2%)</text>
+    </g>
+
+    <!-- Notification Trigger -->
+    <g transform="translate(16, 222)">
+      <rect width="205" height="193" rx="8" fill="url(#b-card)" stroke="#53CADD" stroke-width="1"/>
+      <text x="14" y="24" fill="#A6EAF4" class="b-sans" font-size="11" font-weight="700">SLA Audit &amp; Alerts</text>
+      <text x="14" y="44" fill="#94A3B8" class="b-sans" font-size="9.5">• Evaluates batch run time</text>
+      <text x="14" y="60" fill="#94A3B8" class="b-sans" font-size="9.5">• If failureRate &gt; 2%: Alert</text>
+      <text x="14" y="76" fill="#94A3B8" class="b-sans" font-size="9.5">• If duration &gt; 30 min: Alert</text>
+      
+      <rect x="14" y="94" width="177" height="38" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.3"/>
+      <text x="24" y="112" fill="#00F2FE" class="b-mono" font-size="9">Alert: PagerDuty / Slack</text>
+      <text x="24" y="124" fill="#94A3B8" class="b-mono" font-size="8">Triggers incident API</text>
+
+      <rect x="14" y="142" width="177" height="38" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.3"/>
+      <text x="24" y="160" fill="#10B981" class="b-mono" font-size="9">Email: SMTP Summary</text>
+      <text x="24" y="172" fill="#94A3B8" class="b-mono" font-size="8">Sends PDF report to ops</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER INVARIANT ==================== -->
+  <g class="b-sans" transform="translate(48, 595)">
+    <text x="0" y="0" fill="#64748B" font-size="11">⚡ <tspan fill="#ADC6D6" font-weight="600">Golden Scoping Rule:</tspan> Flow variables entering batch are cloned per record. Record variables stay with their record across steps. In On-Complete, records are gone—only BatchJobResult remains.</text>
+    <text x="1104" y="0" fill="#53CADD" class="b-mono" font-size="10" text-anchor="end">MAX RECORDS: 10M+</text>
+  </g>
+</svg>
+  </div>
+</div>
 
 
   <div class="faq-card" id="mod-i-q3" data-role="developer / senior">
@@ -9482,6 +10020,273 @@ status: vars.httpStatus,</code></pre>
     <h2 class="article-title">🏗️ API-led Connectivity Deep Dive (RAML, Policies)</h2>
     <p class="article-excerpt">RAML 1.0 vs OAS 3.0, API Autodiscovery, API Manager policies (Client ID, Rate Limiting, JWT Validation), and Exchange assets.</p>
   </div>
+
+<div class="diagram-container" id="diagram-api-led-flow" style="margin-top:20px; margin-bottom:28px;">
+  <div class="diagram-header">
+    <div class="diagram-badge" style="background:rgba(59,130,246,0.15); color:#60A5FA; border-color:rgba(59,130,246,0.3);">🌐 Real-Time Flow Architecture</div>
+    <div class="diagram-title">API-Led Connectivity — Real-Time Request/Response Data Flow</div>
+    <div class="diagram-subtitle">Omnichannel Clients ➔ Experience Layer ➔ Process Orchestration ➔ System Adapters ➔ Enterprise Backends</div>
+  </div>
+  <div class="diagram-svg-wrapper">
+    <svg class="responsive-svg" xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="apiled-title apiled-desc">
+  <title id="apiled-title">API-Led Connectivity Real-Time Execution Flow</title>
+  <desc id="apiled-desc">Real-time animated architectural diagram of MuleSoft 3-tier API-led connectivity showing Experience, Process, and System API layers orchestrating data between mobile/web clients and enterprise backends.</desc>
+
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="api-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071321"/>
+      <stop offset="55%" stop-color="#0B2033"/>
+      <stop offset="100%" stop-color="#124052"/>
+    </linearGradient>
+    <radialGradient id="aura-exp" cx="15%" cy="30%" r="45%">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="aura-proc" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="aura-sys" cx="85%" cy="70%" r="45%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="api-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#53CADD" stroke-opacity="0.06"/>
+    </pattern>
+
+    <!-- Tier Box Gradients -->
+    <linearGradient id="tier-exp" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00A1E0" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#00F2FE" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="tier-proc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#D65DB1" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="tier-sys" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#059669" stop-opacity="0.04"/>
+    </linearGradient>
+
+    <!-- Card Gradients -->
+    <linearGradient id="api-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#112233" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#091420" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Flow Line Filter -->
+    <filter id="flow-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .api-title { font-family: 'Plus Jakarta Sans', Georgia, sans-serif; font-weight: 700; }
+    .api-mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+    .api-sans { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+    
+    /* Animated Request Flow Packets (Top to Bottom) */
+    .req-pkt { stroke-dasharray: 6 94; animation: flow-down 3.6s linear infinite; }
+    .req-pkt-2 { stroke-dasharray: 6 94; animation: flow-down 3.6s linear infinite; animation-delay: -1.2s; }
+    .req-pkt-3 { stroke-dasharray: 6 94; animation: flow-down 3.6s linear infinite; animation-delay: -2.4s; }
+    
+    /* Animated Response Return Packets (Bottom to Top) */
+    .resp-pkt { stroke-dasharray: 6 94; animation: flow-up 3.6s linear infinite; }
+    .resp-pkt-2 { stroke-dasharray: 6 94; animation: flow-up 3.6s linear infinite; animation-delay: -1.8s; }
+
+    @keyframes flow-down {
+      from { stroke-dashoffset: 100; }
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes flow-up {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: 100; }
+    }
+    
+    .pulse-layer { animation: layer-breathe 7s ease-in-out infinite; }
+    @keyframes layer-breathe {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.75; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .req-pkt, .req-pkt-2, .req-pkt-3, .resp-pkt, .resp-pkt-2, .pulse-layer { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- Frame Background -->
+  <rect width="1200" height="660" rx="24" fill="url(#api-bg)"/>
+  <rect width="1200" height="660" rx="24" fill="url(#api-grid)"/>
+  <ellipse class="pulse-layer" cx="180" cy="200" rx="240" ry="180" fill="url(#aura-exp)"/>
+  <ellipse class="pulse-layer" cx="600" cy="360" rx="280" ry="200" fill="url(#aura-proc)"/>
+  <ellipse class="pulse-layer" cx="1020" cy="500" rx="240" ry="180" fill="url(#aura-sys)"/>
+  <rect x="1" y="1" width="1198" height="658" rx="23" fill="none" stroke="#53CADD" stroke-opacity="0.25"/>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <g class="api-sans" transform="translate(48, 32)">
+    <rect width="255" height="26" rx="13" fill="#124052" stroke="#53CADD" stroke-opacity="0.35"/>
+    <circle cx="14" cy="13" r="4.5" fill="#00F2FE"/>
+    <text x="26" y="17" fill="#A6EAF4" font-size="10.5" font-weight="700" letter-spacing="1.5">ENTERPRISE API-LED TOPOLOGY</text>
+    
+    <text x="0" y="52" fill="#F0F9FF" class="api-title" font-size="24">Real-Time Request &amp; Orchestration Lifecycle</text>
+    <text x="0" y="70" fill="#94A3B8" font-size="12">Bi-Directional Event Propagation · Experience ➔ Process ➔ System ➔ Backend · Zero Downstream Coupling</text>
+  </g>
+
+  <!-- Legend Badges -->
+  <g class="api-mono" transform="translate(850, 42)">
+    <circle cx="0" cy="0" r="5" fill="#00F2FE"/>
+    <text x="12" y="4" fill="#A6EAF4" font-size="10">Inbound Request (TLS 1.3)</text>
+    <circle cx="180" cy="0" r="5" fill="#10B981"/>
+    <text x="192" y="4" fill="#6EE7B7" font-size="10">Aggregated Response</text>
+  </g>
+
+  <!-- ==================== TIER 1: EXPERIENCE APIS ==================== -->
+  <g transform="translate(48, 120)">
+    <!-- Container -->
+    <rect width="1104" height="120" rx="14" fill="url(#tier-exp)" stroke="#00A1E0" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#00F2FE" class="api-sans" font-size="11" font-weight="800" letter-spacing="1.2">TIER 1 · EXPERIENCE LAYER (CHANNEL ADAPTATION &amp; GOVERNANCE)</text>
+    <text x="1084" y="24" fill="#94A3B8" class="api-mono" font-size="10" text-anchor="end">POLICIES: OAuth2 JWT · Client ID · Rate Limit (10k/min)</text>
+
+    <!-- Exp API 1: Mobile App -->
+    <g transform="translate(24, 38)">
+      <rect width="330" height="66" rx="8" fill="url(#api-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#00F2FE"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Mobile Customer xAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">POST /v1/mobile/orders (BFF)</text>
+      <rect x="250" y="12" width="68" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="284" y="24" fill="#00F2FE" class="api-mono" font-size="9" text-anchor="middle">⏱️ 14ms</text>
+    </g>
+
+    <!-- Exp API 2: Web Portal -->
+    <g transform="translate(386, 38)">
+      <rect width="330" height="66" rx="8" fill="url(#api-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#00F2FE"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Web Commerce xAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">POST /v2/checkout/complete</text>
+      <rect x="250" y="12" width="68" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="284" y="24" fill="#00F2FE" class="api-mono" font-size="9" text-anchor="middle">⏱️ 16ms</text>
+    </g>
+
+    <!-- Exp API 3: Partner B2B -->
+    <g transform="translate(748, 38)">
+      <rect width="330" height="66" rx="8" fill="url(#api-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#00F2FE"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Partner EDI B2B xAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">POST /v1/edi/850/inbound</text>
+      <rect x="250" y="12" width="68" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="284" y="24" fill="#00F2FE" class="api-mono" font-size="9" text-anchor="middle">⏱️ 22ms</text>
+    </g>
+  </g>
+
+  <!-- Connectors: Exp to Proc -->
+  <g fill="none" stroke="#53CADD" stroke-opacity="0.3" stroke-width="1.5">
+    <path d="M213 240 V290 H380 V310"/>
+    <path d="M551 240 V310"/>
+    <path d="M913 240 V290 H730 V310"/>
+  </g>
+  <!-- Animated Request Packets -->
+  <path class="req-pkt" pathLength="100" d="M213 240 V290 H380 V310" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#flow-glow)"/>
+  <path class="req-pkt-2" pathLength="100" d="M551 240 V310" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#flow-glow)"/>
+  <path class="req-pkt-3" pathLength="100" d="M913 240 V290 H730 V310" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#flow-glow)"/>
+
+  <!-- ==================== TIER 2: PROCESS APIS ==================== -->
+  <g transform="translate(48, 310)">
+    <!-- Container -->
+    <rect width="1104" height="120" rx="14" fill="url(#tier-proc)" stroke="#845EC2" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#D65DB1" class="api-sans" font-size="11" font-weight="800" letter-spacing="1.2">TIER 2 · PROCESS LAYER (BUSINESS LOGIC, ORCHESTRATION &amp; SAGAS)</text>
+    <text x="1084" y="24" fill="#94A3B8" class="api-mono" font-size="10" text-anchor="end">PATTERNS: Scatter-Gather · Content Enrichment · Idempotent Consumer</text>
+
+    <!-- Proc API 1: Order Orchestrator -->
+    <g transform="translate(100, 38)">
+      <rect width="420" height="66" rx="8" fill="url(#api-card)" stroke="#845EC2" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#D65DB1"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Order Fulfillment Orchestrator pAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">Scatter-Gather: SAP BAPI + SFDC Upsert + Inventory</text>
+      <rect x="340" y="12" width="68" height="18" rx="4" fill="#845EC2" fill-opacity="0.2"/>
+      <text x="374" y="24" fill="#E0A4E8" class="api-mono" font-size="9" text-anchor="middle">⏱️ 145ms</text>
+    </g>
+
+    <!-- Proc API 2: Customer 360 -->
+    <g transform="translate(584, 38)">
+      <rect width="420" height="66" rx="8" fill="url(#api-card)" stroke="#845EC2" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#D65DB1"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Customer 360 Profile Aggregator pAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">Merges CRM Contact + Billing Ledger + Preferences</text>
+      <rect x="340" y="12" width="68" height="18" rx="4" fill="#845EC2" fill-opacity="0.2"/>
+      <text x="374" y="24" fill="#E0A4E8" class="api-mono" font-size="9" text-anchor="middle">⏱️ 88ms</text>
+    </g>
+  </g>
+
+  <!-- Connectors: Proc to Sys -->
+  <g fill="none" stroke="#D65DB1" stroke-opacity="0.3" stroke-width="1.5">
+    <path d="M310 430 V470 H180 V490"/>
+    <path d="M310 430 V470 H460 V490"/>
+    <path d="M794 430 V470 H740 V490"/>
+    <path d="M794 430 V470 H1020 V490"/>
+  </g>
+  <path class="req-pkt" pathLength="100" d="M310 430 V470 H180 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+  <path class="req-pkt-2" pathLength="100" d="M310 430 V470 H460 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+  <path class="req-pkt-3" pathLength="100" d="M794 430 V470 H740 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+  <path class="req-pkt" pathLength="100" d="M794 430 V470 H1020 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+
+  <!-- ==================== TIER 3: SYSTEM APIS & BACKENDS ==================== -->
+  <g transform="translate(48, 490)">
+    <!-- Container -->
+    <rect width="1104" height="120" rx="14" fill="url(#tier-sys)" stroke="#10B981" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#10B981" class="api-sans" font-size="11" font-weight="800" letter-spacing="1.2">TIER 3 · SYSTEM LAYER (SYSTEMS OF RECORD UNLOCKED VIA CANONICAL SCHEMAS)</text>
+    <text x="1084" y="24" fill="#94A3B8" class="api-mono" font-size="10" text-anchor="end">PROTOCOLS: SAP JCo RFC · Salesforce REST/Bulk · JDBC Pool · DynamoDB</text>
+
+    <!-- Sys API 1: SAP -->
+    <g transform="translate(24, 38)">
+      <rect width="250" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#10B981"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">SAP S/4HANA sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">OData / RFC BAPI</text>
+      <text x="28" y="56" fill="#10B981" class="api-mono" font-size="8.5">ERP Financials &amp; Orders</text>
+    </g>
+
+    <!-- Sys API 2: Salesforce -->
+    <g transform="translate(298, 38)">
+      <rect width="250" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#00A1E0"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">Salesforce CRM sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">SOQL Query / Upsert</text>
+      <text x="28" y="56" fill="#00F2FE" class="api-mono" font-size="8.5">Accounts &amp; Leads</text>
+    </g>
+
+    <!-- Sys API 3: PostgreSQL -->
+    <g transform="translate(572, 38)">
+      <rect width="250" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#F59E0B"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">Database Core sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">JDBC HikariCP Pool</text>
+      <text x="28" y="56" fill="#FBBF24" class="api-mono" font-size="8.5">Inventory &amp; Warehousing</text>
+    </g>
+
+    <!-- Sys API 4: AWS DynamoDB / Kafka -->
+    <g transform="translate(846, 38)">
+      <rect width="234" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#D65DB1"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">Event Stream sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">AWS DynamoDB / Kafka</text>
+      <text x="28" y="56" fill="#E0A4E8" class="api-mono" font-size="8.5">Audit Log &amp; Event Bus</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER RULE ==================== -->
+  <g class="api-sans" transform="translate(48, 634)">
+    <text x="0" y="0" fill="#64748B" font-size="11">⚡ <tspan fill="#ADC6D6" font-weight="600">Architectural Invariant:</tspan> Experience APIs NEVER call System APIs or Databases directly. System APIs NEVER call Process APIs. Downstream isolation is absolute.</text>
+    <text x="1104" y="0" fill="#53CADD" class="api-mono" font-size="10" text-anchor="end">TOTAL SLA: 185ms P99</text>
+  </g>
+</svg>
+  </div>
+</div>
 
 <div class="article-body-intro" style="margin-bottom:28px;">
 <div class="table-responsive">
@@ -12771,6 +13576,258 @@ if ((n mod 2) =- 0) { result: &quot;Even&quot; } else { result: &quot;Odd&quot; 
     <h2 class="article-title">☁️ CloudHub 1.0 vs 2.0 &amp; Technical Lead Topics</h2>
     <p class="article-excerpt">Shared spaces vs Private spaces, Ingress controllers, SLB vs DLB, vCore sizing formula, and zero-downtime rolling updates.</p>
   </div>
+
+<div class="diagram-container" id="diagram-cloudhub2" style="margin-top:20px; margin-bottom:28px;">
+  <div class="diagram-header">
+    <div class="diagram-badge" style="background:rgba(56,189,248,0.15); color:#38BDF8; border-color:rgba(56,189,248,0.3);">☁️ Next-Gen iPaaS Architecture</div>
+    <div class="diagram-title">CloudHub 2.0 Containerized Architecture &amp; Private Space Topology</div>
+    <div class="diagram-subtitle">Anypoint Ingress ➔ Private Space VPN/TGW ➔ Kubernetes Pod Replicas ➔ Telemetry &amp; Log Streaming</div>
+  </div>
+  <div class="diagram-svg-wrapper">
+    <svg class="responsive-svg" xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="ch2-title ch2-desc">
+  <title id="ch2-title">CloudHub 2.0 Containerized Architecture &amp; Private Space Networking</title>
+  <desc id="ch2-desc">Architectural diagram of CloudHub 2.0 showing Private Space built-in Ingress Controller, multi-AZ Kubernetes container replicas, shared Object Store v2 state, static NAT Gateway egress, and native telemetry log forwarding.</desc>
+
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="ch-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071321"/>
+      <stop offset="55%" stop-color="#0B2033"/>
+      <stop offset="100%" stop-color="#124052"/>
+    </linearGradient>
+    <radialGradient id="ch-glow-edge" cx="15%" cy="30%" r="45%">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ch-glow-center" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ch-glow-egress" cx="85%" cy="60%" r="45%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="ch-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#53CADD" stroke-opacity="0.06"/>
+    </pattern>
+
+    <!-- Card Backgrounds -->
+    <linearGradient id="ch-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#112233" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#081420" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="ps-box-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#845EC2" stop-opacity="0.04"/>
+    </linearGradient>
+
+    <filter id="ch-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .ch-title { font-family: 'Plus Jakarta Sans', Georgia, sans-serif; font-weight: 700; }
+    .ch-mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+    .ch-sans { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+
+    /* Animated Traces */
+    .ch-trace { stroke-dasharray: 6 94; animation: ch-flow 4s linear infinite; }
+    .ch-trace-2 { stroke-dasharray: 6 94; animation: ch-flow 4s linear infinite; animation-delay: -1.3s; }
+    .ch-trace-3 { stroke-dasharray: 6 94; animation: ch-flow 4s linear infinite; animation-delay: -2.6s; }
+
+    @keyframes ch-flow {
+      from { stroke-dashoffset: 100; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .ch-pulse { animation: ch-pulse-anim 7s ease-in-out infinite; }
+    @keyframes ch-pulse-anim {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.75; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ch-trace, .ch-trace-2, .ch-trace-3, .ch-pulse { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- Frame Background -->
+  <rect width="1200" height="620" rx="24" fill="url(#ch-bg)"/>
+  <rect width="1200" height="620" rx="24" fill="url(#ch-grid)"/>
+  <ellipse class="ch-pulse" cx="150" cy="220" rx="240" ry="180" fill="url(#ch-glow-edge)"/>
+  <ellipse class="ch-pulse" cx="600" cy="340" rx="280" ry="200" fill="url(#ch-glow-center)"/>
+  <ellipse class="ch-pulse" cx="1050" cy="460" rx="240" ry="180" fill="url(#ch-glow-egress)"/>
+  <rect x="1" y="1" width="1198" height="618" rx="23" fill="none" stroke="#53CADD" stroke-opacity="0.25"/>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <g class="ch-sans" transform="translate(48, 34)">
+    <rect width="250" height="26" rx="13" fill="#124052" stroke="#53CADD" stroke-opacity="0.35"/>
+    <circle cx="14" cy="13" r="4.5" fill="#00F2FE"/>
+    <text x="26" y="17" fill="#A6EAF4" font-size="10.5" font-weight="700" letter-spacing="1.5">CLOUDHUB 2.0 INFRASTRUCTURE</text>
+    
+    <text x="0" y="52" fill="#F0F9FF" class="ch-title" font-size="24">Private Space &amp; Ingress Controller Architecture</text>
+    <text x="0" y="70" fill="#94A3B8" font-size="12">Amazon EKS Container Fabric · Built-in TLS Ingress (No Standalone DLB) · Multi-AZ Replicas · Static NAT Egress · Native Log Forwarding</text>
+  </g>
+
+  <!-- ==================== LEFT: INTERNET INGRESS ==================== -->
+  <g transform="translate(48, 125)">
+    <rect width="210" height="435" rx="14" fill="url(#ps-box-grad)" stroke="#00F2FE" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="18" y="24" fill="#00F2FE" class="ch-sans" font-size="11" font-weight="800" letter-spacing="1">EDGE INGRESS LAYER</text>
+    <text x="18" y="42" fill="#94A3B8" class="ch-mono" font-size="9">Public HTTPS &amp; Custom Domains</text>
+
+    <!-- Public Traffic Source -->
+    <g transform="translate(16, 60)">
+      <rect width="178" height="74" rx="8" fill="url(#ch-card)" stroke="#00A1E0" stroke-width="1"/>
+      <text x="12" y="22" fill="#FFFFFF" class="ch-sans" font-size="11" font-weight="700">Client Requests</text>
+      <text x="12" y="38" fill="#94A3B8" class="ch-mono" font-size="9">api.enterprise.com</text>
+      <text x="12" y="54" fill="#00F2FE" class="ch-mono" font-size="8.5">mTLS / TLS 1.3 (Port 443)</text>
+      <circle cx="160" cy="20" r="4" fill="#00F2FE"/>
+    </g>
+
+    <!-- Ingress Controller Card -->
+    <g transform="translate(16, 150)">
+      <rect width="178" height="155" rx="8" fill="#0B1A2A" stroke="#00F2FE" stroke-width="1.2"/>
+      <text x="12" y="24" fill="#00F2FE" class="ch-sans" font-size="11" font-weight="700">Built-in Ingress Controller</text>
+      <text x="12" y="44" fill="#94A3B8" class="ch-sans" font-size="9.5">• Replaces CloudHub 1.0 DLB</text>
+      <text x="12" y="60" fill="#94A3B8" class="ch-sans" font-size="9.5">• Zero additional license cost</text>
+      <text x="12" y="76" fill="#94A3B8" class="ch-sans" font-size="9.5">• Edge TLS Termination</text>
+      <text x="12" y="92" fill="#94A3B8" class="ch-sans" font-size="9.5">• Host/Path-based Routing</text>
+      
+      <rect x="12" y="106" width="154" height="34" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.4"/>
+      <text x="89" y="123" fill="#A6EAF4" class="ch-mono" font-size="8.5" text-anchor="middle">HTTP :8081 / HTTPS :8082</text>
+      <text x="89" y="134" fill="#10B981" class="ch-mono" font-size="8" text-anchor="middle">INTERNAL CONTAINER PORTS</text>
+    </g>
+
+    <!-- Zero-Downtime Deploy Card -->
+    <g transform="translate(16, 320)">
+      <rect width="178" height="95" rx="8" fill="url(#ch-card)" stroke="#10B981" stroke-width="1"/>
+      <text x="12" y="24" fill="#10B981" class="ch-sans" font-size="11" font-weight="700">Zero-Downtime Deploys</text>
+      <text x="12" y="42" fill="#94A3B8" class="ch-sans" font-size="9.5">Kubernetes Rolling Update:</text>
+      <text x="12" y="58" fill="#FFFFFF" class="ch-mono" font-size="9">Instant container cutover</text>
+      <text x="12" y="74" fill="#94A3B8" class="ch-sans" font-size="9">(No DNS TTL propagation lag!)</text>
+    </g>
+  </g>
+
+  <!-- Trunk Connector: Ingress to Private Space -->
+  <path d="M258 290 H285" stroke="#00F2FE" stroke-width="2"/>
+  <path class="ch-trace" pathLength="100" d="M258 290 H285" fill="none" stroke="#00F2FE" stroke-width="3" filter="url(#ch-glow)"/>
+
+  <!-- ==================== CENTER: PRIVATE SPACE K8S ==================== -->
+  <g transform="translate(285, 125)">
+    <rect width="600" height="435" rx="14" fill="url(#ps-box-grad)" stroke="#845EC2" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#D65DB1" class="ch-sans" font-size="11" font-weight="800" letter-spacing="1">PRIVATE SPACE CLUSTER (AMAZON EKS / KUBERNETES FABRIC)</text>
+    <text x="580" y="24" fill="#94A3B8" class="ch-mono" font-size="9.5" text-anchor="end">Isolated Subnets · Anypoint Security Policies</text>
+
+    <!-- AZ-A Box (Replica 1) -->
+    <g transform="translate(20, 42)">
+      <rect width="265" height="150" rx="8" fill="url(#ch-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="18" r="5" fill="#00A1E0"/>
+      <text x="28" y="22" fill="#FFFFFF" class="ch-sans" font-size="11.5" font-weight="700">Availability Zone 1 (us-east-1a)</text>
+      <rect x="180" y="10" width="75" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="217" y="22" fill="#00F2FE" class="ch-mono" font-size="8.5" text-anchor="middle">REPLICA 1</text>
+
+      <g transform="translate(14, 38)">
+        <rect width="237" height="96" rx="6" fill="#091420" stroke="#00A1E0" stroke-opacity="0.5"/>
+        <text x="12" y="22" fill="#00F2FE" class="ch-mono" font-size="10" font-weight="700">Mule Container Pod</text>
+        <text x="12" y="40" fill="#94A3B8" class="ch-mono" font-size="9">• Sizing: 0.2 vCore / 1GB RAM</text>
+        <text x="12" y="56" fill="#94A3B8" class="ch-mono" font-size="9">• Bind: 0.0.0.0:${http.port}</text>
+        <text x="12" y="72" fill="#94A3B8" class="ch-mono" font-size="9">• Ephemeral disk storage (/tmp)</text>
+        <circle cx="218" cy="20" r="4" fill="#10B981"/>
+      </g>
+    </g>
+
+    <!-- AZ-B Box (Replica 2) -->
+    <g transform="translate(315, 42)">
+      <rect width="265" height="150" rx="8" fill="url(#ch-card)" stroke="#845EC2" stroke-width="1"/>
+      <circle cx="16" cy="18" r="5" fill="#845EC2"/>
+      <text x="28" y="22" fill="#FFFFFF" class="ch-sans" font-size="11.5" font-weight="700">Availability Zone 2 (us-east-1b)</text>
+      <rect x="180" y="10" width="75" height="18" rx="4" fill="#845EC2" fill-opacity="0.15"/>
+      <text x="217" y="22" fill="#D65DB1" class="ch-mono" font-size="8.5" text-anchor="middle">REPLICA 2</text>
+
+      <g transform="translate(14, 38)">
+        <rect width="237" height="96" rx="6" fill="#091420" stroke="#845EC2" stroke-opacity="0.5"/>
+        <text x="12" y="22" fill="#D65DB1" class="ch-mono" font-size="10" font-weight="700">Mule Container Pod</text>
+        <text x="12" y="40" fill="#94A3B8" class="ch-mono" font-size="9">• Sizing: 0.2 vCore / 1GB RAM</text>
+        <text x="12" y="56" fill="#94A3B8" class="ch-mono" font-size="9">• Bind: 0.0.0.0:${http.port}</text>
+        <text x="12" y="72" fill="#94A3B8" class="ch-mono" font-size="9">• Active-Active High Availability</text>
+        <circle cx="218" cy="20" r="4" fill="#10B981"/>
+      </g>
+    </g>
+
+    <!-- State Plane: Object Store v2 + Anypoint MQ -->
+    <g transform="translate(20, 206)">
+      <rect width="560" height="90" rx="8" fill="#0C1726" stroke="#10B981" stroke-width="1.2"/>
+      <text x="16" y="24" fill="#10B981" class="ch-sans" font-size="11.5" font-weight="700">PERSISTENT DISTRIBUTED STATE PLANE</text>
+      <text x="16" y="44" fill="#FFFFFF" class="ch-mono" font-size="9.5">Object Store v2: Shared Caching &amp; Watermarking across Replicas</text>
+      <text x="16" y="60" fill="#FFFFFF" class="ch-mono" font-size="9.5">Anypoint MQ: Asynchronous FIFO Queuing &amp; Dead-Letter Buffering</text>
+      <text x="16" y="76" fill="#34D399" class="ch-sans" font-size="9.5">⚡ Eliminates Hazelcast cluster dependency · Replicas remain completely stateless</text>
+    </g>
+
+    <!-- Telemetry Forwarding -->
+    <g transform="translate(20, 310)">
+      <rect width="560" height="105" rx="8" fill="#0A141F" stroke="#53CADD" stroke-width="1"/>
+      <text x="16" y="24" fill="#A6EAF4" class="ch-sans" font-size="11.5" font-weight="700">NATIVE ENTERPRISE LOG FORWARDING</text>
+      <text x="16" y="44" fill="#94A3B8" class="ch-sans" font-size="9.5">• Container outputs directly to STDOUT (Console appender)</text>
+      <text x="16" y="60" fill="#94A3B8" class="ch-sans" font-size="9.5">• Built-in telemetry pipeline streams to SIEM without Log4j socket plugins</text>
+      <text x="16" y="80" fill="#00F2FE" class="ch-mono" font-size="9.5">DESTINATIONS: Splunk HEC · Datadog · Sumo Logic · Anypoint Monitoring</text>
+    </g>
+  </g>
+
+  <!-- Trunk Connector: Private Space to Egress -->
+  <path d="M885 290 H915" stroke="#10B981" stroke-width="2"/>
+  <path class="ch-trace-2" pathLength="100" d="M885 290 H915" fill="none" stroke="#10B981" stroke-width="3" filter="url(#ch-glow)"/>
+
+  <!-- ==================== RIGHT: EGRESS & ON-PREM ==================== -->
+  <g transform="translate(915, 125)">
+    <rect width="237" height="435" rx="14" fill="url(#ps-box-grad)" stroke="#10B981" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="18" y="24" fill="#10B981" class="ch-sans" font-size="11" font-weight="800" letter-spacing="1">EGRESS &amp; ON-PREMISES</text>
+    <text x="18" y="42" fill="#94A3B8" class="ch-mono" font-size="9">Hybrid Enterprise Transit</text>
+
+    <!-- NAT Gateway Card -->
+    <g transform="translate(16, 60)">
+      <rect width="205" height="96" rx="8" fill="url(#ch-card)" stroke="#10B981" stroke-width="1"/>
+      <text x="12" y="22" fill="#10B981" class="ch-sans" font-size="11" font-weight="700">Private Space NAT Gateway</text>
+      <text x="12" y="40" fill="#FFFFFF" class="ch-mono" font-size="9">Static Public IP: 54.210.x.x</text>
+      <text x="12" y="56" fill="#94A3B8" class="ch-sans" font-size="9">• Assigned per Private Space</text>
+      <text x="12" y="72" fill="#94A3B8" class="ch-sans" font-size="9">• Shared by all app replicas</text>
+      <circle cx="188" cy="20" r="4" fill="#10B981"/>
+    </g>
+
+    <!-- Transit Network Card -->
+    <g transform="translate(16, 170)">
+      <rect width="205" height="110" rx="8" fill="#0A1624" stroke="#53CADD" stroke-width="1"/>
+      <text x="12" y="22" fill="#A6EAF4" class="ch-sans" font-size="11" font-weight="700">Secure Network Tunnel</text>
+      <text x="12" y="42" fill="#FFFFFF" class="ch-mono" font-size="9">• IPsec VPN Gateway</text>
+      <text x="12" y="58" fill="#FFFFFF" class="ch-mono" font-size="9">• AWS DirectConnect (BGP)</text>
+      <text x="12" y="74" fill="#94A3B8" class="ch-sans" font-size="9">Sub-20ms private pipeline</text>
+      <text x="12" y="90" fill="#00F2FE" class="ch-mono" font-size="8.5">NO PUBLIC EGRESS TRANSIT</text>
+    </g>
+
+    <!-- Corporate On-Prem Data Center -->
+    <g transform="translate(16, 295)">
+      <rect width="205" height="120" rx="8" fill="url(#ch-card)" stroke="#845EC2" stroke-width="1"/>
+      <text x="12" y="22" fill="#D65DB1" class="ch-sans" font-size="11" font-weight="700">On-Premises Data Center</text>
+      <text x="12" y="42" fill="#94A3B8" class="ch-mono" font-size="9.5">SAP S/4HANA (BAPI)</text>
+      <text x="12" y="58" fill="#94A3B8" class="ch-mono" font-size="9.5">Oracle DB (RAC Cluster)</text>
+      <text x="12" y="74" fill="#94A3B8" class="ch-mono" font-size="9.5">IBM z/OS Mainframe</text>
+      <text x="12" y="96" fill="#10B981" class="ch-sans" font-size="9" font-weight="600">LAN Security: Private Firewall</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER INVARIANT ==================== -->
+  <g class="ch-sans" transform="translate(48, 595)">
+    <text x="0" y="0" fill="#64748B" font-size="11">⚡ <tspan fill="#ADC6D6" font-weight="600">CloudHub 2.0 Invariant:</tspan> Standalone DLBs and static EC2 worker IPs are obsolete. Private Spaces unify Ingress, Kubernetes container replication, and static NAT egress under one managed plane.</text>
+    <text x="1104" y="0" fill="#53CADD" class="ch-mono" font-size="10" text-anchor="end">KUBERNETES FABRIC</text>
+  </g>
+</svg>
+  </div>
+</div>
 
 
 <div class="table-responsive" style="margin:24px 0;">
@@ -25126,7 +26183,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var htmlContent = el.innerHTML;
     codeKeywords.forEach(function(kw) {
       if (htmlContent.indexOf(kw) !== -1 && htmlContent.indexOf('<code>' + kw + '</code>') === -1) {
-        var escapedKw = kw.replace(/([.*+?^=!:${}()|\[\]\/\])/g, "\\$1");
+        var escapedKw = kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         var reg = new RegExp('(?<!<code>)' + escapedKw + '(?!<\/code>)', 'g');
         htmlContent = htmlContent.replace(reg, '<code>' + kw + '</code>');
       }
