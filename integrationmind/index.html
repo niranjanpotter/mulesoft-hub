@@ -5447,7 +5447,6 @@ pre:hover {
 </div>
 </div>
 </div>
-
 </article>
 <article class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Developer" id="mod-b">
 <div class="article-header">
@@ -5466,7 +5465,6 @@ pre:hover {
 <div class="callout-header"><span class="callout-icon">💡</span><strong>💡 Killer Phrases &amp; Value · 💡  BUSINESS VALUE</strong></div>
 <div class="callout-body">Before API-led: 8 direct point-to-point connections per domain. After: SAP SAPI changed once, all PAPIs<br/>updated automatically. Adding new channel (mobile) took days not weeks.</div>
 </div></div>
-
 <div class="faq-card" data-role="developer" id="mod-b-q1">
 <div class="faq-header">
 <div class="faq-meta-row">
@@ -6168,9 +6166,6 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-
-
-
 </article>
 <article class="blog-article" data-category="AWS &amp; Messaging" data-role="Developer" id="mod-e">
 <div class="article-header">
@@ -6190,7 +6185,6 @@ BillingCity: rec.city
 <div class="doc-step-item"><span class="step-num">4.</span><span>Wait for all in-flight tokens using old cert to expire (max 1 hour)</span></div>
 <div class="doc-step-item"><span class="step-num">5.</span><span>Remove old cert from Connected App</span></div>
 <p class="doc-p">Zero downtime because Salesforce accepts tokens signed by ANY active certificate simultaneously.</p></div>
-
 <div class="faq-card" data-role="developer" id="mod-e-q1">
 <div class="faq-header">
 <div class="faq-meta-row">
@@ -6413,8 +6407,6 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-
-
 </article>
 <article class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Senior / Architect" id="mod-f">
 <div class="article-header">
@@ -6574,7 +6566,6 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-
 </article>
 <article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-g">
 <div class="article-header">
@@ -6727,7 +6718,6 @@ BillingCity: rec.city
 <p class="doc-p">Solution 2 — Dedicated Integration User: Use a dedicated Salesforce user</p>
 <p class="doc-p">(mulesoft_integration@enterprise.com) for all SAP-originated updates. In CDC subscriber, skip events where</p>
 <p class="doc-p">commitUser == 'mulesoft_integration@enterprise.com' . This breaks the loop at the event source.</p></div>
-
 <div class="faq-card" data-role="developer" id="mod-g-q1">
 <div class="faq-header">
 <div class="faq-meta-row">
@@ -7368,7 +7358,6 @@ paperless:     dynamoData.paperless default false
 </div>
 </div>
 </div>
-
 </article>
 <article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer / Senior" id="mod-i">
 <div class="article-header">
@@ -7596,7 +7585,6 @@ paperless:     dynamoData.paperless default false
 </svg>
 </div>
 </div>
-
 <div class="faq-card" data-role="developer / senior" id="mod-i-q1">
 <div class="faq-header">
 <div class="faq-meta-row">
@@ -7836,7 +7824,6 @@ paperless:     dynamoData.paperless default false
 </div>
 </div>
 </div>
-
 </article>
 <article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-j">
 <div class="article-header">
@@ -8486,72 +8473,102 @@ status: vars.httpStatus,</code></pre>
 <p class="article-excerpt">Queue vs Exchange fan-out, MANUAL ack mode, idempotency with ObjectStore, cross-region disaster recovery, and VM comparison.</p>
 </div>
 <div class="dw-inline-card" id="inline-dw-playground">
-<div class="dw-toolbar" style="border-radius:var(--radius-md); margin-bottom:12px;">
-<div class="dw-toolbar-left">
-<span style="font-size:1.4rem;">🧪</span>
+<!-- Header Bar -->
+<div class="dw-toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+<div class="dw-toolbar-left" style="display:flex; align-items:center; gap:12px;">
+<span style="font-size:1.8rem; background:rgba(99,91,255,0.15); padding:6px 10px; border-radius:8px;">🧪</span>
 <div>
-<div style="font-weight:800; font-size:1.05rem; color:var(--text-main);">DataWeave 2.0 Studio Lab</div>
-<div style="font-size:0.72rem; color:var(--text-dim);">Live In-Browser Transformation Engine · Real Functional Evaluation</div>
+<div style="font-weight:800; font-size:1.25rem; color:#fff; display:flex; align-items:center; gap:10px;">
+<span>DataWeave 2.0 Studio Lab</span>
+<span class="badge" style="background:rgba(99,91,255,0.25); color:#a78bfa; border:1px solid rgba(99,91,255,0.4); font-size:0.7rem; padding:2px 8px; border-radius:4px;">Engine v2.4</span>
+</div>
+<div style="font-size:0.8rem; color:var(--text-dim);">Live In-Browser Transformation Engine · 26 Real Enterprise Scenarios</div>
 </div>
 </div>
-<div class="dw-toolbar-center">
-<select class="dw-select" onchange="loadDwPresetInline(this.value)">
-<option value="0">⚡ 1. groupBy &amp; pluck (Order Totals)</option>
-<option value="1">🔒 2. Masking PII (Regex Sanitize)</option>
-<option value="2">📑 3. XML SOAP to JSON Canonical</option>
-<option value="3">🛡️ 4. Null-Safety &amp; Safe Navigation</option>
-<option value="4">🔀 5. Dynamic &amp; Conditional Keys</option>
-<option value="5">📦 6. Flatten &amp; DistinctBy Deduplication</option>
-<option value="6">☁️ 7. Salesforce SObject to Canonical Event</option>
+<!-- Controls Right -->
+<div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+<button class="btn btn-sm btn-primary" id="dw-run-btn" onclick="runDwTransformation()" title="Run transformation in browser">▶ Run / Transform</button>
+<button class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
+<button class="btn btn-sm btn-outline" onclick="openDataWeaveModal()" title="Expand to Fullscreen Modal">⛶ Fullscreen</button>
+</div>
+</div>
+<!-- Search & Category Filters -->
+<div class="dw-filter-bar" style="display:flex; flex-direction:column; gap:12px; margin: 16px 0 20px 0;">
+<div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+<!-- Search Input -->
+<div style="flex:1; min-width:260px; position:relative;">
+<input id="dw-search-input" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.9); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;" type="text"/>
+</div>
+<!-- Preset Dropdown -->
+<div style="flex:1.5; min-width:300px;">
+<select class="dw-select" id="dw-preset-select" onchange="loadDwPreset(this.value)" style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.95); border:1px solid rgba(99,91,255,0.5); border-radius:6px; color:#00f0ff; font-weight:700; font-size:0.88rem;">
+<!-- 26 Options dynamically injected by app.js -->
 </select>
 </div>
-<div class="dw-toolbar-right">
-<button class="btn btn-sm btn-primary" onclick="runInlineDwEvaluation()">▶ Run</button>
-<button class="btn btn-sm" onclick="openDataWeaveModal()" title="Open Fullscreen Studio">⛶ Fullscreen</button>
+</div>
+<!-- Category Pills -->
+<div class="dw-category-pills" style="display:flex; gap:6px; flex-wrap:wrap;">
+<button class="dw-cat-pill active" onclick="filterDwByCategory('all', this)">All (26)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('json', this)">JSON (5)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('xml', this)">XML (2)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('csv', this)">CSV (2)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('array', this)">Array Functions (7)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('string', this)">String (2)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('date', this)">Date (1)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('advanced', this)">Enterprise Scenarios (7)</button>
 </div>
 </div>
-<div class="dw-playground-grid" style="height:480px;">
-<!-- Inline Pane 1: Input -->
-<div class="dw-pane">
-<div class="dw-pane-header">
+<!-- 4-PANEL WORKSPACE (2x2 on Desktop, 1-col on Mobile) -->
+<div class="dw-4panel-grid">
+<!-- PANEL 1: INPUT PAYLOAD -->
+<div class="dw-editor-panel">
+<div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
-<span>📥 Input Panel</span>
-<div class="dw-tab-group">
-<button class="dw-tab-btn active">payload</button>
+<span>📥 INPUT PAYLOAD</span>
+<span class="dw-panel-format" id="dw-input-format-badge">JSON</span>
 </div>
+<button class="btn-copy-pane" onclick="copyDwPanel('input')" title="Copy Input Payload">📋 Copy Input</button>
 </div>
-<span class="badge badge-primary" id="inline-dw-format-badge" style="font-size:0.68rem;">JSON</span>
+<textarea class="dw-code-editor" id="dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
 </div>
-<textarea class="dw-code-editor" id="inline-dw-input" oninput="onInlineDwInputChange()" spellcheck="false"></textarea>
-</div>
-<!-- Inline Pane 2: Script -->
-<div class="dw-pane">
-<div class="dw-pane-header">
-<span>💻 Code Editor Panel (%dw 2.0)</span>
-</div>
-<div class="dw-snippet-bar">
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('map')">map</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('filter')">filter</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('groupBy')">groupBy</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('pluck')">pluck</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('flatten')">flatten</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('default')">default</span>
-</div>
-<textarea class="dw-code-editor" id="inline-dw-script" oninput="onInlineDwScriptChange()" spellcheck="false"></textarea>
-</div>
-<!-- Inline Pane 3: Output -->
-<div class="dw-pane">
-<div class="dw-pane-header">
+<!-- PANEL 2: DATAWEAVE SCRIPT -->
+<div class="dw-editor-panel">
+<div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
-<span>📤 Output Panel</span>
-<span class="badge badge-success" id="inline-dw-status-badge" style="font-size:0.7rem;">⚡ VALID</span>
+<span>⚡ DATAWEAVE SCRIPT (%dw 2.0)</span>
+<span style="font-size:0.7rem; color:rgba(0,240,255,0.7);">output application/...</span>
 </div>
-<button class="copy-btn" onclick="copyInlineDwOutput()" style="font-size:0.7rem;">📋 Copy Output</button>
+<div style="display:flex; gap:6px; align-items:center;">
+<span class="anypoint-note" style="font-size:0.7rem; color:#a78bfa; margin-right:4px;">💡 Try in Anypoint</span>
+<button class="btn-copy-pane" onclick="copyDwPanel('script')" title="Copy DW Script">📋 Copy Script</button>
 </div>
-<textarea class="dw-code-editor" id="inline-dw-output" readonly="" spellcheck="false"></textarea>
-<div class="dw-error-drawer" id="inline-dw-error-box" style="display:none;">
-<div class="dw-error-title">⚠️ DataWeave Error</div>
-<div id="inline-dw-error-msg"></div>
+</div>
+<textarea class="dw-code-editor" id="dw-script-editor" placeholder="%dw 2.0
+output application/json
+---
+..." spellcheck="false"></textarea>
+</div>
+<!-- PANEL 3: OUTPUT PAYLOAD -->
+<div class="dw-editor-panel">
+<div class="dw-panel-header">
+<div style="display:flex; align-items:center; gap:8px;">
+<span>📤 TRANSFORMED OUTPUT</span>
+<span class="dw-status-indicator" id="dw-live-status" style="font-size:0.72rem; color:#34d399; font-weight:700;">✅ Evaluated</span>
+</div>
+<button class="btn-copy-pane" onclick="copyDwPanel('output')" title="Copy Output Payload">📋 Copy Output</button>
+</div>
+<textarea class="dw-code-editor" id="dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
+</div>
+<!-- PANEL 4: EXPLANATION PANEL (English / Hinglish) -->
+<div class="dw-editor-panel dw-explanation-panel">
+<div class="dw-panel-header" style="background:rgba(99,91,255,0.15); border-bottom:1px solid rgba(99,91,255,0.3);">
+<div style="display:flex; align-items:center; gap:8px;">
+<span>💡 EXPLANATION &amp; ARCHITECT INTERVIEW NOTES</span>
+</div>
+<span style="font-size:0.7rem; color:#a78bfa;">Kya hua? &amp; Real Project Use Case</span>
+</div>
+<div class="dw-explanation-content" id="dw-explanation-box">
+<!-- Injected dynamically by loadDwPreset() -->
 </div>
 </div>
 </div>
@@ -9991,77 +10008,7 @@ S 🏢  Project Deep Dive — Fortune 500 Energy &amp; Utility Enterprise</code>
 <h2 class="article-title">💻 DataWeave 2.0 Reference &amp; Core Operators</h2>
 <p class="article-excerpt">Core functions, map, filter, reduce, groupBy, pluck, flatten, null safe navigation, default values, and PII masking.</p>
 </div>
-<div class="dw-inline-card" id="inline-dw-playground">
-<div class="dw-toolbar" style="border-radius:var(--radius-md); margin-bottom:12px;">
-<div class="dw-toolbar-left">
-<span style="font-size:1.4rem;">🧪</span>
-<div>
-<div style="font-weight:800; font-size:1.05rem; color:var(--text-main);">DataWeave 2.0 Studio Lab</div>
-<div style="font-size:0.72rem; color:var(--text-dim);">Live In-Browser Transformation Engine · Real Functional Evaluation</div>
-</div>
-</div>
-<div class="dw-toolbar-center">
-<select class="dw-select" onchange="loadDwPresetInline(this.value)">
-<option value="0">⚡ 1. groupBy &amp; pluck (Order Totals)</option>
-<option value="1">🔒 2. Masking PII (Regex Sanitize)</option>
-<option value="2">📑 3. XML SOAP to JSON Canonical</option>
-<option value="3">🛡️ 4. Null-Safety &amp; Safe Navigation</option>
-<option value="4">🔀 5. Dynamic &amp; Conditional Keys</option>
-<option value="5">📦 6. Flatten &amp; DistinctBy Deduplication</option>
-<option value="6">☁️ 7. Salesforce SObject to Canonical Event</option>
-</select>
-</div>
-<div class="dw-toolbar-right">
-<button class="btn btn-sm btn-primary" onclick="runInlineDwEvaluation()">▶ Run</button>
-<button class="btn btn-sm" onclick="openDataWeaveModal()" title="Open Fullscreen Studio">⛶ Fullscreen</button>
-</div>
-</div>
-<div class="dw-playground-grid" style="height:480px;">
-<!-- Inline Pane 1: Input -->
-<div class="dw-pane">
-<div class="dw-pane-header">
-<div style="display:flex; align-items:center; gap:8px;">
-<span>📥 Input Panel</span>
-<div class="dw-tab-group">
-<button class="dw-tab-btn active">payload</button>
-</div>
-</div>
-<span class="badge badge-primary" id="inline-dw-format-badge" style="font-size:0.68rem;">JSON</span>
-</div>
-<textarea class="dw-code-editor" id="inline-dw-input" oninput="onInlineDwInputChange()" spellcheck="false"></textarea>
-</div>
-<!-- Inline Pane 2: Script -->
-<div class="dw-pane">
-<div class="dw-pane-header">
-<span>💻 Code Editor Panel (%dw 2.0)</span>
-</div>
-<div class="dw-snippet-bar">
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('map')">map</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('filter')">filter</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('groupBy')">groupBy</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('pluck')">pluck</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('flatten')">flatten</span>
-<span class="dw-snippet-pill" onclick="insertInlineSnippet('default')">default</span>
-</div>
-<textarea class="dw-code-editor" id="inline-dw-script" oninput="onInlineDwScriptChange()" spellcheck="false"></textarea>
-</div>
-<!-- Inline Pane 3: Output -->
-<div class="dw-pane">
-<div class="dw-pane-header">
-<div style="display:flex; align-items:center; gap:8px;">
-<span>📤 Output Panel</span>
-<span class="badge badge-success" id="inline-dw-status-badge" style="font-size:0.7rem;">⚡ VALID</span>
-</div>
-<button class="copy-btn" onclick="copyInlineDwOutput()" style="font-size:0.7rem;">📋 Copy Output</button>
-</div>
-<textarea class="dw-code-editor" id="inline-dw-output" readonly="" spellcheck="false"></textarea>
-<div class="dw-error-drawer" id="inline-dw-error-box" style="display:none;">
-<div class="dw-error-title">⚠️ DataWeave Error</div>
-<div id="inline-dw-error-msg"></div>
-</div>
-</div>
-</div>
-</div>
+
 <div class="article-body-intro" style="margin-bottom:28px;"><p class="doc-p">TOPIC KEY ANSWER FOR INTERVIEW</p>
 <p class="doc-p">On Error Continue vs</p>
 <p class="doc-p">Propagate</p>
@@ -10734,9 +10681,6 @@ put:</code></pre>
 </div>
 </div>
 </div>
-
-
-
 </article>
 <article class="blog-article" data-category="Rapid Review &amp; Cheat Sheets" data-role="Developer" id="mod-t">
 <div class="article-header">
@@ -11020,9 +10964,6 @@ put:</code></pre>
 </div>
 </div>
 </div>
-
-
-
 </article>
 <article class="blog-article" data-category="Rapid Review &amp; Cheat Sheets" data-role="Developer / Senior" id="mod-u">
 <div class="article-header">
@@ -12334,54 +12275,221 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 </table>
 </div>
 <div class="calc-card" id="vcore-calculator">
-<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
-<div style="display:flex; align-items:center; gap:10px;">
-<span style="font-size:1.6rem;">🧮</span>
+<!-- Title & Subtitle -->
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+<div style="display:flex; align-items:center; gap:14px;">
+<span style="font-size:2rem; background:rgba(0,240,255,0.12); padding:10px 14px; border-radius:10px;">🧮</span>
 <div>
-<div style="font-weight:800; font-size:1.2rem; color:var(--text-main);">CloudHub 2.0 vCore Sizing Calculator</div>
-<div style="font-size:0.8rem; color:var(--text-dim);">Production Capacity Planner · Calculate Replicas &amp; vCore Allocation based on Little's Law</div>
+<div style="font-weight:800; font-size:1.35rem; color:#fff;">CloudHub vCore Sizing &amp; Capacity Planner</div>
+<div style="font-size:0.85rem; color:var(--text-dim);">Enterprise Decision Tool · Calculate Worker Size, Replicas &amp; Cost using Little's Law, HA rules &amp; JVM constraints</div>
 </div>
 </div>
-<span class="badge badge-primary">Interactive Tool</span>
+<span class="badge" style="background:rgba(0,240,255,0.15); color:#00f0ff; border:1px solid rgba(0,240,255,0.3); padding:4px 12px; border-radius:6px; font-weight:700; font-size:0.75rem;">2026 ARCHITECT DECISION TOOL</span>
 </div>
-<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px;">
+<!-- Main Calculator Grid -->
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-bottom:24px;">
+<!-- LEFT COLUMN: User Inputs -->
+<div style="display:flex; flex-direction:column; gap:16px; background:rgba(11,15,25,0.7); padding:22px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+<h4 style="color:#00f0ff; margin-bottom:2px; font-size:0.95rem; text-transform:uppercase; letter-spacing:0.5px;">1. Workload Parameters</h4>
+<!-- TPS -->
+<div>
+<div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; margin-bottom:6px;">
+<span>Expected Throughput (TPS / req/sec):</span>
+<span id="vcalc-tps-val" style="color:#00f0ff; font-family:var(--font-mono); font-weight:700;">50 req/sec</span>
+</div>
+<input id="vcalc-tps" max="2000" min="5" oninput="calculateVCoreDecision()" step="5" style="width:100%; accent-color:#00f0ff;" type="range" value="50"/>
+<div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
+<button class="btn-preset-chip" onclick="setVCoreTps(10)" type="button">10 TPS</button>
+<button class="btn-preset-chip" onclick="setVCoreTps(50)" type="button">50 TPS</button>
+<button class="btn-preset-chip" onclick="setVCoreTps(200)" type="button">200 TPS</button>
+<button class="btn-preset-chip" onclick="setVCoreTps(500)" type="button">500 TPS</button>
+<button class="btn-preset-chip" onclick="setVCoreTps(1000)" type="button">1000 TPS</button>
+</div>
+</div>
+<!-- Average Payload Size (KB) -->
+<div>
+<div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; margin-bottom:6px;">
+<span>Average Payload Size:</span>
+<span id="vcalc-payload-val" style="color:#a78bfa; font-family:var(--font-mono); font-weight:700;">10 KB</span>
+</div>
+<input id="vcalc-payload" max="10000" min="1" oninput="calculateVCoreDecision()" step="5" style="width:100%; accent-color:#a78bfa;" type="range" value="10"/>
+<div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
+<button class="btn-preset-chip" onclick="setVCorePayload(5)" type="button">5 KB</button>
+<button class="btn-preset-chip" onclick="setVCorePayload(50)" type="button">50 KB</button>
+<button class="btn-preset-chip" onclick="setVCorePayload(500)" type="button">500 KB</button>
+<button class="btn-preset-chip" onclick="setVCorePayload(2000)" type="button">2 MB</button>
+<button class="btn-preset-chip" onclick="setVCorePayload(10000)" type="button">10 MB</button>
+</div>
+</div>
+<!-- Number of APIs / Applications -->
+<div>
+<label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Number of APIs / Applications:</label>
+<input id="vcalc-apis" max="100" min="1" oninput="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.9rem;" type="number" value="1"/>
+</div>
+<!-- Application Type -->
+<div>
+<label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Application Type &amp; Processing Pattern:</label>
+<select id="vcalc-type" onchange="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;">
+<option value="realtime">⚡ Real-time Synchronous REST / GraphQL API</option>
+<option value="batch">📊 Batch Job / Bulk Ingestion (Salesforce / DB)</option>
+<option value="scheduled">⏳ Scheduled ETL / Polling Service</option>
+<option value="file">📁 Large File / SFTP / Streaming Processing</option>
+</select>
+</div>
+<!-- CloudHub Target (1.0 vs 2.0) -->
+<div>
+<label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Deployment Platform:</label>
+<select id="vcalc-platform" onchange="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;">
+<option value="ch2">☁️ CloudHub 2.0 (Private Space / Shared Space)</option>
+<option value="ch1">🏢 CloudHub 1.0 (VPC / DLB / AWS EC2)</option>
+</select>
+</div>
+<!-- Toggles: Peak Spike & High Availability -->
+<div style="display:flex; flex-direction:column; gap:10px; margin-top:4px;">
+<label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:0.85rem;">
+<input id="vcalc-peak" onchange="calculateVCoreDecision()" style="width:18px; height:18px; accent-color:#00f0ff;" type="checkbox"/>
+<span>🔥 Peak Spike Hours (Include 2.5× surge headroom)?</span>
+</label>
+<label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:0.85rem;">
+<input checked="" id="vcalc-ha" onchange="calculateVCoreDecision()" style="width:18px; height:18px; accent-color:#00f0ff;" type="checkbox"/>
+<span>🛡️ High Availability (HA) Required (Minimum 2 Workers across AZs)?</span>
+</label>
+</div>
+<!-- Action Buttons -->
+<div style="display:flex; gap:10px; margin-top:8px;">
+<button class="btn btn-primary" onclick="calculateVCoreDecision()" style="flex:1;" type="button">⚡ Calculate</button>
+<button class="btn btn-outline" onclick="resetVCoreCalculator()" style="flex:0.6;" type="button">↺ Reset</button>
+</div>
+</div>
+<!-- RIGHT COLUMN: Output & Architecture Recommendations -->
 <div style="display:flex; flex-direction:column; gap:16px;">
+<!-- Primary Sizing Card -->
+<div class="calc-result-box" style="border:1px solid rgba(0,240,255,0.3); background:rgba(6,182,212,0.06); padding:22px; border-radius:12px;">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+<span style="font-weight:700; color:#00f0ff; text-transform:uppercase; font-size:0.85rem;">Recommended Production Architecture</span>
+<button class="btn-copy-pane" onclick="copyVCoreRecommendation()" title="Copy Sizing Specs" type="button">📋 Copy Recommendation</button>
+</div>
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-bottom:16px;">
+<div style="background:rgba(0,0,0,0.35); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+<div style="font-size:0.75rem; color:var(--text-dim);">Worker Size:</div>
+<div id="vcalc-res-worker-size" style="font-size:1.4rem; font-weight:800; color:#fff;">0.2 vCore</div>
+<div id="vcalc-res-ram" style="font-size:0.75rem; color:#a78bfa;">1.5 GB RAM</div>
+</div>
+<div style="background:rgba(0,0,0,0.35); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+<div style="font-size:0.75rem; color:var(--text-dim);">Replicas / Workers:</div>
+<div id="vcalc-res-workers" style="font-size:1.4rem; font-weight:800; color:#00f0ff;">2 Workers</div>
+<div id="vcalc-res-ha-badge" style="font-size:0.75rem; color:#34d399;">Multi-AZ HA Active</div>
+</div>
+<div style="background:rgba(0,0,0,0.35); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+<div style="font-size:0.75rem; color:var(--text-dim);">Total vCores:</div>
+<div id="vcalc-res-total-vcores" style="font-size:1.4rem; font-weight:800; color:#facc15;">0.4 vCore</div>
+<div style="font-size:0.75rem; color:var(--text-dim);">Across All Apps</div>
+</div>
+<div style="background:rgba(0,0,0,0.35); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+<div style="font-size:0.75rem; color:var(--text-dim);">Est. Monthly Cost:</div>
+<div id="vcalc-res-cost" style="font-size:1.4rem; font-weight:800; color:#fff;">~$100 USD</div>
+<div style="font-size:0.75rem; color:var(--text-dim);">~$250/vCore-mo</div>
+</div>
+</div>
+<!-- "Why This Size?" Explanation in Simple Language -->
+<div style="background:rgba(0,0,0,0.45); padding:14px; border-radius:8px; border-left:3px solid #00f0ff;">
+<div style="font-weight:700; font-size:0.85rem; color:#00f0ff; margin-bottom:4px;">🧐 Why This Size? (Decision Rationale)</div>
+<p id="vcalc-res-explanation" style="font-size:0.85rem; line-height:1.55; color:#cbd5e1; margin:0;">
+            Aapka TPS 50 hai aur Average Payload 10KB hai. Little's Law ke hisab se concurrent in-flight requests ~9 banti hain. 0.1 vCore CPU ke hisab se kaafi tha, lekin High Availability (HA) ON hone ke karan 2 Workers across distinct Availability Zones recommend kiye gaye hain for zero-downtime failover and zero packet loss.
+          </p>
+</div>
+</div>
+<!-- "What If You Choose Wrong?" Comparison Table -->
+<div style="background:rgba(11,15,25,0.7); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+<div style="font-weight:700; color:#f87171; font-size:0.85rem; text-transform:uppercase; margin-bottom:10px;">⚠️ What Happens If You Choose the Wrong Worker Size?</div>
+<table style="width:100%; border-collapse:collapse; font-size:0.8rem;">
+<thead>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.1); text-align:left; color:var(--text-dim);">
+<th style="padding:6px 8px;">Mistake</th>
+<th style="padding:6px 8px;">Consequence</th>
+<th style="padding:6px 8px;">Technical Production Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+<td style="padding:8px; color:#f87171; font-weight:700;">Worker Too Small</td>
+<td style="padding:8px; color:#cbd5e1;">CPU 100%, Heap Exhaustion</td>
+<td style="padding:8px; color:var(--text-dim);">OutOfMemory (OOM), HTTP 504 Timeouts, Project Reactor thread starvation, Queue full crashes.</td>
+</tr>
+<tr>
+<td style="padding:8px; color:#facc15; font-weight:700;">Worker Too Big</td>
+<td style="padding:8px; color:#cbd5e1;">Over-provisioning, High Spend</td>
+<td style="padding:8px; color:var(--text-dim);">Paise waste! Idle JVM heap and unutilized vCores eating up corporate Anypoint subscription budget.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Reference Sizing Table (Always Visible) -->
+<div style="margin-top:24px; background:rgba(11,15,25,0.7); padding:22px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+<div style="font-weight:700; color:#a78bfa; font-size:0.9rem; text-transform:uppercase; margin-bottom:12px;">📊 Complete CloudHub Worker Size Reference Matrix</div>
+<div style="overflow-x:auto;">
+<table style="width:100%; border-collapse:collapse; font-size:0.82rem; text-align:left;">
+<thead>
+<tr style="background:rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.12); color:#00f0ff;">
+<th style="padding:10px 12px;">Worker Size</th>
+<th style="padding:10px 12px;">vCore</th>
+<th style="padding:10px 12px;">RAM</th>
+<th style="padding:10px 12px;">Best For Workload</th>
+<th style="padding:10px 12px;">Real-World Example</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+<td style="padding:10px 12px; font-weight:700; color:#fff;">0.1 vCore</td>
+<td style="padding:10px 12px; color:var(--text-dim);">0.1</td>
+<td style="padding:10px 12px; color:var(--text-dim);">1.5 GB</td>
+<td style="padding:10px 12px; color:#cbd5e1;">Small API, Low TPS &lt;50, light routing</td>
+<td style="padding:10px 12px; color:#38bdf8;">Health Check API, Webhook receiver, Simple CRUD</td>
+</tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+<td style="padding:10px 12px; font-weight:700; color:#fff;">0.2 vCore</td>
+<td style="padding:10px 12px; color:var(--text-dim);">0.2</td>
+<td style="padding:10px 12px; color:var(--text-dim);">1.5 GB</td>
+<td style="padding:10px 12px; color:#cbd5e1;">Medium API, TPS 50–200, Moderate DW mapping</td>
+<td style="padding:10px 12px; color:#38bdf8;">Salesforce Sync, Customer Billing Inquiry API</td>
+</tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+<td style="padding:10px 12px; font-weight:700; color:#fff;">1.0 vCore</td>
+<td style="padding:10px 12px; color:var(--text-dim);">1.0</td>
+<td style="padding:10px 12px; color:var(--text-dim);">1.5 GB</td>
+<td style="padding:10px 12px; color:#cbd5e1;">High TPS, Heavy DataWeave transformations</td>
+<td style="padding:10px 12px; color:#38bdf8;">Order Processing, XML/JSON conversion, Flash sale APIs</td>
+</tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+<td style="padding:10px 12px; font-weight:700; color:#fff;">2.0 vCore</td>
+<td style="padding:10px 12px; color:var(--text-dim);">2.0</td>
+<td style="padding:10px 12px; color:var(--text-dim);">3.5 GB</td>
+<td style="padding:10px 12px; color:#cbd5e1;">Batch Jobs, Large File / SFTP processing</td>
+<td style="padding:10px 12px; color:#38bdf8;">1 Lakh Records Nightly Batch, SAP ERP Synchronizer</td>
+</tr>
+<tr>
+<td style="padding:10px 12px; font-weight:700; color:#fff;">4.0 vCore</td>
+<td style="padding:10px 12px; color:var(--text-dim);">4.0</td>
+<td style="padding:10px 12px; color:var(--text-dim);">7.5 GB</td>
+<td style="padding:10px 12px; color:#cbd5e1;">Enterprise Tier, Very High Load, In-memory aggregations</td>
+<td style="padding:10px 12px; color:#38bdf8;">Core Banking Transaction Gateway, Real-time Fraud Engine</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Interview Tip Callout Box -->
+<div style="margin-top:22px; background:linear-gradient(135deg, rgba(99,91,255,0.15), rgba(6,182,212,0.1)); border:1px solid rgba(99,91,255,0.4); border-radius:12px; padding:20px;">
+<div style="display:flex; align-items:flex-start; gap:14px;">
+<span style="font-size:1.6rem;">💡</span>
 <div>
-<div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; margin-bottom:6px;">
-<span>Peak Throughput (TPS):</span>
-<span id="calc-tps-val" style="color:#00f0ff; font-family:var(--font-mono);">250 req/sec</span>
+<div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">Interviewer Cross-Question: "How do you decide worker size and replica count in CloudHub?"</div>
+<p style="font-size:0.85rem; line-height:1.6; color:#cbd5e1; margin:0;">
+<strong>Answer:</strong> <em>"Worker size is determined by <strong>Little's Law</strong> ($L = \lambda \times W$) and CPU/Memory constraints. We evaluate 5 core parameters: 1) Peak TPS ($\lambda$); 2) Average End-to-End Latency ($W$); 3) Average Payload Size in Memory; 4) Transformation Complexity (DataWeave heap consumption); and 5) High Availability (HA) mandates. For production APIs, we always recommend <strong>at least 2 workers</strong> across different Availability Zones to prevent downtime during CloudHub automated platform OS maintenance. We start with 0.2 vCore $\times$ 2 workers, monitor CPU and memory utilization under load testing in JMeter, and scale horizontally before scaling vertically."</em>
+</p>
 </div>
-<input id="calc-tps" max="2500" min="10" oninput="updateVCoreCalc()" step="10" style="width:100%; accent-color:#00f0ff;" type="range" value="250"/>
-</div>
-<div>
-<div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; margin-bottom:6px;">
-<span>Average API Latency:</span>
-<span id="calc-lat-val" style="color:#3e63dd; font-family:var(--font-mono);">180 ms</span>
-</div>
-<input id="calc-latency" max="1500" min="20" oninput="updateVCoreCalc()" step="10" style="width:100%; accent-color:#3e63dd;" type="range" value="180"/>
-</div>
-<div>
-<div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; margin-bottom:6px;">
-<span>Payload Size (KB):</span>
-<span id="calc-pay-val" style="color:#d65db1; font-family:var(--font-mono);">35 KB</span>
-</div>
-<input id="calc-payload" max="500" min="1" oninput="updateVCoreCalc()" step="5" style="width:100%; accent-color:#d65db1;" type="range" value="35"/>
-</div>
-<div style="display:flex; align-items:center; gap:8px;">
-<input checked="" id="calc-ha" onchange="updateVCoreCalc()" style="accent-color:#10b981; width:16px; height:16px;" type="checkbox"/>
-<label for="calc-ha" style="font-size:0.85rem; color:var(--text-main); font-weight:600;">High Availability (Multi-AZ Deployment with minimum 2 Replicas)</label>
-</div>
-</div>
-<div class="calc-result-box">
-<div style="font-size:0.8rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Recommended Allocation</div>
-<div id="res-total-vcores" style="font-size:2.4rem; font-weight:800; font-family:var(--font-mono); color:#10b981; margin-bottom:4px;">1.0 vCore</div>
-<div id="res-workers" style="font-size:1.05rem; font-weight:700; color:var(--text-main); margin-bottom:12px;">2 Replicas × 0.5 vCore</div>
-<div style="font-size:0.84rem; color:var(--text-muted); line-height:1.5;">
-        Estimated In-Flight Concurrency: <strong id="res-concurrent" style="color:#00f0ff; font-family:var(--font-mono);">45 in-flight</strong>.
-      </div>
-<div style="font-size:0.75rem; color:var(--text-dim); margin-top:12px; border-top:1px solid var(--border); padding-top:10px;">
-        Formula: <code>Concurrency = (TPS × Latency_ms) / 1000</code>. Memory overhead scaled per 100KB payload buffer.
-      </div>
 </div>
 </div>
 </div>
@@ -13618,7 +13726,6 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 <div class="callout-header"><span class="callout-icon">❌</span><strong>❌ What NOT to Say · ❌  AVOID THESE MISTAKES</strong></div>
 <div class="callout-body">Never say "I don't know" — say "Let me think<br/>through this..."<br/>Don't read from notes or pause too long on basic<br/>questions<br/>Don't contradict yourself — be consistent with<br/>experience level<br/>Don't exaggerate — say what you've actually done<br/>Don't skip the "Why" — always explain WHY you<br/>chose a pattern<br/>Don't end answers abruptly — close with the<br/>business impact<br/>SITUATION SAY THIS EXACT PHRASE<br/>You don't know the<br/>answer<br/>"I haven't personally implemented that specific scenario, but based on my understanding of<br/>how MuleSoft handles [related topic], I would approach it by..."<br/>You need time to think "That's a great question. Let me think through the approach I would take... [pause 3 seconds]<br/>So the way I see it is..."<br/>They ask about a feature<br/>you haven't used<br/>"I haven't used [X] directly, but I've worked with [similar technology]. The key difference would<br/>be... and I would verify by checking the MuleSoft documentation at docs.mulesoft.com."<br/>They challenge your<br/>answer<br/>"That's a valid point. You're right that [acknowledge their point]. In our specific case in our Enterprise Architecture, we<br/>chose [your approach] because [specific reason from project context]."<br/>Technical question<br/>outside Mule<br/>"While I haven't worked with [X] directly, the integration principle would be similar to<br/>[something you know], where you would need to handle [auth/error/async] in these specific<br/>ways..."<br/>⭐  Most Impressive Answers — Guaranteed to Stand Out<br/>🏆  THE ANSWERS THAT WILL GET YOU HIRED<br/>Q: "What is your biggest achievement?"<br/>"My biggest achievement was designing and implementing a complete API-led connectivity platform at Global Utility Enterprise<br/>Energy that went from concept to production handling 5 million+ API calls monthly. The platform maintained<br/>99.9% uptime for 18 consecutive months with zero P1 incidents. More specifically, I solved a critical SAP XML null<br/>pointer issue in production that was causing silent failures for 'Pending Final + Disconnected' account statuses — I<br/>identified it, wrote the null-safe DataWeave fix, and created MUnit tests that prevented regression. That fix has<br/>been in production for 18 months without a single reoccurrence."<br/>Q: "Tell me about a time you solved a difficult technical problem."<br/>"We had a production incident where a Salesforce platform event for 'Opportunity Closed Won' was being<br/>processed multiple times, creating duplicate SAP Sales Orders. The root cause was Salesforce's at-least-once<br/>delivery guarantee combined with our app restart during a deployment window. I designed and implemented an<br/>ObjectStore-based idempotency solution where we check a persistent ObjectStore for the Opportunity ID before<br/>processing. The ObjectStore uses Anypoint OS v2 so it persists across app restarts. This completely eliminated<br/>duplicate processing. I also added MANUAL ack mode on the MQ subscriber so messages are only acknowledged<br/>after successful processing. Since then — zero duplicate SAP orders in production."<br/>📋  Last-Minute Checklist — 30 Minutes Before Interview<br/>CHECK ITEM STATUS<br/>☐ Practice the 2-minute introduction OUT LOUD 3 times Say it like you've said it 100<br/>times<br/>☐ Review the metrics table: 44 APIs, 70K/day, 95% MUnit, 99.9% uptime, 55%<br/>faster<br/>Know all numbers by heart<br/>☐ Recall 3 specific production challenges you solved (SAP null, duplicate<br/>orders, batch restart)<br/>Each with: Problem → Fix →<br/>Result<br/>☐ Review: Scatter-Gather output = Array, ForEach output = UNCHANGED,<br/>Batch = 3 phases<br/>These are most commonly<br/>asked<br/>☐ Practice: "MANUAL ack + ObjectStore idempotency" explanation in 60<br/>seconds<br/>Always impress on MQ<br/>questions<br/>☐ Know: JWT Bearer 8-step flow, Error propagation pattern, DataWeave $ and<br/>$$ meaning<br/>Common whiteboard<br/>questions<br/>☐ Prepare 2 questions to ask the interviewer about their MuleSoft architecture Shows genuine interest<br/>🚀  You've Got This!<br/>✅  44+ Production APIs ✅  5M+ Monthly Calls ✅  99.9% Uptime SLA<br/>✅  95% MUnit Coverage<br/>Y<br/>🆕  Additional Topics — MuleVibes LinkedIn Series<br/>NEW ⭐<br/>🔹  Mule 4 Internals — Mule Event Structure</div>
 </div></div>
-
 </article>
 <article class="blog-article" data-category="Modern Architecture &amp; AI" data-role="Senior / Lead" id="mod-y">
 <div class="article-header">
@@ -16685,8 +16792,6 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-
-
 </article>
 <article class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-dd">
 <div class="article-header">
@@ -22104,93 +22209,107 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </footer>
 <!-- Modals -->
 <div class="modal-overlay" id="dw-modal" onclick="closeDataWeaveModal(event)">
-<div class="dw-modal-container" onclick="event.stopPropagation()">
-<!-- Top Playground Toolbar -->
-<div class="dw-toolbar">
-<div class="dw-toolbar-left">
-<span style="font-size:1.5rem;">🧪</span>
+<div class="dw-modal-container" onclick="event.stopPropagation()"><button class="btn btn-sm btn-outline" onclick="closeDataWeaveModal()" style="position:absolute; top:12px; right:16px; z-index:100;">✕ Close</button><div class="dw-inline-card" id="modal-dw-playground">
+<!-- Header Bar -->
+<div class="dw-toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+<div class="dw-toolbar-left" style="display:flex; align-items:center; gap:12px;">
+<span style="font-size:1.8rem; background:rgba(99,91,255,0.15); padding:6px 10px; border-radius:8px;">🧪</span>
 <div>
-<div style="font-weight:800; font-size:1.15rem; color:var(--text-main); display:flex; align-items:center; gap:8px;">
-<span>DataWeave 2.0 Playground</span>
-<span class="badge badge-primary" style="font-size:0.65rem; padding:2px 7px;">Engine v2.4</span>
+<div style="font-weight:800; font-size:1.25rem; color:#fff; display:flex; align-items:center; gap:10px;">
+<span>DataWeave 2.0 Studio Lab</span>
+<span class="badge" style="background:rgba(99,91,255,0.25); color:#a78bfa; border:1px solid rgba(99,91,255,0.4); font-size:0.7rem; padding:2px 8px; border-radius:4px;">Engine v2.4</span>
 </div>
-<div style="font-size:0.75rem; color:var(--text-dim);">Interactive Functional Transformation Studio · Authentic In-Browser Evaluator</div>
+<div style="font-size:0.8rem; color:var(--text-dim);">Live In-Browser Transformation Engine · 26 Real Enterprise Scenarios</div>
 </div>
 </div>
-<div class="dw-toolbar-center">
-<select class="dw-select" id="dw-preset-select" onchange="loadDwPreset(this.value)">
-<option value="0">⚡ 1. Order Aggregation (groupBy &amp; pluck)</option><option value="1">🔒 2. Masking Sensitive PII (Regex replace &amp; slicing)</option><option value="2">📄 3. XML SOAP Envelope to Canonical JSON</option><option value="3">🛡️ 4. Null-Safe Navigation &amp; Default Fallbacks</option><option value="4">🏷️ 5. Conditional &amp; Dynamic Object Keys</option><option value="5">📦 6. Flatten, DistinctBy &amp; Filter Pipelines</option><option value="6">☁️ 7. Salesforce SObject to Canonical Event</option>
+<!-- Controls Right -->
+<div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+<button class="btn btn-sm btn-primary" id="dw-run-btn" onclick="runDwTransformation()" title="Run transformation in browser">▶ Run / Transform</button>
+<button class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
+<button class="btn btn-sm btn-outline" onclick="openDataWeaveModal()" title="Expand to Fullscreen Modal">⛶ Fullscreen</button>
+</div>
+</div>
+<!-- Search & Category Filters -->
+<div class="dw-filter-bar" style="display:flex; flex-direction:column; gap:12px; margin: 16px 0 20px 0;">
+<div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+<!-- Search Input -->
+<div style="flex:1; min-width:260px; position:relative;">
+<input id="dw-search-input" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.9); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;" type="text"/>
+</div>
+<!-- Preset Dropdown -->
+<div style="flex:1.5; min-width:300px;">
+<select class="dw-select" id="dw-preset-select" onchange="loadDwPreset(this.value)" style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.95); border:1px solid rgba(99,91,255,0.5); border-radius:6px; color:#00f0ff; font-weight:700; font-size:0.88rem;">
+<!-- 26 Options dynamically injected by app.js -->
 </select>
 </div>
-<div class="dw-toolbar-right">
-<button class="btn btn-sm btn-active" id="btn-autorun" onclick="toggleDwAutoRun()" title="Toggle live re-evaluation on keystroke">⚡ Live Eval: ON</button>
-<button class="btn btn-sm btn-primary" onclick="runDataWeaveEvaluation()">▶ Run</button>
-<button class="btn btn-sm" onclick="copyDwOutput()" title="Copy Computed Output">📋 Copy</button>
-<button class="btn btn-sm" onclick="closeDataWeaveModal()">✕</button>
+</div>
+<!-- Category Pills -->
+<div class="dw-category-pills" style="display:flex; gap:6px; flex-wrap:wrap;">
+<button class="dw-cat-pill active" onclick="filterDwByCategory('all', this)">All (26)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('json', this)">JSON (5)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('xml', this)">XML (2)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('csv', this)">CSV (2)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('array', this)">Array Functions (7)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('string', this)">String (2)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('date', this)">Date (1)</button>
+<button class="dw-cat-pill" onclick="filterDwByCategory('advanced', this)">Enterprise Scenarios (7)</button>
 </div>
 </div>
-<!-- 3-Pane DataWeave Playground Grid -->
-<div class="dw-playground-grid">
-<!-- Pane 1: Inputs -->
-<div class="dw-pane">
-<div class="dw-pane-header">
+<!-- 4-PANEL WORKSPACE (2x2 on Desktop, 1-col on Mobile) -->
+<div class="dw-4panel-grid">
+<!-- PANEL 1: INPUT PAYLOAD -->
+<div class="dw-editor-panel">
+<div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
-<span>📥 Input Panel</span>
-<div class="dw-tab-group">
-<button class="dw-tab-btn active" data-tab="payload" onclick="switchDwInputTab('payload')">payload</button>
-<button class="dw-tab-btn" data-tab="vars" onclick="switchDwInputTab('vars')">vars</button>
-<button class="dw-tab-btn" data-tab="attrs" onclick="switchDwInputTab('attrs')">attributes</button>
+<span>📥 INPUT PAYLOAD</span>
+<span class="dw-panel-format" id="dw-input-format-badge">JSON</span>
+</div>
+<button class="btn-copy-pane" onclick="copyDwPanel('input')" title="Copy Input Payload">📋 Copy Input</button>
+</div>
+<textarea class="dw-code-editor" id="dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
+</div>
+<!-- PANEL 2: DATAWEAVE SCRIPT -->
+<div class="dw-editor-panel">
+<div class="dw-panel-header">
+<div style="display:flex; align-items:center; gap:8px;">
+<span>⚡ DATAWEAVE SCRIPT (%dw 2.0)</span>
+<span style="font-size:0.7rem; color:rgba(0,240,255,0.7);">output application/...</span>
+</div>
+<div style="display:flex; gap:6px; align-items:center;">
+<span class="anypoint-note" style="font-size:0.7rem; color:#a78bfa; margin-right:4px;">💡 Try in Anypoint</span>
+<button class="btn-copy-pane" onclick="copyDwPanel('script')" title="Copy DW Script">📋 Copy Script</button>
 </div>
 </div>
-<div style="display:flex; align-items:center; gap:6px;">
-<select class="dw-select" id="dw-input-format" style="padding:2px 8px; font-size:0.72rem; width:auto;">
-<option value="json">application/json</option>
-<option value="xml">application/xml</option>
-<option value="text">text/plain</option>
-</select>
-</div>
-</div>
-<textarea class="dw-code-editor" id="dw-input-payload" oninput="onDwInputChange()" placeholder="Enter input payload..." spellcheck="false"></textarea>
-<textarea class="dw-code-editor" id="dw-input-vars" oninput="onDwInputChange()" placeholder="Enter JSON variables..." spellcheck="false" style="display:none;"></textarea>
-<textarea class="dw-code-editor" id="dw-input-attrs" oninput="onDwInputChange()" placeholder="Enter JSON attributes..." spellcheck="false" style="display:none;"></textarea>
-</div>
-<!-- Pane 2: Transform Script -->
-<div class="dw-pane">
-<div class="dw-pane-header">
-<span>💻 Code Editor Panel (%dw 2.0)</span>
-<span style="font-size:0.7rem; color:var(--text-dim);">Functional Syntax</span>
-</div>
-<div class="dw-snippet-bar">
-<span class="dw-snippet-pill" onclick="insertDwSnippet('map')">map</span>
-<span class="dw-snippet-pill" onclick="insertDwSnippet('filter')">filter</span>
-<span class="dw-snippet-pill" onclick="insertDwSnippet('groupBy')">groupBy</span>
-<span class="dw-snippet-pill" onclick="insertDwSnippet('pluck')">pluck</span>
-<span class="dw-snippet-pill" onclick="insertDwSnippet('flatten')">flatten</span>
-<span class="dw-snippet-pill" onclick="insertDwSnippet('default')">default</span>
-<span class="dw-snippet-pill" onclick="insertDwSnippet('fun')">fun</span>
-</div>
-<textarea class="dw-code-editor" id="dw-script-editor" oninput="onDwScriptChange()" placeholder="%dw 2.0
+<textarea class="dw-code-editor" id="dw-script-editor" placeholder="%dw 2.0
 output application/json
 ---
-payload" spellcheck="false"></textarea>
+..." spellcheck="false"></textarea>
 </div>
-<!-- Pane 3: Output -->
-<div class="dw-pane">
-<div class="dw-pane-header">
+<!-- PANEL 3: OUTPUT PAYLOAD -->
+<div class="dw-editor-panel">
+<div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
-<span>📤 Output Panel</span>
-<span class="badge badge-success" id="dw-eval-status" style="font-size:0.7rem;">⚡ VALID</span>
+<span>📤 TRANSFORMED OUTPUT</span>
+<span class="dw-status-indicator" id="dw-live-status" style="font-size:0.72rem; color:#34d399; font-weight:700;">✅ Evaluated</span>
 </div>
-<button class="copy-btn" onclick="copyDwOutput()" style="font-size:0.7rem;">📋 Copy Output</button>
+<button class="btn-copy-pane" onclick="copyDwPanel('output')" title="Copy Output Payload">📋 Copy Output</button>
 </div>
-<textarea class="dw-code-editor" id="dw-output-viewer" readonly="" spellcheck="false"></textarea>
-<div class="dw-error-drawer" id="dw-error-box" style="display:none;">
-<div style="font-weight:700; color:#f87171; margin-bottom:4px;">⚠️ DataWeave Runtime Error</div>
-<div id="dw-error-msg"></div>
+<textarea class="dw-code-editor" id="dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
+</div>
+<!-- PANEL 4: EXPLANATION PANEL (English / Hinglish) -->
+<div class="dw-editor-panel dw-explanation-panel">
+<div class="dw-panel-header" style="background:rgba(99,91,255,0.15); border-bottom:1px solid rgba(99,91,255,0.3);">
+<div style="display:flex; align-items:center; gap:8px;">
+<span>💡 EXPLANATION &amp; ARCHITECT INTERVIEW NOTES</span>
+</div>
+<span style="font-size:0.7rem; color:#a78bfa;">Kya hua? &amp; Real Project Use Case</span>
+</div>
+<div class="dw-explanation-content" id="dw-explanation-box">
+<!-- Injected dynamically by loadDwPreset() -->
 </div>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 <div class="modal-overlay" id="search-modal" onclick="closeSearchModal(event)">
 <div class="search-modal-container" onclick="event.stopPropagation()">
