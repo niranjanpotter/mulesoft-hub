@@ -1715,6 +1715,127 @@ body.practice-mode-on .faq-card {
 }
 
 /* DataWeave Playground Modal & Inline Lab */
+/* 4-Panel DataWeave 2.0 Studio Layout (2x2 on Desktop, 1-col on Mobile) */
+.dw-4panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .dw-4panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dw-editor-panel {
+  display: flex;
+  flex-direction: column;
+  background: rgba(11, 15, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 280px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.dw-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.dw-cat-pill {
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-dim, #94a3b8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dw-cat-pill:hover {
+  background: rgba(99, 91, 255, 0.18);
+  color: #fff;
+  border-color: rgba(99, 91, 255, 0.4);
+}
+
+.dw-cat-pill.active {
+  background: #635bff;
+  color: #fff;
+  border-color: #635bff;
+  box-shadow: 0 0 12px rgba(99, 91, 255, 0.4);
+}
+
+.btn-copy-pane {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-copy-pane:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: #00f0ff;
+  color: #00f0ff;
+}
+
+.btn-copy-pane:active {
+  transform: scale(0.95);
+}
+
+.btn-preset-chip {
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-preset-chip:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: #00f0ff;
+  color: #00f0ff;
+}
+
+.btn-preset-chip:active {
+  transform: scale(0.95);
+}
+
+.dw-explanation-content {
+  padding: 16px;
+  overflow-y: auto;
+  max-height: 380px;
+}
+
+/* Accessibility & Tactile Micro-Interactions (WCAG 2.2 + Emil Kowalski Design Eng) */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #00f0ff !important;
+  outline-offset: 2px !important;
+}
+
+.btn:active, .btn-primary:active, .btn-outline:active, .topic-nav-pill:active, .dw-cat-pill:active, .btn-preset-chip:active {
+  transform: scale(0.97) !important;
+}
+
 .dw-inline-card {
   background: #050811;
   border: 1px solid rgba(0, 240, 255, 0.3);
@@ -21903,10 +22024,17 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">What is Anypoint Topic Center and how do you expose MuleSoft APIs as Salesforce Agentforce Actions?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"In the 2026 Salesforce + MuleSoft architecture, Anypoint Topic Center serves as the governance gateway that transforms traditional System and Process APIs into autonomous actions that Salesforce Agentforce can invoke dynamically. Instead of hardcoding Apex callouts or manual flow actions, Agentforce reasons over API definitions using LLM agents. To make an API an Agentforce Action, we publish an OpenAPI Specification (OAS 3.0 or 3.1) into Anypoint Exchange enriched with <code>x-sfdc</code> metadata annotations. These annotations specify the Agent Topic, the required user permissions, natural-language parameter descriptions, and instructions telling the LLM when and why to invoke the endpoint. Topic Center registers this asset in the Salesforce API Catalog, allowing the Agentforce reasoning engine to bind to it at runtime with full zero-trust OAuth 2.0 token propagation."</em></p>
@@ -21932,6 +22060,8 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 </div>
 </div>
+</div>
+</div>
 <!-- JJ-Q2 -->
 <div class="faq-card" data-role="architect / lead" id="mod-jj-q2">
 <div class="faq-header">
@@ -21943,13 +22073,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">What is the Model Context Protocol (MCP) Connector in MuleSoft and how does it connect AI Agents to enterprise APIs?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"The Model Context Protocol (MCP) is the open enterprise standard enabling AI foundation models (such as Claude, GPT-4, and Gemini) to securely discover and invoke tools, context, and prompts hosted by external servers. MuleSoft's MCP Connector acts in two modes: as an <strong>MCP Server Bridge</strong> and as an <strong>MCP Client Connector</strong>. As a Server Bridge, MuleSoft wraps enterprise backends (SAP, ServiceNow, AWS) and exposes their operations as standardized MCP Tools over Server-Sent Events (SSE) or stdio transports. The agent queries the MCP <code>tools/list</code> endpoint, receives structured JSON Schemas of all available MuleSoft flows, and executes them with parameterized arguments. The MCP Connector enforces mutual TLS, API Manager rate limiting, and client-id enforcement, ensuring enterprise data boundaries are never bypassed by autonomous agents."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -21964,13 +22103,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">How does MuleSoft Model Proxy optimize LLM costs using Semantic Caching and fallback routing?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"In enterprise AI architectures, calling commercial LLMs directly from application code creates runaway token expenses, latency spikes, and single-provider lock-in. MuleSoft's Model Proxy acts as an AI Gateway layer deployed between consumers and LLM providers. It exposes a single OpenAI-compatible endpoint but executes three critical capabilities: First, <strong>Semantic Caching</strong>: queries are vectorized and compared against an in-memory vector database. If a semantically equivalent query was answered recently (cosine similarity &gt; 0.92), the cached response is returned in &lt;15ms with zero token cost. Second, <strong>Fallback &amp; Circuit Breaking</strong>: if OpenAI experiences high latency or rate limits (HTTP 429), the proxy automatically reroutes the prompt to Azure OpenAI or Google Gemini. Third, <strong>Token Wallets &amp; Quotas</strong>: enforcing team-level token consumption budgets to prevent bill shocks."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -21985,13 +22133,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">How do you define and orchestrate autonomous multi-agent networks in MuleSoft using agent-network.yaml?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"Autonomous Agent Networks represent the paradigm where multiple specialized agents collaborate to solve complex business transactions (e.g., a Customer Dispute Agent collaborating with a SAP Billing Agent and a Fraud Detection Agent). In MuleSoft, we declare these networks declaratively using <code>agent-network.yaml</code>. This manifest defines the broker runtime, registered member agents, communication channels (event-driven Anypoint MQ or synchronous HTTP/2), shared state memory, and escalation rules. The Anypoint Agent Fabric broker parses this manifest, manages inter-agent messaging, handles handoffs between agents, and enforces governance boundaries so no agent can exceed its granted tool scope."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -22017,13 +22174,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">What is Anypoint Partner Manager (APM) and how does it modernize B2B EDI supply chain integrations?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"Anypoint Partner Manager (APM) is MuleSoft's cloud-native B2B integration platform that separates partner management configuration from integration runtime execution. Traditionally, adding a new retail or logistics partner required writing custom Mule flows, configuring point-to-point SFTP folders, and coding unique transformations. With APM, we define trading partners, communication protocols (AS2, SFTP, FTPS), digital certificates, and document agreements (such as X12 850 Purchase Orders or EDIFACT ORDERS) via a centralized control plane. When a partner sends an AS2 transmission, the lightweight B2B runtime worker receives the message, validates interchange headers (ISA/GS), translates the EDI into canonical JSON/XML using DataWeave, and automatically generates the 997 Functional Acknowledgment without custom code."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -22038,13 +22204,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">How do you parse ANSI X12 850 (Purchase Order) into JSON using the X12 EDI Connector and ESL schemas?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"Parsing EDI in Mule 4 is governed by the official X12 EDI Connector, which leverages Electronic Service Level (ESL) YAML schemas defining the exact segment hierarchy, mandatory fields, and qualifiers. In our flow, the EDI read operation takes the raw string stream, references the standard <code>x12/004010/850.esl</code> schema (or a custom company ESL), and produces a structured DataWeave map representation containing the Heading, Detail, and Summary loops. From there, a DataWeave transformation maps <code>payload.TransactionSets.v004010.'850'.Heading.'0200_BEG'.BEG03</code> to our canonical Purchase Order Number, and iterates over the <code>0100_PO1</code> segment loop to extract line items, prices, and quantities."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -22070,13 +22245,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">How do you automate Anypoint Platform provisioning using the official MuleSoft Terraform Provider?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"To eliminate manual clicking in Anypoint Runtime Manager and API Manager across Dev, Test, Stage, and Prod environments, we implement GitOps infrastructure management using the official MuleSoft Terraform Provider (<code>mulesoft/anypoint</code>). Through Terraform HCL, we declaratively declare: First, <strong>CloudHub 2.0 Private Spaces</strong> with custom CIDR blocks and transit gateway peerings; Second, <strong>API Manager Instances &amp; Contracts</strong>; Third, <strong>Automated Policy Attachments</strong> (enforcing Client ID Enforcement, Rate Limiting, and Automated OIDC JWT Validation across every registered API); and Fourth, <strong>Environment and Role RBAC assignments</strong>. When a new microservice is promoted, Terraform executes in GitHub Actions, ensuring zero configuration drift between testing and production."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -22091,13 +22275,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">What is OpenTelemetry (OTel) Direct Telemetry in MuleSoft and how does it replace legacy agent collectors?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"Historically, streaming traces and metrics from Mule applications to third-party APM tools like Dynatrace, Datadog, or New Relic required installing heavy Java agents (e.g., `-javaagent` in wrapper.conf) or deploying local collector sidecars in Runtime Fabric. In the 2026 runtime standards, MuleSoft supports native OpenTelemetry (OTel) Direct Exporting. The Mule runtime engine instruments Project Reactor execution directly, creating standardized W3C Trace Context spans for every HTTP listener, flow-ref, scatter-gather route, and connector call. It streams these traces via non-blocking OTLP (OpenTelemetry Protocol) over gRPC directly to enterprise collectors, providing distributed tracing across polyglot microservices without CPU overhead or proprietary vendor lock-in."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -22123,13 +22316,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">How do you integrate MuleSoft with Snowflake for high-volume data warehouse ingestion?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"When integrating MuleSoft with Snowflake, using standard row-by-row JDBC inserts is an anti-pattern that exhausts warehouse compute and incurs massive billing costs. For high-volume ingestion (e.g., 5 million nightly utility billing transactions), we follow the <strong>Staged Bulk Load Pattern</strong>: MuleSoft aggregates records in batch steps, writes compressed Parquet or CSV chunks directly to an internal Snowflake Stage (or AWS S3 external stage) using the Snowflake Connector's PUT operation, and subsequently triggers a <code>COPY INTO</code> SQL command or invokes Snowpipe for serverless micro-batch loading. This reduces database write duration from hours to seconds and keeps warehouse compute in auto-suspend mode."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -22144,13 +22346,22 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <h3 class="q-title">How do you implement gRPC services in MuleSoft with Protocol Buffers and HTTP/2 multiplexing?</h3>
 <div class="faq-action-bar">
-<button aria-label="Toggle answer" class="btn-toggle-answer">View Architecture &amp; Verbal Script</button>
+<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
+<span class="reveal-btn-icon">👁️</span>
+<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
+</button>
+<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
 </div>
 </div>
-<div class="faq-answer">
+<div class="answer-drawer">
+<div class="answer-drawer-inner">
+<div class="answer-body-content">
+<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
 <div class="answer-section">
 <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (VERBAL SCRIPT)</div>
 <p><em>"For high-frequency, low-latency microservice communications (e.g., real-time smart meter fraud detection), REST/JSON incurs significant serialization overhead and HTTP/1.1 head-of-line blocking. With the MuleSoft gRPC Connector, we define service contracts using Protocol Buffers (<code>.proto</code> files). MuleSoft compiles these protobuf schemas into binary serializers running over HTTP/2. This provides three architectural advantages: First, binary payloads are up to 70% smaller than equivalent JSON; Second, bidirectional streaming over a single long-lived TCP connection; and Third, strong compile-time type safety preventing contract mismatch errors."</em></p>
+</div>
+</div>
 </div>
 </div>
 </div>
