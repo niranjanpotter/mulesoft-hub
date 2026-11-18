@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MuleSoft CI/CD Pipeline Guide: Maven Plugin & GitHub Actions (2026)</title>
+  <meta name="description" content="Enterprise MuleSoft CI/CD automation with the Mule Maven Plugin, SonarQube quality gates, MUnit test coverage thresholds, and automated CloudHub 2.0 deployment.">
+  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <link rel="canonical" href="https://niranjanpotter.github.io/mulesoft-cicd-maven-pipeline-guide.html">
+  <meta property="og:title" content="MuleSoft CI/CD Pipeline Guide: Maven Plugin & GitHub Actions (2026)">
+  <meta property="og:description" content="Enterprise MuleSoft CI/CD automation with the Mule Maven Plugin, SonarQube quality gates, MUnit test coverage thresholds, and automated CloudHub 2.0 deployment.">
+  <meta property="og:url" content="https://niranjanpotter.github.io/mulesoft-cicd-maven-pipeline-guide.html">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do you enforce 80% MUnit code coverage gates in a Maven build?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Configure the munit-maven-plugin configuration block inside pom.xml with coverage limits: set applicationCoverage, resourceCoverage, and flowCoverage to 80. If code coverage falls below 80%, the build fails automatically, preventing deployment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you inject encrypted secure property keys safely into CloudHub 2.0 in GitHub Actions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Store the master encryption key in GitHub Repository Secrets (MULE_KEY). In the CI/CD workflow, pass the key as a dynamic parameter: -Danypoint.platform.client_id=$CLIENT_ID -Dsecure.key=$MULE_KEY, ensuring keys never touch source code."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="dark-theme">
+  <!-- Top Global Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <span class="brand-logo">⚡</span>
+        <span class="brand-text">MuleSoft Hub</span>
+        <span class="badge-edition">2026 EDITION</span>
+      </a>
+      <div class="nav-controls">
+        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
+      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
+      <span style="color: var(--text-main);">CI/CD DevOps Maven Pipeline</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
+      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">MuleSoft CI/CD DevOps Pipeline: Mule Maven Plugin & GitHub Actions</h1>
+      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Building zero-downtime deployment pipelines with automated linting, test validation, encrypted property injection, and blue-green releases.</p>
+    </header>
+
+    <!-- Main Q&A Content -->
+    <main>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q1</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">How do you enforce 80% MUnit code coverage gates in a Maven build?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>Configure the munit-maven-plugin configuration block inside pom.xml with coverage limits: set applicationCoverage, resourceCoverage, and flowCoverage to 80. If code coverage falls below 80%, the build fails automatically, preventing deployment.</p>
+        </div>
+        
+      <div class="answer-section">
+        <div class="ans-badge ans-badge-code">💻 CODE / ARCHITECTURE CONFIGURATION</div>
+        <pre><code class="language-xml">&lt;coverage&gt;
+  &lt;runCoverage&gt;true&lt;/runCoverage&gt;
+  &lt;failBuild&gt;true&lt;/failBuild&gt;
+  &lt;requiredApplicationCoverage&gt;80&lt;/requiredApplicationCoverage&gt;
+&lt;/coverage&gt;</code></pre>
+      </div>
+      </div>
+    </div>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q2">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q2</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">How do you inject encrypted secure property keys safely into CloudHub 2.0 in GitHub Actions?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>Store the master encryption key in GitHub Repository Secrets (MULE_KEY). In the CI/CD workflow, pass the key as a dynamic parameter: -Danypoint.platform.client_id=$CLIENT_ID -Dsecure.key=$MULE_KEY, ensuring keys never touch source code.</p>
+        </div>
+        
+      </div>
+    </div>
+
+    </main>
+
+    <!-- Related Topics -->
+    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
+      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
+      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+        <li><a href="cloudhub-1-to-2-migration-guide.html">CloudHub 1.0 to 2.0 Migration</a></li><li><a href="mulesoft-terraform-provider-guide.html">MuleSoft Terraform Provider</a></li><li><a href="mulesoft-secure-properties-encryption-guide.html">Secure Properties Tool Guide</a></li>
+      </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
+      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
+    </footer>
+  </div>
+</body>
+</html>

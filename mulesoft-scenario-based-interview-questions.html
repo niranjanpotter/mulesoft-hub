@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 20 MuleSoft Scenario-Based Interview Questions & Incident Solutions</title>
+  <meta name="description" content="Real-world MuleSoft scenario interview questions: downstream latency spikes, dual-write failures, worker crashes, and poison pill DLQ debugging.">
+  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <link rel="canonical" href="https://niranjanpotter.github.io/mulesoft-scenario-based-interview-questions.html">
+  <meta property="og:title" content="Top 20 MuleSoft Scenario-Based Interview Questions & Incident Solutions">
+  <meta property="og:description" content="Real-world MuleSoft scenario interview questions: downstream latency spikes, dual-write failures, worker crashes, and poison pill DLQ debugging.">
+  <meta property="og:url" content="https://niranjanpotter.github.io/mulesoft-scenario-based-interview-questions.html">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Scenario 1: Downstream SAP system experiences a 5-second latency spike. How do you prevent thread starvation in MuleSoft?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When SAP slows down, HTTP Listener worker threads (CPU_LITE) become exhausted waiting on BLOCKING_IO threads. We mitigate this by: 1) Configuring aggressive response timeouts on the SAP connector (e.g., 3000ms); 2) Implementing a Circuit Breaker policy in API Manager to fail fast with HTTP 503; 3) Offloading synchronous calls to asynchronous queues using Anypoint MQ."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Scenario 2: Salesforce write succeeds but Anypoint MQ publish fails (Dual-write failure). How do you resolve consistency?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Without heavy distributed XA transactions, we implement the Outbox Pattern or Local Compensating Transactions: wrap the operations in a Try scope with on-error-propagate. If Anypoint MQ fails, execute a compensating Salesforce delete or set Status='PENDING_SYNC', triggering a scheduled retry flow."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="dark-theme">
+  <!-- Top Global Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <span class="brand-logo">⚡</span>
+        <span class="brand-text">MuleSoft Hub</span>
+        <span class="badge-edition">2026 EDITION</span>
+      </a>
+      <div class="nav-controls">
+        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
+      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
+      <span style="color: var(--text-main);">Top 20 Production Scenarios</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
+      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">MuleSoft Scenario-Based Interview Questions: 20 Real Incident Walkthroughs</h1>
+      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Battle-tested production scenarios from 5.5 years at NextEra Energy / FPL handling 5M+ monthly API transactions across SAP, Salesforce, and AWS.</p>
+    </header>
+
+    <!-- Main Q&A Content -->
+    <main>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q1</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">Scenario 1: Downstream SAP system experiences a 5-second latency spike. How do you prevent thread starvation in MuleSoft?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>When SAP slows down, HTTP Listener worker threads (CPU_LITE) become exhausted waiting on BLOCKING_IO threads. We mitigate this by: 1) Configuring aggressive response timeouts on the SAP connector (e.g., 3000ms); 2) Implementing a Circuit Breaker policy in API Manager to fail fast with HTTP 503; 3) Offloading synchronous calls to asynchronous queues using Anypoint MQ.</p>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q2">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q2</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">Scenario 2: Salesforce write succeeds but Anypoint MQ publish fails (Dual-write failure). How do you resolve consistency?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>Without heavy distributed XA transactions, we implement the Outbox Pattern or Local Compensating Transactions: wrap the operations in a Try scope with on-error-propagate. If Anypoint MQ fails, execute a compensating Salesforce delete or set Status='PENDING_SYNC', triggering a scheduled retry flow.</p>
+        </div>
+        
+      </div>
+    </div>
+
+    </main>
+
+    <!-- Related Topics -->
+    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
+      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
+      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+        <li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li><li><a href="mulesoft-scatter-gather-interview-questions.html">Scatter-Gather Router & Resiliency</a></li><li><a href="mulesoft-anypoint-mq-dlq-fifo-interview.html">Anypoint MQ & DLQ Architecture</a></li>
+      </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
+      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataWeave 2.0 Performance Tuning: Tail Recursion & Memory Optimization</title>
+  <meta name="description" content="Master high-performance DataWeave 2.0: off-heap disk buffering for >100MB payloads, @TailRec recursion, @StreamCapable, and reduce vs groupBy benchmarks.">
+  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <link rel="canonical" href="https://niranjanpotter.github.io/dataweave-performance-tuning-patterns.html">
+  <meta property="og:title" content="DataWeave 2.0 Performance Tuning: Tail Recursion & Memory Optimization">
+  <meta property="og:description" content="Master high-performance DataWeave 2.0: off-heap disk buffering for >100MB payloads, @TailRec recursion, @StreamCapable, and reduce vs groupBy benchmarks.">
+  <meta property="og:url" content="https://niranjanpotter.github.io/dataweave-performance-tuning-patterns.html">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does DataWeave manage off-heap memory buffering for payloads > 100MB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DataWeave utilizes an embedded off-heap memory buffer pool governed by the com.mulesoft.dw.buffersize configuration. If a payload exceeds the in-memory threshold (default 1.5MB), DataWeave automatically spills excess records to temporary disk files, preventing JVM Heap OutOfMemoryError."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you write a tail-recursive function (@TailRec) in DataWeave to prevent StackOverflowError?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When traversing deeply nested hierarchical JSON structures, normal recursion accumulates stack frames until the JVM crashes. By annotating the function with @TailRec and ensuring the recursive call is the final evaluated expression, DataWeave optimizes the recursion into an internal loop with zero stack growth."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="dark-theme">
+  <!-- Top Global Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <span class="brand-logo">⚡</span>
+        <span class="brand-text">MuleSoft Hub</span>
+        <span class="badge-edition">2026 EDITION</span>
+      </a>
+      <div class="nav-controls">
+        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
+      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
+      <span style="color: var(--text-main);">DataWeave Performance Tuning</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
+      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">DataWeave 2.0 Production Patterns & Memory Performance Optimization</h1>
+      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">How to process massive XML/JSON payloads without Java Heap OutOfMemoryError, stack overflow exceptions, or GC pauses.</p>
+    </header>
+
+    <!-- Main Q&A Content -->
+    <main>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q1</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">How does DataWeave manage off-heap memory buffering for payloads > 100MB?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>DataWeave utilizes an embedded off-heap memory buffer pool governed by the com.mulesoft.dw.buffersize configuration. If a payload exceeds the in-memory threshold (default 1.5MB), DataWeave automatically spills excess records to temporary disk files, preventing JVM Heap OutOfMemoryError.</p>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q2">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q2</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">How do you write a tail-recursive function (@TailRec) in DataWeave to prevent StackOverflowError?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>When traversing deeply nested hierarchical JSON structures, normal recursion accumulates stack frames until the JVM crashes. By annotating the function with @TailRec and ensuring the recursive call is the final evaluated expression, DataWeave optimizes the recursion into an internal loop with zero stack growth.</p>
+        </div>
+        
+      <div class="answer-section">
+        <div class="ans-badge ans-badge-code">💻 CODE / ARCHITECTURE CONFIGURATION</div>
+        <pre><code class="language-xml">%dw 2.0
+import * from dw::core::Arrays
+
+@TailRec()
+fun sumList(list: Array&lt;Number&gt;, acc: Number = 0): Number =
+  if (isEmpty(list)) acc
+  else sumList(list[1 to -1], acc + list[0])</code></pre>
+      </div>
+      </div>
+    </div>
+
+    </main>
+
+    <!-- Related Topics -->
+    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
+      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
+      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+        <li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li><li><a href="mulesoft-java-interview-mastery.html">Java Interview Mastery</a></li><li><a href="mulesoft-salesforce-bulk-api-2-interview.html">Salesforce Bulk API 2.0</a></li>
+      </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
+      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
+    </footer>
+  </div>
+</body>
+</html>
