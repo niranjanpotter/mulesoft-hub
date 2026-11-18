@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anypoint MQ & DLQ Architecture: Interview Questions & Best Practices</title>
+  <meta name="description" content="Master Anypoint MQ: FIFO queues, message deduplication IDs, Manual ACK/NACK, Dead Letter Queues (DLQ), and cross-region disaster recovery.">
+  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <link rel="canonical" href="https://niranjanpotter.github.io/mulesoft-anypoint-mq-dlq-fifo-interview.html">
+  <meta property="og:title" content="Anypoint MQ & DLQ Architecture: Interview Questions & Best Practices">
+  <meta property="og:description" content="Master Anypoint MQ: FIFO queues, message deduplication IDs, Manual ACK/NACK, Dead Letter Queues (DLQ), and cross-region disaster recovery.">
+  <meta property="og:url" content="https://niranjanpotter.github.io/mulesoft-anypoint-mq-dlq-fifo-interview.html">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is MANUAL Acknowledgement mode preferred in mission-critical billing flows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "With AUTO or IMMEDIATE ACK, if a MuleSoft worker crashes mid-flow after receiving a message, the message is permanently lost. With MANUAL ACK, the message remains locked until the entire database or ERP commit succeeds. If an unrecoverable exception occurs, a NACK or timeout releases the message back to the queue for retry."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you configure a Dead Letter Queue (DLQ) to isolate poison pill messages?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In Anypoint MQ Manager, we assign a DLQ to the primary queue with a maxDeliveryAttempts threshold (e.g., 5). If a malformed payload causes recurring exceptions across 5 attempts, Anypoint MQ automatically diverts the message to the DLQ, alerting support teams without stopping queue processing."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="dark-theme">
+  <!-- Top Global Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <span class="brand-logo">⚡</span>
+        <span class="brand-text">MuleSoft Hub</span>
+        <span class="badge-edition">2026 EDITION</span>
+      </a>
+      <div class="nav-controls">
+        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
+      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
+      <span style="color: var(--text-main);">Anypoint MQ & DLQ</span>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
+      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">Anypoint MQ Deep Dive: Queues, Exchanges, DLQ & FIFO Architecture</h1>
+      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Enterprise messaging patterns, poison pill isolation, and guaranteed at-least-once vs exactly-once delivery semantics in MuleSoft.</p>
+    </header>
+
+    <!-- Main Q&A Content -->
+    <main>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q1</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">Why is MANUAL Acknowledgement mode preferred in mission-critical billing flows?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>With AUTO or IMMEDIATE ACK, if a MuleSoft worker crashes mid-flow after receiving a message, the message is permanently lost. With MANUAL ACK, the message remains locked until the entire database or ERP commit succeeds. If an unrecoverable exception occurs, a NACK or timeout releases the message back to the queue for retry.</p>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="faq-card" data-role="senior developer / architect" id="topic-q2">
+      <div class="faq-header">
+        <div class="faq-meta-row">
+          <span class="q-tag">Q2</span>
+          <span class="badge badge-lead">[PRODUCTION ARCHITECTURE]</span>
+          <span class="q-read-time">⏱️ 3 min read</span>
+        </div>
+        <h3 class="q-title">How do you configure a Dead Letter Queue (DLQ) to isolate poison pill messages?</h3>
+      </div>
+      <div class="faq-answer open">
+        <div class="answer-section">
+          <div class="ans-badge ans-badge-script">🎯 HOW TO ANSWER (SENIOR ARCHITECT SCRIPT)</div>
+          <p>In Anypoint MQ Manager, we assign a DLQ to the primary queue with a maxDeliveryAttempts threshold (e.g., 5). If a malformed payload causes recurring exceptions across 5 attempts, Anypoint MQ automatically diverts the message to the DLQ, alerting support teams without stopping queue processing.</p>
+        </div>
+        
+      </div>
+    </div>
+
+    </main>
+
+    <!-- Related Topics -->
+    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
+      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
+      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+        <li><a href="mulesoft-scenario-based-interview-questions.html">Top 20 Production Scenarios</a></li><li><a href="mulesoft-scatter-gather-interview-questions.html">Scatter-Gather Router</a></li><li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li>
+      </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
+      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
+    </footer>
+  </div>
+</body>
+</html>
