@@ -2372,9 +2372,120 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     transform: translateY(0);
     pointer-events: auto;
   }
-  .dw-playground-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+}
+
+/* DataWeave Mobile Tabs (< 768px) */
+.dw-mobile-tab-bar {
+  display: none;
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 16px 0;
+}
+
+pre {
+  position: relative;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.code-copy-btn:hover {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: var(--electric-cyan);
+  color: var(--electric-cyan);
+}
+
+@media (max-width: 768px) {
+  .dw-modal-container {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    padding: 12px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .dw-inline-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .dw-mobile-tab-bar {
+    display: flex;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+    margin: 10px 0;
+  }
+  .dw-tab-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 4px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .dw-tab-btn.active {
+    background: rgba(0, 242, 254, 0.16);
+    color: var(--electric-cyan, #00F2FE);
+    border-color: rgba(0, 242, 254, 0.35);
+  }
+  [data-theme="light"] .dw-tab-btn.active {
+    background: #e0f2fe;
+    color: #0284c7;
+    border-color: #0284c7;
+  }
+  .dw-4panel-grid {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .dw-4panel-grid .dw-editor-panel {
+    display: none;
+    height: 100%;
+    min-height: 320px;
+  }
+  .dw-4panel-grid .dw-editor-panel.dw-tab-active {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  .dw-4panel-grid .dw-editor-panel {
+    display: flex !important;
   }
 }
 
@@ -2400,13 +2511,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     min-height: 44px;
   }
   .hero-portal {
-    padding: 24px 16px;
+    padding: clamp(20px, 4vw, 36px) clamp(16px, 3vw, 24px);
   }
   .hero-headline {
-    font-size: 1.75rem;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
   }
   .article-title {
     font-size: 1.35rem;
+  }
+  .metric-deck {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .metric-card {
+    padding: 12px 14px !important;
+  }
+  .metric-val {
+    font-size: 1.6rem !important;
+  }
+  .metric-label {
+    font-size: 0.72rem !important;
   }
   .global-toolbar {
     flex-direction: column;
@@ -8965,10 +9089,17 @@ status: vars.httpStatus,</code></pre>
 <button class="dw-cat-pill" onclick="filterDwByCategory('advanced', this)">Enterprise Scenarios (7)</button>
 </div>
 </div>
-<!-- 4-PANEL WORKSPACE (2x2 on Desktop, 1-col on Mobile) -->
+<!-- Mobile Tab Bar for DataWeave Studio (< 768px) -->
+<div class="dw-mobile-tab-bar" id="dwMobileTabs">
+  <button type="button" class="dw-tab-btn active" data-tab="input" onclick="switchDwMobileTab('input', this)">📥 Input</button>
+  <button type="button" class="dw-tab-btn" data-tab="script" onclick="switchDwMobileTab('script', this)">⚡ Script</button>
+  <button type="button" class="dw-tab-btn" data-tab="output" onclick="switchDwMobileTab('output', this)">📤 Output</button>
+  <button type="button" class="dw-tab-btn" data-tab="notes" onclick="switchDwMobileTab('notes', this)">💡 Notes</button>
+</div>
+<!-- 4-PANEL WORKSPACE (2x2 on Desktop, Tabbed on Mobile) -->
 <div class="dw-4panel-grid">
 <!-- PANEL 1: INPUT PAYLOAD -->
-<div class="dw-editor-panel">
+<div class="dw-editor-panel dw-tab-active" id="dw-panel-input">
 <div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>📥 INPUT PAYLOAD</span>
@@ -8979,7 +9110,7 @@ status: vars.httpStatus,</code></pre>
 <textarea class="dw-code-editor" id="dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
 </div>
 <!-- PANEL 2: DATAWEAVE SCRIPT -->
-<div class="dw-editor-panel">
+<div class="dw-editor-panel" id="dw-panel-script">
 <div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>⚡ DATAWEAVE SCRIPT (%dw 2.0)</span>
@@ -8996,7 +9127,7 @@ output application/json
 ..." spellcheck="false"></textarea>
 </div>
 <!-- PANEL 3: OUTPUT PAYLOAD -->
-<div class="dw-editor-panel">
+<div class="dw-editor-panel" id="dw-panel-output">
 <div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>📤 TRANSFORMED OUTPUT</span>
@@ -9007,7 +9138,7 @@ output application/json
 <textarea class="dw-code-editor" id="dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
 </div>
 <!-- PANEL 4: EXPLANATION PANEL (English / Hinglish) -->
-<div class="dw-editor-panel dw-explanation-panel">
+<div class="dw-editor-panel dw-explanation-panel" id="dw-panel-notes">
 <div class="dw-panel-header" style="background:rgba(99,91,255,0.15); border-bottom:1px solid rgba(99,91,255,0.3);">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>💡 EXPLANATION &amp; ARCHITECT INTERVIEW NOTES</span>
@@ -22791,10 +22922,17 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 <button class="dw-cat-pill" onclick="filterDwByCategory('advanced', this)">Enterprise Scenarios (7)</button>
 </div>
 </div>
-<!-- 4-PANEL WORKSPACE (2x2 on Desktop, 1-col on Mobile) -->
+<!-- Mobile Tab Bar for DataWeave Studio (< 768px) -->
+<div class="dw-mobile-tab-bar" id="dwMobileTabs">
+  <button type="button" class="dw-tab-btn active" data-tab="input" onclick="switchDwMobileTab('input', this)">📥 Input</button>
+  <button type="button" class="dw-tab-btn" data-tab="script" onclick="switchDwMobileTab('script', this)">⚡ Script</button>
+  <button type="button" class="dw-tab-btn" data-tab="output" onclick="switchDwMobileTab('output', this)">📤 Output</button>
+  <button type="button" class="dw-tab-btn" data-tab="notes" onclick="switchDwMobileTab('notes', this)">💡 Notes</button>
+</div>
+<!-- 4-PANEL WORKSPACE (2x2 on Desktop, Tabbed on Mobile) -->
 <div class="dw-4panel-grid">
 <!-- PANEL 1: INPUT PAYLOAD -->
-<div class="dw-editor-panel">
+<div class="dw-editor-panel dw-tab-active" id="dw-panel-input">
 <div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>📥 INPUT PAYLOAD</span>
@@ -22805,7 +22943,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 <textarea class="dw-code-editor" id="dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
 </div>
 <!-- PANEL 2: DATAWEAVE SCRIPT -->
-<div class="dw-editor-panel">
+<div class="dw-editor-panel" id="dw-panel-script">
 <div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>⚡ DATAWEAVE SCRIPT (%dw 2.0)</span>
@@ -22822,7 +22960,7 @@ output application/json
 ..." spellcheck="false"></textarea>
 </div>
 <!-- PANEL 3: OUTPUT PAYLOAD -->
-<div class="dw-editor-panel">
+<div class="dw-editor-panel" id="dw-panel-output">
 <div class="dw-panel-header">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>📤 TRANSFORMED OUTPUT</span>
@@ -22833,7 +22971,7 @@ output application/json
 <textarea class="dw-code-editor" id="dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
 </div>
 <!-- PANEL 4: EXPLANATION PANEL (English / Hinglish) -->
-<div class="dw-editor-panel dw-explanation-panel">
+<div class="dw-editor-panel dw-explanation-panel" id="dw-panel-notes">
 <div class="dw-panel-header" style="background:rgba(99,91,255,0.15); border-bottom:1px solid rgba(99,91,255,0.3);">
 <div style="display:flex; align-items:center; gap:8px;">
 <span>💡 EXPLANATION &amp; ARCHITECT INTERVIEW NOTES</span>
@@ -24932,6 +25070,73 @@ document.addEventListener('DOMContentLoaded', function() {
       fabTop.classList.remove('visible');
     }
   }, { passive: true });
+
+  // 6. DataWeave Mobile Tab Switcher
+  window.switchDwMobileTab = function(tabName, btn) {
+    document.querySelectorAll('.dw-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (btn) {
+      btn.classList.add('active');
+    } else {
+      var match = document.querySelector('.dw-tab-btn[data-tab="' + tabName + '"]');
+      if (match) match.classList.add('active');
+    }
+    var panels = {
+      input: document.getElementById('dw-panel-input'),
+      script: document.getElementById('dw-panel-script'),
+      output: document.getElementById('dw-panel-output'),
+      notes: document.getElementById('dw-panel-notes')
+    };
+    Object.keys(panels).forEach(function(k) {
+      if (panels[k]) {
+        if (k === tabName) {
+          panels[k].classList.add('dw-tab-active');
+        } else {
+          panels[k].classList.remove('dw-tab-active');
+        }
+      }
+    });
+  };
+
+  // Intercept runDwTransformation to auto-switch to output on mobile
+  if (typeof window.runDwTransformation === 'function') {
+    var originalRunDw = window.runDwTransformation;
+    window.runDwTransformation = function() {
+      originalRunDw.apply(this, arguments);
+      if (window.innerWidth < 768) {
+        switchDwMobileTab('output');
+      }
+    };
+  }
+
+  // 7. Responsive Tables Wrapping
+  document.querySelectorAll('table').forEach(function(tbl) {
+    if (!tbl.parentElement.classList.contains('table-scroll')) {
+      var wrap = document.createElement('div');
+      wrap.className = 'table-scroll';
+      tbl.parentNode.insertBefore(wrap, tbl);
+      wrap.appendChild(tbl);
+    }
+  });
+
+  // 8. Code Block Copy Buttons
+  document.querySelectorAll('pre').forEach(function(pre) {
+    if (!pre.querySelector('.code-copy-btn')) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'code-copy-btn';
+      btn.setAttribute('aria-label', 'Copy code snippet to clipboard');
+      btn.innerHTML = '📋 Copy';
+      btn.addEventListener('click', function() {
+        var code = pre.querySelector('code');
+        var text = code ? code.innerText : pre.innerText;
+        navigator.clipboard.writeText(text).then(function() {
+          btn.innerHTML = '✓ Copied';
+          setTimeout(function() { btn.innerHTML = '📋 Copy'; }, 2000);
+        });
+      });
+      pre.appendChild(btn);
+    }
+  });
 });
 </script>
 <!-- Floating Action Buttons for Mobile (< 1024px) -->
