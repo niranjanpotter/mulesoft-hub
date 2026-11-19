@@ -4,6 +4,9 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)"/>
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"/>
+<meta name="color-scheme" content="dark light"/>
 <title>MuleSoft Interview Questions &amp; Answers (2026) | 282+ Real-World Scenario Q&amp;A</title>
 <meta content="Master MuleSoft interviews with 282+ real-time scenario-based questions, CloudHub 2.0 migration, DataWeave 2.0, API-led connectivity diagrams, and senior architect pitches." name="description"/>
 <meta content="mulesoft interview questions, mulesoft scenario based questions, cloudhub 2.0 interview questions, anypoint platform interview, dataweave 2.0 questions, mulesoft senior developer interview, mulesoft technical lead questions, mulesoft batch processing, mulesoft error handling" name="keywords"/>
@@ -1493,13 +1496,111 @@ body.practice-mode-on .faq-card {
 .diagram-svg-wrapper {
   width: 100%;
   overflow-x: auto;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
 .responsive-svg {
   width: 100%;
+  max-width: 100%;
   height: auto;
-  min-width: 680px;
   display: block;
+}
+
+.diagram-expand-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #00F2FE;
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+[data-theme="light"] .diagram-expand-btn {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0284c7;
+  border-color: #0284c7;
+}
+
+.diagram-expand-btn:hover {
+  background: rgba(0, 242, 254, 0.2);
+  transform: scale(1.05);
+}
+
+.diagram-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 7, 14, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.diagram-lightbox.active {
+  display: flex;
+}
+
+.diagram-lightbox-content {
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.diagram-lightbox-content svg {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-width: 320px;
+}
+
+.diagram-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000000;
+  transition: all 0.2s ease;
+}
+
+.diagram-lightbox-close:hover {
+  background: #ef4444;
+  border-color: #ef4444;
 }
 
 .diagram-footer {
@@ -24518,7 +24619,64 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     el.innerHTML = htmlContent;
   });
+
+  // 4. Diagram Expand & Lightbox Delegating Controller
+  var lightbox = document.getElementById('diagramLightbox');
+  var lightboxContent = document.getElementById('diagramLightboxContent');
+  var lightboxClose = document.getElementById('diagramLightboxClose');
+
+  function openDiagramLightbox(svg) {
+    if (!lightbox || !lightboxContent || !svg) return;
+    lightboxContent.innerHTML = svg.outerHTML;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDiagramLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    if (lightboxContent) lightboxContent.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', closeDiagramLightbox);
+  }
+  if (lightbox) {
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox || e.target === lightboxContent) {
+        closeDiagramLightbox();
+      }
+    });
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
+      closeDiagramLightbox();
+    }
+  });
+
+  // Inject Expand button into every diagram wrapper
+  document.querySelectorAll('.diagram-svg-wrapper').forEach(function(wrapper) {
+    var svg = wrapper.querySelector('svg');
+    if (svg && !wrapper.querySelector('.diagram-expand-btn')) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'diagram-expand-btn';
+      btn.setAttribute('aria-label', 'Expand diagram to fullscreen');
+      btn.innerHTML = '<span>⤢</span> <span>Expand</span>';
+      btn.addEventListener('click', function(ev) {
+        ev.stopPropagation();
+        openDiagramLightbox(svg);
+      });
+      wrapper.appendChild(btn);
+    }
+  });
 });
 </script>
+<!-- Diagram Lightbox Modal -->
+<div class="diagram-lightbox" id="diagramLightbox" role="dialog" aria-modal="true" aria-label="Diagram Fullscreen View">
+  <button class="diagram-lightbox-close" id="diagramLightboxClose" aria-label="Close fullscreen view">×</button>
+  <div class="diagram-lightbox-content" id="diagramLightboxContent"></div>
+</div>
 </body>
 </html>

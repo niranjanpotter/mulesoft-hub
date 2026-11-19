@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="ch2-title ch2-desc">
+  <title id="ch2-title">CloudHub 2.0 Containerized Architecture &amp; Private Space Networking</title>
+  <desc id="ch2-desc">Architectural diagram of CloudHub 2.0 showing Private Space built-in Ingress Controller, multi-AZ Kubernetes container replicas, shared Object Store v2 state, static NAT Gateway egress, and native telemetry log forwarding.</desc>
+
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="ch-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071321"/>
+      <stop offset="55%" stop-color="#0B2033"/>
+      <stop offset="100%" stop-color="#124052"/>
+    </linearGradient>
+    <radialGradient id="ch-glow-edge" cx="15%" cy="30%" r="45%">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ch-glow-center" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ch-glow-egress" cx="85%" cy="60%" r="45%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="ch-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#53CADD" stroke-opacity="0.06"/>
+    </pattern>
+
+    <!-- Card Backgrounds -->
+    <linearGradient id="ch-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#112233" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#081420" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="ps-box-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#845EC2" stop-opacity="0.04"/>
+    </linearGradient>
+
+    <filter id="ch-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .ch-title { font-family: 'Plus Jakarta Sans', Georgia, sans-serif; font-weight: 700; }
+    .ch-mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+    .ch-sans { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+
+    /* Animated Traces */
+    .ch-trace { stroke-dasharray: 6 94; animation: ch-flow 4s linear infinite; }
+    .ch-trace-2 { stroke-dasharray: 6 94; animation: ch-flow 4s linear infinite; animation-delay: -1.3s; }
+    .ch-trace-3 { stroke-dasharray: 6 94; animation: ch-flow 4s linear infinite; animation-delay: -2.6s; }
+
+    @keyframes ch-flow {
+      from { stroke-dashoffset: 100; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .ch-pulse { animation: ch-pulse-anim 7s ease-in-out infinite; }
+    @keyframes ch-pulse-anim {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.75; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ch-trace, .ch-trace-2, .ch-trace-3, .ch-pulse { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- Frame Background -->
+  <rect width="1200" height="620" rx="24" fill="url(#ch-bg)"/>
+  <rect width="1200" height="620" rx="24" fill="url(#ch-grid)"/>
+  <ellipse class="ch-pulse" cx="150" cy="220" rx="240" ry="180" fill="url(#ch-glow-edge)"/>
+  <ellipse class="ch-pulse" cx="600" cy="340" rx="280" ry="200" fill="url(#ch-glow-center)"/>
+  <ellipse class="ch-pulse" cx="1050" cy="460" rx="240" ry="180" fill="url(#ch-glow-egress)"/>
+  <rect x="1" y="1" width="1198" height="618" rx="23" fill="none" stroke="#53CADD" stroke-opacity="0.25"/>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <g class="ch-sans" transform="translate(48, 34)">
+    <rect width="250" height="26" rx="13" fill="#124052" stroke="#53CADD" stroke-opacity="0.35"/>
+    <circle cx="14" cy="13" r="4.5" fill="#00F2FE"/>
+    <text x="26" y="17" fill="#A6EAF4" font-size="10.5" font-weight="700" letter-spacing="1.5">CLOUDHUB 2.0 INFRASTRUCTURE</text>
+    
+    <text x="0" y="52" fill="#F0F9FF" class="ch-title" font-size="24">Private Space &amp; Ingress Controller Architecture</text>
+    <text x="0" y="70" fill="#94A3B8" font-size="12">Amazon EKS Container Fabric · Built-in TLS Ingress (No Standalone DLB) · Multi-AZ Replicas · Static NAT Egress · Native Log Forwarding</text>
+  </g>
+
+  <!-- ==================== LEFT: INTERNET INGRESS ==================== -->
+  <g transform="translate(48, 125)">
+    <rect width="210" height="435" rx="14" fill="url(#ps-box-grad)" stroke="#00F2FE" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="18" y="24" fill="#00F2FE" class="ch-sans" font-size="11" font-weight="800" letter-spacing="1">EDGE INGRESS LAYER</text>
+    <text x="18" y="42" fill="#94A3B8" class="ch-mono" font-size="9">Public HTTPS &amp; Custom Domains</text>
+
+    <!-- Public Traffic Source -->
+    <g transform="translate(16, 60)">
+      <rect width="178" height="74" rx="8" fill="url(#ch-card)" stroke="#00A1E0" stroke-width="1"/>
+      <text x="12" y="22" fill="#FFFFFF" class="ch-sans" font-size="11" font-weight="700">Client Requests</text>
+      <text x="12" y="38" fill="#94A3B8" class="ch-mono" font-size="9">api.enterprise.com</text>
+      <text x="12" y="54" fill="#00F2FE" class="ch-mono" font-size="8.5">mTLS / TLS 1.3 (Port 443)</text>
+      <circle cx="160" cy="20" r="4" fill="#00F2FE"/>
+    </g>
+
+    <!-- Ingress Controller Card -->
+    <g transform="translate(16, 150)">
+      <rect width="178" height="155" rx="8" fill="#0B1A2A" stroke="#00F2FE" stroke-width="1.2"/>
+      <text x="12" y="24" fill="#00F2FE" class="ch-sans" font-size="11" font-weight="700">Built-in Ingress Controller</text>
+      <text x="12" y="44" fill="#94A3B8" class="ch-sans" font-size="9.5">• Replaces CloudHub 1.0 DLB</text>
+      <text x="12" y="60" fill="#94A3B8" class="ch-sans" font-size="9.5">• Zero additional license cost</text>
+      <text x="12" y="76" fill="#94A3B8" class="ch-sans" font-size="9.5">• Edge TLS Termination</text>
+      <text x="12" y="92" fill="#94A3B8" class="ch-sans" font-size="9.5">• Host/Path-based Routing</text>
+      
+      <rect x="12" y="106" width="154" height="34" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.4"/>
+      <text x="89" y="123" fill="#A6EAF4" class="ch-mono" font-size="8.5" text-anchor="middle">HTTP :8081 / HTTPS :8082</text>
+      <text x="89" y="134" fill="#10B981" class="ch-mono" font-size="8" text-anchor="middle">INTERNAL CONTAINER PORTS</text>
+    </g>
+
+    <!-- Zero-Downtime Deploy Card -->
+    <g transform="translate(16, 320)">
+      <rect width="178" height="95" rx="8" fill="url(#ch-card)" stroke="#10B981" stroke-width="1"/>
+      <text x="12" y="24" fill="#10B981" class="ch-sans" font-size="11" font-weight="700">Zero-Downtime Deploys</text>
+      <text x="12" y="42" fill="#94A3B8" class="ch-sans" font-size="9.5">Kubernetes Rolling Update:</text>
+      <text x="12" y="58" fill="#FFFFFF" class="ch-mono" font-size="9">Instant container cutover</text>
+      <text x="12" y="74" fill="#94A3B8" class="ch-sans" font-size="9">(No DNS TTL propagation lag!)</text>
+    </g>
+  </g>
+
+  <!-- Trunk Connector: Ingress to Private Space -->
+  <path d="M258 290 H285" stroke="#00F2FE" stroke-width="2"/>
+  <path class="ch-trace" pathLength="100" d="M258 290 H285" fill="none" stroke="#00F2FE" stroke-width="3" filter="url(#ch-glow)"/>
+
+  <!-- ==================== CENTER: PRIVATE SPACE K8S ==================== -->
+  <g transform="translate(285, 125)">
+    <rect width="600" height="435" rx="14" fill="url(#ps-box-grad)" stroke="#845EC2" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#D65DB1" class="ch-sans" font-size="11" font-weight="800" letter-spacing="1">PRIVATE SPACE CLUSTER (AMAZON EKS / KUBERNETES FABRIC)</text>
+    <text x="580" y="24" fill="#94A3B8" class="ch-mono" font-size="9.5" text-anchor="end">Isolated Subnets · Anypoint Security Policies</text>
+
+    <!-- AZ-A Box (Replica 1) -->
+    <g transform="translate(20, 42)">
+      <rect width="265" height="150" rx="8" fill="url(#ch-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="18" r="5" fill="#00A1E0"/>
+      <text x="28" y="22" fill="#FFFFFF" class="ch-sans" font-size="11.5" font-weight="700">Availability Zone 1 (us-east-1a)</text>
+      <rect x="180" y="10" width="75" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="217" y="22" fill="#00F2FE" class="ch-mono" font-size="8.5" text-anchor="middle">REPLICA 1</text>
+
+      <g transform="translate(14, 38)">
+        <rect width="237" height="96" rx="6" fill="#091420" stroke="#00A1E0" stroke-opacity="0.5"/>
+        <text x="12" y="22" fill="#00F2FE" class="ch-mono" font-size="10" font-weight="700">Mule Container Pod</text>
+        <text x="12" y="40" fill="#94A3B8" class="ch-mono" font-size="9">• Sizing: 0.2 vCore / 1GB RAM</text>
+        <text x="12" y="56" fill="#94A3B8" class="ch-mono" font-size="9">• Bind: 0.0.0.0:${http.port}</text>
+        <text x="12" y="72" fill="#94A3B8" class="ch-mono" font-size="9">• Ephemeral disk storage (/tmp)</text>
+        <circle cx="218" cy="20" r="4" fill="#10B981"/>
+      </g>
+    </g>
+
+    <!-- AZ-B Box (Replica 2) -->
+    <g transform="translate(315, 42)">
+      <rect width="265" height="150" rx="8" fill="url(#ch-card)" stroke="#845EC2" stroke-width="1"/>
+      <circle cx="16" cy="18" r="5" fill="#845EC2"/>
+      <text x="28" y="22" fill="#FFFFFF" class="ch-sans" font-size="11.5" font-weight="700">Availability Zone 2 (us-east-1b)</text>
+      <rect x="180" y="10" width="75" height="18" rx="4" fill="#845EC2" fill-opacity="0.15"/>
+      <text x="217" y="22" fill="#D65DB1" class="ch-mono" font-size="8.5" text-anchor="middle">REPLICA 2</text>
+
+      <g transform="translate(14, 38)">
+        <rect width="237" height="96" rx="6" fill="#091420" stroke="#845EC2" stroke-opacity="0.5"/>
+        <text x="12" y="22" fill="#D65DB1" class="ch-mono" font-size="10" font-weight="700">Mule Container Pod</text>
+        <text x="12" y="40" fill="#94A3B8" class="ch-mono" font-size="9">• Sizing: 0.2 vCore / 1GB RAM</text>
+        <text x="12" y="56" fill="#94A3B8" class="ch-mono" font-size="9">• Bind: 0.0.0.0:${http.port}</text>
+        <text x="12" y="72" fill="#94A3B8" class="ch-mono" font-size="9">• Active-Active High Availability</text>
+        <circle cx="218" cy="20" r="4" fill="#10B981"/>
+      </g>
+    </g>
+
+    <!-- State Plane: Object Store v2 + Anypoint MQ -->
+    <g transform="translate(20, 206)">
+      <rect width="560" height="90" rx="8" fill="#0C1726" stroke="#10B981" stroke-width="1.2"/>
+      <text x="16" y="24" fill="#10B981" class="ch-sans" font-size="11.5" font-weight="700">PERSISTENT DISTRIBUTED STATE PLANE</text>
+      <text x="16" y="44" fill="#FFFFFF" class="ch-mono" font-size="9.5">Object Store v2: Shared Caching &amp; Watermarking across Replicas</text>
+      <text x="16" y="60" fill="#FFFFFF" class="ch-mono" font-size="9.5">Anypoint MQ: Asynchronous FIFO Queuing &amp; Dead-Letter Buffering</text>
+      <text x="16" y="76" fill="#34D399" class="ch-sans" font-size="9.5">⚡ Eliminates Hazelcast cluster dependency · Replicas remain completely stateless</text>
+    </g>
+
+    <!-- Telemetry Forwarding -->
+    <g transform="translate(20, 310)">
+      <rect width="560" height="105" rx="8" fill="#0A141F" stroke="#53CADD" stroke-width="1"/>
+      <text x="16" y="24" fill="#A6EAF4" class="ch-sans" font-size="11.5" font-weight="700">NATIVE ENTERPRISE LOG FORWARDING</text>
+      <text x="16" y="44" fill="#94A3B8" class="ch-sans" font-size="9.5">• Container outputs directly to STDOUT (Console appender)</text>
+      <text x="16" y="60" fill="#94A3B8" class="ch-sans" font-size="9.5">• Built-in telemetry pipeline streams to SIEM without Log4j socket plugins</text>
+      <text x="16" y="80" fill="#00F2FE" class="ch-mono" font-size="9.5">DESTINATIONS: Splunk HEC · Datadog · Sumo Logic · Anypoint Monitoring</text>
+    </g>
+  </g>
+
+  <!-- Trunk Connector: Private Space to Egress -->
+  <path d="M885 290 H915" stroke="#10B981" stroke-width="2"/>
+  <path class="ch-trace-2" pathLength="100" d="M885 290 H915" fill="none" stroke="#10B981" stroke-width="3" filter="url(#ch-glow)"/>
+
+  <!-- ==================== RIGHT: EGRESS & ON-PREM ==================== -->
+  <g transform="translate(915, 125)">
+    <rect width="237" height="435" rx="14" fill="url(#ps-box-grad)" stroke="#10B981" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="18" y="24" fill="#10B981" class="ch-sans" font-size="11" font-weight="800" letter-spacing="1">EGRESS &amp; ON-PREMISES</text>
+    <text x="18" y="42" fill="#94A3B8" class="ch-mono" font-size="9">Hybrid Enterprise Transit</text>
+
+    <!-- NAT Gateway Card -->
+    <g transform="translate(16, 60)">
+      <rect width="205" height="96" rx="8" fill="url(#ch-card)" stroke="#10B981" stroke-width="1"/>
+      <text x="12" y="22" fill="#10B981" class="ch-sans" font-size="11" font-weight="700">Private Space NAT Gateway</text>
+      <text x="12" y="40" fill="#FFFFFF" class="ch-mono" font-size="9">Static Public IP: 54.210.x.x</text>
+      <text x="12" y="56" fill="#94A3B8" class="ch-sans" font-size="9">• Assigned per Private Space</text>
+      <text x="12" y="72" fill="#94A3B8" class="ch-sans" font-size="9">• Shared by all app replicas</text>
+      <circle cx="188" cy="20" r="4" fill="#10B981"/>
+    </g>
+
+    <!-- Transit Network Card -->
+    <g transform="translate(16, 170)">
+      <rect width="205" height="110" rx="8" fill="#0A1624" stroke="#53CADD" stroke-width="1"/>
+      <text x="12" y="22" fill="#A6EAF4" class="ch-sans" font-size="11" font-weight="700">Secure Network Tunnel</text>
+      <text x="12" y="42" fill="#FFFFFF" class="ch-mono" font-size="9">• IPsec VPN Gateway</text>
+      <text x="12" y="58" fill="#FFFFFF" class="ch-mono" font-size="9">• AWS DirectConnect (BGP)</text>
+      <text x="12" y="74" fill="#94A3B8" class="ch-sans" font-size="9">Sub-20ms private pipeline</text>
+      <text x="12" y="90" fill="#00F2FE" class="ch-mono" font-size="8.5">NO PUBLIC EGRESS TRANSIT</text>
+    </g>
+
+    <!-- Corporate On-Prem Data Center -->
+    <g transform="translate(16, 295)">
+      <rect width="205" height="120" rx="8" fill="url(#ch-card)" stroke="#845EC2" stroke-width="1"/>
+      <text x="12" y="22" fill="#D65DB1" class="ch-sans" font-size="11" font-weight="700">On-Premises Data Center</text>
+      <text x="12" y="42" fill="#94A3B8" class="ch-mono" font-size="9.5">SAP S/4HANA (BAPI)</text>
+      <text x="12" y="58" fill="#94A3B8" class="ch-mono" font-size="9.5">Oracle DB (RAC Cluster)</text>
+      <text x="12" y="74" fill="#94A3B8" class="ch-mono" font-size="9.5">IBM z/OS Mainframe</text>
+      <text x="12" y="96" fill="#10B981" class="ch-sans" font-size="9" font-weight="600">LAN Security: Private Firewall</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER INVARIANT ==================== -->
+  <g class="ch-sans" transform="translate(48, 595)">
+    <text x="0" y="0" fill="#64748B" font-size="11">⚡ <tspan fill="#ADC6D6" font-weight="600">CloudHub 2.0 Invariant:</tspan> Standalone DLBs and static EC2 worker IPs are obsolete. Private Spaces unify Ingress, Kubernetes container replication, and static NAT egress under one managed plane.</text>
+    <text x="1104" y="0" fill="#53CADD" class="ch-mono" font-size="10" text-anchor="end">KUBERNETES FABRIC</text>
+  </g>
+</svg>

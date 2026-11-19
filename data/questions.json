@@ -1,0 +1,1892 @@
+[
+  {
+    "id": 0,
+    "elementId": "mod-a-q1",
+    "title": "Tell me about your project end to end.",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 1,
+    "elementId": "mod-a-q2",
+    "title": "What is API-led connectivity and why did you use it?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 2,
+    "elementId": "mod-a-q3",
+    "title": "What technology did you work with? (Full tech stack)",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 3,
+    "elementId": "mod-b-q1",
+    "title": "What Salesforce Connector operations have you used?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 4,
+    "elementId": "mod-b-q2",
+    "title": "What is Salesforce Bulk API? When do you use it?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 5,
+    "elementId": "mod-b-q3",
+    "title": "How do you handle Salesforce governor limits?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 6,
+    "elementId": "mod-b-q4",
+    "title": "JWT Bearer vs Username-Password auth for Salesforce \u2014 which do you use?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 7,
+    "elementId": "mod-b-q5",
+    "title": "What is an External ID in Salesforce? How is it used in Upsert?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 8,
+    "elementId": "mod-c-q1",
+    "title": "What are Platform Events? How do you subscribe in MuleSoft?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 9,
+    "elementId": "mod-c-q2",
+    "title": "What is event retention? What if Mule app is down >72 hours?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 10,
+    "elementId": "mod-c-q3",
+    "title": "How do you handle duplicate Platform Events (at-least-once delivery)?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 11,
+    "elementId": "mod-c-q4",
+    "title": "Difference between Platform Events and CDC?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 12,
+    "elementId": "mod-d-q1",
+    "title": "Explain the Salesforce JWT Bearer authentication flow step by step.",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 13,
+    "elementId": "mod-d-q2",
+    "title": "How do you rotate the JWT signing key without downtime?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 14,
+    "elementId": "mod-d-q3",
+    "title": "Can the same Connected App be used across multiple environments?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 15,
+    "elementId": "mod-e-q1",
+    "title": "How do you integrate MuleSoft with AWS (S3, SQS, DynamoDB)?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 16,
+    "elementId": "mod-e-s3",
+    "title": "Amazon S3 Connector \u2014 createObject,",
+    "tag": "S3",
+    "answer": ""
+  },
+  {
+    "id": 17,
+    "elementId": "mod-e-s3",
+    "title": "\u00b7 SQS \u00b7 DynamoDB \u00b7 Lambda \u00b7 SigV4 \u00b7 Secrets Manager",
+    "tag": "S3",
+    "answer": ""
+  },
+  {
+    "id": 18,
+    "elementId": "mod-e-q2",
+    "title": "What is the difference between Amazon SQS and Anypoint MQ?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 19,
+    "elementId": "mod-e-q3",
+    "title": "How do you handle SQS visibility timeout in MuleSoft processing?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 20,
+    "elementId": "mod-f-q1",
+    "title": "Describe a full Salesforce + SAP integration end to end.",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 21,
+    "elementId": "mod-f-q2",
+    "title": "How do you prevent infinite loops in bidirectional Salesforce\u2194SAP sync?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 22,
+    "elementId": "mod-f-q3",
+    "title": "How do you handle SAP being down when a Platform Event arrives?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 23,
+    "elementId": "mod-g-q1",
+    "title": "What is Scatter-Gather? How does it work?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 24,
+    "elementId": "mod-g-q2",
+    "title": "What is the output type of Scatter-Gather? How do you merge results?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 25,
+    "elementId": "mod-g-q3",
+    "title": "If one route in Scatter-Gather fails, what happens to the others?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 26,
+    "elementId": "mod-g-q4",
+    "title": "Scatter-Gather vs Parallel ForEach \u2014 when to use which?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 27,
+    "elementId": "mod-h-q1",
+    "title": "What is ForEach? How does it work and what is its output?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 28,
+    "elementId": "mod-h-q2",
+    "title": "If a record fails inside ForEach, what happens? How do you handle it?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 29,
+    "elementId": "mod-h-q3",
+    "title": "What is Parallel ForEach? How is it different from ForEach?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 30,
+    "elementId": "mod-i-q1",
+    "title": "What is a Batch Job? What are its phases?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 31,
+    "elementId": "mod-i-q2",
+    "title": "What is Batch Aggregator and when do you use it?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 32,
+    "elementId": "mod-i-q3",
+    "title": "What is maxFailedRecords in Batch Job? What is the default?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 33,
+    "elementId": "mod-i-q4",
+    "title": "What happens in the On Complete phase? What data is available?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 34,
+    "elementId": "mod-i-q5",
+    "title": "How do you roll back records in batch processing?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 35,
+    "elementId": "mod-j-q1",
+    "title": "What is Until Successful? When do you use it?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 36,
+    "elementId": "mod-j-q2",
+    "title": "What happens when Until Successful exhausts all retries?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 37,
+    "elementId": "mod-j-q3",
+    "title": "Until Successful vs reconnection strategy \u2014 what is the difference?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 38,
+    "elementId": "mod-k-q1",
+    "title": "What is Choice Router? How does it work?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 39,
+    "elementId": "mod-k-q2",
+    "title": "What is the difference between Choice Router and First Successful?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 40,
+    "elementId": "mod-k-q3",
+    "title": "What is Async Scope? When do you use it?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 41,
+    "elementId": "mod-l-q1",
+    "title": "What is the difference between On Error Continue and On Error Propagate?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 42,
+    "elementId": "mod-l-q2",
+    "title": "What is a Try Scope? When do you use it?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 43,
+    "elementId": "mod-l-q3",
+    "title": "What are the standard MuleSoft error types?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 44,
+    "elementId": "mod-l-q4",
+    "title": "How do you propagate an error from SAPI to XAPI through PAPI?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 45,
+    "elementId": "mod-l-q5",
+    "title": "What is the standard error response format you use across all Enterprise APIs?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 46,
+    "elementId": "mod-m-q1",
+    "title": "What is Anypoint MQ? Difference between Queue and Exchange?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 47,
+    "elementId": "mod-m-q2",
+    "title": "What is MANUAL acknowledgement mode? Why do you use it?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 48,
+    "elementId": "mod-m-q3",
+    "title": "How do you implement idempotency with Anypoint MQ?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 49,
+    "elementId": "mod-m-q4",
+    "title": "How did you implement cross-region DR with Anypoint MQ in your Enterprise Architecture?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 50,
+    "elementId": "mod-m-q5",
+    "title": "Is VM connector reliable? How does it compare to Anypoint MQ?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 51,
+    "elementId": "mod-n-q1",
+    "title": "What is ObjectStore? What are the types?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 52,
+    "elementId": "mod-n-q2",
+    "title": "What is watermarking? How does ObjectStore store watermark values?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 53,
+    "elementId": "mod-n-q3",
+    "title": "What is cache scope? How is it different from ObjectStore?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 54,
+    "elementId": "mod-o-q1",
+    "title": "What is RAML? Why do you design API specs before coding?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 55,
+    "elementId": "mod-o-q2",
+    "title": "What is API AutoDiscovery? Why is it important?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 56,
+    "elementId": "mod-o-q3",
+    "title": "What policies have you used in API Manager?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 57,
+    "elementId": "mod-o-q4",
+    "title": "What is Anypoint Exchange? How do you use it?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 58,
+    "elementId": "mod-p-q1",
+    "title": "How do you write MUnit tests? How do you mock external calls?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 59,
+    "elementId": "mod-p-q2",
+    "title": "How do you test failure scenarios in MUnit?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 60,
+    "elementId": "mod-p-q3",
+    "title": "How do you write an MUnit test if a Scheduler triggers the flow?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 61,
+    "elementId": "mod-p-q4",
+    "title": "How do you enforce MUnit coverage and what tools do you use?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 62,
+    "elementId": "mod-p-q1",
+    "title": "What security standards do you follow in every API?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 63,
+    "elementId": "mod-q-q2",
+    "title": "What naming conventions do you follow?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 64,
+    "elementId": "mod-q-q1",
+    "title": "Describe your Billing Inquiry flow end to end.",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 65,
+    "elementId": "mod-q-q2",
+    "title": "What was the most challenging technical problem you solved?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 66,
+    "elementId": "mod-q-q3",
+    "title": "How did you manage the async preference update flow?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 67,
+    "elementId": "mod-r-q1",
+    "title": "What is the difference between sub-flow and private flow?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 68,
+    "elementId": "mod-r-q2",
+    "title": "What is the difference between VM connector and flow reference?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 69,
+    "elementId": "mod-r-q3",
+    "title": "What is fan-in and fan-out? How do you implement them?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 70,
+    "elementId": "mod-r-q4",
+    "title": "What are streaming strategies in MuleSoft? Which is the default?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 71,
+    "elementId": "mod-r-q5",
+    "title": "How do you set up HTTPS connection in MuleSoft? One-way vs two-way SSL?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 72,
+    "elementId": "mod-r-q6",
+    "title": "What is VPC and VPN in CloudHub? What is SLB vs DLB?",
+    "tag": "Q6",
+    "answer": ""
+  },
+  {
+    "id": 73,
+    "elementId": "mod-r-q7",
+    "title": "How do you call a Java file in DataWeave? How do you invoke a flow in DataWeave?",
+    "tag": "Q7",
+    "answer": ""
+  },
+  {
+    "id": 74,
+    "elementId": "mod-r-q8",
+    "title": "Write DataWeave to mask a credit card number \u2014 show only last 4 digits.",
+    "tag": "Q8",
+    "answer": ""
+  },
+  {
+    "id": 75,
+    "elementId": "mod-r-q9",
+    "title": "Write DataWeave to find even numbers from [1,2,3,4,5,6] and swap two values.",
+    "tag": "Q9",
+    "answer": ""
+  },
+  {
+    "id": 76,
+    "elementId": "mod-r-q10",
+    "title": "Write a cron expression to trigger a flow daily at 10AM. Write RAML for books and songs",
+    "tag": "Q10",
+    "answer": ""
+  },
+  {
+    "id": 77,
+    "elementId": "mod-s-q11",
+    "title": "What is horizontal vs vertical scaling? When do you use each in MuleSoft?",
+    "tag": "Q11",
+    "answer": ""
+  },
+  {
+    "id": 78,
+    "elementId": "mod-t-q12",
+    "title": "How do you encrypt properties in MuleSoft? How do you bypass applied API policies in Studio?",
+    "tag": "Q12",
+    "answer": ""
+  },
+  {
+    "id": 79,
+    "elementId": "mod-t-q13",
+    "title": "If 5 people are invoking the same URL, how does MuleSoft ensure the correct response goes to",
+    "tag": "Q13",
+    "answer": ""
+  },
+  {
+    "id": 80,
+    "elementId": "mod-t-q14",
+    "title": "What are traits, resource types, and fragments in RAML?",
+    "tag": "Q14",
+    "answer": ""
+  },
+  {
+    "id": 81,
+    "elementId": "mod-t-q15",
+    "title": "What is the difference between Query and QueryAll in Salesforce?",
+    "tag": "Q15",
+    "answer": ""
+  },
+  {
+    "id": 82,
+    "elementId": "mod-t-q16",
+    "title": "How do you handle SFTP strategies? How do you auto-delete files on SFTP?",
+    "tag": "Q16",
+    "answer": ""
+  },
+  {
+    "id": 83,
+    "elementId": "mod-t-q17",
+    "title": "In a Bulk Insert with 10 records, if record 7 is invalid, what happens?",
+    "tag": "Q17",
+    "answer": ""
+  },
+  {
+    "id": 84,
+    "elementId": "mod-u-q18",
+    "title": "An exception arose at System layer and I want that error message to propagate to Experience",
+    "tag": "Q18",
+    "answer": ""
+  },
+  {
+    "id": 85,
+    "elementId": "mod-u-q19",
+    "title": "System API is taking too long to respond (timeout). How do you fix it from XAPI's perspective?",
+    "tag": "Q19",
+    "answer": ""
+  },
+  {
+    "id": 86,
+    "elementId": "mod-u-q20",
+    "title": "How do you implement CI/CD for MuleSoft? What Maven commands do you use?",
+    "tag": "Q20",
+    "answer": ""
+  },
+  {
+    "id": 87,
+    "elementId": "mod-u-q1",
+    "title": "What is the difference between DataWeave 1.0 and 2.0?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 88,
+    "elementId": "mod-u-q2",
+    "title": "What is the p() function in DataWeave? What is lookup()?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 89,
+    "elementId": "mod-u-q3",
+    "title": "What is the difference between flatten and flatMap?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 90,
+    "elementId": "mod-u-q4",
+    "title": "How do you skip null values in DataWeave? How do you mask sensitive data?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 91,
+    "elementId": "mod-u-q5",
+    "title": "What is zip() function? How do you merge two arrays?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 92,
+    "elementId": "mod-u-q6",
+    "title": "What is sizeOf(), typeOf(), and how do you remove a key from an object?",
+    "tag": "Q6",
+    "answer": ""
+  },
+  {
+    "id": 93,
+    "elementId": "mod-u-q7",
+    "title": "What is reduce() in DataWeave? Write examples for sum and string concat.",
+    "tag": "Q7",
+    "answer": ""
+  },
+  {
+    "id": 94,
+    "elementId": "mod-u-q8",
+    "title": "What is match vs matches? What is read() vs readUrl()?",
+    "tag": "Q8",
+    "answer": ""
+  },
+  {
+    "id": 95,
+    "elementId": "mod-u-q9",
+    "title": "How do you access secure properties inside DataWeave? How to encode/decode base64?",
+    "tag": "Q9",
+    "answer": ""
+  },
+  {
+    "id": 96,
+    "elementId": "mod-u-q10",
+    "title": "Write DataWeave to check if a number is even or odd. How to convert string to Number?",
+    "tag": "Q10",
+    "answer": ""
+  },
+  {
+    "id": 97,
+    "elementId": "mod-v-q1",
+    "title": "What is the difference between CloudHub 1.0 and CloudHub 2.0?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 98,
+    "elementId": "mod-v-q2",
+    "title": "Explain mTLS. How do you debug mTLS-related issues?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 99,
+    "elementId": "mod-v-q3",
+    "title": "What is the difference between Rate Limiting, Spike Control, and Throttling?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 100,
+    "elementId": "mod-v-q4",
+    "title": "What is Transaction Management in MuleSoft? XA vs Local transactions?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 101,
+    "elementId": "mod-v-q5",
+    "title": "What is guaranteed delivery? How do you ensure it in MuleSoft?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 102,
+    "elementId": "mod-w-q6",
+    "title": "After batch job processes 1,000 of 10,000 records and restarts, how do you avoid reprocessing?",
+    "tag": "Q6",
+    "answer": ""
+  },
+  {
+    "id": 103,
+    "elementId": "mod-w-q1",
+    "title": "What is Correlation ID? How is it different from Transaction ID?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 104,
+    "elementId": "mod-w-q2",
+    "title": "What is the APIKit Router? What does it do?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 105,
+    "elementId": "mod-w-q3",
+    "title": "What is the difference between fixed frequency and cron in Scheduler?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 106,
+    "elementId": "mod-w-q4",
+    "title": "What is Reconnection Strategy? What are the three options?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 107,
+    "elementId": "mod-w-q5",
+    "title": "What is the difference between REST and SOAP web services?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 108,
+    "elementId": "mod-w-q6",
+    "title": "What are the configuration differences between File, FTP, and SFTP connectors?",
+    "tag": "Q6",
+    "answer": ""
+  },
+  {
+    "id": 109,
+    "elementId": "mod-w-q7",
+    "title": "What operations are available in FTP/SFTP/File connectors?",
+    "tag": "Q7",
+    "answer": ""
+  },
+  {
+    "id": 110,
+    "elementId": "mod-w-q8",
+    "title": "Compare ForEach, Parallel ForEach, and Batch Processing \u2014 when to use which?",
+    "tag": "Q8",
+    "answer": ""
+  },
+  {
+    "id": 111,
+    "elementId": "mod-w-q9",
+    "title": "What are the HTTP status code categories? What is the difference between 201 and 202?",
+    "tag": "Q9",
+    "answer": ""
+  },
+  {
+    "id": 112,
+    "elementId": "mod-w-q10",
+    "title": "What is an Idempotent Filter / Idempotent Message Validator?",
+    "tag": "Q10",
+    "answer": ""
+  },
+  {
+    "id": 113,
+    "elementId": "mod-w-q11",
+    "title": "How do you validate JSON and XML in MuleSoft without RAML?",
+    "tag": "Q11",
+    "answer": ""
+  },
+  {
+    "id": 114,
+    "elementId": "mod-w-q12",
+    "title": "What is a custom connector? When would you create one?",
+    "tag": "Q12",
+    "answer": ""
+  },
+  {
+    "id": 115,
+    "elementId": "mod-x-q1",
+    "title": "What is inside a Mule Event? What is the difference between payload, attributes, and vars?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 116,
+    "elementId": "mod-x-q2",
+    "title": "What is the difference between repeatable and non-repeatable streaming?",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 117,
+    "elementId": "mod-x-q3",
+    "title": "What are the key best practices for the HTTP Connector?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 118,
+    "elementId": "mod-x-q4",
+    "title": "What are the key best practices for the Database Connector?",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 119,
+    "elementId": "mod-x-q5",
+    "title": "What is the JMS Connector? When do you use JMS vs Anypoint MQ?",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 120,
+    "elementId": "mod-x-q6",
+    "title": "What is the Kafka Connector? Kafka vs Anypoint MQ \u2014 when to use which?",
+    "tag": "Q6",
+    "answer": ""
+  },
+  {
+    "id": 121,
+    "elementId": "mod-x-q7",
+    "title": "What is the VM Connector? How does it differ from flow-ref and Anypoint MQ?",
+    "tag": "Q7",
+    "answer": ""
+  },
+  {
+    "id": 122,
+    "elementId": "mod-x-q8",
+    "title": "How do you version APIs in MuleSoft? What is a breaking vs non-breaking change?",
+    "tag": "Q8",
+    "answer": ""
+  },
+  {
+    "id": 123,
+    "elementId": "mod-x-q9",
+    "title": "How do you tune MuleSoft application performance?",
+    "tag": "Q9",
+    "answer": ""
+  },
+  {
+    "id": 124,
+    "elementId": "mod-y-q10",
+    "title": "What is Runtime Fabric (RTF)? How is it different from CloudHub?",
+    "tag": "Q10",
+    "answer": ""
+  },
+  {
+    "id": 125,
+    "elementId": "mod-y-q11",
+    "title": "What are the best practices for logging in MuleSoft?",
+    "tag": "Q11",
+    "answer": ""
+  },
+  {
+    "id": 126,
+    "elementId": "mod-y-q12",
+    "title": "How do you upgrade Mule apps to Java 17? What breaks?",
+    "tag": "Q12",
+    "answer": ""
+  },
+  {
+    "id": 127,
+    "elementId": "mod-y-q13",
+    "title": "What is MuleSoft AI and how does it integrate with Agentforce?",
+    "tag": "Q13",
+    "answer": ""
+  },
+  {
+    "id": 128,
+    "elementId": "mod-y-q14",
+    "title": "What is Anypoint Code Builder? How is it different from Anypoint Studio?",
+    "tag": "Q14",
+    "answer": ""
+  },
+  {
+    "id": 129,
+    "elementId": "mod-y-q15",
+    "title": "What is the Parent POM / BOM pattern in MuleSoft? Why do you use it?",
+    "tag": "Q15",
+    "answer": ""
+  },
+  {
+    "id": 130,
+    "elementId": "mod-z-s1",
+    "title": "Your MuleSoft PAPI calls SAP SAPI which calls SAP. SAP returns HTTP 500. Walk me",
+    "tag": "S1",
+    "answer": ""
+  },
+  {
+    "id": 131,
+    "elementId": "mod-z-s2",
+    "title": "You have a Mule app deployed on CloudHub with 2 workers. An MQ message is",
+    "tag": "S2",
+    "answer": ""
+  },
+  {
+    "id": 132,
+    "elementId": "mod-z-s3",
+    "title": "Your nightly batch job processes 50,000 records. After processing 30,000 records,",
+    "tag": "S3",
+    "answer": ""
+  },
+  {
+    "id": 133,
+    "elementId": "mod-z-s4",
+    "title": "Your billing API suddenly gets 10x traffic (billing cycle spike). Response times",
+    "tag": "S4",
+    "answer": ""
+  },
+  {
+    "id": 134,
+    "elementId": "mod-z-s5",
+    "title": "Your Scatter-Gather calls SAP (usually 800ms) and DynamoDB (usually 200ms).",
+    "tag": "S5",
+    "answer": ""
+  },
+  {
+    "id": 135,
+    "elementId": "mod-z-s6",
+    "title": "Your flow inserts a record into DB, then publishes to Anypoint MQ. The DB insert",
+    "tag": "S6",
+    "answer": ""
+  },
+  {
+    "id": 136,
+    "elementId": "mod-z-s7",
+    "title": "Salesforce sends the same Platform Event twice due to at-least-once delivery. Your",
+    "tag": "S7",
+    "answer": ""
+  },
+  {
+    "id": 137,
+    "elementId": "mod-z-s8",
+    "title": "An interviewer sees your API exposes customer account numbers and SSNs in the",
+    "tag": "S8",
+    "answer": ""
+  },
+  {
+    "id": 138,
+    "elementId": "mod-z-s9",
+    "title": "A downstream Salesforce team wants you to add a new required field to an",
+    "tag": "S9",
+    "answer": ""
+  },
+  {
+    "id": 139,
+    "elementId": "mod-z-s10",
+    "title": "You need to call the same SAP endpoint from 5 different MuleSoft APIs. What is",
+    "tag": "S10",
+    "answer": ""
+  },
+  {
+    "id": 140,
+    "elementId": "mod-z-s11",
+    "title": "SAP returns an XML response with nested namespaces. Some fields are missing",
+    "tag": "S11",
+    "answer": ""
+  },
+  {
+    "id": 141,
+    "elementId": "mod-z-s12",
+    "title": "Your DataWeave transform takes 800ms on large payloads. How do you optimize",
+    "tag": "S12",
+    "answer": ""
+  },
+  {
+    "id": 142,
+    "elementId": "mod-z-s13",
+    "title": "You deployed a new version of your billing API at 2AM. At 8AM (peak billing",
+    "tag": "S13",
+    "answer": ""
+  },
+  {
+    "id": 143,
+    "elementId": "mod-z-s14",
+    "title": "Business says \"our customer preference updates are not being saved.\" How do",
+    "tag": "S14",
+    "answer": ""
+  },
+  {
+    "id": 144,
+    "elementId": "mod-z-s15",
+    "title": "\"What if all 3 DB connectors in Scatter-Gather fail? What happens?\"",
+    "tag": "S15",
+    "answer": ""
+  },
+  {
+    "id": 145,
+    "elementId": "mod-z-s16",
+    "title": "\"What is the difference between flowRef and subflow \u2014 when would",
+    "tag": "S16",
+    "answer": ""
+  },
+  {
+    "id": 146,
+    "elementId": "mod-z-s17",
+    "title": "\"You set maxRetries=3 in Until Successful. How many total attempts",
+    "tag": "S17",
+    "answer": ""
+  },
+  {
+    "id": 147,
+    "elementId": "mod-z-s18",
+    "title": "\"You said ForEach doesn't change the payload. But I set a variable inside",
+    "tag": "S18",
+    "answer": ""
+  },
+  {
+    "id": 148,
+    "elementId": "mod-z-s19",
+    "title": "\"What is the difference between SDO and SMO in MuleSoft?\"",
+    "tag": "S19",
+    "answer": ""
+  },
+  {
+    "id": 149,
+    "elementId": "mod-z-s20",
+    "title": "FINAL CROSS-QUESTION: \"How would you design a MuleSoft integration for a system you've",
+    "tag": "S20",
+    "answer": ""
+  },
+  {
+    "id": 150,
+    "elementId": "mod-aa-n1",
+    "title": "What is the Einstein AI Connector? How is it different from the Inference Connector?",
+    "tag": "N1",
+    "answer": ""
+  },
+  {
+    "id": 151,
+    "elementId": "mod-bb-n2",
+    "title": "What is Anypoint Partner Manager (APM)? How does it differ from the X12 EDI Connector?",
+    "tag": "N2",
+    "answer": ""
+  },
+  {
+    "id": 152,
+    "elementId": "mod-bb-n3",
+    "title": "Your interviewer asks: \"How would you integrate MuleSoft with Snowflake for a nightly ETL",
+    "tag": "N3",
+    "answer": ""
+  },
+  {
+    "id": 153,
+    "elementId": "mod-bb-n4",
+    "title": ". What is the MuleSoft MCP Connector and how does it connect MuleSoft to AI agents?",
+    "tag": "N4",
+    "answer": ""
+  },
+  {
+    "id": 154,
+    "elementId": "mod-bb-n5",
+    "title": ". What is the Anypoint Terraform Provider and why would you use it?",
+    "tag": "N5",
+    "answer": ""
+  },
+  {
+    "id": 155,
+    "elementId": "mod-bb-n6",
+    "title": ". When would you choose Anypoint Secrets Manager over AWS Secrets Manager (or vice versa)?",
+    "tag": "N6",
+    "answer": ""
+  },
+  {
+    "id": 156,
+    "elementId": "mod-bb-n7",
+    "title": ". How do you use Anypoint Visualizer in an enterprise context?",
+    "tag": "N7",
+    "answer": ""
+  },
+  {
+    "id": 157,
+    "elementId": "mod-bb-n8",
+    "title": ". What is the MuleSoft certification path and what does each certification validate?",
+    "tag": "N8",
+    "answer": ""
+  },
+  {
+    "id": 158,
+    "elementId": "mod-bb-n9",
+    "title": ". Quick-fire round \u2014 answer these 10 MuleSoft questions in one sentence each",
+    "tag": "N9",
+    "answer": ""
+  },
+  {
+    "id": 159,
+    "elementId": "mod-cc-n10",
+    "title": ". What is the difference between HTTP 401 and 403, and how do you handle both in MuleSoft?",
+    "tag": "N10",
+    "answer": ""
+  },
+  {
+    "id": 160,
+    "elementId": "mod-cc-n11",
+    "title": ". Design Scenario: A banking client needs an API handling 10,000 transactions/minute with PCI-",
+    "tag": "N11",
+    "answer": ""
+  },
+  {
+    "id": 161,
+    "elementId": "mod-cc-t1",
+    "title": "Mule 3 vs Mule 4",
+    "tag": "T1",
+    "answer": ""
+  },
+  {
+    "id": 162,
+    "elementId": "mod-cc-t2",
+    "title": "Error handling in",
+    "tag": "T2",
+    "answer": ""
+  },
+  {
+    "id": 163,
+    "elementId": "mod-cc-t3",
+    "title": "DataWeave vs MEL",
+    "tag": "T3",
+    "answer": ""
+  },
+  {
+    "id": 164,
+    "elementId": "mod-cc-t4",
+    "title": "401 vs 403",
+    "tag": "T4",
+    "answer": ""
+  },
+  {
+    "id": 165,
+    "elementId": "mod-cc-t5",
+    "title": "Watermark purpose",
+    "tag": "T5",
+    "answer": ""
+  },
+  {
+    "id": 166,
+    "elementId": "mod-cc-t6",
+    "title": "CloudHub 1.0 vs 2.0 CloudHub 2.0 is the",
+    "tag": "T6",
+    "answer": ""
+  },
+  {
+    "id": 167,
+    "elementId": "mod-cc-t7",
+    "title": "Scatter-Gather error",
+    "tag": "T7",
+    "answer": ""
+  },
+  {
+    "id": 168,
+    "elementId": "mod-cc-t8",
+    "title": "Until Successful retry",
+    "tag": "T8",
+    "answer": ""
+  },
+  {
+    "id": 169,
+    "elementId": "mod-cc-t9",
+    "title": "Payload after Set",
+    "tag": "T9",
+    "answer": ""
+  },
+  {
+    "id": 170,
+    "elementId": "mod-cc-t10",
+    "title": "APIkit vs HTTP",
+    "tag": "T10",
+    "answer": ""
+  },
+  {
+    "id": 171,
+    "elementId": "mod-cc-t11",
+    "title": "on-error-propagate",
+    "tag": "T11",
+    "answer": ""
+  },
+  {
+    "id": 172,
+    "elementId": "mod-cc-t12",
+    "title": "DataWeave output",
+    "tag": "T12",
+    "answer": ""
+  },
+  {
+    "id": 173,
+    "elementId": "mod-cc-t13",
+    "title": "For Each vs Batch",
+    "tag": "T13",
+    "answer": ""
+  },
+  {
+    "id": 174,
+    "elementId": "mod-cc-t14",
+    "title": "API Manager auto-",
+    "tag": "T14",
+    "answer": ""
+  },
+  {
+    "id": 175,
+    "elementId": "mod-cc-t15",
+    "title": "Mule event",
+    "tag": "T15",
+    "answer": ""
+  },
+  {
+    "id": 176,
+    "elementId": "mod-cc-t16",
+    "title": "HTTP Connector vs",
+    "tag": "T16",
+    "answer": ""
+  },
+  {
+    "id": 177,
+    "elementId": "mod-cc-t17",
+    "title": "Secure properties",
+    "tag": "T17",
+    "answer": ""
+  },
+  {
+    "id": 178,
+    "elementId": "mod-cc-t18",
+    "title": "MUnit mock scope",
+    "tag": "T18",
+    "answer": ""
+  },
+  {
+    "id": 179,
+    "elementId": "mod-cc-t19",
+    "title": "RAML vs OAS",
+    "tag": "T19",
+    "answer": ""
+  },
+  {
+    "id": 180,
+    "elementId": "mod-cc-t20",
+    "title": "Explaining",
+    "tag": "T20",
+    "answer": ""
+  },
+  {
+    "id": 181,
+    "elementId": "mod-dd-s5",
+    "title": "\u2014 those three cover architecture, performance, and real-world scenario. If you can",
+    "tag": "S5",
+    "answer": ""
+  },
+  {
+    "id": 182,
+    "elementId": "mod-dd-r1",
+    "title": "How do you run discovery for a new integration? What framework do you follow?",
+    "tag": "R1",
+    "answer": ""
+  },
+  {
+    "id": 183,
+    "elementId": "mod-dd-r2",
+    "title": "What questions do you ask the client, by category?",
+    "tag": "R2",
+    "answer": ""
+  },
+  {
+    "id": 184,
+    "elementId": "mod-dd-r3",
+    "title": "What red flags do you watch for in discovery, and which assumptions do you confirm in",
+    "tag": "R3",
+    "answer": ""
+  },
+  {
+    "id": 185,
+    "elementId": "mod-dd-r4",
+    "title": "Walk me through a discovery workshop agenda.",
+    "tag": "R4",
+    "answer": ""
+  },
+  {
+    "id": 186,
+    "elementId": "mod-dd-r5",
+    "title": "What \"delighters\" do you add to make the client happy beyond the core integration?",
+    "tag": "R5",
+    "answer": ""
+  },
+  {
+    "id": 187,
+    "elementId": "mod-dd-r6",
+    "title": "Give me your requirements checklist (copy-friendly).",
+    "tag": "R6",
+    "answer": ""
+  },
+  {
+    "id": 188,
+    "elementId": "mod-dd-r7",
+    "title": "Mini case study: Salesforce \u2192 SAP \u2192 Database order sync. How would you gather",
+    "tag": "R7",
+    "answer": ""
+  },
+  {
+    "id": 189,
+    "elementId": "mod-dd-c1",
+    "title": "How does MuleSoft compare with other integration options? Give an honest comparison.",
+    "tag": "C1",
+    "answer": ""
+  },
+  {
+    "id": 190,
+    "elementId": "mod-ee-c2",
+    "title": "What are MuleSoft's real differentiators?",
+    "tag": "C2",
+    "answer": ""
+  },
+  {
+    "id": 191,
+    "elementId": "mod-ee-c3",
+    "title": "When would you NOT recommend MuleSoft?",
+    "tag": "C3",
+    "answer": ""
+  },
+  {
+    "id": 192,
+    "elementId": "mod-ee-c4",
+    "title": "How do you handle client objections? Give scripts.",
+    "tag": "C4",
+    "answer": ""
+  },
+  {
+    "id": 193,
+    "elementId": "mod-ee-c5",
+    "title": "How do you build a TCO and value case for MuleSoft?",
+    "tag": "C5",
+    "answer": ""
+  },
+  {
+    "id": 194,
+    "elementId": "mod-ee-c6",
+    "title": "How would you run a POC or pilot to prove MuleSoft to a sceptical client?",
+    "tag": "C6",
+    "answer": ""
+  },
+  {
+    "id": 195,
+    "elementId": "mod-ee-e1",
+    "title": "How do you tailor the same architecture message for different audiences?",
+    "tag": "E1",
+    "answer": ""
+  },
+  {
+    "id": 196,
+    "elementId": "mod-ee-e2",
+    "title": "Give me analogies to explain API-led connectivity, the 3 API layers, DataWeave and CloudHub",
+    "tag": "E2",
+    "answer": ""
+  },
+  {
+    "id": 197,
+    "elementId": "mod-ee-e3",
+    "title": "\"What is MuleSoft?\" \u2014 give 30-second, 2-minute and 5-minute versions.",
+    "tag": "E3",
+    "answer": ""
+  },
+  {
+    "id": 198,
+    "elementId": "mod-ee-e4",
+    "title": "\"What is API-led connectivity?\" \u2014 give 30-second, 2-minute and 5-minute versions.",
+    "tag": "E4",
+    "answer": ""
+  },
+  {
+    "id": 199,
+    "elementId": "mod-ff-e5",
+    "title": "How do you present an architecture to a client steering committee?",
+    "tag": "E5",
+    "answer": ""
+  },
+  {
+    "id": 200,
+    "elementId": "mod-ff-e6",
+    "title": "How do you report status with RAG, and how do you deliver bad news?",
+    "tag": "E6",
+    "answer": ""
+  },
+  {
+    "id": 201,
+    "elementId": "mod-ff-e7",
+    "title": "How do you handle scope creep from the client?",
+    "tag": "E7",
+    "answer": ""
+  },
+  {
+    "id": 202,
+    "elementId": "mod-ff-e8",
+    "title": "Give me a jargon-to-plain-English table for client conversations.",
+    "tag": "E8",
+    "answer": ""
+  },
+  {
+    "id": 203,
+    "elementId": "mod-ff-e9",
+    "title": "Share email templates for kickoff, risk escalation and go-live.",
+    "tag": "E9",
+    "answer": ""
+  },
+  {
+    "id": 204,
+    "elementId": "mod-gg-a0",
+    "title": "What framework should I use to answer architect-level questions?",
+    "tag": "A0",
+    "answer": ""
+  },
+  {
+    "id": 205,
+    "elementId": "mod-gg-a1",
+    "title": "How do you decide whether an integration should be synchronous or asynchronous?",
+    "tag": "A1",
+    "answer": ""
+  },
+  {
+    "id": 206,
+    "elementId": "mod-gg-a2",
+    "title": "When would you NOT use all three API-led layers?",
+    "tag": "A2",
+    "answer": ""
+  },
+  {
+    "id": 207,
+    "elementId": "mod-gg-a3",
+    "title": "How do you size a MuleSoft application and its deployment?",
+    "tag": "A3",
+    "answer": ""
+  },
+  {
+    "id": 208,
+    "elementId": "mod-gg-a4",
+    "title": "How do you design an enterprise security model for APIs?",
+    "tag": "A4",
+    "answer": ""
+  },
+  {
+    "id": 209,
+    "elementId": "mod-gg-a5",
+    "title": "How do you set up API governance across many teams?",
+    "tag": "A5",
+    "answer": ""
+  },
+  {
+    "id": 210,
+    "elementId": "mod-gg-a6",
+    "title": "What is a C4E and how would you set one up?",
+    "tag": "A6",
+    "answer": ""
+  },
+  {
+    "id": 211,
+    "elementId": "mod-gg-a7",
+    "title": "How do you design for high availability and disaster recovery?",
+    "tag": "A7",
+    "answer": ""
+  },
+  {
+    "id": 212,
+    "elementId": "mod-gg-a8",
+    "title": "How do you design observability for a MuleSoft estate?",
+    "tag": "A8",
+    "answer": ""
+  },
+  {
+    "id": 213,
+    "elementId": "mod-gg-a9",
+    "title": "How do you handle a breaking change to an API with many consumers?",
+    "tag": "A9",
+    "answer": ""
+  },
+  {
+    "id": 214,
+    "elementId": "mod-gg-a10",
+    "title": "How do you design a canonical data model, and when do you avoid one?",
+    "tag": "A10",
+    "answer": ""
+  },
+  {
+    "id": 215,
+    "elementId": "mod-gg-a11",
+    "title": "How do you make an integration reliable when the target system is unreliable?",
+    "tag": "A11",
+    "answer": ""
+  },
+  {
+    "id": 216,
+    "elementId": "mod-gg-a12",
+    "title": "How do you decide between CloudHub 2.0, Runtime Fabric and customer-hosted runtimes?",
+    "tag": "A12",
+    "answer": ""
+  },
+  {
+    "id": 217,
+    "elementId": "mod-gg-a13",
+    "title": "Tell me about a time you disagreed with a client or a senior stakeholder on architecture.",
+    "tag": "A13",
+    "answer": ""
+  },
+  {
+    "id": 218,
+    "elementId": "mod-gg-a14",
+    "title": "How do you review a developer's Mule application as an architect?",
+    "tag": "A14",
+    "answer": ""
+  },
+  {
+    "id": 219,
+    "elementId": "mod-gg-a15",
+    "title": "How would you approach cost optimisation on an existing MuleSoft estate?",
+    "tag": "A15",
+    "answer": ""
+  },
+  {
+    "id": 220,
+    "elementId": "mod-gg-a16",
+    "title": "How do you introduce AI agents (Agentforce / MCP) into an integration architecture safely?",
+    "tag": "A16",
+    "answer": ""
+  },
+  {
+    "id": 221,
+    "elementId": "mod-gg-a17",
+    "title": "Give me a 60-second architect self-introduction template.",
+    "tag": "A17",
+    "answer": ""
+  },
+  {
+    "id": 222,
+    "elementId": "mod-gg-a18",
+    "title": "What are the Do's and Don'ts in an architect interview?",
+    "tag": "A18",
+    "answer": ""
+  },
+  {
+    "id": 223,
+    "elementId": "mod-gg-a19",
+    "title": "What questions should I ask the interviewer for an architect role?",
+    "tag": "A19",
+    "answer": ""
+  },
+  {
+    "id": 224,
+    "elementId": "mod-gg-h1",
+    "title": "What actually makes an interviewer happy with an answer?",
+    "tag": "H1",
+    "answer": ""
+  },
+  {
+    "id": 225,
+    "elementId": "mod-hh-h2",
+    "title": "What makes a client happy when you explain things?",
+    "tag": "H2",
+    "answer": ""
+  },
+  {
+    "id": 226,
+    "elementId": "mod-hh-h3",
+    "title": "Is there one formula for explaining anything clearly to either audience?",
+    "tag": "H3",
+    "answer": ""
+  },
+  {
+    "id": 227,
+    "elementId": "mod-hh-h4",
+    "title": "Show me weak vs best answers side by side for common questions.",
+    "tag": "H4",
+    "answer": ""
+  },
+  {
+    "id": 228,
+    "elementId": "mod-hh-h5",
+    "title": "Give me a phrase bank that makes interviewers and clients feel confident.",
+    "tag": "H5",
+    "answer": ""
+  },
+  {
+    "id": 229,
+    "elementId": "mod-hh-h6",
+    "title": "Any delivery tips (in person or on video) that make the explanation land?",
+    "tag": "H6",
+    "answer": ""
+  },
+  {
+    "id": 230,
+    "elementId": "mod-ii-q1",
+    "title": "Why are Strings immutable in Java and what is the String Constant Pool (SCP)?",
+    "tag": "Q1",
+    "answer": ""
+  },
+  {
+    "id": 231,
+    "elementId": "mod-ii-q2",
+    "title": "String vs StringBuilder vs StringBuffer \u2014 Memory allocation, GC pressure, and lock contention in multi-threaded MuleSoft runtimes",
+    "tag": "Q2",
+    "answer": ""
+  },
+  {
+    "id": 232,
+    "elementId": "mod-ii-q3",
+    "title": "How does immutability work in DataWeave 2.0 compared to Java Strings, and how does DW manage off-heap memory buffers for large payloads (>100MB)?",
+    "tag": "Q3",
+    "answer": ""
+  },
+  {
+    "id": 233,
+    "elementId": "mod-ii-q4",
+    "title": "Constructors in Java: Default, Parameterized, and Copy constructors in building thread-safe, immutable domain models",
+    "tag": "Q4",
+    "answer": ""
+  },
+  {
+    "id": 234,
+    "elementId": "mod-ii-q5",
+    "title": "Constructor chaining with this() vs super() and its role in Mule SDK lifecycle & dependency injection",
+    "tag": "Q5",
+    "answer": ""
+  },
+  {
+    "id": 235,
+    "elementId": "mod-ii-q6",
+    "title": "Constructor vs Method: Why can't constructors be abstract or final, and how do private constructors safeguard Singleton architectures?",
+    "tag": "Q6",
+    "answer": ""
+  },
+  {
+    "id": 236,
+    "elementId": "mod-ii-q7",
+    "title": "Method Overloading vs Method Overriding: JVM bytecode instructions (invokestatic/invokevirtual) and compile-time vs runtime polymorphism",
+    "tag": "Q7",
+    "answer": ""
+  },
+  {
+    "id": 237,
+    "elementId": "mod-ii-q8",
+    "title": "Strict rules for Covariant Return Types, Access Modifiers, and Exceptions in Method Overriding under the Liskov Substitution Principle",
+    "tag": "Q8",
+    "answer": ""
+  },
+  {
+    "id": 238,
+    "elementId": "mod-ii-q9",
+    "title": "JIT compilation, Virtual Method Tables (vtable), and Monomorphic Inline Caching in high-concurrency MuleSoft runtimes",
+    "tag": "Q9",
+    "answer": ""
+  },
+  {
+    "id": 239,
+    "elementId": "mod-ii-q10",
+    "title": "Abstract Class vs Interface: Architectural decision criteria in enterprise MuleSoft connector frameworks (Template Method vs Contract)",
+    "tag": "Q10",
+    "answer": ""
+  },
+  {
+    "id": 240,
+    "elementId": "mod-ii-q11",
+    "title": "Why Java allows multiple inheritance of interfaces but not classes: Solving the Diamond Problem with Java 8 default methods",
+    "tag": "Q11",
+    "answer": ""
+  },
+  {
+    "id": 241,
+    "elementId": "mod-ii-q12",
+    "title": "Can an Interface have constructors or instance variables? Java 8 static methods and Java 17 Sealed Interfaces in API governance",
+    "tag": "Q12",
+    "answer": ""
+  },
+  {
+    "id": 242,
+    "elementId": "mod-ii-q13",
+    "title": "Mule 4 Event Architecture: Project Reactor mechanics, thread handoffs across CPU_LITE, BLOCKING_IO, and CPU_INTENSIVE pools",
+    "tag": "Q13",
+    "answer": ""
+  },
+  {
+    "id": 243,
+    "elementId": "mod-ii-q14",
+    "title": "Attributes vs Variables (vars) in Mule Events: Preventing payload destruction using Target Variables in multi-tiered APIs",
+    "tag": "Q14",
+    "answer": ""
+  },
+  {
+    "id": 244,
+    "elementId": "mod-ii-q15",
+    "title": "Mule 4 Error Object structure and enterprise error hierarchies: Custom Error Types, on-error-continue vs on-error-propagate",
+    "tag": "Q15",
+    "answer": ""
+  },
+  {
+    "id": 245,
+    "elementId": "mod-ii-q16",
+    "title": "Batch Job Variable Scoping: Can variables defined inside a Batch Step be accessed outside or in subsequent Batch Steps?",
+    "tag": "Q16",
+    "answer": ""
+  },
+  {
+    "id": 246,
+    "elementId": "mod-ii-q17",
+    "title": "Flow variables vs record-level vars vs legacy Mule 3 recordVars: How Mule 4 maintains record isolation under the hood",
+    "tag": "Q17",
+    "answer": ""
+  },
+  {
+    "id": 247,
+    "elementId": "mod-ii-q18",
+    "title": "Error recovery in Batch Jobs with acceptPolicy='ONLY_FAILURES': Record variable persistence and DLQ routing",
+    "tag": "Q18",
+    "answer": ""
+  },
+  {
+    "id": 248,
+    "elementId": "mod-ii-q19",
+    "title": "Can variables defined in the Input / Initialize stage of a Batch Job be accessed at the On-Complete phase? Passing tracking metadata across lifecycles",
+    "tag": "Q19",
+    "answer": ""
+  },
+  {
+    "id": 249,
+    "elementId": "mod-ii-q20",
+    "title": "The BatchJobResult data contract in On-Complete: Programmatic getters, SLA monitoring, and alerting on failure thresholds",
+    "tag": "Q20",
+    "answer": ""
+  },
+  {
+    "id": 250,
+    "elementId": "mod-ii-q21",
+    "title": "Batch Aggregator architecture: Streaming vs size-based chunking for bulk commits (Salesforce Bulk 2.0, Database bulk-insert) without memory hotspots",
+    "tag": "Q21",
+    "answer": ""
+  },
+  {
+    "id": 251,
+    "elementId": "mod-ii-q22",
+    "title": "Offset/Limit vs Keyset (Cursor-based) pagination in MuleSoft APIs: Database buffer pool degradation and data consistency",
+    "tag": "Q22",
+    "answer": ""
+  },
+  {
+    "id": 252,
+    "elementId": "mod-ii-q23",
+    "title": "Robust non-blocking pagination against SaaS APIs (ServiceNow, Stripe) using nextPageToken without triggering StackOverflowError",
+    "tag": "Q23",
+    "answer": ""
+  },
+  {
+    "id": 253,
+    "elementId": "mod-ii-q24",
+    "title": "Salesforce queryMore and QueryLocator vs Database pagination: When to pivot to Salesforce Bulk API 2.0",
+    "tag": "Q24",
+    "answer": ""
+  },
+  {
+    "id": 254,
+    "elementId": "mod-ii-q25",
+    "title": "On-Premise (Standalone / RTF) vs CloudHub: Complete Enterprise Decision Matrix across Cost, Security, Maintenance, and Scalability",
+    "tag": "Q25",
+    "answer": ""
+  },
+  {
+    "id": 255,
+    "elementId": "mod-ii-q26",
+    "title": "Architectural drivers forcing On-Premises over CloudHub: Data sovereignty, sub-millisecond latency, and FIPS-140-2 compliance",
+    "tag": "Q26",
+    "answer": ""
+  },
+  {
+    "id": 256,
+    "elementId": "mod-ii-q27",
+    "title": "High Availability (HA) and clustering: Hazelcast in-memory grid (On-Prem) vs CloudHub multi-worker shared-nothing architecture",
+    "tag": "Q27",
+    "answer": ""
+  },
+  {
+    "id": 257,
+    "elementId": "mod-ii-q28",
+    "title": "Application-level refactoring for CloudHub 1.0 to CloudHub 2.0 Migration: Ephemeral file storage, port bindings, and container lifecycles",
+    "tag": "Q28",
+    "answer": ""
+  },
+  {
+    "id": 258,
+    "elementId": "mod-ii-q29",
+    "title": "Mule Maven Plugin configuration, POM definitions, vCore sizing increments, and property management in CloudHub 2.0 CI/CD",
+    "tag": "Q29",
+    "answer": ""
+  },
+  {
+    "id": 259,
+    "elementId": "mod-ii-q30",
+    "title": "Networking, Load Balancing, and Telemetry: Anypoint VPC vs Private Spaces, DLB vs Ingress, and automated Log Forwarding in CloudHub 2.0",
+    "tag": "Q30",
+    "answer": ""
+  },
+  {
+    "id": 260,
+    "elementId": "mod-jj-q1",
+    "title": "What is Anypoint Topic Center and how do you expose MuleSoft APIs as Salesforce Agentforce Actions?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In the 2026 Salesforce + MuleSoft architecture, Anypoint Topic Center serves as the governance gateway that transforms traditional System and Process APIs into autonomous actions that Salesforce Agentforce can invoke dynamically. Instead of hardcoding Apex callouts or manual flow actions, Agentforce reasons over API definitions using LLM agents. To make an API an A"
+  },
+  {
+    "id": 261,
+    "elementId": "mod-jj-q2",
+    "title": "What is the Model Context Protocol (MCP) Connector in MuleSoft and how does it connect AI Agents to enterprise APIs?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"The Model Context Protocol (MCP) is the open enterprise standard enabling AI foundation models (such as Claude, GPT-4, and Gemini) to securely discover and invoke tools, context, and prompts hosted by external servers. MuleSoft's MCP Connector acts in two modes: as an MCP Server Bridge and as an MCP Client Connector. As a Server Bridge, MuleSoft wraps enterprise ba"
+  },
+  {
+    "id": 262,
+    "elementId": "mod-jj-q3",
+    "title": "How does MuleSoft Model Proxy optimize LLM costs using Semantic Caching and fallback routing?",
+    "tag": "Q3",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In enterprise AI architectures, calling commercial LLMs directly from application code creates runaway token expenses, latency spikes, and single-provider lock-in. MuleSoft's Model Proxy acts as an AI Gateway layer deployed between consumers and LLM providers. It exposes a single OpenAI-compatible endpoint but executes three critical capabilities: First, Semantic C"
+  },
+  {
+    "id": 263,
+    "elementId": "mod-jj-q4",
+    "title": "How do you define and orchestrate autonomous multi-agent networks in MuleSoft using agent-network.yaml?",
+    "tag": "Q4",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Autonomous Agent Networks represent the paradigm where multiple specialized agents collaborate to solve complex business transactions (e.g., a Customer Dispute Agent collaborating with a SAP Billing Agent and a Fraud Detection Agent). In MuleSoft, we declare these networks declaratively using agent-network.yaml. This manifest defines the broker runtime, registered "
+  },
+  {
+    "id": 264,
+    "elementId": "mod-kk-q1",
+    "title": "What is Anypoint Partner Manager (APM) and how does it modernize B2B EDI supply chain integrations?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Anypoint Partner Manager (APM) is MuleSoft's cloud-native B2B integration platform that separates partner management configuration from integration runtime execution. Traditionally, adding a new retail or logistics partner required writing custom Mule flows, configuring point-to-point SFTP folders, and coding unique transformations. With APM, we define trading part"
+  },
+  {
+    "id": 265,
+    "elementId": "mod-kk-q2",
+    "title": "How do you parse ANSI X12 850 (Purchase Order) into JSON using the X12 EDI Connector and ESL schemas?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Parsing EDI in Mule 4 is governed by the official X12 EDI Connector, which leverages Electronic Service Level (ESL) YAML schemas defining the exact segment hierarchy, mandatory fields, and qualifiers. In our flow, the EDI read operation takes the raw string stream, references the standard x12/004010/850.esl schema (or a custom company ESL), and produces a structure"
+  },
+  {
+    "id": 266,
+    "elementId": "mod-ll-q1",
+    "title": "How do you automate Anypoint Platform provisioning using the official MuleSoft Terraform Provider?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"To eliminate manual clicking in Anypoint Runtime Manager and API Manager across Dev, Test, Stage, and Prod environments, we implement GitOps infrastructure management using the official MuleSoft Terraform Provider (mulesoft/anypoint). Through Terraform HCL, we declaratively declare: First, CloudHub 2.0 Private Spaces with custom CIDR blocks and transit gateway peer"
+  },
+  {
+    "id": 267,
+    "elementId": "mod-ll-q2",
+    "title": "What is OpenTelemetry (OTel) Direct Telemetry in MuleSoft and how does it replace legacy agent collectors?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Historically, streaming traces and metrics from Mule applications to third-party APM tools like Dynatrace, Datadog, or New Relic required installing heavy Java agents (e.g., `-javaagent` in wrapper.conf) or deploying local collector sidecars in Runtime Fabric. In the 2026 runtime standards, MuleSoft supports native OpenTelemetry (OTel) Direct Exporting. The Mule ru"
+  },
+  {
+    "id": 268,
+    "elementId": "mod-mm-q1",
+    "title": "How do you integrate MuleSoft with Snowflake for high-volume data warehouse ingestion?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"When integrating MuleSoft with Snowflake, using standard row-by-row JDBC inserts is an anti-pattern that exhausts warehouse compute and incurs massive billing costs. For high-volume ingestion (e.g., 5 million nightly utility billing transactions), we follow the Staged Bulk Load Pattern: MuleSoft aggregates records in batch steps, writes compressed Parquet or CSV ch"
+  },
+  {
+    "id": 269,
+    "elementId": "mod-mm-q2",
+    "title": "How do you implement gRPC services in MuleSoft with Protocol Buffers and HTTP/2 multiplexing?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"For high-frequency, low-latency microservice communications (e.g., real-time smart meter fraud detection), REST/JSON incurs significant serialization overhead and HTTP/1.1 head-of-line blocking. With the MuleSoft gRPC Connector, we define service contracts using Protocol Buffers (.proto files). MuleSoft compiles these protobuf schemas into binary serializers runnin"
+  }
+]
