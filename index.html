@@ -2169,18 +2169,208 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #0077b6 !important;
 }
 
-/* Responsive Breakpoints */
-@media (max-width: 1024px) {
+/* ==========================================================================
+   MOBILE NAVIGATION, OFF-CANVAS DRAWER & FAB (< 1024px)
+   ========================================================================== */
+
+/* Buttons hidden on desktop by default */
+.btn-search-mobile,
+.btn-hamburger-mobile,
+.sidebar-close-btn,
+.sidebar-backdrop,
+.fab-container {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  /* Header Mobile Layout */
+  .hub-header {
+    padding: 10px 16px;
+    height: auto;
+  }
+  .header-center {
+    display: none;
+  }
+  .btn-search-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    min-height: 44px;
+    cursor: pointer;
+  }
+  .btn-hamburger-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    color: var(--electric-cyan);
+    border-color: rgba(0, 242, 254, 0.4);
+    min-height: 44px;
+    cursor: pointer;
+  }
+  #theme-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* Off-Canvas Sidebar Drawer */
   .hub-layout {
-    flex-direction: column;
-    padding: 16px;
+    display: block;
+    padding: 16px 14px;
   }
   .quick-sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-    margin-bottom: 24px;
-    max-height: 280px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    max-width: 85vw;
+    height: 100vh;
+    height: 100dvh;
+    background: #0b111e;
+    z-index: 10001;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 12px 0 35px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 18px 14px;
+    border-radius: 0;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  [data-theme="light"] .quick-sidebar {
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    box-shadow: 12px 0 30px rgba(0, 0, 0, 0.12);
+  }
+  .quick-sidebar.drawer-open {
+    transform: translateX(0);
+  }
+  .quick-sidebar-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .quick-sidebar-item {
+    margin-bottom: 4px;
+  }
+  .quick-sidebar-link {
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+  }
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 7, 14, 0.72);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .sidebar-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sidebar-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-main);
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  [data-theme="light"] .sidebar-close-btn {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+  }
+
+  /* Floating Action Buttons (FAB) */
+  .fab-container {
+    display: flex;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 0 16px;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    z-index: 9990;
+  }
+  .fab-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.94);
+    color: #f8fafc;
+    border: 1px solid rgba(0, 242, 254, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 14px rgba(0, 242, 254, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 10px 18px;
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 48px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .fab-btn:active {
+    transform: scale(0.95);
+  }
+  [data-theme="light"] .fab-btn {
+    background: rgba(255, 255, 255, 0.96);
+    color: #0f172a;
+    border-color: #0284c7;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  .fab-top {
+    padding: 10px;
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+    border-radius: 50%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+  .fab-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
   .dw-playground-grid {
     grid-template-columns: 1fr;
@@ -2189,20 +2379,34 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 @media (max-width: 640px) {
+  #practice-btn {
+    display: none;
+  }
   .hub-header {
-    padding: 10px 14px;
+    padding: 8px 12px;
+  }
+  .brand-title {
+    font-size: 0.95rem;
+  }
+  .brand-title .badge {
+    display: none;
+  }
+  .header-actions {
+    gap: 6px;
+  }
+  .btn-primary {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    min-height: 44px;
   }
   .hero-portal {
-    padding: 24px;
+    padding: 24px 16px;
   }
   .hero-headline {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
   }
   .article-title {
     font-size: 1.35rem;
-  }
-  .header-center {
-    display: none;
   }
   .global-toolbar {
     flex-direction: column;
@@ -4385,21 +4589,34 @@ pre:hover {
 </div>
 </div>
 <div class="header-actions">
+<button aria-label="Search topics and DataWeave scripts" class="btn btn-search-mobile" onclick="openSearchModal()" title="Search Topics">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="18"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+</button>
 <button class="btn" id="practice-btn" onclick="togglePracticeMode()" title="Self-Test Mode: Collapse all answers to test your active recall">🎯 Practice Mode</button>
 <button class="btn btn-primary" onclick="openDataWeaveModal()" title="Open Interactive DataWeave 2.0 Playground">🧪 DW Playground</button>
-<button class="btn" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+<button aria-label="Toggle Dark and Light theme" class="btn" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
 <span id="theme-icon">☀️</span>
+</button>
+<button aria-label="Open Technical Modules Navigation" class="btn btn-hamburger-mobile" id="hamburgerBtn" onclick="toggleSidebarDrawer()" title="Open Module Index">
+<svg fill="none" height="20" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="20"><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
 </button>
 </div>
 </header>
+<!-- Off-Canvas Sidebar Backdrop -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebarDrawer(false)"></div>
 <!-- Sticky Category Navigation Bar -->
 <div class="sticky-filter-bar"><button class="cat-pill active" onclick="filterBlogCategory('all', this)">All Topics (40)</button><button class="cat-pill" onclick="filterBlogCategory('Getting Started &amp; Strategy', this)">🚀 Getting Started &amp; Strategy (3)</button><button class="cat-pill" onclick="filterBlogCategory('Salesforce &amp; Enterprise Connectors', this)">🔌 Salesforce &amp; Enterprise Connectors (4)</button><button class="cat-pill" onclick="filterBlogCategory('AWS &amp; Messaging', this)">🌩️ AWS &amp; Messaging (3)</button><button class="cat-pill" onclick="filterBlogCategory('Flow Scopes &amp; Concurrency', this)">🔀 Flow Scopes &amp; Concurrency (5)</button><button class="cat-pill" onclick="filterBlogCategory('Error Handling &amp; Resiliency', this)">⚠️ Error Handling &amp; Resiliency (1)</button><button class="cat-pill" onclick="filterBlogCategory('ObjectStore &amp; API Governance', this)">💾 ObjectStore &amp; API Governance (3)</button><button class="cat-pill" onclick="filterBlogCategory('Testing &amp; CI/CD', this)">🧪 Testing &amp; CI/CD (1)</button><button class="cat-pill" onclick="filterBlogCategory('DataWeave 2.0 Masterclass', this)">💻 DataWeave 2.0 Masterclass (2)</button><button class="cat-pill" onclick="filterBlogCategory('Deployment &amp; CloudHub 2.0', this)">🌐 Deployment &amp; CloudHub 2.0 (1)</button><button class="cat-pill" onclick="filterBlogCategory('Production Scenarios &amp; Incidents', this)">🎯 Production Scenarios &amp; Incidents (1)</button><button class="cat-pill" onclick="filterBlogCategory('Live Whiteboard &amp; Architecture', this)">📐 Live Whiteboard &amp; Architecture (1)</button><button class="cat-pill" onclick="filterBlogCategory('Modern Architecture &amp; AI', this)">🤖 Modern Architecture &amp; AI (2)</button><button class="cat-pill" onclick="filterBlogCategory('Interview Traps &amp; Pitfalls', this)">⚡ Interview Traps &amp; Pitfalls (1)</button><button class="cat-pill" onclick="filterBlogCategory('Enterprise Architect Masterclass', this)">🎓 Enterprise Architect Masterclass (5)</button><button class="cat-pill" onclick="filterBlogCategory('Rapid Review &amp; Cheat Sheets', this)">🏆 Rapid Review &amp; Cheat Sheets (2)</button></div>
 <div class="hub-layout">
 <!-- Quick Navigation Sidebar -->
 <aside class="quick-sidebar" id="toc-sidebar">
 <div class="sidebar-header-box">
+<div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+<div>
 <div class="quick-sidebar-title">Topic Navigation</div>
 <span style="font-size:0.72rem; color:var(--text-dim);">40 Technical Modules</span>
+</div>
+<button aria-label="Close Topic Navigation" class="sidebar-close-btn" onclick="toggleSidebarDrawer(false)">✕</button>
+</div>
 </div>
 <input class="sidebar-filter-input" oninput="filterSidebarModules(this.value)" placeholder="🔍 Filter modules..." type="text"/>
 <ul class="quick-sidebar-list">
@@ -24671,8 +24888,62 @@ document.addEventListener('DOMContentLoaded', function() {
       wrapper.appendChild(btn);
     }
   });
+  // 5. Mobile Off-Canvas Drawer & FAB Controller
+  window.toggleSidebarDrawer = function(force) {
+    var sidebar = document.getElementById('toc-sidebar');
+    var backdrop = document.getElementById('sidebarBackdrop');
+    if (!sidebar) return;
+    var isOpen = sidebar.classList.contains('drawer-open');
+    var newState = typeof force === 'boolean' ? force : !isOpen;
+    if (newState) {
+      sidebar.classList.add('drawer-open');
+      if (backdrop) backdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    } else {
+      sidebar.classList.remove('drawer-open');
+      if (backdrop) backdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+
+  document.querySelectorAll('.quick-sidebar-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth < 1024) {
+        toggleSidebarDrawer(false);
+      }
+    });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var sidebar = document.getElementById('toc-sidebar');
+      if (sidebar && sidebar.classList.contains('drawer-open')) {
+        toggleSidebarDrawer(false);
+      }
+    }
+  });
+
+  window.addEventListener('scroll', function() {
+    var fabTop = document.getElementById('fabBackToTop');
+    if (!fabTop) return;
+    if (window.scrollY > 400) {
+      fabTop.classList.add('visible');
+    } else {
+      fabTop.classList.remove('visible');
+    }
+  }, { passive: true });
 });
 </script>
+<!-- Floating Action Buttons for Mobile (< 1024px) -->
+<div class="fab-container">
+  <button aria-label="Open Technical Modules Navigation" class="fab-btn fab-modules" onclick="toggleSidebarDrawer()" title="Modules Menu">
+    <span class="fab-icon">☰</span>
+    <span class="fab-label">Modules</span>
+  </button>
+  <button aria-label="Back to Top" class="fab-btn fab-top" id="fabBackToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="Back to Top">
+    <span class="fab-icon">↑</span>
+  </button>
+</div>
 <!-- Diagram Lightbox Modal -->
 <div class="diagram-lightbox" id="diagramLightbox" role="dialog" aria-modal="true" aria-label="Diagram Fullscreen View">
   <button class="diagram-lightbox-close" id="diagramLightboxClose" aria-label="Close fullscreen view">×</button>
