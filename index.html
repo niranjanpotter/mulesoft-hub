@@ -129,6 +129,8 @@
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/hub.css">
   <script src="assets/js/hub.js" defer></script>
+  <link rel="stylesheet" href="assets/css/diagrams.css">
+  <script src="assets/js/diagrams.js" defer></script>
 </head>
 <body>
 <a href="#mod-a" class="skip-link">Skip to content</a>
@@ -1447,6 +1449,47 @@
 <span>📄 Guide Pages 4–6</span>
 <span>🎯 6 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-b-diagram" aria-label="Salesforce Bulk API 2.0 Ingestion Lifecycle State Machine">
+  <svg class="responsive-svg" viewBox="0 0 1200 400" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Salesforce Bulk API 2.0 Lifecycle</title>
+<desc>Diagram showing Bulk API 2.0 state machine from Open to JobComplete.</desc>
+<rect width="1200" height="400" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="State 1: Create Job (Open)" data-note="POST /services/data/v60.0/jobs/ingest -> Creates job in 'Open' state for object Contact/Account.">
+  <rect x="60" y="120" width="180" height="100" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="2"/>
+  <text x="150" y="155" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">1. Job: Open</text>
+  <text x="150" y="180" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">POST /jobs/ingest</text>
+  <text x="150" y="200" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="9" text-anchor="middle">Returns: JobId</text>
+</g>
+<path d="M240 170 L320 170" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="State 2: Upload CSV Batches" data-note="PUT /services/data/v60.0/jobs/ingest/{jobId}/batches -> Streams CSV data up to 100MB per file.">
+  <rect x="320" y="120" width="200" height="100" rx="8" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="420" y="155" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">2. Stream CSV Data</text>
+  <text x="420" y="180" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">PUT /jobs/ingest/{id}/batches</text>
+  <text x="420" y="200" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="9" text-anchor="middle">Payload: text/csv</text>
+</g>
+<path d="M520 170 L600 170" stroke="#845EC2" stroke-width="2"/>
+<g data-step="3" data-title="State 3: Upload Complete" data-note="PATCH /services/data/v60.0/jobs/ingest/{jobId} -> Updates state to 'UploadComplete' to trigger Salesforce processing.">
+  <rect x="600" y="120" width="190" height="100" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+  <text x="695" y="155" fill="#F59E0B" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">3. UploadComplete</text>
+  <text x="695" y="180" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">state: UploadComplete</text>
+  <text x="695" y="200" fill="#FCD34D" font-family="'JetBrains Mono',monospace" font-size="9" text-anchor="middle">Queued in Salesforce</text>
+</g>
+<path d="M790 170 L870 170" stroke="#F59E0B" stroke-width="2"/>
+<g data-step="4" data-title="State 4: JobComplete / Results" data-note="GET /services/data/v60.0/jobs/ingest/{jobId}/successfulResults -> Downloads successful and failed records CSV.">
+  <rect x="870" y="120" width="260" height="100" rx="8" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+  <text x="1000" y="155" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">4. JobComplete</text>
+  <text x="1000" y="180" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">GET /successfulResults</text>
+  <text x="1000" y="200" fill="#6EE7B7" font-family="'JetBrains Mono',monospace" font-size="9" text-anchor="middle">GET /failedResults</text>
+</g>
+<g data-step="5" data-title="Governor Limits Protection" data-note="Bulk API 2.0 does NOT count against standard 150 API calls/user/hour governor limit; uses 15,000 batches/24h quota.">
+  <rect x="60" y="270" width="1070" height="80" rx="8" fill="#1E293B" stroke="#10B981" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <text x="90" y="305" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700">Governor Limits Advantage</text>
+  <text x="90" y="330" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11">Standard REST API: 150 calls/user/hour · Bulk API 2.0: Asynchronous cloud processing up to 150,000,000 records daily without governor lockouts.</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure B.1: Salesforce Bulk API 2.0 — Job creation, CSV block upload, asynchronous server processing, and results retrieval state machine.</figcaption>
+</figure>
+
 <h2 class="article-title">☁️ Salesforce Connector &amp; Bulk API 2.0</h2>
 <p class="article-excerpt">SOQL operations, Upsert with External IDs, Bulk API v2, and Salesforce governor limits handling.</p>
 </div>
@@ -1701,6 +1744,43 @@ BillingCity: rec.city
 <span>📄 Guide Pages 7–8</span>
 <span>🎯 4 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-c-diagram" aria-label="Salesforce Platform Events & Change Data Capture (CDC)">
+  <svg class="responsive-svg" viewBox="0 0 1200 420" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Salesforce Platform Events & CDC Architecture</title>
+<desc>Diagram showing Salesforce Event Bus, ReplayId buffering, and MuleSoft streaming subscriber.</desc>
+<rect width="1200" height="420" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Salesforce Event Bus" data-note="Salesforce publishes Platform Events or CDC change records to the enterprise CometD/gRPC event bus.">
+  <rect x="60" y="80" width="220" height="110" rx="8" fill="#1E293B" stroke="#00A1E0" stroke-width="2"/>
+  <text x="170" y="115" fill="#00A1E0" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Salesforce Event Bus</text>
+  <text x="170" y="140" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">/event/Order_Event__e</text>
+  <text x="170" y="160" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">72-Hour Retention Window</text>
+</g>
+<path d="M280 135 L370 135" stroke="#00A1E0" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: 72-Hour Replay Buffer" data-note="Buffered stream of events stored with monotonically increasing Replay IDs.">
+  <rect x="370" y="60" width="380" height="150" rx="8" fill="#1E293B" stroke="#845EC2" stroke-width="1.5"/>
+  <text x="560" y="90" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Event Stream (Replay Window)</text>
+  <rect x="390" y="110" width="60" height="70" rx="4" fill="#0F172A" stroke="#334155"/><text x="420" y="150" fill="#94A3B8" font-size="9" text-anchor="middle">ID: 101</text>
+  <rect x="460" y="110" width="60" height="70" rx="4" fill="#0F172A" stroke="#334155"/><text x="490" y="150" fill="#94A3B8" font-size="9" text-anchor="middle">ID: 102</text>
+  <rect x="530" y="110" width="60" height="70" rx="4" fill="#0F172A" stroke="#00F2FE"/><text x="560" y="150" fill="#00F2FE" font-size="9" text-anchor="middle">ID: 103</text>
+  <rect x="600" y="110" width="60" height="70" rx="4" fill="#0F172A" stroke="#10B981"/><text x="630" y="150" fill="#10B981" font-size="9" text-anchor="middle">ID: 104</text>
+  <rect x="670" y="110" width="60" height="70" rx="4" fill="#0F172A" stroke="#F59E0B"/><text x="700" y="150" fill="#F59E0B" font-size="9" text-anchor="middle">NOW</text>
+</g>
+<path d="M750 135 L840 135" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="3" data-title="Step 3: MuleSoft Subscriber Channel" data-note="Mule Salesforce connector subscribes with specific replayId policy: -1 (New only), -2 (All 72h), or custom.">
+  <rect x="840" y="80" width="280" height="110" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="2"/>
+  <text x="980" y="115" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">MuleSoft Subscriber</text>
+  <text x="980" y="140" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">replayId="-1" -> Latest events only</text>
+  <text x="980" y="160" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">replayId="-2" -> Full 72h replay</text>
+</g>
+<g data-step="4" data-title="Step 4: Idempotent Deduplication" data-note="Mule flow saves received ReplayId in ObjectStore. If duplicate arrives, Idempotent Message Validator drops it.">
+  <rect x="60" y="260" width="1060" height="110" rx="8" fill="#1E293B" stroke="#10B981" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <text x="90" y="295" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700">Guaranteed Exactly-Once via Idempotent Filter</text>
+  <text x="90" y="325" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11">Salesforce event delivery is at-least-once. MuleSoft wraps the listener in an Idempotent Message Validator keyed on `replayId` or `event.header.eventId`.</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure C.1: Salesforce Event Bus to MuleSoft Streaming Channel — ReplayId semantics (-1 vs -2) and CDC record sync.</figcaption>
+</figure>
+
 <h2 class="article-title">⚡ Platform Events &amp; Change Data Capture (CDC)</h2>
 <p class="article-excerpt">Event replay channels, 72-hour retention, duplicate event deduplication, and CDC vs Platform Events.</p>
 </div>
@@ -2166,6 +2246,45 @@ BillingCity: rec.city
 <span>📄 Guide Pages 10–12</span>
 <span>🎯 8 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-e-diagram" aria-label="AWS Integration Patterns: S3, SQS & DynamoDB">
+  <svg class="responsive-svg" viewBox="0 0 1200 420" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>AWS Cloud Architecture Patterns</title>
+<desc>Diagram showing Amazon S3, SQS queueing, MuleSoft connector processing, and DynamoDB storage.</desc>
+<rect width="1200" height="420" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Amazon S3 File Ingestion" data-note="External partner uploads 500MB telemetry CSV to S3 bucket. S3 triggers ObjectCreated notification.">
+  <rect x="60" y="80" width="200" height="90" rx="8" fill="#1E293B" stroke="#FF9900" stroke-width="1.5"/>
+  <text x="160" y="115" fill="#FF9900" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Amazon S3 Bucket</text>
+  <text x="160" y="135" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">s3:ObjectCreated:Put</text>
+</g>
+<path d="M260 125 L340 125" stroke="#FF9900" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: Amazon SQS Buffer & DLQ" data-note="SQS absorbs file event notifications. Configured with 300s visibility timeout and redelivery DLQ.">
+  <rect x="340" y="80" width="220" height="90" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="450" y="115" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Amazon SQS Queue</text>
+  <text x="450" y="135" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">VisibilityTimeout: 300s</text>
+</g>
+<path d="M560 125 L640 125" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="3" data-title="Step 3: MuleSoft SQS Listener" data-note="Mule app authenticates via IAM AssumeRole, streams S3 payload in chunks, and transforms records.">
+  <rect x="640" y="70" width="240" height="110" rx="8" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="760" y="105" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Mule AWS SQS Listener</text>
+  <text x="760" y="125" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Streaming Chunking (10k rows)</text>
+  <text x="760" y="145" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">IAM Role: app-mulesoft-role</text>
+</g>
+<path d="M880 125 L960 125" stroke="#10B981" stroke-width="2"/>
+<g data-step="4" data-title="Step 4: Amazon DynamoDB" data-note="High-throughput batch write stores processed records in DynamoDB with partition key meterId.">
+  <rect x="960" y="80" width="180" height="90" rx="8" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+  <text x="1050" y="115" fill="#38BDF8" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Amazon DynamoDB</text>
+  <text x="1050" y="135" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">BatchWriteItem (25 items)</text>
+</g>
+<g data-step="5" data-title="Step 5: Security & IAM Least Privilege" data-note="Zero hardcoded credentials: authentication uses AWS STS AssumeRole with Web Identity or AWS IRSA.">
+  <rect x="60" y="240" width="1080" height="120" rx="8" fill="#1E293B" stroke="#10B981" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <text x="90" y="275" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700">IAM Role Delegation &amp; Security</text>
+  <text x="90" y="305" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11">CloudHub 2.0 replica pods assume AWS IAM roles directly via OIDC or Transit Gateway interconnectivity.</text>
+  <text x="90" y="330" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">Permissions strictly scoped to: `s3:GetObject`, `sqs:ReceiveMessage/DeleteMessage`, and `dynamodb:BatchWriteItem`.</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure E.1: AWS Architecture with MuleSoft — S3 bucket notifications, SQS queuing with IAM roles, and high-throughput DynamoDB persistence.</figcaption>
+</figure>
+
 <h2 class="article-title">📦 AWS Integration Patterns (S3, SQS, DynamoDB)</h2>
 <p class="article-excerpt">AWS SigV4, S3 createObject, DynamoDB queries, SQS vs Anypoint MQ, and visibility timeout tuning.</p>
 </div>
@@ -3082,7 +3201,7 @@ paperless:     dynamoData.paperless default false
 <!-- Section Badge -->
 <rect fill="#00F2FE" fill-opacity="0.15" height="24" rx="6" stroke="#00F2FE" stroke-opacity="0.4" width="210" x="20" y="16"></rect>
 <text class="par-sans" fill="#53CADD" font-size="11" font-weight="700" letter-spacing="1" x="30" y="32">PATTERN 2: PARALLEL FOR EACH</text>
-<text class="par-mono" fill="#94A3B8" font-size="10" x="240" y="32">collection="#[payload]" | maxConcurrency="4"</text>
+<text class="par-mono" fill="#94A3B8" font-size="10" x="30" y="50">collection="#[payload]" | maxConcurrency="4"</text>
 <!-- Inbound Array Node -->
 <g transform="translate(24, 60)">
 <rect fill="url(#card-grad)" height="64" rx="8" stroke="#00F2FE" stroke-width="1.2" width="140"></rect>
@@ -3434,10 +3553,10 @@ paperless:     dynamoData.paperless default false
 <path d="M288 340 H315" stroke="#00F2FE" stroke-width="1.8"></path>
 <path class="b-trace" d="M288 340 H315" fill="none" filter="url(#b-glow)" pathlength="100" stroke="#00F2FE" stroke-width="3"></path>
 <!-- ==================== PHASE 2: PROCESS RECORDS ==================== -->
-<g transform="translate(315, 125)">
+<g transform="translate(315, 125)" data-step="2" data-title="Batch Phase 2: Process Records" data-note="Isolated worker threads process records in blocks; record-level variables isolated.">
 <rect fill="url(#phase-grad)" height="435" rx="14" stroke="#845EC2" stroke-dasharray="6,4" stroke-width="1.2" width="570"></rect>
 <text class="b-sans" fill="#D65DB1" font-size="11" font-weight="800" letter-spacing="1" x="20" y="24">PHASE 2: PROCESS RECORDS (ISOLATED WORKER THREADS)</text>
-<text class="b-mono" fill="#94A3B8" font-size="9.5" text-anchor="end" x="550" y="24">maxFailedRecords="-1" (Unlimited Tolerance)</text>
+<text class="b-mono" fill="#94A3B8" font-size="9.5" text-anchor="end" x="550" y="38">maxFailedRecords="-1" (Unlimited Tolerance)</text>
 <!-- Thread Pool Header -->
 <g transform="translate(20, 38)">
 <rect fill="#111827" height="34" rx="6" stroke="rgba(255,255,255,0.08)" width="530"></rect>
@@ -3775,6 +3894,47 @@ paperless:     dynamoData.paperless default false
 <span>📄 Guide Pages 23–24</span>
 <span>🎯 3 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-j-diagram" aria-label="Until Successful Scope Retry Loop & Exponential Backoff">
+  <svg class="responsive-svg" viewBox="0 0 1200 420" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Until Successful Retry Loop</title>
+<desc>Diagram showing Until Successful scope retries, interval delay, and failure exhaustion.</desc>
+<rect width="1200" height="420" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Scope Entry" data-note="Flow enters Until Successful scope with configured maxRetries='3' and millisBetweenRetries='2000'.">
+  <rect x="60" y="80" width="200" height="70" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="160" y="115" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Until Successful Scope</text>
+  <text x="160" y="135" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">maxRetries="3" delay="2000ms"</text>
+</g>
+<path d="M260 115 L330 115" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: Attempt 1 (Failure)" data-note="Initial request dispatched to external HTTP partner. Connection times out (504 Gateway Timeout).">
+  <rect x="330" y="70" width="180" height="90" rx="8" fill="#1E293B" stroke="#F87171" stroke-width="1.5"/>
+  <text x="420" y="105" fill="#F87171" font-family="'Plus Jakarta Sans',sans-serif" font-size="12" font-weight="700" text-anchor="middle">Attempt 1 (T = 0s)</text>
+  <text x="420" y="125" fill="#EF4444" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">HTTP:TIMEOUT ❌</text>
+  <text x="420" y="145" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Sleep 2000 ms</text>
+</g>
+<path d="M510 115 L580 115" stroke="#F59E0B" stroke-width="2"/>
+<g data-step="3" data-title="Step 3: Attempt 2 (Failure)" data-note="Second attempt executed after 2000ms pause. Target server returns HTTP 503 Service Unavailable.">
+  <rect x="580" y="70" width="180" height="90" rx="8" fill="#1E293B" stroke="#F87171" stroke-width="1.5"/>
+  <text x="670" y="105" fill="#F87171" font-family="'Plus Jakarta Sans',sans-serif" font-size="12" font-weight="700" text-anchor="middle">Attempt 2 (T = 2s)</text>
+  <text x="670" y="125" fill="#EF4444" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">HTTP:SERVICE_UNAVAILABLE ❌</text>
+  <text x="670" y="145" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Sleep 2000 ms</text>
+</g>
+<path d="M760 115 L830 115" stroke="#F59E0B" stroke-width="2"/>
+<g data-step="4" data-title="Step 4: Attempt 3 (Failure)" data-note="Final attempt exhausted. Max retry limit reached without a successful 2xx response.">
+  <rect x="830" y="70" width="180" height="90" rx="8" fill="#1E293B" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="920" y="105" fill="#EF4444" font-family="'Plus Jakarta Sans',sans-serif" font-size="12" font-weight="700" text-anchor="middle">Attempt 3 (T = 4s)</text>
+  <text x="920" y="125" fill="#EF4444" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">HTTP:CONNECTIVITY ❌</text>
+  <text x="920" y="145" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Retries Exhausted!</text>
+</g>
+<path d="M920 160 L920 230 L600 230" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,4"/>
+<g data-step="5" data-title="Step 5: MULE:RETRY_EXHAUSTED" data-note="Scope aborts and throws MULE:RETRY_EXHAUSTED. Handled by flow error-handler for fallback or notification.">
+  <rect x="250" y="270" width="700" height="90" rx="8" fill="#1E293B" stroke="#EF4444" stroke-width="2"/>
+  <text x="600" y="305" fill="#EF4444" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="800" text-anchor="middle">Throws MULE:RETRY_EXHAUSTED</text>
+  <text x="600" y="330" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">Total elapsed: 4000ms · Error bubbles to Error Handler -> Logs incident &amp; alerts DevOps</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure J.1: Until Successful Scope — Retry counter timeline, millisBetweenRetries intervals, and MULE:RETRY_EXHAUSTED exit.</figcaption>
+</figure>
+
 <h2 class="article-title">⏳ Until Successful Scope &amp; Resiliency</h2>
 <p class="article-excerpt">Retry frequency, exponential backoff, exhausted retry handling, and reconnection strategies.</p>
 </div>
@@ -3944,6 +4104,53 @@ paperless:     dynamoData.paperless default false
 <span>📄 Guide Pages 25–26</span>
 <span>🎯 3 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-k-diagram" aria-label="MuleSoft Flow Routers: Choice, First Successful & Async">
+  <svg class="responsive-svg" viewBox="0 0 1200 420" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Mule 4 Router Architectures</title>
+<desc>Diagram showing Choice Router, First Successful Router, and Async Scope.</desc>
+<rect width="1200" height="420" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Panel 1: Choice Router" data-note="Evaluates DataWeave boolean expressions sequentially; routes message to first matching when branch, or default.">
+  <rect x="50" y="70" width="340" height="300" rx="10" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="220" y="105" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Choice Router (when / otherwise)</text>
+  <rect x="70" y="130" width="300" height="60" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
+  <text x="90" y="155" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="11">when #[payload.tier == 'VIP']</text>
+  <text x="90" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">Route -> High-Priority Queue</text>
+  <rect x="70" y="210" width="300" height="60" rx="6" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+  <text x="90" y="235" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="11">when #[payload.tier == 'STD']</text>
+  <text x="90" y="255" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">Route -> Standard Processing</text>
+  <rect x="70" y="290" width="300" height="60" rx="6" fill="#0F172A" stroke="#F59E0B" stroke-width="1"/>
+  <text x="90" y="315" fill="#F59E0B" font-family="'JetBrains Mono',monospace" font-size="11">default / otherwise</text>
+  <text x="90" y="335" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">Route -> Fallback DLQ / Reject</text>
+</g>
+<g data-step="2" data-title="Panel 2: First Successful Router" data-note="Iterates through child routes until one finishes without throwing an error; ideal for multi-region failover.">
+  <rect x="430" y="70" width="340" height="300" rx="10" fill="#1E293B" stroke="#845EC2" stroke-width="1.5"/>
+  <text x="600" y="105" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">First Successful (Failover)</text>
+  <rect x="450" y="130" width="300" height="60" rx="6" fill="#0F172A" stroke="#EF4444" stroke-width="1"/>
+  <text x="470" y="155" fill="#EF4444" font-family="'JetBrains Mono',monospace" font-size="11">Route 1: Primary US-East API</text>
+  <text x="470" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">Fails with HTTP:CONNECTIVITY ❌</text>
+  <rect x="450" y="210" width="300" height="60" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1.5"/>
+  <text x="470" y="235" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="11">Route 2: Secondary US-West API</text>
+  <text x="470" y="255" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10">Succeeds! Returns 200 OK ✓</text>
+  <rect x="450" y="290" width="300" height="60" rx="6" fill="#0F172A" stroke="#334155" stroke-width="1"/>
+  <text x="470" y="315" fill="#64748B" font-family="'JetBrains Mono',monospace" font-size="11">Route 3: Read from Cache</text>
+  <text x="470" y="335" fill="#64748B" font-family="'JetBrains Mono',monospace" font-size="10">Skipped (Route 2 succeeded)</text>
+</g>
+<g data-step="3" data-title="Panel 3: Async Scope" data-note="Branches execution to separate thread pool. Parent flow completes without waiting for Async child response.">
+  <rect x="810" y="70" width="340" height="300" rx="10" fill="#1E293B" stroke="#10B981" stroke-width="1.5"/>
+  <text x="980" y="105" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Async Scope (Fire-and-Forget)</text>
+  <rect x="830" y="130" width="300" height="80" rx="6" fill="#0F172A" stroke="#00F2FE" stroke-width="1"/>
+  <text x="850" y="160" fill="#00F2FE" font-family="'JetBrains Mono',monospace" font-size="11">Parent Flow (Main Thread)</text>
+  <text x="850" y="185" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">Responds HTTP 202 Accepted immediately</text>
+  <rect x="830" y="230" width="300" height="120" rx="6" fill="#0F172A" stroke="#D65DB1" stroke-width="1"/>
+  <text x="850" y="260" fill="#D65DB1" font-family="'JetBrains Mono',monospace" font-size="11">Async Child (Worker Thread)</text>
+  <text x="850" y="285" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">• Audit Logging to Splunk</text>
+  <text x="850" y="305" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">• Email Notification dispatch</text>
+  <text x="850" y="325" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">• BigQuery analytical export</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure K.1: Mule 4 Core Routing Engines — Conditional Choice router, Fallback First Successful chain, and Thread-Isolated Async scope.</figcaption>
+</figure>
+
 <h2 class="article-title">🔀 Choice Router, First Successful &amp; Async Scopes</h2>
 <p class="article-excerpt">Conditional routing, fallback execution, async fire-and-forget, and thread pool handover.</p>
 </div>
@@ -4102,6 +4309,57 @@ paperless:     dynamoData.paperless default false
 <span>📄 Guide Pages 27–29</span>
 <span>🎯 5 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-l-diagram" aria-label="MuleSoft Reusable Error Handling & Bubble-up Lifecycle">
+  <svg class="responsive-svg" viewBox="0 0 1200 480" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Mule 4 Error Handling Flow Architecture</title>
+<desc>Diagram showing error propagation, On-Error-Continue and On-Error-Propagate branching, and parent flow response mapping.</desc>
+<defs>
+  <linearGradient id="l-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0F172A"/><stop offset="100%" stop-color="#1E293B"/></linearGradient>
+  <linearGradient id="l-cont" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#064E3B"/><stop offset="100%" stop-color="#047857"/></linearGradient>
+  <linearGradient id="l-prop" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7F1D1D"/><stop offset="100%" stop-color="#B91C1C"/></linearGradient>
+</defs>
+<rect width="1200" height="480" rx="14" fill="url(#l-bg)" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Inbound Request" data-note="HTTP Listener receives client request, initializes flow vars and payload.">
+  <rect x="40" y="80" width="160" height="70" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="120" y="115" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">HTTP Listener</text>
+  <text x="120" y="135" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">POST /api/v1/orders</text>
+</g>
+<path d="M200 115 L260 115" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: Processing Flow" data-note="Core business logic executes: validation, transformation, and outbound HTTP request.">
+  <rect x="260" y="60" width="220" height="110" rx="8" fill="#1E293B" stroke="#845EC2" stroke-width="1.5"/>
+  <text x="370" y="90" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Main Flow Scope</text>
+  <text x="370" y="115" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Flow-Ref: process-order</text>
+  <text x="370" y="135" fill="#F87171" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">💥 Error Thrown (404/500)</text>
+</g>
+<path d="M480 115 L560 115" stroke="#F87171" stroke-width="2" stroke-dasharray="4,4"/>
+<g data-step="3" data-title="Step 3: Error Handler Router" data-note="Runtime evaluates error type against typed on-error blocks (e.g. HTTP:NOT_FOUND vs ANY).">
+  <polygon points="620,70 700,115 620,160 540,115" fill="#1E293B" stroke="#F87171" stroke-width="2"/>
+  <text x="620" y="118" fill="#F87171" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="700" text-anchor="middle">Error Type?</text>
+</g>
+<path d="M620 70 L620 40 L760 40" stroke="#10B981" stroke-width="2"/>
+<g data-step="4" data-title="Scope A: On-Error-Continue" data-note="Swallows error, completes flow execution, returns HTTP 200 OK with error payload.">
+  <rect x="760" y="20" width="220" height="90" rx="8" fill="url(#l-cont)" stroke="#10B981" stroke-width="1.5"/>
+  <text x="870" y="50" fill="#A7F3D0" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">On-Error-Continue</text>
+  <text x="870" y="75" fill="#FFFFFF" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Payload = { status: 'handled' }</text>
+  <text x="870" y="92" fill="#6EE7B7" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" text-anchor="middle">HTTP Status: 200 OK</text>
+</g>
+<path d="M620 160 L620 230 L760 230" stroke="#EF4444" stroke-width="2"/>
+<g data-step="5" data-title="Scope B: On-Error-Propagate" data-note="Re-throws error to caller, aborts remaining steps, returns HTTP 500/Custom Error code.">
+  <rect x="760" y="185" width="220" height="90" rx="8" fill="url(#l-prop)" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="870" y="215" fill="#FECACA" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">On-Error-Propagate</text>
+  <text x="870" y="240" fill="#FFFFFF" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Re-throws error to parent</text>
+  <text x="870" y="258" fill="#FCA5A5" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" text-anchor="middle">HTTP Status: 500 / 4xx</text>
+</g>
+<g data-step="6" data-title="Step 6: Try Scope Isolation" data-note="Encapsulates specific risky components (e.g. database commit) without failing the parent flow.">
+  <rect x="260" y="320" width="720" height="120" rx="10" fill="#1E293B" stroke="#00F2FE" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <text x="280" y="350" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700">Try Scope with Dedicated Error Handler</text>
+  <text x="280" y="375" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="11">Allows localized transaction rollback or fallback cache retrieval without terminating the main thread.</text>
+  <text x="280" y="400" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="11">✓ Error contained inside Try -> Parent flow continues execution.</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure L.1: Mule 4 Error Handling Scopes — On-Error-Continue (HTTP 200) vs On-Error-Propagate (HTTP 500) & Try Scope Isolation.</figcaption>
+</figure>
+
 <h2 class="article-title">⚠️ Error Handling Deep Dive (Continue vs Propagate)</h2>
 <p class="article-excerpt">On Error Continue vs Propagate, Try scope, standard error types, SAPI→PAPI→XAPI error bubbling, and standardized JSON error payloads.</p>
 </div>
@@ -4409,6 +4667,53 @@ status: vars.httpStatus,</code></pre>
 <span>📄 Guide Pages 30–33</span>
 <span>🎯 5 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-m-diagram" aria-label="Anypoint MQ Dead Letter Queue (DLQ) & FIFO Routing">
+  <svg class="responsive-svg" viewBox="0 0 1200 480" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Anypoint MQ & DLQ Flow</title>
+<desc>Diagram showing Anypoint MQ publisher, exchange, message queues, and redelivery DLQ escalation.</desc>
+<defs>
+  <linearGradient id="m-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0F172A"/><stop offset="100%" stop-color="#1E293B"/></linearGradient>
+</defs>
+<rect width="1200" height="480" rx="14" fill="url(#m-bg)" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Message Publisher" data-note="Mule application publishes message to Anypoint MQ with Message Group ID and Deduplication ID.">
+  <rect x="50" y="100" width="180" height="80" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="140" y="135" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Mule MQ Publisher</text>
+  <text x="140" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Order.Created Event</text>
+</g>
+<path d="M230 140 L310 140" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: Anypoint Message Exchange" data-note="Message exchange distributes payloads to one or multiple bound queues via pub/sub routing.">
+  <polygon points="370,100 430,140 370,180 310,140" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="370" y="145" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="700" text-anchor="middle">MQ Exchange</text>
+</g>
+<path d="M430 140 L510 90" stroke="#00F2FE" stroke-width="2"/>
+<path d="M430 140 L510 190" stroke="#38BDF8" stroke-width="2"/>
+<g data-step="3" data-title="Step 3: Primary Queue (FIFO)" data-note="FIFO Queue strictly preserves ordering per Message Group ID and guarantees exactly-once processing.">
+  <rect x="510" y="50" width="220" height="80" rx="8" fill="#1E293B" stroke="#10B981" stroke-width="1.5"/>
+  <text x="620" y="85" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">orders.fifo Queue</text>
+  <text x="620" y="105" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Deduplication Window: 5m</text>
+</g>
+<g data-step="4" data-title="Step 4: MQ Subscriber & Processing" data-note="Subscriber pulls message with ACK Mode MANUAL. If backend error occurs, message is NACKed.">
+  <rect x="800" y="50" width="200" height="80" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="900" y="85" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Order Consumer Flow</text>
+  <text x="900" y="105" fill="#F87171" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">NACK on DB Connection Error</text>
+</g>
+<path d="M730 90 L800 90" stroke="#00F2FE" stroke-width="2"/>
+<path d="M900 130 L900 260 L730 260" stroke="#F87171" stroke-width="2" stroke-dasharray="4,4"/>
+<g data-step="5" data-title="Step 5: Redelivery Counter & Exhaust" data-note="Anypoint MQ runtime tracks redeliveryCount. When attempts exceed maxRedeliveryAttempts (e.g. 5), routing shifts.">
+  <rect x="510" y="220" width="220" height="80" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="620" y="255" fill="#F59E0B" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Redelivery Check (5/5)</text>
+  <text x="620" y="275" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Threshold reached -> Route to DLQ</text>
+</g>
+<path d="M510 260 L350 260 L350 340" stroke="#EF4444" stroke-width="2"/>
+<g data-step="6" data-title="Step 6: Dead Letter Queue (DLQ)" data-note="Poison messages isolate in DLQ for ops inspection and manual re-drive without blocking the FIFO pipeline.">
+  <rect x="250" y="340" width="750" height="100" rx="8" fill="#1E293B" stroke="#EF4444" stroke-width="2"/>
+  <text x="625" y="375" fill="#EF4444" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="800" text-anchor="middle">Dead Letter Queue: orders-dlq</text>
+  <text x="625" y="400" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">Unlocks FIFO queue head-of-line blocking · Preserves payload &amp; headers · Alert triggered via Anypoint Monitoring</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure M.1: Anypoint MQ Architecture — Exchange routing, Standard vs FIFO deduplication, and automated DLQ escalation on redelivery exhaust.</figcaption>
+</figure>
+
 <h2 class="article-title">📨 Anypoint MQ Deep Dive (Queues, Exchanges, DLQ)</h2>
 <p class="article-excerpt">Queue vs Exchange fan-out, MANUAL ack mode, idempotency with ObjectStore, cross-region disaster recovery, and VM comparison.</p>
 </div>
@@ -4805,6 +5110,43 @@ output application/json
 <span>📄 Guide Pages 34–35</span>
 <span>🎯 3 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-n-diagram" aria-label="ObjectStore OSv2 Key/Value Cache & Watermarking">
+  <svg class="responsive-svg" viewBox="0 0 1200 420" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>ObjectStore v2 Architecture</title>
+<desc>Diagram showing OSv2 key/value caching, TTL expiration, and watermarking sync.</desc>
+<rect width="1200" height="420" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Check Cache (Retrieve)" data-note="Flow receives request and retrieves cached token/data by key with default value fallback.">
+  <rect x="50" y="80" width="220" height="90" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="160" y="115" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">OS: Retrieve</text>
+  <text x="160" y="135" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">key="sf_oauth_token"</text>
+</g>
+<path d="M270 125 L360 125" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: OSv2 In-Memory Cloud Store" data-note="Distributed key-value store across worker replicas with configurable entryTtl and expirationInterval.">
+  <rect x="360" y="50" width="480" height="150" rx="10" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="600" y="85" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Anypoint ObjectStore v2 (Persistent)</text>
+  <rect x="390" y="105" width="200" height="70" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
+  <text x="490" y="130" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">Key: sf_oauth_token</text>
+  <text x="490" y="150" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="9" text-anchor="middle">TTL: 7200s (Expires in 42m)</text>
+  <rect x="610" y="105" width="200" height="70" rx="6" fill="#0F172A" stroke="#00F2FE" stroke-width="1"/>
+  <text x="710" y="130" fill="#00F2FE" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">Key: last_sync_watermark</text>
+  <text x="710" y="150" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="9" text-anchor="middle">Val: "2026-11-20T08:00:00Z"</text>
+</g>
+<path d="M840 125 L930 125" stroke="#10B981" stroke-width="2"/>
+<g data-step="3" data-title="Step 3: Cache Hit / Miss Action" data-note="If cached value exists, returns instantly (5ms). If miss/expired, calls OAuth server and stores new token.">
+  <rect x="930" y="80" width="220" height="90" rx="8" fill="#1E293B" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1040" y="115" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Cache Hit (200 OK)</text>
+  <text x="1040" y="135" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Payload populated from RAM</text>
+</g>
+<g data-step="4" data-title="Step 4: Watermarking Synchronization" data-note="Polling listener queries backend for records where LastModifiedDate > watermark, then updates ObjectStore.">
+  <rect x="50" y="240" width="1100" height="130" rx="10" fill="#1E293B" stroke="#38BDF8" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <text x="80" y="275" fill="#38BDF8" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700">Enterprise Watermarking Pattern (Delta Sync)</text>
+  <text x="80" y="305" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11">1. Read `last_sync_watermark` from OSv2 -> 2. Query SAP/Salesforce with filter -> 3. Process delta records -> 4. OS: Store `now()`</text>
+  <text x="80" y="335" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10">Guarantees zero duplicate processing across restarts without full table scans.</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure N.1: Anypoint ObjectStore v2 — Key/Value storage, Entry TTL expiration, and watermark persistence for batch synchronization.</figcaption>
+</figure>
+
 <h2 class="article-title">🗄️ ObjectStore Deep Dive (OSv2, TTL, Watermarking)</h2>
 <p class="article-excerpt">Object Store v2 in CloudHub, TTL expiration, watermarking for incremental syncs, and Cache scope comparison.</p>
 </div>
@@ -5417,6 +5759,36 @@ output application/json
 <span>📄 Guide Pages 38–41</span>
 <span>🎯 5 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-p-diagram" aria-label="MUnit Automated Unit & Integration Testing Framework">
+  <svg class="responsive-svg" viewBox="0 0 1200 360" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>MUnit Testing Lifecycle</title>
+<desc>Diagram showing MUnit test execution, mocking scopes, and assertions.</desc>
+<rect width="1200" height="360" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Test Setup (Behavior)" data-note="Pre-configures test preconditions, mock-when processors, and sample payload variables.">
+  <rect x="60" y="80" width="300" height="180" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="210" y="115" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">munit:behavior</text>
+  <text x="210" y="145" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">munit-tools:mock-when</text>
+  <text x="210" y="170" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">processor="http:request"</text>
+  <text x="210" y="195" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">then-return: 200 OK Stub</text>
+</g>
+<g data-step="2" data-title="Step 2: Execution (Flow-Ref)" data-note="Calls actual implementation flow with test payload to measure code branch execution.">
+  <rect x="420" y="80" width="340" height="180" rx="8" fill="#1E293B" stroke="#845EC2" stroke-width="1.5"/>
+  <text x="590" y="115" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">munit:execution</text>
+  <text x="590" y="145" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">flow-ref name="orders-xapi-flow"</text>
+  <text x="590" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Target flow runs with mocks active</text>
+  <text x="590" y="205" fill="#00F2FE" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Generates JaCoCo Coverage Metrics</text>
+</g>
+<g data-step="3" data-title="Step 3: Verification (Validation)" data-note="Asserts payload structure, attributes.statusCode == 200, and verifies mock call counts.">
+  <rect x="820" y="80" width="320" height="180" rx="8" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+  <text x="980" y="115" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">munit:validation</text>
+  <text x="980" y="145" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">munit-tools:assert-that</text>
+  <text x="980" y="170" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">expression="#[payload.status == 'SUCCESS']"</text>
+  <text x="980" y="195" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">munit-tools:verify-call times="1"</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure P.1: MUnit 2.x Architecture — Execution flow mocking with <munit-tools:mock-when> and payload assertions.</figcaption>
+</figure>
+
 <h2 class="article-title">🧪 MUnit Testing Framework &amp; Mocking</h2>
 <p class="article-excerpt">Unit testing flows, mocking external HTTP/SAP/DB calls, testing 500 error scenarios, scheduler sub-flows, and SonarQube CI/CD gates.</p>
 </div>
@@ -6506,6 +6878,42 @@ put:</code></pre>
 <span>📄 Guide Pages 54–55</span>
 <span>🎯 4 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-s-diagram" aria-label="Energy & Utility Integration Platform Architecture">
+  <svg class="responsive-svg" viewBox="0 0 1200 360" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Smart Grid Utility Platform</title>
+<desc>Diagram showing Smart Meter to MDM and Billing integration.</desc>
+<rect width="1200" height="360" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Smart Meter AMI Head-End" data-note="Millions of electric meters broadcast 15-minute interval telemetry over cellular/mesh radio.">
+  <rect x="60" y="90" width="220" height="120" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="170" y="130" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">AMI Head-End System</text>
+  <text x="170" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Itron / Landis+Gyr</text>
+  <text x="170" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">5M+ Daily Telemetry Readings</text>
+</g>
+<path d="M280 150 L360 150" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="MuleSoft Process API" data-note="Validates readings, deduplicates timestamps, and computes rolling kilowatt usage.">
+  <rect x="360" y="90" width="240" height="120" rx="8" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="480" y="130" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Meter Data Process API</text>
+  <text x="480" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">VEE (Validate, Estimate, Edit)</text>
+  <text x="480" y="175" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">CloudHub 2.0 Autoscaled Pods</text>
+</g>
+<path d="M600 150 L680 150" stroke="#845EC2" stroke-width="2"/>
+<g data-step="3" data-title="Meter Data Management (MDM)" data-note="MDM repository records historical consumption for energy settlement and regulatory audits.">
+  <rect x="680" y="90" width="220" height="120" rx="8" fill="#1E293B" stroke="#10B981" stroke-width="1.5"/>
+  <text x="790" y="130" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">MDM Repository</text>
+  <text x="790" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Siemens EnergyIP</text>
+  <text x="790" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Billing Quality Settlement</text>
+</g>
+<path d="M900 150 L980 150" stroke="#10B981" stroke-width="2"/>
+<g data-step="4" data-title="Customer Billing (CIS)" data-note="System API updates customer billing ledger in SAP IS-U / Oracle CC&B.">
+  <rect x="980" y="90" width="160" height="120" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="1060" y="130" fill="#F59E0B" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Customer CIS</text>
+  <text x="1060" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">SAP IS-U</text>
+  <text x="1060" y="175" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Invoice Generated</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure S.1: Smart Grid Integration — AMI Smart Meters, Head-End Systems, MDM repository, and Customer Billing APIs.</figcaption>
+</figure>
+
 <h2 class="article-title">⚡ Enterprise Utility &amp; Energy Platform Deep Dive</h2>
 <p class="article-excerpt">Full enterprise case study: 5M customers, 44 APIs, SAP S/4HANA billing, DynamoDB preferences, 55% latency drop.</p>
 </div>
@@ -6606,6 +7014,38 @@ put:</code></pre>
 <span>📄 Guide Pages 55–57</span>
 <span>🎯 9 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-t-diagram" aria-label="Mule 4 Event Model: Attributes, Payload & Variables">
+  <svg class="responsive-svg" viewBox="0 0 1200 360" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Mule 4 Event Architecture</title>
+<desc>Diagram showing Mule Event breakdown: Attributes, Payload, and Vars.</desc>
+<rect width="1200" height="360" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<rect x="60" y="60" width="1080" height="240" rx="10" fill="#1E293B" stroke="#00F2FE" stroke-width="2"/>
+<text x="600" y="95" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="16" font-weight="800" text-anchor="middle">Mule 4 Event (Immutable Container)</text>
+<g data-step="1" data-title="Attributes (Metadata)" data-note="Inbound protocol metadata: HTTP headers, query params, URI params, status code, Kafka offset. Read-only.">
+  <rect x="90" y="120" width="310" height="150" rx="8" fill="#0F172A" stroke="#845EC2" stroke-width="1.5"/>
+  <text x="245" y="155" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">attributes</text>
+  <text x="245" y="185" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">headers: { 'Authorization': '...' }</text>
+  <text x="245" y="210" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">queryParams: { 'limit': '50' }</text>
+  <text x="245" y="235" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">statusCode: 200</text>
+</g>
+<g data-step="2" data-title="Payload (Body Stream)" data-note="Data stream: JSON, XML, Java, binary. Repeatable stream allows multiple reads without exhaustion.">
+  <rect x="445" y="120" width="310" height="150" rx="8" fill="#0F172A" stroke="#10B981" stroke-width="1.5"/>
+  <text x="600" y="155" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">payload</text>
+  <text x="600" y="185" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">{ "orderId": "ORD-9842" }</text>
+  <text x="600" y="210" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Repeatable In-Memory Streaming</text>
+  <text x="600" y="235" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Auto spools to disk > 1.5MB</text>
+</g>
+<g data-step="3" data-title="Variables (vars)" data-note="User-defined flow variables set via <set-variable>. Preserved across flow-refs; lost on outbound HTTP calls.">
+  <rect x="800" y="120" width="310" height="150" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="955" y="155" fill="#F59E0B" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">vars</text>
+  <text x="955" y="185" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">vars.correlationId</text>
+  <text x="955" y="210" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="11" text-anchor="middle">vars.customerProfile</text>
+  <text x="955" y="235" fill="#FCD34D" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Scoped to Current Flow Context</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure T.1: Mule 4 Message Architecture — Immutable event structure, metadata attributes, streaming payload, and flow variable scoping.</figcaption>
+</figure>
+
 <h2 class="article-title">📝 Quick Reference Interview Cheat Sheet</h2>
 <p class="article-excerpt">High-yield rapid review: 30 critical one-liner definitions and standard interview answers.</p>
 </div>
@@ -8027,7 +8467,7 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 <g transform="translate(285, 125)">
 <rect fill="url(#ps-box-grad)" height="435" rx="14" stroke="#845EC2" stroke-dasharray="6,4" stroke-width="1.2" width="600"></rect>
 <text class="ch-sans" fill="#D65DB1" font-size="11" font-weight="800" letter-spacing="1" x="20" y="24">PRIVATE SPACE CLUSTER (AMAZON EKS / KUBERNETES FABRIC)</text>
-<text class="ch-mono" fill="#94A3B8" font-size="9.5" text-anchor="end" x="580" y="24">Isolated Subnets · Anypoint Security Policies</text>
+<text class="ch-mono" fill="#94A3B8" font-size="9.5" text-anchor="end" x="580" y="38">Isolated Subnets · Anypoint Security Policies</text>
 <!-- AZ-A Box (Replica 1) -->
 <g transform="translate(20, 42)">
 <rect fill="url(#ch-card)" height="150" rx="8" stroke="#00A1E0" stroke-width="1" width="265"></rect>
@@ -9027,6 +9467,42 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 <span>📄 Guide Pages 80–85</span>
 <span>🎯 9 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-x-diagram" aria-label="Core Connectors: Apache Kafka & JMS Partitioning">
+  <svg class="responsive-svg" viewBox="0 0 1200 420" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Kafka Topic Partitioning Architecture</title>
+<desc>Diagram showing Kafka cluster, 4 partitions, consumer groups, and offset commits.</desc>
+<rect width="1200" height="420" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Mule Kafka Producer" data-note="Mule Kafka Connector publishes events with partition key (e.g. customerId) guaranteeing hash-based order.">
+  <rect x="50" y="120" width="200" height="90" rx="8" fill="#1E293B" stroke="#00F2FE" stroke-width="1.5"/>
+  <text x="150" y="155" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700" text-anchor="middle">Mule Kafka Producer</text>
+  <text x="150" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Key: customer_id (SHA256)</text>
+</g>
+<path d="M250 165 L330 165" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: Kafka Topic Partitions" data-note="Topic divided across 4 partitions for horizontal parallelism. Each partition strictly ordered by offset.">
+  <rect x="330" y="60" width="460" height="280" rx="10" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="560" y="95" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Kafka Topic: telemetry.events (4 Partitions)</text>
+  <rect x="350" y="115" width="420" height="45" rx="4" fill="#0F172A" stroke="#00F2FE"/>
+  <text x="370" y="142" fill="#00F2FE" font-size="11">Partition 0 | Offsets: [1001, 1002, 1003, 1004]</text>
+  <rect x="350" y="170" width="420" height="45" rx="4" fill="#0F172A" stroke="#10B981"/>
+  <text x="370" y="197" fill="#10B981" font-size="11">Partition 1 | Offsets: [5401, 5402, 5403, 5404]</text>
+  <rect x="350" y="225" width="420" height="45" rx="4" fill="#0F172A" stroke="#F59E0B"/>
+  <text x="370" y="252" fill="#F59E0B" font-size="11">Partition 2 | Offsets: [8901, 8902, 8903, 8904]</text>
+  <rect x="350" y="280" width="420" height="45" rx="4" fill="#0F172A" stroke="#38BDF8"/>
+  <text x="370" y="307" fill="#38BDF8" font-size="11">Partition 3 | Offsets: [3201, 3202, 3203, 3204]</text>
+</g>
+<path d="M790 165 L870 165" stroke="#10B981" stroke-width="2"/>
+<g data-step="3" data-title="Step 3: Consumer Group Scalability" data-note="Consumer group members automatically rebalance partitions. Commits offsets via autoCommit='false' for at-least-once safety.">
+  <rect x="870" y="80" width="280" height="240" rx="10" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+  <text x="1010" y="115" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Mule Consumer Group</text>
+  <rect x="890" y="135" width="240" height="70" rx="6" fill="#0F172A" stroke="#00F2FE"/>
+  <text x="1010" y="165" fill="#00F2FE" font-size="11" text-anchor="middle">Worker Pod 1: P0 &amp; P1</text>
+  <rect x="890" y="225" width="240" height="70" rx="6" fill="#0F172A" stroke="#F59E0B"/>
+  <text x="1010" y="255" fill="#F59E0B" font-size="11" text-anchor="middle">Worker Pod 2: P2 &amp; P3</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure X.1: Kafka vs JMS Architecture — Partition key hashing, Consumer Group offset management, and topic rebalancing.</figcaption>
+</figure>
+
 <h2 class="article-title">🔌 Core Connectors &amp; Protocols (HTTP, DB, JMS, Kafka, VM)</h2>
 <p class="article-excerpt">Mule Event structure, repeatable streaming, Database connection pooling, JMS vs Anypoint MQ vs Kafka, and VM Queues.</p>
 </div>
@@ -9627,6 +10103,48 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 <span>📄 Guide Pages 86–89</span>
 <span>🎯 6 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-y-diagram" aria-label="Salesforce Agentforce & MuleSoft MCP Server Architecture">
+  <svg class="responsive-svg" viewBox="0 0 1200 440" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Agentforce and MuleSoft MCP Integration</title>
+<desc>Diagram showing Agentforce autonomous agent calling MuleSoft APIs via MCP tools and semantic caching.</desc>
+<rect width="1200" height="440" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Step 1: Salesforce Agentforce" data-note="Autonomous AI agent receives customer intent, plans action steps, and consults Topic Center.">
+  <rect x="50" y="90" width="220" height="120" rx="10" fill="#1E293B" stroke="#00F2FE" stroke-width="2"/>
+  <text x="160" y="130" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Salesforce Agentforce</text>
+  <text x="160" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Atlas Reasoning Engine</text>
+  <text x="160" y="175" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Intent: "Pay utility invoice"</text>
+</g>
+<path d="M270 150 L350 150" stroke="#00F2FE" stroke-width="2"/>
+<g data-step="2" data-title="Step 2: Topic Center OAS 3.0 Actions" data-note="Maps agent intent to OpenAPI 3.0 tool definition registered in Anypoint Exchange.">
+  <rect x="350" y="90" width="220" height="120" rx="10" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="460" y="130" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">Topic Center Action</text>
+  <text x="460" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">OAS 3.0 Specification</text>
+  <text x="460" y="175" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Tool: process_payment()</text>
+</g>
+<path d="M570 150 L650 150" stroke="#845EC2" stroke-width="2"/>
+<g data-step="3" data-title="Step 3: MuleSoft MCP Server Gateway" data-note="MuleSoft Model Context Protocol (MCP) server securely translates AI tool invocations into Enterprise System API calls.">
+  <rect x="650" y="80" width="240" height="140" rx="10" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+  <text x="770" y="115" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="800" text-anchor="middle">MuleSoft MCP Server</text>
+  <text x="770" y="140" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Semantic Token Validator</text>
+  <text x="770" y="160" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">OAuth 2.0 DPoP Enforcement</text>
+  <text x="770" y="180" fill="#F59E0B" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Vector Semantic Cache (Redis)</text>
+</g>
+<path d="M890 150 L970 150" stroke="#10B981" stroke-width="2"/>
+<g data-step="4" data-title="Step 4: Enterprise System of Record" data-note="Process API invokes SAP S/4HANA OData service or billing core to execute financial ledger update.">
+  <rect x="970" y="90" width="180" height="120" rx="10" fill="#1E293B" stroke="#00F2FE" stroke-width="2"/>
+  <text x="1060" y="130" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">SAP S/4HANA</text>
+  <text x="1060" y="155" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">OData Payment V4</text>
+  <text x="1060" y="175" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Ledger Confirmed ✓</text>
+</g>
+<g data-step="5" data-title="Step 5: Semantic Caching & Rate Limiting" data-note="Repeated similar user questions served from Redis vector cache; prevents LLM token exhaustion and SAP overload.">
+  <rect x="50" y="270" width="1100" height="120" rx="10" fill="#1E293B" stroke="#00F2FE" stroke-dasharray="6,4" stroke-width="1.5"/>
+  <text x="80" y="305" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="13" font-weight="700">Enterprise AI Security &amp; Token Optimization</text>
+  <text x="80" y="335" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="11">1. Prompt Injection Filter blocks unauthorized system prompts · 2. Semantic Cache reduces SAP backend calls by 68% · 3. Full OpenTelemetry trace emitted to Datadog.</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure Y.1: Agentforce LLM Reasoning Loop — Topic Center actions, OAS 3.0 tool schemas, Model Context Protocol (MCP) server, and System API semantic cache.</figcaption>
+</figure>
+
 <h2 class="article-title">☕ Advanced MuleSoft Topics (Java 17, Agentforce AI)</h2>
 <p class="article-excerpt">Java 17 upgrade traps, Anypoint Code Builder vs Studio, Parent POM governance, and MuleSoft AI + Agentforce integration.</p>
 </div>
@@ -12693,6 +13211,43 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span>📄 Guide Pages 125–132</span>
 <span>🎯 9 Interview Topics</span>
 </div>
+<figure class="hub-diagram" id="mod-dd-diagram" aria-label="Enterprise Architect Discovery Funnel & Decision Tree">
+  <svg class="responsive-svg" viewBox="0 0 1200 360" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+<title>Architect Discovery Funnel</title>
+<desc>Diagram showing Discovery Funnel steps from intake to architecture decision record.</desc>
+<rect width="1200" height="360" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+<g data-step="1" data-title="Phase 1: Business Driver Intake" data-note="Identify SLAs, compliance requirements (HIPAA, PCI), cost constraints, and business domain goals.">
+  <polygon points="60,60 320,60 280,300 100,300" fill="#1E293B" stroke="#00F2FE" stroke-width="2"/>
+  <text x="190" y="110" fill="#00F2FE" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">1. Intake &amp; Requirements</text>
+  <text x="190" y="145" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• Business Capabilities</text>
+  <text x="190" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• Peak TPS &amp; Volume</text>
+  <text x="190" y="205" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• Compliance &amp; Residency</text>
+</g>
+<g data-step="2" data-title="Phase 2: NFR Profiling & Filtering" data-note="Evaluate latency tolerance: Synchronous REST vs Asynchronous Event-Driven vs Batch Streaming.">
+  <polygon points="340,60 620,60 580,300 380,300" fill="#1E293B" stroke="#845EC2" stroke-width="2"/>
+  <text x="480" y="110" fill="#D65DB1" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">2. Pattern Filtering</text>
+  <text x="480" y="145" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• Latency &lt; 200ms -> REST API</text>
+  <text x="480" y="175" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• High Concurrency -> Anypoint MQ</text>
+  <text x="480" y="205" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• High Volume >100k -> Batch</text>
+</g>
+<g data-step="3" data-title="Phase 3: Topology & Platform Sizing" data-note="Select CloudHub 2.0 Shared vs Private Space vs RTF, compute vCores, replicas, and HA failover.">
+  <polygon points="640,60 900,60 860,300 680,300" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+  <text x="770" y="110" fill="#10B981" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">3. Deployment Sizing</text>
+  <text x="770" y="145" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• Private Space (Isolated)</text>
+  <text x="770" y="175" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• Replica Pod Count: 2+ (HA)</text>
+  <text x="770" y="205" fill="#94A3B8" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">• vCore Memory Spooling</text>
+</g>
+<g data-step="4" data-title="Phase 4: Architecture Decision Record (ADR)" data-note="Final formal ADR document signed off by CCoE and Enterprise Architecture review board.">
+  <polygon points="920,60 1140,60 1120,300 940,300" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+  <text x="1030" y="110" fill="#F59E0B" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" text-anchor="middle">4. Signed ADR</text>
+  <text x="1030" y="145" fill="#FCD34D" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">ADR-2026-042</text>
+  <text x="1030" y="175" fill="#E2E8F0" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">CCoE Approved ✓</text>
+  <text x="1030" y="205" fill="#10B981" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">Ready for Sprint Kickoff</text>
+</g>
+</svg>
+  <figcaption class="hub-diagram-caption">Figure DD.1: Integration Architecture Discovery Funnel — Business driver intake, non-functional profiling, pattern synthesis, and ADR governance.</figcaption>
+</figure>
+
 <h2 class="article-title">🧭 Architect: Requirement Gathering &amp; Discovery Framework</h2>
 <p class="article-excerpt">8-part client discovery framework, discovery questionnaire, workshop agenda, delivery delighters, and sign-off checklist.</p>
 </div>
