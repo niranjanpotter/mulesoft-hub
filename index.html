@@ -13,7 +13,11 @@
 <meta content="Niranjan Potter" name="author"/>
 <meta content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" name="robots"/>
 <link href="https://niranjanpotter.github.io/" rel="canonical"/>
-<!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:image" content="https://niranjanpotter.github.io/assets/img/og-hub.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://niranjanpotter.github.io/assets/img/og-hub.png">
+  <!-- Open Graph / Facebook / LinkedIn -->
 <meta content="website" property="og:type"/>
 <meta content="https://niranjanpotter.github.io/" property="og:url"/>
 <meta content="MuleSoft Interview Questions &amp; Answers (2026) | 282+ Real-World Scenario Q&amp;A" property="og:title"/>
@@ -127,6 +131,7 @@
   <script src="assets/js/hub.js" defer></script>
 </head>
 <body>
+<a href="#mod-a" class="skip-link">Skip to content</a>
 <div id="top-progress"></div>
 <!-- Floating Glassmorphic Header -->
 <header class="hub-header">
@@ -143,11 +148,11 @@
 </div>
 </a>
 <div class="header-center">
-<div class="search-trigger" onclick="openSearchModal()">
+<button type="button" class="search-trigger" onclick="openSearchModal()" aria-label="Search questions and topics (Ctrl+K)">
 <div style="display:flex; align-items:center; gap:10px;">
 <svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
 <span>Search 280+ topics, DW scripts, error codes...</span>
-</div>
+        </button>
 <span class="search-shortcut">Ctrl+K</span>
 </div>
 </div>
@@ -570,7 +575,7 @@
 </div>
 </section>
 <!-- All 36 Technical Modules -->
-<article class="blog-article" data-category="Getting Started &amp; Strategy" data-role="Developer / Senior" id="mod-a">
+<section class="blog-article" data-category="Getting Started &amp; Strategy" data-role="Developer / Senior" id="mod-a" aria-labelledby="mod-a-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module A</span>
@@ -1431,8 +1436,8 @@
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Developer" id="mod-b">
+</section>
+<section class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Developer" id="mod-b" aria-labelledby="mod-b-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module B</span>
@@ -1685,8 +1690,8 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Developer / Senior" id="mod-c">
+</section>
+<section class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Developer / Senior" id="mod-c" aria-labelledby="mod-c-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module C</span>
@@ -1889,8 +1894,8 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Security &amp; Connectivity" data-role="Senior / Lead" id="mod-d">
+</section>
+<section class="blog-article" data-category="Security &amp; Connectivity" data-role="Senior / Lead" id="mod-d" aria-labelledby="mod-d-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module D</span>
@@ -2150,8 +2155,8 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="AWS &amp; Messaging" data-role="Developer" id="mod-e">
+</section>
+<section class="blog-article" data-category="AWS &amp; Messaging" data-role="Developer" id="mod-e" aria-labelledby="mod-e-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module E</span>
@@ -2391,8 +2396,8 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Senior / Architect" id="mod-f">
+</section>
+<section class="blog-article" data-category="Salesforce &amp; Enterprise Connectors" data-role="Senior / Architect" id="mod-f" aria-labelledby="mod-f-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module F</span>
@@ -2550,8 +2555,8 @@ BillingCity: rec.city
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-g">
+</section>
+<section class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-g" aria-labelledby="mod-g-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module G</span>
@@ -2902,8 +2907,8 @@ paperless:     dynamoData.paperless default false
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-h">
+</section>
+<section class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-h" aria-labelledby="mod-h-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module H</span>
@@ -3317,8 +3322,8 @@ paperless:     dynamoData.paperless default false
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer / Senior" id="mod-i">
+</section>
+<section class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer / Senior" id="mod-i" aria-labelledby="mod-i-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module I</span>
@@ -3759,8 +3764,8 @@ paperless:     dynamoData.paperless default false
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-j">
+</section>
+<section class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-j" aria-labelledby="mod-j-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module J</span>
@@ -3928,8 +3933,8 @@ paperless:     dynamoData.paperless default false
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-k">
+</section>
+<section class="blog-article" data-category="Flow Scopes &amp; Concurrency" data-role="Developer" id="mod-k" aria-labelledby="mod-k-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module K</span>
@@ -4086,8 +4091,8 @@ paperless:     dynamoData.paperless default false
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Error Handling &amp; Resiliency" data-role="Developer / Senior" id="mod-l">
+</section>
+<section class="blog-article" data-category="Error Handling &amp; Resiliency" data-role="Developer / Senior" id="mod-l" aria-labelledby="mod-l-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module L</span>
@@ -4393,8 +4398,8 @@ status: vars.httpStatus,</code></pre>
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="AWS &amp; Messaging" data-role="Developer / Senior" id="mod-m">
+</section>
+<section class="blog-article" data-category="AWS &amp; Messaging" data-role="Developer / Senior" id="mod-m" aria-labelledby="mod-m-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module M</span>
@@ -4789,8 +4794,8 @@ output application/json
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="ObjectStore &amp; API Governance" data-role="Developer" id="mod-n">
+</section>
+<section class="blog-article" data-category="ObjectStore &amp; API Governance" data-role="Developer" id="mod-n" aria-labelledby="mod-n-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module N</span>
@@ -4976,8 +4981,8 @@ output application/json
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="ObjectStore &amp; API Governance" data-role="Senior / Lead" id="mod-o">
+</section>
+<section class="blog-article" data-category="ObjectStore &amp; API Governance" data-role="Senior / Lead" id="mod-o" aria-labelledby="mod-o-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module O</span>
@@ -5401,8 +5406,8 @@ output application/json
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Testing &amp; CI/CD" data-role="Developer / Senior" id="mod-p">
+</section>
+<section class="blog-article" data-category="Testing &amp; CI/CD" data-role="Developer / Senior" id="mod-p" aria-labelledby="mod-p-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module P</span>
@@ -5620,8 +5625,8 @@ output application/json
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="ObjectStore &amp; API Governance" data-role="Senior / Lead" id="mod-q">
+</section>
+<section class="blog-article" data-category="ObjectStore &amp; API Governance" data-role="Senior / Lead" id="mod-q" aria-labelledby="mod-q-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module Q</span>
@@ -5904,8 +5909,8 @@ S 🏢  Project Deep Dive — Fortune 500 Energy &amp; Utility Enterprise</code>
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="DataWeave 2.0 Masterclass" data-role="Developer" id="mod-r">
+</section>
+<section class="blog-article" data-category="DataWeave 2.0 Masterclass" data-role="Developer" id="mod-r" aria-labelledby="mod-r-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module R</span>
@@ -6490,8 +6495,8 @@ put:</code></pre>
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Getting Started &amp; Strategy" data-role="Developer / Senior" id="mod-s">
+</section>
+<section class="blog-article" data-category="Getting Started &amp; Strategy" data-role="Developer / Senior" id="mod-s" aria-labelledby="mod-s-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module S</span>
@@ -6590,8 +6595,8 @@ put:</code></pre>
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Rapid Review &amp; Cheat Sheets" data-role="Developer" id="mod-t">
+</section>
+<section class="blog-article" data-category="Rapid Review &amp; Cheat Sheets" data-role="Developer" id="mod-t" aria-labelledby="mod-t-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module T</span>
@@ -6873,8 +6878,8 @@ put:</code></pre>
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Rapid Review &amp; Cheat Sheets" data-role="Developer / Senior" id="mod-u">
+</section>
+<section class="blog-article" data-category="Rapid Review &amp; Cheat Sheets" data-role="Developer / Senior" id="mod-u" aria-labelledby="mod-u-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module U</span>
@@ -7614,8 +7619,8 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="DataWeave 2.0 Masterclass" data-role="Senior" id="mod-v">
+</section>
+<section class="blog-article" data-category="DataWeave 2.0 Masterclass" data-role="Senior" id="mod-v" aria-labelledby="mod-v-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-senior">Module V</span>
@@ -7902,8 +7907,8 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Deployment &amp; CloudHub 2.0" data-role="Lead / Architect" id="mod-w">
+</section>
+<section class="blog-article" data-category="Deployment &amp; CloudHub 2.0" data-role="Lead / Architect" id="mod-w" aria-labelledby="mod-w-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module W</span>
@@ -9011,8 +9016,8 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="AWS &amp; Messaging" data-role="Developer" id="mod-x">
+</section>
+<section class="blog-article" data-category="AWS &amp; Messaging" data-role="Developer" id="mod-x" aria-labelledby="mod-x-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module X</span>
@@ -9564,8 +9569,8 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Getting Started &amp; Strategy" data-role="All" id="mod-tips">
+</section>
+<section class="blog-article" data-category="Getting Started &amp; Strategy" data-role="All" id="mod-tips" aria-labelledby="mod-tips-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-dev">Module Tips</span>
@@ -9611,8 +9616,8 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 <div class="callout-header"><span class="callout-icon">❌</span><strong>❌ What NOT to Say · ❌  AVOID THESE MISTAKES</strong></div>
 <div class="callout-body">Never say "I don't know" — say "Let me think<br/>through this..."<br/>Don't read from notes or pause too long on basic<br/>questions<br/>Don't contradict yourself — be consistent with<br/>experience level<br/>Don't exaggerate — say what you've actually done<br/>Don't skip the "Why" — always explain WHY you<br/>chose a pattern<br/>Don't end answers abruptly — close with the<br/>business impact<br/>SITUATION SAY THIS EXACT PHRASE<br/>You don't know the<br/>answer<br/>"I haven't personally implemented that specific scenario, but based on my understanding of<br/>how MuleSoft handles [related topic], I would approach it by..."<br/>You need time to think "That's a great question. Let me think through the approach I would take... [pause 3 seconds]<br/>So the way I see it is..."<br/>They ask about a feature<br/>you haven't used<br/>"I haven't used [X] directly, but I've worked with [similar technology]. The key difference would<br/>be... and I would verify by checking the MuleSoft documentation at docs.mulesoft.com."<br/>They challenge your<br/>answer<br/>"That's a valid point. You're right that [acknowledge their point]. In our specific case in our Enterprise Architecture, we<br/>chose [your approach] because [specific reason from project context]."<br/>Technical question<br/>outside Mule<br/>"While I haven't worked with [X] directly, the integration principle would be similar to<br/>[something you know], where you would need to handle [auth/error/async] in these specific<br/>ways..."<br/>⭐  Most Impressive Answers — Guaranteed to Stand Out<br/>🏆  THE ANSWERS THAT WILL GET YOU HIRED<br/>Q: "What is your biggest achievement?"<br/>"My biggest achievement was designing and implementing a complete API-led connectivity platform at Global Utility Enterprise<br/>Energy that went from concept to production handling 5 million+ API calls monthly. The platform maintained<br/>99.9% uptime for 18 consecutive months with zero P1 incidents. More specifically, I solved a critical SAP XML null<br/>pointer issue in production that was causing silent failures for 'Pending Final + Disconnected' account statuses — I<br/>identified it, wrote the null-safe DataWeave fix, and created MUnit tests that prevented regression. That fix has<br/>been in production for 18 months without a single reoccurrence."<br/>Q: "Tell me about a time you solved a difficult technical problem."<br/>"We had a production incident where a Salesforce platform event for 'Opportunity Closed Won' was being<br/>processed multiple times, creating duplicate SAP Sales Orders. The root cause was Salesforce's at-least-once<br/>delivery guarantee combined with our app restart during a deployment window. I designed and implemented an<br/>ObjectStore-based idempotency solution where we check a persistent ObjectStore for the Opportunity ID before<br/>processing. The ObjectStore uses Anypoint OS v2 so it persists across app restarts. This completely eliminated<br/>duplicate processing. I also added MANUAL ack mode on the MQ subscriber so messages are only acknowledged<br/>after successful processing. Since then — zero duplicate SAP orders in production."<br/>📋  Last-Minute Checklist — 30 Minutes Before Interview<br/>CHECK ITEM STATUS<br/>☐ Practice the 2-minute introduction OUT LOUD 3 times Say it like you've said it 100<br/>times<br/>☐ Review the metrics table: 44 APIs, 70K/day, 95% MUnit, 99.9% uptime, 55%<br/>faster<br/>Know all numbers by heart<br/>☐ Recall 3 specific production challenges you solved (SAP null, duplicate<br/>orders, batch restart)<br/>Each with: Problem → Fix →<br/>Result<br/>☐ Review: Scatter-Gather output = Array, ForEach output = UNCHANGED,<br/>Batch = 3 phases<br/>These are most commonly<br/>asked<br/>☐ Practice: "MANUAL ack + ObjectStore idempotency" explanation in 60<br/>seconds<br/>Always impress on MQ<br/>questions<br/>☐ Know: JWT Bearer 8-step flow, Error propagation pattern, DataWeave $ and<br/>$$ meaning<br/>Common whiteboard<br/>questions<br/>☐ Prepare 2 questions to ask the interviewer about their MuleSoft architecture Shows genuine interest<br/>🚀  You've Got This!<br/>✅  44+ Production APIs ✅  5M+ Monthly Calls ✅  99.9% Uptime SLA<br/>✅  95% MUnit Coverage<br/>Y<br/>🆕  Additional Topics — MuleVibes LinkedIn Series<br/>NEW ⭐<br/>🔹  Mule 4 Internals — Mule Event Structure</div>
 </div></div>
-</article>
-<article class="blog-article" data-category="Modern Architecture &amp; AI" data-role="Senior / Lead" id="mod-y">
+</section>
+<section class="blog-article" data-category="Modern Architecture &amp; AI" data-role="Senior / Lead" id="mod-y" aria-labelledby="mod-y-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module Y</span>
@@ -9961,8 +9966,8 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Production Scenarios &amp; Incidents" data-role="Senior / Lead" id="mod-z">
+</section>
+<section class="blog-article" data-category="Production Scenarios &amp; Incidents" data-role="Senior / Lead" id="mod-z" aria-labelledby="mod-z-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module Z</span>
@@ -11089,8 +11094,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Live Whiteboard &amp; Architecture" data-role="Lead / Architect" id="mod-aa">
+</section>
+<section class="blog-article" data-category="Live Whiteboard &amp; Architecture" data-role="Lead / Architect" id="mod-aa" aria-labelledby="mod-aa-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module AA</span>
@@ -11173,8 +11178,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Modern Architecture &amp; AI" data-role="Lead / Architect" id="mod-bb">
+</section>
+<section class="blog-article" data-category="Modern Architecture &amp; AI" data-role="Lead / Architect" id="mod-bb" aria-labelledby="mod-bb-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module BB</span>
@@ -11613,8 +11618,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Interview Traps &amp; Pitfalls" data-role="Senior / Lead" id="mod-cc">
+</section>
+<section class="blog-article" data-category="Interview Traps &amp; Pitfalls" data-role="Senior / Lead" id="mod-cc" aria-labelledby="mod-cc-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module CC</span>
@@ -12677,8 +12682,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-dd">
+</section>
+<section class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-dd" aria-labelledby="mod-dd-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module DD</span>
@@ -13250,8 +13255,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-ee">
+</section>
+<section class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-ee" aria-labelledby="mod-ee-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module EE</span>
@@ -13834,8 +13839,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-ff">
+</section>
+<section class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-ff" aria-labelledby="mod-ff-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module FF</span>
@@ -14111,8 +14116,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-gg">
+</section>
+<section class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-gg" aria-labelledby="mod-gg-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module GG</span>
@@ -15221,8 +15226,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-hh">
+</section>
+<section class="blog-article" data-category="Enterprise Architect Masterclass" data-role="Enterprise Architect" id="mod-hh" aria-labelledby="mod-hh-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module HH</span>
@@ -15517,8 +15522,8 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" data-category="Senior Developer &amp; Lead Technical Interview" data-role="Senior Developer / Technical Lead" id="mod-ii">
+</section>
+<section class="blog-article" data-category="Senior Developer &amp; Lead Technical Interview" data-role="Senior Developer / Technical Lead" id="mod-ii" aria-labelledby="mod-ii-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="badge badge-lead">Module II</span>
@@ -17766,8 +17771,8 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 </div>
 </div>
-</article>
-<article class="blog-article" id="mod-jj">
+</section>
+<section class="blog-article"  id="mod-jj" aria-labelledby="mod-jj-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="module-badge">MODULE JJ</span>
@@ -17917,7 +17922,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 </div>
 </div>
-</article><article class="blog-article" id="mod-kk">
+</section><section class="blog-article"  id="mod-kk" aria-labelledby="mod-kk-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="module-badge">MODULE KK</span>
@@ -17988,7 +17993,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 </div>
 </div>
-</article><article class="blog-article" id="mod-ll">
+</section><section class="blog-article"  id="mod-ll" aria-labelledby="mod-ll-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="module-badge">MODULE LL</span>
@@ -18059,7 +18064,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 </div>
 </div>
-</article><article class="blog-article" id="mod-mm">
+</section><section class="blog-article"  id="mod-mm" aria-labelledby="mod-mm-title">
 <div class="article-header">
 <div class="article-meta">
 <span class="module-badge">MODULE MM</span>
@@ -18130,7 +18135,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 </div>
 </div>
-</article></main>
+</section></main>
 </div>
 <!-- Footer -->
 <footer class="hub-footer">

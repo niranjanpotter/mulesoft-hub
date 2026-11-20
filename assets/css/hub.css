@@ -4719,3 +4719,27 @@ pre:hover {
       .sig-rule { animation: none; stroke-dashoffset: 0; }
       .sig-in, .sig-flow { animation: none; }
     }
+
+/* === Accessibility: Skip Link & Focus Rings === */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 16px;
+  background: var(--bg-card, #111827);
+  color: var(--accent, #00F2FE);
+  padding: 10px 18px;
+  z-index: 99999;
+  border-radius: 8px;
+  font-weight: 700;
+  border: 2px solid var(--accent, #00F2FE);
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.4);
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+:focus-visible {
+  outline: 2px solid var(--accent, #00F2FE) !important;
+  outline-offset: 2px !important;
+}
