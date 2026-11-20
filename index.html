@@ -137,40 +137,47 @@
 <div id="top-progress"></div>
 <!-- Floating Glassmorphic Header -->
 <header class="hub-header">
-<a class="brand-wrapper" href="#">
-<div class="brand-icon">
-<svg fill="none" height="22" stroke="white" stroke-width="2.2" viewbox="0 0 24 24" width="22"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-</div>
-<div>
-<div class="brand-title">
-<span>MuleSoft Hub</span>
-<span class="badge badge-primary" style="font-size:0.65rem;">2026 Edition</span>
-</div>
-<div style="font-size:0.7rem; color:var(--text-dim); letter-spacing:0.04em;">ENTERPRISE ARCHITECTURE &amp; INTERVIEW GUIDE</div>
-</div>
-</a>
-<div class="header-center">
-<button type="button" class="search-trigger" onclick="openSearchModal()" aria-label="Search questions and topics (Ctrl+K)">
-<div style="display:flex; align-items:center; gap:10px;">
-<svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-<span>Search 280+ topics, DW scripts, error codes...</span>
-        </button>
-<span class="search-shortcut">Ctrl+K</span>
-</div>
-</div>
-<div class="header-actions">
-<button aria-label="Search topics and DataWeave scripts" class="btn btn-search-mobile" onclick="openSearchModal()" title="Search Topics">
-<svg fill="none" height="18" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="18"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-</button>
-<button class="btn" id="practice-btn" onclick="togglePracticeMode()" title="Self-Test Mode: Collapse all answers to test your active recall">🎯 Practice Mode</button>
-<button class="btn btn-primary" onclick="openDataWeaveModal()" title="Open Interactive DataWeave 2.0 Playground">🧪 DW Playground</button>
-<button aria-label="Toggle Dark and Light theme" class="btn" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-<span id="theme-icon">☀️</span>
-</button>
-<button aria-label="Open Technical Modules Navigation" class="btn btn-hamburger-mobile" id="hamburgerBtn" onclick="toggleSidebarDrawer()" title="Open Module Index">
-<svg fill="none" height="20" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="20"><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
-</button>
-</div>
+  <div class="header-left">
+    <button aria-label="Open Technical Modules Navigation" class="btn btn-hamburger-mobile" id="hamburgerBtn" onclick="toggleSidebarDrawer()" title="Open Module Index">
+      <svg fill="none" height="20" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="20"><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
+    </button>
+    <a class="brand-wrapper" href="#">
+      <div class="brand-icon">
+        <svg fill="none" height="22" stroke="white" stroke-width="2.2" viewBox="0 0 24 24" width="22"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+      </div>
+      <div class="brand-text-block">
+        <div class="brand-title">
+          <span>MuleSoft Hub</span>
+          <span class="badge badge-primary header-edition-badge" style="font-size:0.65rem;">2026 Edition</span>
+        </div>
+        <div class="brand-subtitle" style="font-size:0.7rem; color:var(--text-dim); letter-spacing:0.04em;">ENTERPRISE ARCHITECTURE &amp; INTERVIEW GUIDE</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="header-center">
+    <button type="button" class="search-trigger" onclick="openSearchModal()" aria-label="Search questions and topics (Ctrl+K)">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+        <span>Search 280+ topics, DW scripts, error codes...</span>
+      </div>
+      <span class="search-shortcut">Ctrl+K</span>
+    </button>
+  </div>
+
+  <div class="header-actions">
+    <button aria-label="Search topics and DataWeave scripts" class="btn btn-search-mobile" onclick="openSearchModal()" title="Search Topics">
+      <svg fill="none" height="18" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="18"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+    </button>
+    <button class="btn" id="practice-btn" onclick="togglePracticeMode()" title="Self-Test Mode: Collapse all answers to test your active recall">🎯 Practice Mode</button>
+    <button class="btn btn-primary btn-dw-header" onclick="openDataWeaveModal()" title="Open Interactive DataWeave 2.0 Playground" aria-label="Open Interactive DataWeave 2.0 Playground">
+      <span class="btn-dw-icon">🧪</span>
+      <span class="btn-dw-label">DW Playground</span>
+    </button>
+    <button aria-label="Toggle Dark and Light theme" class="btn" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+      <span id="theme-icon">☀️</span>
+    </button>
+  </div>
 </header>
 <!-- Off-Canvas Sidebar Backdrop -->
 <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebarDrawer(false)"></div>

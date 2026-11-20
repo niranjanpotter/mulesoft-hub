@@ -2027,16 +2027,19 @@ document.addEventListener('DOMContentLoaded', function() {
   window.toggleSidebarDrawer = function(force) {
     var sidebar = document.getElementById('toc-sidebar');
     var backdrop = document.getElementById('sidebarBackdrop');
+    var hamburger = document.getElementById('hamburgerBtn');
     if (!sidebar) return;
     var isOpen = sidebar.classList.contains('drawer-open');
     var newState = typeof force === 'boolean' ? force : !isOpen;
     if (newState) {
       sidebar.classList.add('drawer-open');
       if (backdrop) backdrop.classList.add('active');
+      if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     } else {
       sidebar.classList.remove('drawer-open');
       if (backdrop) backdrop.classList.remove('active');
+      if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     }
   };

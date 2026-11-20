@@ -4743,3 +4743,103 @@ pre:hover {
   outline: 2px solid var(--accent, #00F2FE) !important;
   outline-offset: 2px !important;
 }
+
+
+/* === UI/UX Pro Max Polish: Header, Touch & Layout === */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-hamburger-mobile {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .btn-hamburger-mobile {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    color: var(--electric-cyan, #00F2FE);
+    border: 1px solid rgba(0, 242, 254, 0.4);
+    background: rgba(0, 242, 254, 0.06);
+    cursor: pointer;
+  }
+  
+  #practice-btn {
+    display: none !important;
+  }
+  
+  .btn-dw-header {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .btn-dw-label {
+    display: none !important;
+  }
+  
+  .btn-dw-icon {
+    font-size: 1.15rem;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .brand-subtitle, .header-edition-badge {
+    display: none !important;
+  }
+  .brand-wrapper {
+    gap: 8px;
+  }
+}
+
+/* Category Filter Bar Horizontal Scroll Mask */
+.sticky-filter-bar {
+  mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+}
+
+.cat-pill {
+  min-height: 38px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+/* Drawer transitions */
+.quick-sidebar {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
