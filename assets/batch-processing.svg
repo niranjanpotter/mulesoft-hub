@@ -1,0 +1,231 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="batch-title batch-desc">
+  <title id="batch-title">Mule 4 Batch Job Internal Processing &amp; Scoping Engine</title>
+  <desc id="batch-desc">Visual architecture diagram of Mule 4 Batch Processing showing the 3 phases: Input Stage, Process Records with Persistent Disk Queue and Record-Level Variable isolation, Batch Aggregator, and On-Complete Phase.</desc>
+
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="b-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071321"/>
+      <stop offset="55%" stop-color="#0B2033"/>
+      <stop offset="100%" stop-color="#124052"/>
+    </linearGradient>
+    <radialGradient id="b-glow-left" cx="20%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#00A1E0" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="b-glow-right" cx="80%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="b-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#53CADD" stroke-opacity="0.06"/>
+    </pattern>
+
+    <!-- Card Backgrounds -->
+    <linearGradient id="b-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#112233" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#081420" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="phase-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#845EC2" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <filter id="b-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .b-title { font-family: 'Plus Jakarta Sans', Georgia, sans-serif; font-weight: 700; }
+    .b-mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+    .b-sans { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+
+    /* Animated Traces */
+    .b-trace { stroke-dasharray: 6 94; animation: b-flow 4.2s linear infinite; }
+    .b-trace-2 { stroke-dasharray: 6 94; animation: b-flow 4.2s linear infinite; animation-delay: -1.4s; }
+    .b-trace-3 { stroke-dasharray: 6 94; animation: b-flow 4.2s linear infinite; animation-delay: -2.8s; }
+
+    @keyframes b-flow {
+      from { stroke-dashoffset: 100; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .b-pulse { animation: b-pulse-anim 6s ease-in-out infinite; }
+    @keyframes b-pulse-anim {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .b-trace, .b-trace-2, .b-trace-3, .b-pulse { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- Frame Background -->
+  <rect width="1200" height="620" rx="24" fill="url(#b-bg)"/>
+  <rect width="1200" height="620" rx="24" fill="url(#b-grid)"/>
+  <ellipse class="b-pulse" cx="200" cy="200" rx="260" ry="200" fill="url(#b-glow-left)"/>
+  <ellipse class="b-pulse" cx="1000" cy="400" rx="260" ry="200" fill="url(#b-glow-right)"/>
+  <rect x="1" y="1" width="1198" height="618" rx="23" fill="none" stroke="#53CADD" stroke-opacity="0.25"/>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <g class="b-sans" transform="translate(48, 34)">
+    <rect width="250" height="26" rx="13" fill="#124052" stroke="#53CADD" stroke-opacity="0.35"/>
+    <circle cx="14" cy="13" r="4.5" fill="#00F2FE"/>
+    <text x="26" y="17" fill="#A6EAF4" font-size="10.5" font-weight="700" letter-spacing="1.5">BATCH PROCESSING ENGINE</text>
+    
+    <text x="0" y="52" fill="#F0F9FF" class="b-title" font-size="24">Mule 4 Batch Job Architecture &amp; Variable Scoping</text>
+    <text x="0" y="70" fill="#94A3B8" font-size="12">Persistent Disk Queue · Record-Level Variable Isolation · Split-Phase Workers · Chunked Aggregators · On-Complete SLA</text>
+  </g>
+
+  <!-- ==================== PHASE 1: INPUT / INITIALIZE ==================== -->
+  <g transform="translate(48, 125)">
+    <rect width="240" height="435" rx="14" fill="url(#phase-grad)" stroke="#00A1E0" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#00F2FE" class="b-sans" font-size="11" font-weight="800" letter-spacing="1">PHASE 1: INPUT STAGE</text>
+    <text x="20" y="42" fill="#94A3B8" class="b-mono" font-size="9.5">Payload Hydration &amp; Snapshot</text>
+
+    <!-- Source Extractor Card -->
+    <g transform="translate(18, 60)">
+      <rect width="204" height="74" rx="8" fill="url(#b-card)" stroke="#00A1E0" stroke-width="1"/>
+      <text x="14" y="22" fill="#FFFFFF" class="b-sans" font-size="11" font-weight="700">Source Extraction</text>
+      <text x="14" y="38" fill="#94A3B8" class="b-mono" font-size="9">SELECT 100k Records</text>
+      <text x="14" y="52" fill="#94A3B8" class="b-mono" font-size="9">Streams into Batch Queue</text>
+      <circle cx="186" cy="20" r="5" fill="#00F2FE"/>
+    </g>
+
+    <!-- Variable Snapshot Card -->
+    <g transform="translate(18, 150)">
+      <rect width="204" height="110" rx="8" fill="url(#b-card)" stroke="#845EC2" stroke-width="1"/>
+      <text x="14" y="22" fill="#D65DB1" class="b-sans" font-size="11" font-weight="700">Flow Variables Snapshot</text>
+      <text x="14" y="40" fill="#94A3B8" class="b-mono" font-size="9">vars.batchId = "RUN_992"</text>
+      <text x="14" y="56" fill="#94A3B8" class="b-mono" font-size="9">vars.startTime = now()</text>
+      <path d="M14 68H190" stroke="rgba(255,255,255,0.1)"/>
+      <text x="14" y="84" fill="#E0A4E8" class="b-sans" font-size="9" font-weight="600">RULE: Cloned to all records</text>
+      <text x="14" y="98" fill="#EF4444" class="b-sans" font-size="9">NOT accessible in On-Complete!</text>
+    </g>
+
+    <!-- Queue Dispatcher -->
+    <g transform="translate(18, 280)">
+      <rect width="204" height="135" rx="8" fill="#0A1624" stroke="#53CADD" stroke-width="1"/>
+      <text x="14" y="24" fill="#A6EAF4" class="b-sans" font-size="11" font-weight="700">Persistent Disk Queue</text>
+      <text x="14" y="42" fill="#94A3B8" class="b-mono" font-size="9">• Serializes to local disk</text>
+      <text x="14" y="58" fill="#94A3B8" class="b-mono" font-size="9">• Prevents OutOfMemoryError</text>
+      <text x="14" y="74" fill="#94A3B8" class="b-mono" font-size="9">• 100 records / block chunk</text>
+      <rect x="14" y="88" width="176" height="32" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.4"/>
+      <text x="102" y="108" fill="#00F2FE" class="b-mono" font-size="9.5" text-anchor="middle">BLOCK SIZE = 100</text>
+    </g>
+  </g>
+
+  <!-- Connector: Phase 1 to Phase 2 -->
+  <path d="M288 340 H315" stroke="#00F2FE" stroke-width="1.8"/>
+  <path class="b-trace" pathLength="100" d="M288 340 H315" fill="none" stroke="#00F2FE" stroke-width="3" filter="url(#b-glow)"/>
+
+  <!-- ==================== PHASE 2: PROCESS RECORDS ==================== -->
+  <g transform="translate(315, 125)">
+    <rect width="570" height="435" rx="14" fill="url(#phase-grad)" stroke="#845EC2" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#D65DB1" class="b-sans" font-size="11" font-weight="800" letter-spacing="1">PHASE 2: PROCESS RECORDS (ISOLATED WORKER THREADS)</text>
+    <text x="550" y="24" fill="#94A3B8" class="b-mono" font-size="9.5" text-anchor="end">maxFailedRecords="-1" (Unlimited Tolerance)</text>
+
+    <!-- Thread Pool Header -->
+    <g transform="translate(20, 38)">
+      <rect width="530" height="34" rx="6" fill="#111827" stroke="rgba(255,255,255,0.08)"/>
+      <text x="14" y="21" fill="#A6EAF4" class="b-mono" font-size="9.5">Concurrent Threads: Sized by CPU cores · Chunk 1..N processed in parallel</text>
+      <circle cx="510" cy="17" r="4" fill="#10B981"/>
+    </g>
+
+    <!-- Step 1: Rating & Record Variable -->
+    <g transform="translate(20, 84)">
+      <rect width="530" height="85" rx="8" fill="url(#b-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#00A1E0"/>
+      <text x="28" y="24" fill="#FFFFFF" class="b-sans" font-size="12" font-weight="700">Batch Step 1: Calculate Tax &amp; Enrich</text>
+      <text x="28" y="42" fill="#94A3B8" class="b-mono" font-size="9.5">vars.recordTax = payload.amount * 0.0825 (RECORD-LEVEL VARIABLE)</text>
+      <text x="28" y="58" fill="#00F2FE" class="b-sans" font-size="9.5">🔒 Scoped strictly to this record · Accessible in Step 2 · Invisible to other records</text>
+      <rect x="430" y="12" width="85" height="20" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="472" y="26" fill="#00F2FE" class="b-mono" font-size="9" text-anchor="middle">NO_FAILURES</text>
+    </g>
+
+    <!-- Step 2: Aggregator Chunking -->
+    <g transform="translate(20, 180)">
+      <rect width="530" height="135" rx="8" fill="url(#b-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#10B981"/>
+      <text x="28" y="24" fill="#FFFFFF" class="b-sans" font-size="12" font-weight="700">Batch Step 2: Batch Aggregator Bulk Commit</text>
+      <rect x="430" y="12" width="85" height="20" rx="4" fill="#10B981" fill-opacity="0.15"/>
+      <text x="472" y="26" fill="#34D399" class="b-mono" font-size="9" text-anchor="middle">SIZE = 500</text>
+
+      <!-- Sub-Box: Aggregator Body -->
+      <g transform="translate(20, 36)">
+        <rect width="490" height="85" rx="6" fill="#091420" stroke="#10B981" stroke-opacity="0.5"/>
+        <text x="14" y="22" fill="#10B981" class="b-sans" font-size="11" font-weight="700">batch:aggregator (Accumulates 500 records into memory array)</text>
+        <text x="14" y="40" fill="#FFFFFF" class="b-mono" font-size="9.5">db:bulk-insert: INSERT INTO orders VALUES (:id, :tax, :total)</text>
+        <text x="14" y="56" fill="#94A3B8" class="b-mono" font-size="9">Streams 500 records in 1 single network roundtrip</text>
+        <text x="14" y="72" fill="#34D399" class="b-sans" font-size="9.5">⚡ Reduces database IOPS by 92% compared to single-record inserts</text>
+      </g>
+    </g>
+
+    <!-- Step 3: Error Handler (ONLY_FAILURES) -->
+    <g transform="translate(20, 326)">
+      <rect width="530" height="92" rx="8" fill="url(#b-card)" stroke="#EF4444" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#EF4444"/>
+      <text x="28" y="24" fill="#FFFFFF" class="b-sans" font-size="12" font-weight="700">Batch Step 3: Dead-Letter Queue (acceptPolicy="ONLY_FAILURES")</text>
+      <rect x="420" y="12" width="95" height="20" rx="4" fill="#EF4444" fill-opacity="0.15"/>
+      <text x="467" y="26" fill="#F87171" class="b-mono" font-size="9" text-anchor="middle">ONLY_FAILURES</text>
+
+      <text x="28" y="44" fill="#FCA5A5" class="b-sans" font-size="10">• Catches ONLY poisoned/failed records from Step 1 and Step 2</text>
+      <text x="28" y="60" fill="#94A3B8" class="b-mono" font-size="9.5">Retains vars.recordTax + payload + error.description</text>
+      <text x="28" y="76" fill="#FFFFFF" class="b-mono" font-size="9.5">Dispatches to Anypoint MQ 'order-dlq' for automated reprocessing</text>
+    </g>
+  </g>
+
+  <!-- Connector: Phase 2 to Phase 3 -->
+  <path d="M885 340 H915" stroke="#10B981" stroke-width="1.8"/>
+  <path class="b-trace-2" pathLength="100" d="M885 340 H915" fill="none" stroke="#10B981" stroke-width="3" filter="url(#b-glow)"/>
+
+  <!-- ==================== PHASE 3: ON-COMPLETE ==================== -->
+  <g transform="translate(915, 125)">
+    <rect width="237" height="435" rx="14" fill="url(#phase-grad)" stroke="#10B981" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="18" y="24" fill="#10B981" class="b-sans" font-size="11" font-weight="800" letter-spacing="1">PHASE 3: ON-COMPLETE</text>
+    <text x="18" y="42" fill="#94A3B8" class="b-mono" font-size="9.5">Summary Report &amp; Alerts</text>
+
+    <!-- BatchJobResult Card -->
+    <g transform="translate(16, 60)">
+      <rect width="205" height="150" rx="8" fill="#0A1624" stroke="#10B981" stroke-width="1"/>
+      <text x="14" y="22" fill="#10B981" class="b-sans" font-size="11" font-weight="700">BatchJobResult Object</text>
+      <text x="14" y="42" fill="#FFFFFF" class="b-mono" font-size="9.5">totalRecords: 100,000</text>
+      <text x="14" y="58" fill="#34D399" class="b-mono" font-size="9.5">successful: 99,850</text>
+      <text x="14" y="74" fill="#EF4444" class="b-mono" font-size="9.5">failedRecords: 150</text>
+      <text x="14" y="90" fill="#94A3B8" class="b-mono" font-size="9.5">elapsedTime: 4.2 min</text>
+      <path d="M14 102H191" stroke="rgba(255,255,255,0.1)"/>
+      <text x="14" y="118" fill="#FBBF24" class="b-mono" font-size="9">failureRate: 0.15%</text>
+      <text x="14" y="134" fill="#10B981" class="b-sans" font-size="9" font-weight="700">STATUS: HEALTHY (&lt;2%)</text>
+    </g>
+
+    <!-- Notification Trigger -->
+    <g transform="translate(16, 222)">
+      <rect width="205" height="193" rx="8" fill="url(#b-card)" stroke="#53CADD" stroke-width="1"/>
+      <text x="14" y="24" fill="#A6EAF4" class="b-sans" font-size="11" font-weight="700">SLA Audit &amp; Alerts</text>
+      <text x="14" y="44" fill="#94A3B8" class="b-sans" font-size="9.5">• Evaluates batch run time</text>
+      <text x="14" y="60" fill="#94A3B8" class="b-sans" font-size="9.5">• If failureRate &gt; 2%: Alert</text>
+      <text x="14" y="76" fill="#94A3B8" class="b-sans" font-size="9.5">• If duration &gt; 30 min: Alert</text>
+      
+      <rect x="14" y="94" width="177" height="38" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.3"/>
+      <text x="24" y="112" fill="#00F2FE" class="b-mono" font-size="9">Alert: PagerDuty / Slack</text>
+      <text x="24" y="124" fill="#94A3B8" class="b-mono" font-size="8">Triggers incident API</text>
+
+      <rect x="14" y="142" width="177" height="38" rx="4" fill="#124052" stroke="#53CADD" stroke-opacity="0.3"/>
+      <text x="24" y="160" fill="#10B981" class="b-mono" font-size="9">Email: SMTP Summary</text>
+      <text x="24" y="172" fill="#94A3B8" class="b-mono" font-size="8">Sends PDF report to ops</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER INVARIANT ==================== -->
+  <g class="b-sans" transform="translate(48, 595)">
+    <text x="0" y="0" fill="#64748B" font-size="11">⚡ <tspan fill="#ADC6D6" font-weight="600">Golden Scoping Rule:</tspan> Flow variables entering batch are cloned per record. Record variables stay with their record across steps. In On-Complete, records are gone—only BatchJobResult remains.</text>
+    <text x="1104" y="0" fill="#53CADD" class="b-mono" font-size="10" text-anchor="end">MAX RECORDS: 10M+</text>
+  </g>
+</svg>

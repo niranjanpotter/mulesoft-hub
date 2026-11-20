@@ -1,0 +1,257 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="apiled-title apiled-desc">
+  <title id="apiled-title">API-Led Connectivity Real-Time Execution Flow</title>
+  <desc id="apiled-desc">Real-time animated architectural diagram of MuleSoft 3-tier API-led connectivity showing Experience, Process, and System API layers orchestrating data between mobile/web clients and enterprise backends.</desc>
+
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="api-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#071321"/>
+      <stop offset="55%" stop-color="#0B2033"/>
+      <stop offset="100%" stop-color="#124052"/>
+    </linearGradient>
+    <radialGradient id="aura-exp" cx="15%" cy="30%" r="45%">
+      <stop offset="0%" stop-color="#00F2FE" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="aura-proc" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="aura-sys" cx="85%" cy="70%" r="45%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#071321" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="api-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#53CADD" stroke-opacity="0.06"/>
+    </pattern>
+
+    <!-- Tier Box Gradients -->
+    <linearGradient id="tier-exp" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00A1E0" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#00F2FE" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="tier-proc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#845EC2" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#D65DB1" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="tier-sys" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#059669" stop-opacity="0.04"/>
+    </linearGradient>
+
+    <!-- Card Gradients -->
+    <linearGradient id="api-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#112233" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#091420" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Flow Line Filter -->
+    <filter id="flow-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .api-title { font-family: 'Plus Jakarta Sans', Georgia, sans-serif; font-weight: 700; }
+    .api-mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+    .api-sans { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+    
+    /* Animated Request Flow Packets (Top to Bottom) */
+    .req-pkt { stroke-dasharray: 6 94; animation: flow-down 3.6s linear infinite; }
+    .req-pkt-2 { stroke-dasharray: 6 94; animation: flow-down 3.6s linear infinite; animation-delay: -1.2s; }
+    .req-pkt-3 { stroke-dasharray: 6 94; animation: flow-down 3.6s linear infinite; animation-delay: -2.4s; }
+    
+    /* Animated Response Return Packets (Bottom to Top) */
+    .resp-pkt { stroke-dasharray: 6 94; animation: flow-up 3.6s linear infinite; }
+    .resp-pkt-2 { stroke-dasharray: 6 94; animation: flow-up 3.6s linear infinite; animation-delay: -1.8s; }
+
+    @keyframes flow-down {
+      from { stroke-dashoffset: 100; }
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes flow-up {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: 100; }
+    }
+    
+    .pulse-layer { animation: layer-breathe 7s ease-in-out infinite; }
+    @keyframes layer-breathe {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.75; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .req-pkt, .req-pkt-2, .req-pkt-3, .resp-pkt, .resp-pkt-2, .pulse-layer { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <!-- Frame Background -->
+  <rect width="1200" height="660" rx="24" fill="url(#api-bg)"/>
+  <rect width="1200" height="660" rx="24" fill="url(#api-grid)"/>
+  <ellipse class="pulse-layer" cx="180" cy="200" rx="240" ry="180" fill="url(#aura-exp)"/>
+  <ellipse class="pulse-layer" cx="600" cy="360" rx="280" ry="200" fill="url(#aura-proc)"/>
+  <ellipse class="pulse-layer" cx="1020" cy="500" rx="240" ry="180" fill="url(#aura-sys)"/>
+  <rect x="1" y="1" width="1198" height="658" rx="23" fill="none" stroke="#53CADD" stroke-opacity="0.25"/>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <g class="api-sans" transform="translate(48, 32)">
+    <rect width="255" height="26" rx="13" fill="#124052" stroke="#53CADD" stroke-opacity="0.35"/>
+    <circle cx="14" cy="13" r="4.5" fill="#00F2FE"/>
+    <text x="26" y="17" fill="#A6EAF4" font-size="10.5" font-weight="700" letter-spacing="1.5">ENTERPRISE API-LED TOPOLOGY</text>
+    
+    <text x="0" y="52" fill="#F0F9FF" class="api-title" font-size="24">Real-Time Request &amp; Orchestration Lifecycle</text>
+    <text x="0" y="70" fill="#94A3B8" font-size="12">Bi-Directional Event Propagation · Experience ➔ Process ➔ System ➔ Backend · Zero Downstream Coupling</text>
+  </g>
+
+  <!-- Legend Badges -->
+  <g class="api-mono" transform="translate(850, 42)">
+    <circle cx="0" cy="0" r="5" fill="#00F2FE"/>
+    <text x="12" y="4" fill="#A6EAF4" font-size="10">Inbound Request (TLS 1.3)</text>
+    <circle cx="180" cy="0" r="5" fill="#10B981"/>
+    <text x="192" y="4" fill="#6EE7B7" font-size="10">Aggregated Response</text>
+  </g>
+
+  <!-- ==================== TIER 1: EXPERIENCE APIS ==================== -->
+  <g transform="translate(48, 120)">
+    <!-- Container -->
+    <rect width="1104" height="120" rx="14" fill="url(#tier-exp)" stroke="#00A1E0" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#00F2FE" class="api-sans" font-size="11" font-weight="800" letter-spacing="1.2">TIER 1 · EXPERIENCE LAYER (CHANNEL ADAPTATION &amp; GOVERNANCE)</text>
+    <text x="1084" y="24" fill="#94A3B8" class="api-mono" font-size="10" text-anchor="end">POLICIES: OAuth2 JWT · Client ID · Rate Limit (10k/min)</text>
+
+    <!-- Exp API 1: Mobile App -->
+    <g transform="translate(24, 38)">
+      <rect width="330" height="66" rx="8" fill="url(#api-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#00F2FE"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Mobile Customer xAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">POST /v1/mobile/orders (BFF)</text>
+      <rect x="250" y="12" width="68" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="284" y="24" fill="#00F2FE" class="api-mono" font-size="9" text-anchor="middle">⏱️ 14ms</text>
+    </g>
+
+    <!-- Exp API 2: Web Portal -->
+    <g transform="translate(386, 38)">
+      <rect width="330" height="66" rx="8" fill="url(#api-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#00F2FE"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Web Commerce xAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">POST /v2/checkout/complete</text>
+      <rect x="250" y="12" width="68" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="284" y="24" fill="#00F2FE" class="api-mono" font-size="9" text-anchor="middle">⏱️ 16ms</text>
+    </g>
+
+    <!-- Exp API 3: Partner B2B -->
+    <g transform="translate(748, 38)">
+      <rect width="330" height="66" rx="8" fill="url(#api-card)" stroke="#00A1E0" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#00F2FE"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Partner EDI B2B xAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">POST /v1/edi/850/inbound</text>
+      <rect x="250" y="12" width="68" height="18" rx="4" fill="#00A1E0" fill-opacity="0.15"/>
+      <text x="284" y="24" fill="#00F2FE" class="api-mono" font-size="9" text-anchor="middle">⏱️ 22ms</text>
+    </g>
+  </g>
+
+  <!-- Connectors: Exp to Proc -->
+  <g fill="none" stroke="#53CADD" stroke-opacity="0.3" stroke-width="1.5">
+    <path d="M213 240 V290 H380 V310"/>
+    <path d="M551 240 V310"/>
+    <path d="M913 240 V290 H730 V310"/>
+  </g>
+  <!-- Animated Request Packets -->
+  <path class="req-pkt" pathLength="100" d="M213 240 V290 H380 V310" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#flow-glow)"/>
+  <path class="req-pkt-2" pathLength="100" d="M551 240 V310" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#flow-glow)"/>
+  <path class="req-pkt-3" pathLength="100" d="M913 240 V290 H730 V310" fill="none" stroke="#00F2FE" stroke-width="2.5" filter="url(#flow-glow)"/>
+
+  <!-- ==================== TIER 2: PROCESS APIS ==================== -->
+  <g transform="translate(48, 310)">
+    <!-- Container -->
+    <rect width="1104" height="120" rx="14" fill="url(#tier-proc)" stroke="#845EC2" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#D65DB1" class="api-sans" font-size="11" font-weight="800" letter-spacing="1.2">TIER 2 · PROCESS LAYER (BUSINESS LOGIC, ORCHESTRATION &amp; SAGAS)</text>
+    <text x="1084" y="24" fill="#94A3B8" class="api-mono" font-size="10" text-anchor="end">PATTERNS: Scatter-Gather · Content Enrichment · Idempotent Consumer</text>
+
+    <!-- Proc API 1: Order Orchestrator -->
+    <g transform="translate(100, 38)">
+      <rect width="420" height="66" rx="8" fill="url(#api-card)" stroke="#845EC2" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#D65DB1"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Order Fulfillment Orchestrator pAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">Scatter-Gather: SAP BAPI + SFDC Upsert + Inventory</text>
+      <rect x="340" y="12" width="68" height="18" rx="4" fill="#845EC2" fill-opacity="0.2"/>
+      <text x="374" y="24" fill="#E0A4E8" class="api-mono" font-size="9" text-anchor="middle">⏱️ 145ms</text>
+    </g>
+
+    <!-- Proc API 2: Customer 360 -->
+    <g transform="translate(584, 38)">
+      <rect width="420" height="66" rx="8" fill="url(#api-card)" stroke="#845EC2" stroke-width="1"/>
+      <circle cx="16" cy="20" r="6" fill="#D65DB1"/>
+      <text x="30" y="24" fill="#FFFFFF" class="api-sans" font-size="12" font-weight="700">Customer 360 Profile Aggregator pAPI</text>
+      <text x="30" y="42" fill="#94A3B8" class="api-mono" font-size="9.5">Merges CRM Contact + Billing Ledger + Preferences</text>
+      <rect x="340" y="12" width="68" height="18" rx="4" fill="#845EC2" fill-opacity="0.2"/>
+      <text x="374" y="24" fill="#E0A4E8" class="api-mono" font-size="9" text-anchor="middle">⏱️ 88ms</text>
+    </g>
+  </g>
+
+  <!-- Connectors: Proc to Sys -->
+  <g fill="none" stroke="#D65DB1" stroke-opacity="0.3" stroke-width="1.5">
+    <path d="M310 430 V470 H180 V490"/>
+    <path d="M310 430 V470 H460 V490"/>
+    <path d="M794 430 V470 H740 V490"/>
+    <path d="M794 430 V470 H1020 V490"/>
+  </g>
+  <path class="req-pkt" pathLength="100" d="M310 430 V470 H180 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+  <path class="req-pkt-2" pathLength="100" d="M310 430 V470 H460 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+  <path class="req-pkt-3" pathLength="100" d="M794 430 V470 H740 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+  <path class="req-pkt" pathLength="100" d="M794 430 V470 H1020 V490" fill="none" stroke="#D65DB1" stroke-width="2.2" filter="url(#flow-glow)"/>
+
+  <!-- ==================== TIER 3: SYSTEM APIS & BACKENDS ==================== -->
+  <g transform="translate(48, 490)">
+    <!-- Container -->
+    <rect width="1104" height="120" rx="14" fill="url(#tier-sys)" stroke="#10B981" stroke-width="1.2" stroke-dasharray="6,4"/>
+    <text x="20" y="24" fill="#10B981" class="api-sans" font-size="11" font-weight="800" letter-spacing="1.2">TIER 3 · SYSTEM LAYER (SYSTEMS OF RECORD UNLOCKED VIA CANONICAL SCHEMAS)</text>
+    <text x="1084" y="24" fill="#94A3B8" class="api-mono" font-size="10" text-anchor="end">PROTOCOLS: SAP JCo RFC · Salesforce REST/Bulk · JDBC Pool · DynamoDB</text>
+
+    <!-- Sys API 1: SAP -->
+    <g transform="translate(24, 38)">
+      <rect width="250" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#10B981"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">SAP S/4HANA sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">OData / RFC BAPI</text>
+      <text x="28" y="56" fill="#10B981" class="api-mono" font-size="8.5">ERP Financials &amp; Orders</text>
+    </g>
+
+    <!-- Sys API 2: Salesforce -->
+    <g transform="translate(298, 38)">
+      <rect width="250" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#00A1E0"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">Salesforce CRM sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">SOQL Query / Upsert</text>
+      <text x="28" y="56" fill="#00F2FE" class="api-mono" font-size="8.5">Accounts &amp; Leads</text>
+    </g>
+
+    <!-- Sys API 3: PostgreSQL -->
+    <g transform="translate(572, 38)">
+      <rect width="250" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#F59E0B"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">Database Core sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">JDBC HikariCP Pool</text>
+      <text x="28" y="56" fill="#FBBF24" class="api-mono" font-size="8.5">Inventory &amp; Warehousing</text>
+    </g>
+
+    <!-- Sys API 4: AWS DynamoDB / Kafka -->
+    <g transform="translate(846, 38)">
+      <rect width="234" height="66" rx="8" fill="url(#api-card)" stroke="#10B981" stroke-width="1"/>
+      <circle cx="16" cy="20" r="5" fill="#D65DB1"/>
+      <text x="28" y="24" fill="#FFFFFF" class="api-sans" font-size="11.5" font-weight="700">Event Stream sAPI</text>
+      <text x="28" y="42" fill="#94A3B8" class="api-mono" font-size="9">AWS DynamoDB / Kafka</text>
+      <text x="28" y="56" fill="#E0A4E8" class="api-mono" font-size="8.5">Audit Log &amp; Event Bus</text>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER RULE ==================== -->
+  <g class="api-sans" transform="translate(48, 634)">
+    <text x="0" y="0" fill="#64748B" font-size="11">⚡ <tspan fill="#ADC6D6" font-weight="600">Architectural Invariant:</tspan> Experience APIs NEVER call System APIs or Databases directly. System APIs NEVER call Process APIs. Downstream isolation is absolute.</text>
+    <text x="1104" y="0" fill="#53CADD" class="api-mono" font-size="10" text-anchor="end">TOTAL SLA: 185ms P99</text>
+  </g>
+</svg>
