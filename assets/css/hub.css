@@ -362,7 +362,7 @@ body {
 /* Sticky Category Filter Bar */
 .sticky-filter-bar {
   position: sticky;
-  top: 65px;
+  top: var(--hub-header-h, 65px);
   z-index: 900;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -6261,94 +6261,273 @@ pre, pre code {
 
 
 /* ==========================================================================
-   TASK 1 & TASK 2 (2026-11-21): AUTHOR TOP BAR, HERO PADDING & ERROR SIMULATOR
+   INLINE HEADER AUTHOR ATTRIBUTION, HERO PADDING & ERROR SIMULATOR
    ========================================================================== */
 
-/* --- Task 1: Slim Author Attribution Top Bar --- */
-.author-top-bar {
-  background: linear-gradient(90deg, rgba(8, 15, 30, 0.98), rgba(15, 25, 45, 0.98));
-  border-bottom: 1px solid rgba(0, 242, 254, 0.22);
-  padding: 6px 28px;
-  font-size: 0.78rem;
-  color: #cbd5e1;
-  position: relative;
-  z-index: 1005;
+/* --- Inline Author Attribution inside Existing .hub-header --- */
+.hub-header {
+  gap: 14px;
+  padding: 11px 24px;
 }
 
-[data-theme="light"] .author-top-bar {
-  background: linear-gradient(90deg, #f8fafc, #e0f2fe);
-  border-bottom: 1px solid #cbd5e1;
-  color: #334155;
-}
-
-.author-top-bar-inner {
-  max-width: 1560px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: nowrap;
-}
-
-.author-top-bar-text {
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.author-top-bar-links {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.header-left {
   flex-shrink: 0;
 }
 
-.author-top-icon-link {
+.header-center {
+  flex: 1 1 200px;
+  max-width: 340px;
+  min-width: 150px;
+}
+
+.search-trigger {
+  width: 100%;
+  max-width: 100%;
+  gap: 8px;
+}
+
+.search-trigger > div {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.search-trigger svg {
+  flex-shrink: 0;
+}
+
+.search-trigger > div > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 242, 254, 0.22);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .header-author {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.header-author-text {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+[data-theme="light"] .header-author-text {
+  color: #334155;
+}
+
+.header-author-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.author-icon-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #38bdf8;
   text-decoration: none;
   transition: background 0.16s ease, border-color 0.16s ease, transform 0.15s ease;
 }
 
-.author-top-icon-link:hover {
+.author-icon-link:hover {
   background: rgba(0, 242, 254, 0.18);
   border-color: #00F2FE;
   color: #ffffff;
   transform: translateY(-1px);
 }
 
-[data-theme="light"] .author-top-icon-link {
+[data-theme="light"] .author-icon-link {
   background: #ffffff;
   border-color: #cbd5e1;
   color: #0284c7;
 }
 
-[data-theme="light"] .author-top-icon-link:hover {
+[data-theme="light"] .author-icon-link:hover {
   background: #e0f2fe;
   border-color: #0284c7;
   color: #0369a1;
 }
 
-@media (max-width: 640px) {
-  .author-top-bar {
-    padding: 4px 12px;
-    font-size: 0.72rem;
+.header-actions {
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+#practice-btn,
+.btn-dw-header {
+  white-space: nowrap;
+}
+
+/* Medium Desktop (1024px - 1359px): single-row balanced fit */
+@media (min-width: 1024px) and (max-width: 1359px) {
+  .hub-header {
+    padding: 10px 16px;
+    gap: 10px;
   }
-  .author-top-icon-link {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    min-height: 36px;
+  .brand-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .brand-title {
+    font-size: 0.98rem;
+    gap: 6px;
+  }
+  .brand-subtitle {
+    font-size: 0.62rem !important;
+  }
+  .header-edition-badge {
+    font-size: 0.58rem !important;
+    padding: 2px 6px;
+  }
+  .header-center {
+    flex: 1 1 130px;
+    min-width: 130px;
+    max-width: 240px;
+  }
+  .search-trigger {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  .header-author {
+    padding: 4px 7px 4px 10px;
+    gap: 6px;
+  }
+  .header-author-text {
+    font-size: 0.7rem;
+  }
+  #practice-btn,
+  .btn-dw-header {
+    padding: 7px 10px;
+    font-size: 0.78rem;
+  }
+}
+
+/* Tight Laptop (1024px - 1259px): hide Ctrl+K pill & allow subtle 2-line wrap on author label */
+@media (min-width: 1024px) and (max-width: 1259px) {
+  .search-shortcut {
+    display: none;
+  }
+  .header-author {
+    border-radius: 10px;
+    padding: 3px 7px 3px 9px;
+  }
+  .header-author-text {
+    max-width: 122px;
+    white-space: normal;
+    line-height: 1.15;
+    font-size: 0.66rem;
+  }
+}
+
+/* Tablet (768px - 1023px): single-row with author pill beside action icons */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hub-header {
+    flex-wrap: nowrap;
+    padding: 10px 16px;
+    gap: 10px;
+  }
+  .header-author {
+    margin-left: auto;
+  }
+  .header-author-text {
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+}
+
+/* Mobile (<= 767px): Row 1 [menu+brand | action icons], Row 2 [author + social icons] */
+@media (max-width: 767px) {
+  .hub-header {
+    flex-wrap: wrap;
+    padding: 8px 10px 6px;
+    row-gap: 6px;
+    column-gap: 6px;
+  }
+  .header-left {
+    order: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 6px;
+  }
+  .header-left .brand-wrapper {
+    gap: 6px;
+    min-width: 0;
+  }
+  .header-left .brand-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 8px;
+  }
+  .header-left .brand-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+  .header-left .brand-title {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  .header-actions {
+    order: 2;
+    flex-shrink: 0;
+    gap: 5px;
+  }
+  .btn-hamburger-mobile,
+  .btn-search-mobile,
+  .btn-dw-header,
+  #theme-btn {
+    width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+  .header-author {
+    order: 3;
+    flex: 0 0 100%;
+    width: 100%;
+    justify-content: space-between;
+    padding: 5px 2px 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  [data-theme="light"] .header-author {
+    background: transparent;
+    border: none;
+    border-top: 1px solid #e2e8f0;
+  }
+  .header-author-text {
+    font-size: 0.72rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .author-icon-link {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
   }
 }
 

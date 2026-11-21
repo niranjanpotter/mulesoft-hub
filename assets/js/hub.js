@@ -3777,3 +3777,20 @@ if (typeof window !== 'undefined') {
     bindEhListeners();
   }
 })();
+
+/* Keep sticky filter bar docked cleanly beneath dynamic .hub-header height */
+(function initStickyHeaderSync() {
+  function syncStickyHeaderHeight() {
+    var hdr = document.querySelector('.hub-header');
+    if (hdr) {
+      document.documentElement.style.setProperty('--hub-header-h', hdr.offsetHeight + 'px');
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncStickyHeaderHeight);
+  } else {
+    syncStickyHeaderHeight();
+  }
+  window.addEventListener('load', syncStickyHeaderHeight);
+  window.addEventListener('resize', syncStickyHeaderHeight);
+})();
