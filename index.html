@@ -452,6 +452,9 @@
   <button type="button" class="sidebar-tool-btn" onclick="togglePracticeMode(); toggleSidebarDrawer(false);">
     <span>🎯 Toggle Practice Mode</span>
   </button>
+  <button type="button" class="sidebar-tool-btn sidebar-tool-highlight" onclick="openMockInterviewModal(); toggleSidebarDrawer(false);">
+    <span>⏱️ Timed Mock Interview</span>
+  </button>
 </div>
 </aside>
 <!-- Main Content Area -->
@@ -480,6 +483,9 @@
     </button>
     <button type="button" class="btn hero-cta-btn has-tooltip" onclick="openDataWeaveModal()" data-tooltip="Open the interactive 26-scenario DataWeave 2.0 Playground">
       <span>🧪 Open DW Playground</span>
+    </button>
+    <button type="button" class="btn hero-cta-btn mock-cta-accent has-tooltip" id="hero-mock-btn" onclick="openMockInterviewModal()" data-tooltip="Take a timed mock interview (5–15 Qs) with live countdown &amp; readiness scorecard">
+      <span>⏱️ Mock Interview</span>
     </button>
   </div>
 
@@ -18929,6 +18935,156 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 </div>
 <ul class="search-results-list" id="search-results-list"></ul>
 </div>
+</div>
+
+<!-- Timed Mock Interview Simulator Modal -->
+<div class="modal-overlay" id="mock-interview-modal" onclick="closeMockInterviewModal(event)" role="dialog" aria-modal="true" aria-label="Timed MuleSoft Mock Interview Simulator">
+  <div class="mock-modal-container" onclick="event.stopPropagation()">
+    <!-- Sticky Header -->
+    <div class="mock-modal-header">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="mock-logo-badge">⏱️</span>
+        <div>
+          <div class="mock-modal-title">MuleSoft Timed Mock Interview</div>
+          <div class="mock-modal-sub" id="mock-header-sub">Simulate a real technical panel · Self-grade &amp; get your Readiness Scorecard</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="mock-timer-pill" id="mock-timer-pill" style="display:none;">⏱️ 15:00</span>
+        <button type="button" class="btn btn-sm" id="mock-pause-btn" onclick="toggleMockPause()" style="display:none;">⏸ Pause</button>
+        <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeMockInterviewModal()" title="Close Simulator (Esc)">✕ Close</button>
+      </div>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="mock-modal-body" id="mock-modal-body">
+
+      <!-- SCREEN 1: SETUP -->
+      <div id="mock-screen-setup" class="mock-screen">
+        <div class="mock-stats-strip" id="mock-past-stats" style="display:none;">
+          <span>🏆 Best Readiness Score: <strong id="mock-stat-best">0%</strong></span>
+          <span>·</span>
+          <span>Sessions Completed: <strong id="mock-stat-count">0</strong></span>
+        </div>
+
+        <div class="mock-setup-group">
+          <div class="mock-setup-label">1. Choose Your Target Role / Difficulty</div>
+          <div class="mock-choice-grid" id="mock-role-choices">
+            <button type="button" class="mock-choice-card active" data-role="all" onclick="selectMockRole('all', this)">
+              <div class="mock-choice-title">🌐 All Levels (Mixed)</div>
+              <div class="mock-choice-desc">Balanced mix from all 40 modules &amp; 270+ real scenarios</div>
+            </button>
+            <button type="button" class="mock-choice-card" data-role="developer" onclick="selectMockRole('developer', this)">
+              <div class="mock-choice-title">💻 MuleSoft Developer</div>
+              <div class="mock-choice-desc">Core Mule 4, Connectors, DataWeave, Error Handling &amp; MUnit</div>
+            </button>
+            <button type="button" class="mock-choice-card" data-role="senior" onclick="selectMockRole('senior', this)">
+              <div class="mock-choice-title">🚀 Senior / Tech Lead</div>
+              <div class="mock-choice-desc">Batch, Anypoint MQ, Performance Tuning &amp; CloudHub 2.0</div>
+            </button>
+            <button type="button" class="mock-choice-card" data-role="architect" onclick="selectMockRole('architect', this)">
+              <div class="mock-choice-title">🏛️ Integration Architect</div>
+              <div class="mock-choice-desc">API Governance, Sagas, Multi-AZ HA, Security &amp; Sizing</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="mock-setup-group">
+          <div class="mock-setup-label">2. Choose Interview Length</div>
+          <div class="mock-choice-grid mock-choice-grid-3" id="mock-length-choices">
+            <button type="button" class="mock-choice-card" onclick="selectMockPreset(5, 7, this)">
+              <div class="mock-choice-title">⚡ Quick Drill</div>
+              <div class="mock-choice-desc">5 Questions · 7 Minutes</div>
+            </button>
+            <button type="button" class="mock-choice-card active" onclick="selectMockPreset(10, 15, this)">
+              <div class="mock-choice-title">🎯 Standard Panel</div>
+              <div class="mock-choice-desc">10 Questions · 15 Minutes (Recommended)</div>
+            </button>
+            <button type="button" class="mock-choice-card" onclick="selectMockPreset(15, 25, this)">
+              <div class="mock-choice-title">🏆 Full Architect Round</div>
+              <div class="mock-choice-desc">15 Questions · 25 Minutes</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="mock-start-bar">
+          <button type="button" class="btn btn-primary mock-start-btn" id="mock-start-btn" onclick="startMockInterview()">
+            🚀 Start Timed Mock Interview
+          </button>
+          <span class="mock-setup-hint">Tip: Speak your answer aloud for 60–90 seconds before clicking Reveal!</span>
+        </div>
+      </div>
+
+      <!-- SCREEN 2: ACTIVE INTERVIEW -->
+      <div id="mock-screen-active" class="mock-screen" style="display:none;">
+        <div class="mock-progress-row">
+          <span class="mock-progress-label" id="mock-q-counter">Question 1 of 10</span>
+          <div class="mock-progress-track">
+            <div class="mock-progress-fill" id="mock-progress-fill" style="width:10%;"></div>
+          </div>
+          <span class="mock-badge-pill" id="mock-q-role-badge">SENIOR</span>
+        </div>
+
+        <div class="mock-q-card">
+          <div class="mock-q-module" id="mock-q-module">Module A · Interview Coaching</div>
+          <h3 class="mock-q-title" id="mock-q-title">Loading question...</h3>
+          <p class="mock-q-prompt-hint" id="mock-q-hint">🎙️ Think aloud like a real panel interview (60–90 sec), then reveal the model answer to self-grade.</p>
+
+          <div id="mock-reveal-wrap">
+            <button type="button" class="btn btn-primary mock-reveal-btn" id="mock-reveal-btn" onclick="revealMockAnswer()">
+              👁️ Reveal Senior Model Answer
+            </button>
+          </div>
+
+          <div id="mock-answer-section" style="display:none;">
+            <div class="mock-answer-box" id="mock-answer-content"></div>
+            <div class="mock-grade-bar">
+              <div class="mock-grade-prompt">How well did you answer this?</div>
+              <div class="mock-grade-buttons">
+                <button type="button" class="mock-grade-btn grade-got" onclick="gradeMockQuestion('got')">✅ Got It (100%)</button>
+                <button type="button" class="mock-grade-btn grade-partial" onclick="gradeMockQuestion('partial')">⚠️ Partial (50%)</button>
+                <button type="button" class="mock-grade-btn grade-missed" onclick="gradeMockQuestion('missed')">❌ Missed (0%)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: READINESS SCORECARD -->
+      <div id="mock-screen-results" class="mock-screen" style="display:none;">
+        <div class="mock-score-hero">
+          <div class="mock-score-circle" id="mock-score-circle">
+            <span class="mock-score-pct" id="mock-score-pct">0%</span>
+            <span class="mock-score-caption">Readiness</span>
+          </div>
+          <div class="mock-score-summary">
+            <h3 class="mock-score-verdict" id="mock-score-verdict">Interview Ready!</h3>
+            <p class="mock-score-meta" id="mock-score-meta">Completed 10 questions in 08:42</p>
+            <div class="mock-tally-pills">
+              <span class="tally-pill tally-got" id="mock-tally-got">✅ 0 Got It</span>
+              <span class="tally-pill tally-partial" id="mock-tally-partial">⚠️ 0 Partial</span>
+              <span class="tally-pill tally-missed" id="mock-tally-missed">❌ 0 Missed</span>
+            </div>
+            <div class="mock-result-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="mock-copy-score-btn" onclick="copyMockScorecard()">📋 Copy Readiness Summary</button>
+              <button type="button" class="btn btn-sm" onclick="resetMockToSetup()">🔄 New Mock Interview</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-results-section">
+          <h4 class="mock-results-heading">📊 Performance by Module</h4>
+          <div id="mock-module-breakdown" class="mock-breakdown-list"></div>
+        </div>
+
+        <div class="mock-results-section" id="mock-review-section">
+          <h4 class="mock-results-heading">🎯 Questions to Review (Missed &amp; Partial)</h4>
+          <div id="mock-review-list" class="mock-review-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 

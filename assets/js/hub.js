@@ -2484,3 +2484,380 @@ if (typeof window !== 'undefined') {
     }
   });
 })();
+
+
+// ============================================================================
+// TIMED MOCK INTERVIEW SIMULATOR ENGINE (100% CLIENT-SIDE, DYNAMIC DOM HARVEST)
+// ============================================================================
+(function() {
+  var mockState = {
+    role: 'all',
+    count: 10,
+    minutes: 15,
+    questions: [],
+    currentIndex: 0,
+    grades: [], // { question, grade: 'got'|'partial'|'missed', points: 1|0.5|0 }
+    secondsLeft: 900,
+    totalSeconds: 900,
+    timerId: null,
+    paused: false
+  };
+
+  function harvestFaqCards() {
+    var cards = document.querySelectorAll('.faq-card');
+    var list = [];
+    cards.forEach(function(card, idx) {
+      var titleEl = card.querySelector('.q-title');
+      var ansEl = card.querySelector('.answer-body-content');
+      if (!titleEl || !ansEl) return;
+      var section = card.closest('.blog-article');
+      var modTitleEl = section ? section.querySelector('.article-title') : null;
+      var roleRaw = (card.getAttribute('data-role') || (section ? section.getAttribute('data-role') : '') || 'senior').toLowerCase();
+      if (!card.id) card.id = 'faq-auto-' + idx;
+      list.push({
+        id: card.id,
+        role: roleRaw,
+        moduleId: section ? section.id : '',
+        moduleTitle: modTitleEl ? modTitleEl.textContent.trim() : 'MuleSoft Core',
+        question: titleEl.textContent.trim(),
+        answerHtml: ansEl.innerHTML
+      });
+    });
+    return list;
+  }
+
+  function shuffleArray(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function formatTime(sec) {
+    var s = Math.max(0, sec);
+    var m = Math.floor(s / 60);
+    var r = s % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r;
+  }
+
+  function updateTimerUI() {
+    var pill = document.getElementById('mock-timer-pill');
+    if (!pill) return;
+    pill.textContent = '⏱️ ' + formatTime(mockState.secondsLeft);
+    pill.classList.remove('timer-warn', 'timer-danger');
+    if (mockState.secondsLeft <= 30) pill.classList.add('timer-danger');
+    else if (mockState.secondsLeft <= 120) pill.classList.add('timer-warn');
+  }
+
+  function stopTimer() {
+    if (mockState.timerId) {
+      clearInterval(mockState.timerId);
+      mockState.timerId = null;
+    }
+  }
+
+  function loadPastStats() {
+    try {
+      var raw = localStorage.getItem('mulesoft_hub_mock_stats');
+      if (!raw) return;
+      var stats = JSON.parse(raw);
+      if (stats && stats.count > 0) {
+        var strip = document.getElementById('mock-past-stats');
+        var bestEl = document.getElementById('mock-stat-best');
+        var cntEl = document.getElementById('mock-stat-count');
+        if (strip) strip.style.display = 'flex';
+        if (bestEl) bestEl.textContent = (stats.best || 0) + '%';
+        if (cntEl) cntEl.textContent = stats.count;
+      }
+    } catch (e) {}
+  }
+
+  function savePastStats(pct) {
+    try {
+      var raw = localStorage.getItem('mulesoft_hub_mock_stats');
+      var stats = raw ? JSON.parse(raw) : { best: 0, count: 0 };
+      stats.count = (stats.count || 0) + 1;
+      stats.best = Math.max(stats.best || 0, pct);
+      localStorage.setItem('mulesoft_hub_mock_stats', JSON.stringify(stats));
+    } catch (e) {}
+  }
+
+  function showScreen(screenId) {
+    ['mock-screen-setup', 'mock-screen-active', 'mock-screen-results'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = (id === screenId) ? 'block' : 'none';
+    });
+    var timerPill = document.getElementById('mock-timer-pill');
+    var pauseBtn = document.getElementById('mock-pause-btn');
+    var isActive = (screenId === 'mock-screen-active');
+    if (timerPill) timerPill.style.display = isActive ? 'inline-block' : 'none';
+    if (pauseBtn) pauseBtn.style.display = isActive ? 'inline-flex' : 'none';
+    var body = document.getElementById('mock-modal-body');
+    if (body) body.scrollTop = 0;
+  }
+
+  function renderCurrentQuestion() {
+    var q = mockState.questions[mockState.currentIndex];
+    if (!q) {
+      finishMockInterview();
+      return;
+    }
+    var total = mockState.questions.length;
+    var num = mockState.currentIndex + 1;
+
+    var counterEl = document.getElementById('mock-q-counter');
+    var fillEl = document.getElementById('mock-progress-fill');
+    var roleEl = document.getElementById('mock-q-role-badge');
+    var modEl = document.getElementById('mock-q-module');
+    var titleEl = document.getElementById('mock-q-title');
+    var revealWrap = document.getElementById('mock-reveal-wrap');
+    var ansSec = document.getElementById('mock-answer-section');
+    var ansBox = document.getElementById('mock-answer-content');
+
+    if (counterEl) counterEl.textContent = 'Question ' + num + ' of ' + total;
+    if (fillEl) fillEl.style.width = Math.round((num / total) * 100) + '%';
+    if (roleEl) roleEl.textContent = q.role.toUpperCase();
+    if (modEl) modEl.textContent = q.moduleTitle;
+    if (titleEl) titleEl.textContent = q.question;
+    if (ansBox) ansBox.innerHTML = q.answerHtml;
+    if (revealWrap) revealWrap.style.display = 'block';
+    if (ansSec) ansSec.style.display = 'none';
+
+    var body = document.getElementById('mock-modal-body');
+    if (body) body.scrollTop = 0;
+  }
+
+  function finishMockInterview() {
+    stopTimer();
+    var totalQs = mockState.questions.length || 1;
+    var elapsed = Math.max(1, mockState.totalSeconds - mockState.secondsLeft);
+
+    var gotCount = 0, partialCount = 0, missedCount = 0, totalPts = 0;
+    var modStats = {};
+    var toReview = [];
+
+    mockState.grades.forEach(function(entry) {
+      totalPts += entry.points;
+      if (entry.grade === 'got') gotCount++;
+      else if (entry.grade === 'partial') { partialCount++; toReview.push(entry); }
+      else { missedCount++; toReview.push(entry); }
+
+      var mName = entry.question.moduleTitle;
+      if (!modStats[mName]) modStats[mName] = { pts: 0, count: 0 };
+      modStats[mName].pts += entry.points;
+      modStats[mName].count += 1;
+    });
+
+    // Any unanswered questions due to timer expiry count as missed
+    for (var i = mockState.grades.length; i < mockState.questions.length; i++) {
+      var uq = mockState.questions[i];
+      missedCount++;
+      toReview.push({ question: uq, grade: 'missed', points: 0 });
+      if (!modStats[uq.moduleTitle]) modStats[uq.moduleTitle] = { pts: 0, count: 0 };
+      modStats[uq.moduleTitle].count += 1;
+    }
+
+    var pct = Math.round((totalPts / totalQs) * 100);
+    savePastStats(pct);
+
+    var verdict = pct >= 80
+      ? '🏆 Interview Ready!'
+      : pct >= 55
+        ? '⚡ Almost Ready — Polish Weak Spots'
+        : '📚 Needs Focused Revision';
+
+    document.getElementById('mock-score-pct').textContent = pct + '%';
+    document.getElementById('mock-score-verdict').textContent = verdict;
+    document.getElementById('mock-score-meta').textContent =
+      'Completed ' + totalQs + ' questions in ' + formatTime(elapsed) + ' (' + mockState.role.toUpperCase() + ' track)';
+    document.getElementById('mock-tally-got').textContent = '✅ ' + gotCount + ' Got It';
+    document.getElementById('mock-tally-partial').textContent = '⚠️ ' + partialCount + ' Partial';
+    document.getElementById('mock-tally-missed').textContent = '❌ ' + missedCount + ' Missed';
+
+    // Render Module Breakdown
+    var bdEl = document.getElementById('mock-module-breakdown');
+    if (bdEl) {
+      bdEl.innerHTML = '';
+      Object.keys(modStats).forEach(function(mName) {
+        var st = modStats[mName];
+        var mPct = Math.round((st.pts / st.count) * 100);
+        var color = mPct >= 80 ? '#34d399' : (mPct >= 50 ? '#fbbf24' : '#fb7185');
+        var row = document.createElement('div');
+        row.className = 'mock-breakdown-row';
+        row.innerHTML = '<span>' + mName + ' (' + st.count + ' Q)</span><strong style="color:' + color + '; font-family:var(--font-mono);">' + mPct + '%</strong>';
+        bdEl.appendChild(row);
+      });
+    }
+
+    // Render Missed & Partial Review List
+    var revSec = document.getElementById('mock-review-section');
+    var revList = document.getElementById('mock-review-list');
+    if (revList && revSec) {
+      revList.innerHTML = '';
+      if (toReview.length === 0) {
+        revSec.style.display = 'none';
+      } else {
+        revSec.style.display = 'block';
+        toReview.forEach(function(entry) {
+          var item = document.createElement('div');
+          item.className = 'mock-review-item';
+          var badge = entry.grade === 'partial' ? '⚠️ Partial' : '❌ Missed';
+          item.innerHTML =
+            '<div class="mock-review-q"><span style="font-size:0.75rem; opacity:0.85; margin-right:6px;">' + badge + '</span>' + entry.question.question + '</div>' +
+            '<button type="button" class="btn btn-sm" onclick="reviewMockQuestionInGuide(\'' + entry.question.id + '\')">🔍 Jump to Full Q&amp;A</button>';
+          revList.appendChild(item);
+        });
+      }
+    }
+
+    mockState.lastSummary =
+      'MuleSoft Hub 2026 Timed Mock Interview Scorecard: ' + pct + '% Readiness (' + verdict + ') | ' +
+      gotCount + ' Got It, ' + partialCount + ' Partial, ' + missedCount + ' Missed | ' +
+      totalQs + ' Qs in ' + formatTime(elapsed) + ' — https://niranjanpotter.github.io/';
+
+    showScreen('mock-screen-results');
+  }
+
+  window.openMockInterviewModal = function() {
+    var modal = document.getElementById('mock-interview-modal');
+    if (!modal) return;
+    stopTimer();
+    loadPastStats();
+    showScreen('mock-screen-setup');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeMockInterviewModal = function(e) {
+    if (e && e.target !== e.currentTarget && !e.target.classList.contains('btn-close-modal')) return;
+    stopTimer();
+    var modal = document.getElementById('mock-interview-modal');
+    if (modal) modal.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  window.selectMockRole = function(role, btn) {
+    mockState.role = role;
+    document.querySelectorAll('#mock-role-choices .mock-choice-card').forEach(function(c) {
+      c.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+  };
+
+  window.selectMockPreset = function(count, mins, btn) {
+    mockState.count = count;
+    mockState.minutes = mins;
+    document.querySelectorAll('#mock-length-choices .mock-choice-card').forEach(function(c) {
+      c.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+  };
+
+  window.startMockInterview = function() {
+    var allCards = harvestFaqCards();
+    var pool = allCards;
+    if (mockState.role !== 'all') {
+      var filtered = allCards.filter(function(q) {
+        return q.role.indexOf(mockState.role) !== -1;
+      });
+      if (filtered.length >= 3) pool = filtered;
+    }
+
+    mockState.questions = shuffleArray(pool).slice(0, Math.min(mockState.count, pool.length));
+    mockState.currentIndex = 0;
+    mockState.grades = [];
+    mockState.totalSeconds = mockState.minutes * 60;
+    mockState.secondsLeft = mockState.totalSeconds;
+    mockState.paused = false;
+
+    var pauseBtn = document.getElementById('mock-pause-btn');
+    if (pauseBtn) pauseBtn.textContent = '⏸ Pause';
+
+    showScreen('mock-screen-active');
+    updateTimerUI();
+    renderCurrentQuestion();
+
+    stopTimer();
+    mockState.timerId = setInterval(function() {
+      if (mockState.paused) return;
+      mockState.secondsLeft--;
+      updateTimerUI();
+      if (mockState.secondsLeft <= 0) {
+        finishMockInterview();
+      }
+    }, 1000);
+  };
+
+  window.toggleMockPause = function() {
+    mockState.paused = !mockState.paused;
+    var pauseBtn = document.getElementById('mock-pause-btn');
+    if (pauseBtn) pauseBtn.textContent = mockState.paused ? '▶ Resume' : '⏸ Pause';
+  };
+
+  window.revealMockAnswer = function() {
+    var revealWrap = document.getElementById('mock-reveal-wrap');
+    var ansSec = document.getElementById('mock-answer-section');
+    if (revealWrap) revealWrap.style.display = 'none';
+    if (ansSec) ansSec.style.display = 'block';
+  };
+
+  window.gradeMockQuestion = function(grade) {
+    var q = mockState.questions[mockState.currentIndex];
+    if (!q) return;
+    var pts = grade === 'got' ? 1 : (grade === 'partial' ? 0.5 : 0);
+    mockState.grades.push({ question: q, grade: grade, points: pts });
+    mockState.currentIndex++;
+    if (mockState.currentIndex >= mockState.questions.length) {
+      finishMockInterview();
+    } else {
+      renderCurrentQuestion();
+    }
+  };
+
+  window.reviewMockQuestionInGuide = function(cardId) {
+    window.closeMockInterviewModal();
+    setTimeout(function() {
+      if (typeof window.jumpToSectionTool === 'function') {
+        window.jumpToSectionTool(cardId);
+      }
+      var card = document.getElementById(cardId);
+      if (card) {
+        var revealBtn = card.querySelector('.reveal-answer-btn');
+        var drawer = card.querySelector('.answer-drawer');
+        if (revealBtn && drawer && !drawer.classList.contains('open') && typeof toggleAnswerDrawer === 'function') {
+          toggleAnswerDrawer(revealBtn);
+        }
+      }
+    }, 80);
+  };
+
+  window.copyMockScorecard = function() {
+    var txt = mockState.lastSummary || 'MuleSoft Hub 2026 Timed Mock Interview — https://niranjanpotter.github.io/';
+    var btn = document.getElementById('mock-copy-score-btn');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function() {
+        if (btn) {
+          btn.textContent = '✓ Copied to Clipboard!';
+          setTimeout(function() { btn.textContent = '📋 Copy Readiness Summary'; }, 2000);
+        }
+      }).catch(function() {});
+    }
+  };
+
+  window.resetMockToSetup = function() {
+    stopTimer();
+    loadPastStats();
+    showScreen('mock-screen-setup');
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var modal = document.getElementById('mock-interview-modal');
+      if (modal && modal.classList.contains('active')) {
+        window.closeMockInterviewModal();
+      }
+    }
+  });
+})();
