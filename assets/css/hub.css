@@ -76,7 +76,7 @@ body {
     radial-gradient(circle at 12% 12%, rgba(79, 172, 254, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 88% 88%, rgba(132, 94, 194, 0.08) 0%, transparent 40%);
   overflow-x: hidden;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
 [data-theme="light"] body {
@@ -115,7 +115,7 @@ body {
   justify-content: space-between;
   padding: 12px 28px;
   gap: 20px;
-  transition: all 0.25s ease;
+  transition: all 300ms ease;
 }
 
 [data-theme="light"] .hub-header {
@@ -140,7 +140,7 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-  transition: transform 0.25s ease;
+  transition: transform 300ms ease;
 }
 
 .brand-wrapper:hover .brand-icon {
@@ -173,7 +173,7 @@ body {
   color: var(--text-muted);
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .search-trigger:hover {
@@ -298,7 +298,7 @@ body {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   color: var(--text-main);
@@ -370,7 +370,7 @@ body {
   border: 1px solid var(--border);
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 
 .cat-pill:hover {
@@ -463,7 +463,7 @@ body {
   font-size: 0.8rem;
   margin-bottom: 14px;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 300ms ease;
 }
 
 .sidebar-filter-input:focus {
@@ -493,7 +493,7 @@ body {
   text-decoration: none;
   font-size: 0.84rem;
   font-weight: 500;
-  transition: all 0.15s ease;
+  transition: all 300ms ease;
   border-left: 2px solid transparent;
 }
 
@@ -655,7 +655,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 18px 20px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .metric-card:hover {
@@ -736,7 +736,7 @@ body {
   border-radius: var(--radius-lg);
   padding: 36px;
   margin-bottom: 44px;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
   scroll-margin-top: 140px;
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
@@ -808,7 +808,7 @@ body {
   border-radius: var(--radius-md);
   margin-bottom: 22px;
   overflow: hidden;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease;
 }
 
 .faq-card:hover {
@@ -904,7 +904,7 @@ body {
   font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-answer-btn:hover {
@@ -1189,7 +1189,7 @@ body.practice-mode-on .faq-card {
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .copy-btn:hover {
@@ -1305,7 +1305,7 @@ body.practice-mode-on .faq-card {
   padding: 24px;
   margin: 28px 0;
   box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease;
 }
 
 .diagram-container:hover {
@@ -1386,7 +1386,7 @@ body.practice-mode-on .faq-card {
   align-items: center;
   gap: 5px;
   z-index: 10;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 
 [data-theme="light"] .diagram-expand-btn {
@@ -1456,7 +1456,7 @@ body.practice-mode-on .faq-card {
   align-items: center;
   justify-content: center;
   z-index: 1000000;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 
 .diagram-lightbox-close:hover {
@@ -1593,7 +1593,7 @@ body.practice-mode-on .faq-card {
   border-radius: var(--radius-lg);
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(79, 172, 254, 0.3);
   overflow: hidden;
-  animation: modalScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modalScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 [data-theme="light"] .search-modal-container {
@@ -1639,7 +1639,7 @@ body.practice-mode-on .faq-card {
   padding: 14px 18px;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 300ms ease;
   border: 1px solid transparent;
 }
 
@@ -1721,7 +1721,7 @@ body.practice-mode-on .faq-card {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-dim, #94a3b8);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 
 .dw-cat-pill:hover {
@@ -1745,7 +1745,7 @@ body.practice-mode-on .faq-card {
   padding: 3px 8px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 300ms ease;
 }
 
 .btn-copy-pane:hover {
@@ -1767,7 +1767,7 @@ body.practice-mode-on .faq-card {
   background: rgba(255, 255, 255, 0.04);
   color: #cbd5e1;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 300ms ease;
 }
 
 .btn-preset-chip:hover {
@@ -1822,7 +1822,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: modalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modalScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .dw-toolbar {
@@ -1921,7 +1921,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 600;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 300ms ease;
 }
 
 .dw-tab-btn.active {
@@ -2013,7 +2013,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.15s ease;
+  transition: color 300ms ease;
 }
 
 .footer-links a:hover {
@@ -2208,7 +2208,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     font-weight: 700;
     cursor: pointer;
     min-height: 48px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 300ms ease, box-shadow 300ms ease;
   }
   .fab-btn:active {
     transform: scale(0.95);
@@ -2227,7 +2227,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     border-radius: 50%;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: opacity 300ms ease, transform 300ms ease;
     pointer-events: none;
   }
   .fab-top.visible {
@@ -2265,7 +2265,7 @@ pre {
   padding: 4px 10px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
   z-index: 5;
   display: inline-flex;
   align-items: center;
@@ -2317,7 +2317,7 @@ pre {
     background: transparent;
     color: var(--text-dim);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 300ms ease;
   }
   .dw-tab-btn.active {
     background: rgba(0, 242, 254, 0.16);
@@ -2653,7 +2653,7 @@ pre {
   font-size: 0.8rem;
   font-weight: 500;
   color: #cbd5e1;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 .coaching-skill-pill:hover {
   background: rgba(0, 242, 254, 0.08);
@@ -2782,7 +2782,7 @@ pre {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 .bb-item:hover {
   background: rgba(255, 255, 255, 0.04);
@@ -2935,7 +2935,7 @@ pre {
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
   border: none;
 }
 
@@ -3130,7 +3130,7 @@ pre {
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 14px;
   padding: 18px;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 .delivery-rule-card:hover {
   background: rgba(255, 255, 255, 0.05);
@@ -3212,7 +3212,7 @@ body {
   border-radius: var(--radius-card) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
   overflow: hidden !important;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+  transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease !important;
 }
 
 .faq-card:hover {
@@ -3270,7 +3270,7 @@ body {
   font-size: 0.9rem !important;
   font-weight: 600 !important;
   border-radius: 10px !important;
-  transition: all 0.25s ease !important;
+  transition: all 300ms ease !important;
   white-space: normal !important;
   text-align: center !important;
 }
@@ -3681,7 +3681,7 @@ html, body, .main-content, .container, .app-layout {
   height: 3px;
   background: linear-gradient(90deg, #00F2FE 0%, #4FACFE 50%, #10B981 100%);
   z-index: 10000;
-  transition: width 0.1s ease-out;
+  transition: width 300ms ease-out;
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.7);
 }
 
@@ -3695,9 +3695,9 @@ html, body, .main-content, .container, .app-layout {
   border-radius: var(--radius-card) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
   overflow: hidden !important;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.25s ease, 
-              box-shadow 0.25s ease !important;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 300ms ease, 
+              box-shadow 300ms ease !important;
 }
 
 .faq-card.is-visible {
@@ -3717,7 +3717,7 @@ html, body, .main-content, .container, .app-layout {
 .faq-header {
   cursor: pointer;
   user-select: none;
-  transition: background 0.2s ease;
+  transition: background 300ms ease;
 }
 .faq-header:hover {
   background: rgba(22, 34, 58, 0.5) !important;
@@ -3739,7 +3739,7 @@ html, body, .main-content, .container, .app-layout {
   display: block !important;
   opacity: 1;
   visibility: visible;
-  animation: answerDrawerFadeIn 0.18s ease-out;
+  animation: answerDrawerFadeIn 0.3s ease-out;
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
@@ -3748,7 +3748,7 @@ html, body, .main-content, .container, .app-layout {
   overflow: hidden !important;
   padding: 0 24px 0 24px !important;
   box-sizing: border-box !important;
-  transition: padding-bottom 0.25s ease;
+  transition: padding-bottom 300ms ease;
 }
 
 .answer-drawer.is-revealed .answer-drawer-inner {
@@ -3772,7 +3772,7 @@ html, body, .main-content, .container, .app-layout {
 .reveal-answer-btn {
   position: relative;
   overflow: hidden;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .reveal-answer-btn:active {
@@ -3804,7 +3804,7 @@ html, body, .main-content, .container, .app-layout {
 
 /* 6. Static Accent Borders on Callout Boxes (no infinite box-shadow repaint) */
 .callout {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 300ms ease, box-shadow 300ms ease;
 }
 
 .callout:hover {
@@ -3870,7 +3870,7 @@ html, body, .main-content, .container, .app-layout {
 /* 8. Code Blocks: Copy Button + Highlight */
 pre {
   position: relative !important;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+  transition: border-color 300ms ease, box-shadow 300ms ease !important;
 }
 
 pre:hover {
@@ -3891,7 +3891,7 @@ pre:hover {
   border-radius: 6px;
   cursor: pointer;
   opacity: 0.75;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
   z-index: 5;
 }
 
@@ -3930,7 +3930,7 @@ pre:hover {
   padding: 8px 14px;
   text-decoration: none;
   font-size: 0.85rem;
-  transition: all 0.2s ease;
+  transition: all 300ms ease;
 }
 .profile-contact-btn:hover {
   background: rgba(255, 255, 255, 0.14);
@@ -4239,7 +4239,7 @@ pre:hover {
 
 /* Section divider */
 .article-section-divider {
-  transition: background-color 0.25s ease;
+  transition: background-color 300ms ease;
 }
 [data-theme="light"] .article-section-divider {
   background: #f0f9ff !important;
@@ -4401,7 +4401,7 @@ pre:hover {
   border: 2px solid var(--accent, #00F2FE);
   box-shadow: 0 4px 20px rgba(0, 242, 254, 0.4);
   text-decoration: none;
-  transition: top 0.2s ease;
+  transition: top 300ms ease;
 }
 .skip-link:focus {
   top: 16px;
@@ -4485,7 +4485,7 @@ pre:hover {
 
 /* Drawer transitions */
 .quick-sidebar {
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .sidebar-backdrop {
@@ -4556,7 +4556,7 @@ pre:hover {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  transition: transform 300ms ease, border-color 300ms ease, background 300ms ease;
 }
 
 .hero-step-card:hover {
@@ -4687,7 +4687,7 @@ pre:hover {
     opacity: 0;
     pointer-events: none;
     z-index: 9999;
-    transition: opacity 0.16s ease, transform 0.16s ease;
+    transition: opacity 300ms ease, transform 300ms ease;
   }
 
   .hub-header .has-tooltip::after {
@@ -4799,7 +4799,7 @@ pre:hover {
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 300ms ease, border-color 300ms ease;
 }
 
 .sidebar-tool-btn:hover {
@@ -5184,7 +5184,7 @@ pre:hover {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: modalScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modalScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .mock-modal-header {
@@ -5310,7 +5310,7 @@ pre:hover {
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-main);
   cursor: pointer;
-  transition: border-color 0.18s ease, background 0.18s ease, transform 0.15s ease;
+  transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
 }
 
 .mock-choice-card:hover {
@@ -5382,7 +5382,7 @@ pre:hover {
   height: 100%;
   background: linear-gradient(90deg, #00F2FE, #8b5cf6);
   border-radius: 999px;
-  transition: width 0.25s ease;
+  transition: width 0.4s ease;
 }
 
 .mock-badge-pill {
@@ -5475,7 +5475,7 @@ pre:hover {
   font-size: 0.86rem;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: transform 0.15s ease, filter 0.15s ease;
+  transition: transform 300ms ease, filter 300ms ease;
 }
 
 .mock-grade-btn:hover {
@@ -5788,7 +5788,7 @@ pre:hover {
   font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 300ms ease;
 }
 
 .dw-mode-btn:hover {
@@ -6007,7 +6007,7 @@ pre, pre code {
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #38bdf8;
   text-decoration: none;
-  transition: background 0.16s ease, border-color 0.16s ease, transform 0.15s ease;
+  transition: background 300ms ease, border-color 300ms ease, transform 300ms ease;
 }
 
 .author-icon-link:hover {
@@ -6429,7 +6429,7 @@ pre, pre code {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+  transition: transform 300ms ease, border-color 300ms ease, background 300ms ease, box-shadow 300ms ease;
 }
 
 [data-theme="light"] .eh-flow-node {
@@ -6902,7 +6902,7 @@ body.feature-fs-body-lock {
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.16s ease;
+  transition: all 300ms ease;
 }
 
 .utility-btn:hover {
@@ -6969,7 +6969,7 @@ body.feature-fs-body-lock {
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, #00F2FE, #10b981);
-  transition: width 0.25s ease;
+  transition: width 0.4s ease;
 }
 
 @media (max-width: 767px) {
@@ -7348,7 +7348,7 @@ body.feature-fs-body-lock {
   padding: 18px 20px;
   border-radius: 12px;
   text-align: center;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 300ms ease, border-color 300ms ease;
 }
 
 .eh-biz-loss-box.eh-biz-safe {
@@ -7501,3 +7501,24 @@ footer.hub-footer {
   content-visibility: auto;
   contain-intrinsic-size: auto 340px;
 }
+
+/* === QA hardening: wrap toolbars, 44px touch targets on touch/tablet, ensure no clipped controls === */
+.global-toolbar-left, .global-toolbar-right { flex-wrap: wrap; min-width: 0; }
+.reveal-answer-btn { min-height: 44px; }
+@media (max-width: 1024px), (pointer: coarse) {
+  .author-icon-link { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  #utility-search-btn, #utility-practice-btn, .utility-btn { min-height: 44px; }
+  .global-toolbar .btn { min-height: 44px; }
+  .global-toolbar-left .btn, .global-toolbar-right .btn { white-space: normal; }
+}
+@media (max-width: 600px) {
+  .global-toolbar-left, .global-toolbar-right { width: 100%; }
+  .global-toolbar-left .btn, .global-toolbar-right .btn { flex: 1 1 100%; justify-content: center; }
+}
+
+/* Desktop + Mobile 44px tap targets & slim <=48px utility bar */
+.author-icon-link { min-width: 44px !important; min-height: 44px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }
+.hub-utility-bar, .utility-bar { max-height: 48px !important; min-height: 46px !important; padding-top: 2px !important; padding-bottom: 2px !important; }
+#utility-search-btn, #utility-practice-btn, .utility-btn { min-height: 44px !important; min-width: 44px !important; padding-top: 0 !important; padding-bottom: 0 !important; display: inline-flex !important; align-items: center !important; }
+.diagram-ctrl-btn { min-height: 44px !important; min-width: 44px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }
+

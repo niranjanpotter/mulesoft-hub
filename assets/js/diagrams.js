@@ -88,11 +88,7 @@
     figures.forEach(function(fig) {
       if (fig.dataset.diagramEnhanced || fig.dataset.diagramObserved) return;
       fig.dataset.diagramObserved = '1';
-      if (diagramObserver) {
-        diagramObserver.observe(fig);
-      } else {
-        enhanceDiagram(fig, enhancedCounter++);
-      }
+      enhanceDiagram(fig, enhancedCounter++);
     });
   };
 

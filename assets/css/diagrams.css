@@ -242,3 +242,6 @@ g[data-step]:focus-visible {
 }
 
 
+
+.diagram-ctrl-btn { min-height: 44px !important; min-width: 44px !important; display: inline-flex; align-items: center; justify-content: center; }
+

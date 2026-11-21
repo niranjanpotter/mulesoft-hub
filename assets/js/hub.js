@@ -4307,8 +4307,16 @@ if (typeof window !== 'undefined') {
     document.querySelectorAll('.eh-preset-btn').forEach(function(b) { b.classList.remove('active'); });
     document.getElementById('eh-preset-mixed')?.classList.add('active');
 
+    var ordersInput = document.getElementById('eh-biz-orders');
+    var aovInput = document.getElementById('eh-biz-aov');
+    if (ordersInput) ordersInput.value = 100;
+    if (aovInput) aovInput.value = 1000;
+
     var res = window.evaluateMuleErrorFlow('continue', 'none', 'propagate');
     renderSimulationResult(res, 'continue', 'none', 'propagate');
+
+    var devBtn = document.querySelector('#eh-role-switcher .eh-role-btn[data-role="developer"]');
+    if (devBtn && typeof window.setEhRole === 'function') window.setEhRole('developer', devBtn);
 
     var traceEl = document.getElementById('eh-trace-log');
     if (traceEl) {
@@ -4403,8 +4411,12 @@ if (typeof window !== 'undefined') {
     var count = Math.min(totalQas, doneSet.size);
     var txtEl = document.getElementById('utility-progress-text');
     var fillEl = document.getElementById('utility-progress-fill');
+    var pct = Math.round((count / totalQas) * 100);
+    var pct = Math.min(100, Number(((count / totalQas) * 100).toFixed(2)));
     if (txtEl) txtEl.textContent = count + '/' + totalQas + ' done';
-    if (fillEl) fillEl.style.width = Math.min(100, Math.round((count / totalQas) * 100)) + '%';
+    var pillEl = document.getElementById('utility-progress-pill');
+    if (pillEl) pillEl.title = pct + '% complete (' + count + '/' + totalQas + ' done)';
+    if (fillEl) fillEl.style.width = pct + '%';
   };
 
   window.markQaCompleted = function(cardId) {
