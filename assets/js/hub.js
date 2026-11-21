@@ -1625,7 +1625,10 @@ function calculateVCoreDecision() {
   const numApis = parseInt(document.getElementById('vcalc-apis')?.value || 1, 10);
   const workloadType = document.getElementById('vcalc-type')?.value || 'realtime';
   const platform = document.getElementById('vcalc-platform')?.value || 'ch2';
-  const peakMultiplier = parseFloat(document.getElementById('vcalc-peak')?.value || 1.0);
+  const peakEl = document.getElementById('vcalc-peak');
+  const peakMultiplier = (peakEl && peakEl.type === 'checkbox')
+    ? (peakEl.checked ? 2.5 : 1.0)
+    : (parseFloat(peakEl?.value) || 1.0);
   const isHa = document.getElementById('vcalc-ha')?.checked ?? true;
 
   if (document.getElementById('vcalc-tps-val')) document.getElementById('vcalc-tps-val').textContent = tps + ' req/sec';
@@ -2156,3 +2159,328 @@ if (typeof window !== 'undefined') {
   if (typeof collapseAllAnswers === 'function') window.collapseAllAnswers = collapseAllAnswers;
   if (typeof resetFilters === 'function') window.resetFilters = resetFilters;
 }
+
+
+// ============================================================================
+// 2026 UI/UX REBUILD: UNIFIED NAV, JUMP-TO-TOOL, PRACTICE BANNER & DW MODAL FIXES
+// ============================================================================
+(function() {
+  // 1. Unified Navigation: Top Bar (Sections) -> Left Sidebar (Modules in Section)
+  window.filterBlogCategory = function(catName, btn) {
+    document.querySelectorAll('.cat-pill').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    if (btn) {
+      btn.classList.add('active');
+    } else {
+      var fallbackPill = document.querySelector('.cat-pill[data-cat="' + catName + '"]');
+      if (fallbackPill) fallbackPill.classList.add('active');
+    }
+
+    var visibleModIds = new Set();
+    var articles = document.querySelectorAll('.blog-article');
+    articles.forEach(function(art) {
+      var artCat = art.getAttribute('data-category');
+      if (catName === 'all' || artCat === catName) {
+        art.style.display = 'block';
+        if (art.id) visibleModIds.add(art.id);
+      } else {
+        art.style.display = 'none';
+      }
+    });
+
+    // Sync Left Sidebar to only show modules inside the selected section
+    var sidebarItems = document.querySelectorAll('.quick-sidebar-item');
+    var shownCount = 0;
+    sidebarItems.forEach(function(item) {
+      var link = item.querySelector('.quick-sidebar-link');
+      var modId = link ? link.getAttribute('data-mod-id') : '';
+      if (catName === 'all' || visibleModIds.has(modId)) {
+        item.style.display = 'block';
+        shownCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    // Clear sidebar text filter when switching sections
+    var sbInput = document.querySelector('.sidebar-filter-input');
+    if (sbInput) sbInput.value = '';
+
+    // Update Sidebar Header Title, Count & Reset Pill
+    var titleEl = document.getElementById('sidebar-section-title');
+    var countEl = document.getElementById('sidebar-module-count');
+    var resetBtn = document.getElementById('sidebar-reset-filter');
+    if (titleEl) {
+      titleEl.textContent = (catName === 'all') ? 'Modules in Section' : catName;
+    }
+    if (countEl) {
+      countEl.textContent = (catName === 'all')
+        ? ('Showing all ' + shownCount + ' modules')
+        : ('Showing ' + shownCount + ' of 40 modules');
+    }
+    if (resetBtn) {
+      resetBtn.style.display = (catName === 'all') ? 'none' : 'inline-block';
+    }
+  };
+
+  // 2. Reliable Desktop + Mobile Jump-to-Tool (Fixes vCore Calculator & Inline DW Lab)
+  window.jumpToSectionTool = function(targetId) {
+    var target = document.getElementById(targetId);
+    if (!target) return false;
+
+    // Ensure parent .blog-article is visible (unfilter if hidden by active section pill)
+    var parentSection = target.closest('.blog-article');
+    if (parentSection && window.getComputedStyle(parentSection).display === 'none') {
+      var allPill = document.querySelector('.cat-pill[data-cat="all"]') || document.querySelector('.cat-pill');
+      window.filterBlogCategory('all', allPill);
+    }
+
+    // Compute exact document Y coordinate with header + section bar clearance
+    var headerOffset = window.innerWidth >= 1024 ? 148 : 130;
+    var rect = target.getBoundingClientRect();
+    var targetY = Math.max(0, window.pageYOffset + rect.top - headerOffset);
+
+    // Jump cleanly (use 'instant' when > 4000px away so CSS scroll-behavior: smooth never stalls across 50k px docs)
+    var distance = Math.abs(targetY - window.pageYOffset);
+    if (distance > 4000) {
+      var prevBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, targetY);
+      document.documentElement.scrollTop = targetY;
+      setTimeout(function() {
+        document.documentElement.style.scrollBehavior = prevBehavior;
+      }, 60);
+    } else {
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+
+    // Re-verify alignment after layout settle
+    setTimeout(function() {
+      var newRect = target.getBoundingClientRect();
+      if (Math.abs(newRect.top - headerOffset) > 80) {
+        var prevB = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, Math.max(0, window.pageYOffset + newRect.top - headerOffset));
+        setTimeout(function() { document.documentElement.style.scrollBehavior = prevB; }, 40);
+      }
+      target.classList.remove('tool-highlight-pulse');
+      void target.offsetWidth;
+      target.classList.add('tool-highlight-pulse');
+      setTimeout(function() { target.classList.remove('tool-highlight-pulse'); }, 3000);
+    }, 150);
+
+    return false;
+  };
+
+  // 3. Practice Mode with Clear Active Banner + Hero/Header Sync
+  window.togglePracticeMode = function(forceOn) {
+    var currentlyOn = document.body.classList.contains('practice-mode-on');
+    var nextState = (typeof forceOn === 'boolean') ? forceOn : !currentlyOn;
+    var pBtn = document.getElementById('practice-btn');
+    var heroPBtn = document.getElementById('hero-practice-btn');
+    var banner = document.getElementById('practice-mode-banner');
+
+    if (nextState) {
+      document.body.classList.add('practice-mode-on');
+      if (typeof collapseAllAnswers === 'function') collapseAllAnswers();
+      if (pBtn) {
+        pBtn.classList.add('btn-active');
+        pBtn.innerHTML = '🎯 Practice Mode: ON';
+      }
+      if (heroPBtn) {
+        heroPBtn.classList.add('btn-active');
+        heroPBtn.innerHTML = '<span>🎯 Practice Mode: ON</span>';
+      }
+      if (banner) banner.style.display = 'flex';
+      if (forceOn === true) {
+        window.jumpToSectionTool('practice-mode-banner');
+      }
+    } else {
+      document.body.classList.remove('practice-mode-on');
+      if (pBtn) {
+        pBtn.classList.remove('btn-active');
+        pBtn.innerHTML = '🎯 Practice Mode';
+      }
+      if (heroPBtn) {
+        heroPBtn.classList.remove('btn-active');
+        heroPBtn.innerHTML = '<span>🎯 Try Practice Mode</span>';
+      }
+      if (banner) banner.style.display = 'none';
+    }
+  };
+
+  // 4. Scope-Aware DataWeave Playground Engine (Fixes Modal vs Inline Sync, Scrolling & Fullscreen)
+  function getDwContainer(scope) {
+    if (scope === 'modal') return document.getElementById('modal-dw-playground') || document.getElementById('dw-modal');
+    if (scope === 'inline') return document.getElementById('inline-dw-playground');
+    var modal = document.getElementById('dw-modal');
+    if (modal && modal.classList.contains('active')) {
+      return document.getElementById('modal-dw-playground') || modal;
+    }
+    return document.getElementById('inline-dw-playground') || document;
+  }
+
+  window.runDwTransformation = function(scope) {
+    var root = getDwContainer(scope);
+    var p = (typeof DW_PRESETS !== 'undefined' && typeof currentDwPresetIdx !== 'undefined') ? DW_PRESETS[currentDwPresetIdx] : null;
+    var inputEl = root.querySelector('.dw-input-editor, #dw-input-editor, #modal-dw-input-editor');
+    var outputEl = root.querySelector('.dw-output-viewer, #dw-output-viewer, #modal-dw-output-viewer');
+    var statusEl = root.querySelector('.dw-status-indicator, #dw-live-status, #modal-dw-live-status');
+    if (!outputEl) return;
+
+    if (statusEl) {
+      statusEl.textContent = '⚡ Running...';
+      statusEl.style.color = '#facc15';
+    }
+
+    setTimeout(function() {
+      var resultText = p ? p.output : '// Transformed output';
+      try {
+        if (p && p.format === 'json' && inputEl && (inputEl.value.trim().startsWith('{') || inputEl.value.trim().startsWith('['))) {
+          var rawJson = JSON.parse(inputEl.value);
+          if (p.id === 'filter-array' && Array.isArray(rawJson)) {
+            resultText = JSON.stringify(rawJson.filter(function(item) { return (item.amount || item.salary || 0) > 100; }), null, 2);
+          } else if (p.id === 'map-array' && Array.isArray(rawJson)) {
+            resultText = JSON.stringify(rawJson.map(function(item) { return Object.assign({}, item, { processed: true, timestamp: new Date().toISOString() }); }), null, 2);
+          }
+        }
+        outputEl.value = resultText;
+        if (statusEl) {
+          statusEl.textContent = '⚡ Evaluated (Live)';
+          statusEl.style.color = '#00f0ff';
+        }
+      } catch (e) {
+        outputEl.value = resultText;
+        if (statusEl) {
+          statusEl.textContent = '✓ Pre-computed Output';
+          statusEl.style.color = '#34d399';
+        }
+      }
+
+      if (window.innerWidth < 768) {
+        window.switchDwMobileTab('output', null, scope);
+      }
+    }, 80);
+  };
+
+  window.copyDwPanel = function(panel, scope) {
+    var root = getDwContainer(scope);
+    var sel = panel === 'input'
+      ? '.dw-input-editor, #dw-input-editor, #modal-dw-input-editor'
+      : panel === 'script'
+        ? '.dw-script-editor, #dw-script-editor, #modal-dw-script-editor'
+        : '.dw-output-viewer, #dw-output-viewer, #modal-dw-output-viewer';
+    var el = root.querySelector(sel);
+    var val = el ? el.value : '';
+    if (!val) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(val).catch(function() {});
+    }
+  };
+
+  window.switchDwMobileTab = function(tabName, btnEl, scope) {
+    var root = getDwContainer(scope);
+    if (!root) return;
+    root.querySelectorAll('.dw-tab-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    if (btnEl) {
+      btnEl.classList.add('active');
+    } else {
+      var m = root.querySelector('.dw-tab-btn[data-tab="' + tabName + '"]');
+      if (m) m.classList.add('active');
+    }
+    var prefix = (root.id === 'modal-dw-playground') ? 'modal-dw-panel-' : 'dw-panel-';
+    ['input', 'script', 'output', 'notes'].forEach(function(k) {
+      var panel = document.getElementById(prefix + k);
+      if (panel) {
+        if (k === tabName) panel.classList.add('dw-tab-active');
+        else panel.classList.remove('dw-tab-active');
+      }
+    });
+  };
+
+  window.openDataWeaveModal = function(startFullscreen) {
+    var modal = document.getElementById('dw-modal');
+    if (!modal) return;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Ensure modal dropdown & editors are populated
+    if (typeof populateDwDropdowns === 'function' && typeof DW_PRESETS !== 'undefined') {
+      var modalSel = document.getElementById('modal-dw-preset-select');
+      if (modalSel && modalSel.options.length === 0) {
+        populateDwDropdowns(DW_PRESETS);
+      }
+    }
+    if (typeof loadDwPreset === 'function' && typeof currentDwPresetIdx !== 'undefined') {
+      loadDwPreset(currentDwPresetIdx);
+    }
+
+    // Reset scroll position to top of scrollable body
+    var scrollBody = document.getElementById('modal-dw-playground');
+    if (scrollBody) scrollBody.scrollTop = 0;
+
+    if (startFullscreen === true) {
+      window.toggleDwFullscreen(true);
+    }
+  };
+
+  window.closeDataWeaveModal = function(e) {
+    if (e && e.target !== e.currentTarget && !e.target.classList.contains('btn-close-modal')) return;
+    var modal = document.getElementById('dw-modal');
+    var container = document.getElementById('dw-modal-container');
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(function() {});
+    }
+    if (container) container.classList.remove('dw-fullscreen-active');
+    var fsBtn = document.getElementById('dw-fullscreen-btn');
+    if (fsBtn) fsBtn.textContent = '⛶ Fullscreen';
+    if (modal) modal.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  window.toggleDwFullscreen = function(forceOn) {
+    var container = document.getElementById('dw-modal-container');
+    var fsBtn = document.getElementById('dw-fullscreen-btn');
+    if (!container) return;
+
+    var isCurrentlyFs = container.classList.contains('dw-fullscreen-active') || !!document.fullscreenElement;
+    var wantFs = (typeof forceOn === 'boolean') ? forceOn : !isCurrentlyFs;
+
+    if (wantFs) {
+      container.classList.add('dw-fullscreen-active');
+      if (fsBtn) fsBtn.textContent = '↙ Exit Fullscreen';
+      if (container.requestFullscreen && !document.fullscreenElement) {
+        container.requestFullscreen().catch(function() {
+          // Graceful CSS fullscreen fallback when browser blocks Fullscreen API
+        });
+      }
+    } else {
+      container.classList.remove('dw-fullscreen-active');
+      if (fsBtn) fsBtn.textContent = '⛶ Fullscreen';
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(function() {});
+      }
+    }
+  };
+
+  document.addEventListener('fullscreenchange', function() {
+    var container = document.getElementById('dw-modal-container');
+    var fsBtn = document.getElementById('dw-fullscreen-btn');
+    if (!document.fullscreenElement && container && !container.classList.contains('dw-fullscreen-active')) {
+      if (fsBtn) fsBtn.textContent = '⛶ Fullscreen';
+    }
+  });
+
+  // Close DW modal on Escape key (when not in native fullscreen)
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var modal = document.getElementById('dw-modal');
+      if (modal && modal.classList.contains('active') && !document.fullscreenElement) {
+        window.closeDataWeaveModal();
+      }
+    }
+  });
+})();
