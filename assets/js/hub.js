@@ -1026,6 +1026,9 @@ function toggleAnswerDrawer(btn) {
     btn.classList.add('active');
     if (iconSpan) iconSpan.textContent = '🙈';
     if (textSpan) textSpan.textContent = 'Hide Model Answer & Verbal Script';
+    if (typeof window.markQaCompleted === 'function' && card.id) {
+      window.markQaCompleted(card.id);
+    }
   }
 }
 
@@ -1150,13 +1153,26 @@ function filterBlogCategory(catName, btn) {
 }
 
 function filterSidebarModules(query) {
-  const q = query.toLowerCase().trim();
+  const q = (query || '').toLowerCase().trim();
+  const activeCat = window._activeSectionCategory || 'all';
   const items = document.querySelectorAll('.quick-sidebar-item');
+  let shownCount = 0;
   items.forEach(item => {
     const link = item.querySelector('.quick-sidebar-link');
-    const text = link.innerText.toLowerCase();
-    item.style.display = (!q || text.includes(q)) ? 'block' : 'none';
+    const modId = link ? link.getAttribute('data-mod-id') : '';
+    const art = modId ? document.getElementById(modId) : null;
+    const matchesCat = (activeCat === 'all') || (art && art.getAttribute('data-category') === activeCat);
+    const text = link ? link.innerText.toLowerCase() : '';
+    const visible = matchesCat && (!q || text.includes(q));
+    item.style.display = visible ? 'block' : 'none';
+    if (visible) shownCount++;
   });
+  const countEl = document.getElementById('sidebar-module-count');
+  if (countEl) {
+    countEl.textContent = (activeCat === 'all' && !q)
+      ? ('Showing all ' + shownCount + ' modules')
+      : ('Showing ' + shownCount + ' of 40 modules');
+  }
 }
 
 function toggleSidebar() {
@@ -1166,7 +1182,7 @@ function toggleSidebar() {
   }
 }
 
-// Active Sidebar Link Tracker (ScrollSpy)
+// Active Sidebar Link Tracker (ScrollSpy + Breadcrumb Sync)
 window.addEventListener('DOMContentLoaded', () => {
   // Sync theme icon with current theme
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -1186,6 +1202,9 @@ window.addEventListener('DOMContentLoaded', () => {
             link.classList.remove('active');
           }
         });
+        if (typeof window.updateContentBreadcrumb === 'function') {
+          window.updateContentBreadcrumb(entry.target);
+        }
       }
     });
   }, { threshold: 0.15 });
@@ -2111,25 +2130,51 @@ if (typeof window !== 'undefined') {
 // 2026 UI/UX REBUILD: UNIFIED NAV, JUMP-TO-TOOL, PRACTICE BANNER & DW MODAL FIXES
 // ============================================================================
 (function() {
-  // 1. Unified Navigation: Top Bar (Sections) -> Left Sidebar (Modules in Section)
+  // 1. Unified Navigation: Single Left Sidebar (Section Dropdown + Module List + Text Filter) + Breadcrumb
+  window._activeSectionCategory = 'all';
+
+  window.updateContentBreadcrumb = function(articleEl) {
+    var secEl = document.getElementById('bc-section-name');
+    var modEl = document.getElementById('bc-module-name');
+    if (!secEl || !modEl) return;
+    if (!articleEl) {
+      var cat = window._activeSectionCategory || 'all';
+      secEl.textContent = (cat === 'all') ? 'All Sections' : cat;
+      modEl.textContent = 'Overview & Quick Start';
+      return;
+    }
+    var catName = articleEl.getAttribute('data-category') || 'MuleSoft Core';
+    var titleEl = articleEl.querySelector('.article-title');
+    var modName = titleEl ? titleEl.textContent.trim() : (articleEl.id || 'Module');
+    secEl.textContent = catName;
+    modEl.textContent = modName;
+  };
+
   window.filterBlogCategory = function(catName, btn) {
+    var nextCat = catName || 'all';
+    window._activeSectionCategory = nextCat;
+
     document.querySelectorAll('.cat-pill').forEach(function(p) {
       p.classList.remove('active');
     });
-    if (btn) {
+    if (btn && btn.classList && btn.classList.contains('cat-pill')) {
       btn.classList.add('active');
-    } else {
-      var fallbackPill = document.querySelector('.cat-pill[data-cat="' + catName + '"]');
-      if (fallbackPill) fallbackPill.classList.add('active');
+    }
+
+    var secSelect = document.getElementById('sidebar-section-select');
+    if (secSelect && secSelect.value !== nextCat) {
+      secSelect.value = nextCat;
     }
 
     var visibleModIds = new Set();
+    var firstVisibleArticle = null;
     var articles = document.querySelectorAll('.blog-article');
     articles.forEach(function(art) {
       var artCat = art.getAttribute('data-category');
-      if (catName === 'all' || artCat === catName) {
+      if (nextCat === 'all' || artCat === nextCat) {
         art.style.display = 'block';
         if (art.id) visibleModIds.add(art.id);
+        if (!firstVisibleArticle) firstVisibleArticle = art;
       } else {
         art.style.display = 'none';
       }
@@ -2141,7 +2186,7 @@ if (typeof window !== 'undefined') {
     sidebarItems.forEach(function(item) {
       var link = item.querySelector('.quick-sidebar-link');
       var modId = link ? link.getAttribute('data-mod-id') : '';
-      if (catName === 'all' || visibleModIds.has(modId)) {
+      if (nextCat === 'all' || visibleModIds.has(modId)) {
         item.style.display = 'block';
         shownCount++;
       } else {
@@ -2158,15 +2203,21 @@ if (typeof window !== 'undefined') {
     var countEl = document.getElementById('sidebar-module-count');
     var resetBtn = document.getElementById('sidebar-reset-filter');
     if (titleEl) {
-      titleEl.textContent = (catName === 'all') ? 'Modules in Section' : catName;
+      titleEl.textContent = (nextCat === 'all') ? 'All Modules' : nextCat;
     }
     if (countEl) {
-      countEl.textContent = (catName === 'all')
+      countEl.textContent = (nextCat === 'all')
         ? ('Showing all ' + shownCount + ' modules')
         : ('Showing ' + shownCount + ' of 40 modules');
     }
     if (resetBtn) {
-      resetBtn.style.display = (catName === 'all') ? 'none' : 'inline-block';
+      resetBtn.style.display = (nextCat === 'all') ? 'none' : 'inline-block';
+    }
+
+    if (nextCat === 'all') {
+      window.updateContentBreadcrumb(null);
+    } else if (firstVisibleArticle) {
+      window.updateContentBreadcrumb(firstVisibleArticle);
     }
   };
 
@@ -2175,15 +2226,21 @@ if (typeof window !== 'undefined') {
     var target = document.getElementById(targetId);
     if (!target) return false;
 
-    // Ensure parent .blog-article is visible (unfilter if hidden by active section pill)
+    // Ensure parent .blog-article is visible (unfilter if hidden by active section)
     var parentSection = target.closest('.blog-article');
     if (parentSection && window.getComputedStyle(parentSection).display === 'none') {
-      var allPill = document.querySelector('.cat-pill[data-cat="all"]') || document.querySelector('.cat-pill');
-      window.filterBlogCategory('all', allPill);
+      window.filterBlogCategory('all');
     }
 
-    // Compute exact document Y coordinate with header + section bar clearance
-    var headerOffset = window.innerWidth >= 1024 ? 148 : 130;
+    var bcArticle = target.classList.contains('blog-article') ? target : parentSection;
+    if (bcArticle && typeof window.updateContentBreadcrumb === 'function') {
+      window.updateContentBreadcrumb(bcArticle);
+    }
+
+    // Compute exact document Y coordinate with header + utility bar clearance
+    var hdr = document.querySelector('.hub-header');
+    var util = document.getElementById('utility-bar');
+    var headerOffset = (hdr ? hdr.offsetHeight : 65) + (util ? util.offsetHeight : 46) + 18;
     var rect = target.getBoundingClientRect();
     var targetY = Math.max(0, window.pageYOffset + rect.top - headerOffset);
 
@@ -2219,12 +2276,14 @@ if (typeof window !== 'undefined') {
     return false;
   };
 
-  // 3. Practice Mode with Clear Active Banner + Hero/Header Sync
+  // 3. Practice Mode with Clear Active Banner + Header/Utility/Hero Sync
   window.togglePracticeMode = function(forceOn) {
     var currentlyOn = document.body.classList.contains('practice-mode-on');
     var nextState = (typeof forceOn === 'boolean') ? forceOn : !currentlyOn;
     var pBtn = document.getElementById('practice-btn');
     var heroPBtn = document.getElementById('hero-practice-btn');
+    var utilPBtn = document.getElementById('utility-practice-btn');
+    var utilPLabel = document.getElementById('utility-practice-label');
     var banner = document.getElementById('practice-mode-banner');
 
     if (nextState) {
@@ -2238,6 +2297,11 @@ if (typeof window !== 'undefined') {
         heroPBtn.classList.add('btn-active');
         heroPBtn.innerHTML = '<span>🎯 Practice Mode: ON</span>';
       }
+      if (utilPBtn) {
+        utilPBtn.classList.add('btn-active');
+        utilPBtn.setAttribute('aria-pressed', 'true');
+      }
+      if (utilPLabel) utilPLabel.textContent = 'Practice: ON';
       if (banner) banner.style.display = 'flex';
       if (forceOn === true) {
         window.jumpToSectionTool('practice-mode-banner');
@@ -2252,6 +2316,11 @@ if (typeof window !== 'undefined') {
         heroPBtn.classList.remove('btn-active');
         heroPBtn.innerHTML = '<span>🎯 Try Practice Mode</span>';
       }
+      if (utilPBtn) {
+        utilPBtn.classList.remove('btn-active');
+        utilPBtn.setAttribute('aria-pressed', 'false');
+      }
+      if (utilPLabel) utilPLabel.textContent = 'Practice Mode';
       if (banner) banner.style.display = 'none';
     }
   };
@@ -2386,7 +2455,7 @@ if (typeof window !== 'undefined') {
     if (container) container.classList.remove('dw-fullscreen-active', 'feature-fullscreen-active');
     var fsBtn = document.getElementById('dw-fullscreen-btn');
     if (fsBtn) {
-      fsBtn.textContent = '⛶ Fullscreen';
+      fsBtn.textContent = '⛶ Full Screen';
       fsBtn.classList.remove('is-fullscreen');
       fsBtn.setAttribute('aria-pressed', 'false');
     }
@@ -3617,7 +3686,204 @@ if (typeof window !== 'undefined') {
     });
   }
 
-  function renderSimulationResult(res) {
+  var activeEhRole = 'developer';
+  var lastEhState = {
+    tryH: 'continue',
+    privH: 'none',
+    mainH: 'propagate',
+    res: null
+  };
+
+  function formatIndianRupees(num) {
+    var clean = Number(num);
+    if (!isFinite(clean) || clean < 0) clean = 0;
+    clean = Math.round(clean);
+    return clean.toLocaleString('en-IN');
+  }
+
+  function buildRoleView(role, res, tryH, privH, mainH) {
+    var tryLbl = labelForHandler(tryH);
+    var privLbl = labelForHandler(privH);
+    var mainLbl = labelForHandler(mainH);
+
+    if (role === 'fresher') {
+      var fresherSummary = res.isOk
+        ? (res.caughtAt === 'try'
+            ? 'Think of the Try Scope like a safety net inside Private Flow: the HTTP error happened, the net caught it cleanly, fixed the response, and let everyone finish their work — so the caller gets 200 OK.'
+            : (res.caughtAt === 'private'
+                ? 'Try Scope could not stop the error, so it passed up to Private Flow. Private Flow had On Error Continue — it handled the problem and told Main Flow "all good!", so the caller gets 200 OK.'
+                : 'Both Try Scope and Private Flow let the error pass up to Main Flow, where On Error Continue caught it at the exit door. Remaining Main Flow steps were skipped, and the caller still got 200 OK.'))
+        : 'Think of the error like an alarm ringing upward through every room: Try Scope (' + tryLbl + ') and Private Flow (' + privLbl + ') did not stop it, and Main Flow (' + mainLbl + ') passed it out — so the caller gets a red 500 error.';
+      return {
+        badge: '🎓 FRESHER VIEW',
+        metaPill: res.isOk ? 'Simple Analogy · Recovered (200 OK)' : 'Simple Analogy · Failed (500 Error)',
+        metaTone: res.isOk ? 'meta-ok' : 'meta-err',
+        insightHtml: '<strong>Teacher Explanation:</strong> ' + fresherSummary,
+        statusWhy: fresherSummary,
+        nextWhy: res.nextRuns
+          ? 'Yes! Because the error was converted into a normal message before leaving the child scope, the next box continues like nothing broke.'
+          : 'No! Once an error leaves a flow or reaches Main Flow\'s error handler, any boxes after Flow Ref in Main Flow are skipped.',
+        ruleLabel: '4. SIMPLE MEMORY TRICK',
+        ruleText: '"' + (res.isOk
+          ? 'Continue = Swallow the error here, turn it green (200 OK), and let callers continue.'
+          : 'Propagate / None = Pass the red alert upward until the caller gets HTTP 500.') + '"'
+      };
+    }
+
+    if (role === 'architect') {
+      var archVerdict = 'meta-ok';
+      var archBadgeText = '✅ Acceptable Pattern';
+      var archAdvice = '';
+      if (res.caughtAt === 'try' && res.caughtType === 'continue') {
+        archVerdict = 'meta-warn';
+        archBadgeText = '⚠️ Risky — Silent Error Swallowing';
+        archAdvice = '<strong>Design Review (Risky):</strong> Swallowing <code>HTTP:CONNECTIVITY</code> in Try Scope with <code>On Error Continue</code> masks downstream outage and still returns 200 OK. <strong>Recommended Change:</strong> Only keep Continue for non-critical enrichment calls; wrap transient connectivity with <code>Until Successful</code>, log with <code>correlationId</code>, and emit monitoring alerts or fallback flags.';
+      } else if (res.caughtAt === 'private' && res.caughtType === 'continue') {
+        archVerdict = 'meta-warn';
+        archBadgeText = '⚠️ Risky — Upstream Masking';
+        archAdvice = '<strong>Design Review (Risky):</strong> Private Flow masks the transport failure via <code>On Error Continue</code> so Main Flow assumes Flow Reference succeeded. <strong>Recommended Change:</strong> Switch Private Flow to <code>On Error Propagate</code> for transactional flows, or return an explicit partial-failure variable so Main Flow avoids writing stale state.';
+      } else if (res.caughtAt === 'main' && res.caughtType === 'continue') {
+        archVerdict = 'meta-ok';
+        archBadgeText = '⚠️ Acceptable With Standardized Error Body';
+        archAdvice = '<strong>Design Review (Conditional):</strong> Main Flow intercepts the propagated failure with <code>On Error Continue</code> and returns HTTP 200. <strong>Recommended Change:</strong> Ensure HTTP status/body matches your OpenAPI/RAML contract (for true failures, prefer <code>On Error Propagate</code> mapped to 502/503 with APIKit error kit).';
+      } else if (mainH === 'none' && privH === 'none' && tryH === 'none') {
+        archVerdict = 'meta-err';
+        archBadgeText = '❌ Anti-Pattern — No Error Handler';
+        archAdvice = '<strong>Design Review (Wrong / Anti-Pattern):</strong> Zero error handlers defined; Mule Runtime\'s Default Error Handler leaks internal stack details with raw HTTP 500. <strong>Recommended Change:</strong> Add a global <code>Error Handler</code> ref in Main Flow transforming <code>HTTP:CONNECTIVITY</code> into canonical API error JSON + PagerDuty/Anypoint Monitoring alert.';
+      } else {
+        archVerdict = 'meta-ok';
+        archBadgeText = '✅ Correct Pattern — Fail-Fast Propagation';
+        archAdvice = '<strong>Design Review (Correct for ACID / Orders):</strong> Error propagates cleanly via <code>On Error Propagate</code> to Main Flow and HTTP Listener without faking success. <strong>Best Practice:</strong> Add Global Error Handler mapping <code>HTTP:CONNECTIVITY</code> to 502/503 JSON, correlate <code>correlationId</code>, and push failed event to Anypoint MQ DLQ for replay.';
+      }
+      return {
+        badge: '🏛️ MULESOFT ARCHITECT VIEW',
+        metaPill: archBadgeText,
+        metaTone: archVerdict,
+        insightHtml: archAdvice,
+        statusWhy: 'Architecture verdict for Try(' + tryLbl + ') -> Private(' + privLbl + ') -> Main(' + mainLbl + '): caller sees ' + res.httpStatus + '.',
+        nextWhy: res.nextRuns
+          ? 'Execution continues past failing step — verify downstream idempotency & compensatory logic so partial data does not corrupt downstream systems.'
+          : 'Execution halts downstream processors cleanly (fail-fast) — ideal for transactional integrity and MQ retry/DLQ replay.',
+        ruleLabel: '4. ARCHITECTURAL BEST PRACTICE',
+        ruleText: '"' + (res.caughtAt === 'listener'
+          ? 'Always define a Global Error Handler referenced by Main Flow — never rely on Mule\'s Default Error Handler in production.'
+          : (res.isOk
+              ? 'Use On Error Continue strictly for non-blocking enrichment; never fake HTTP 200 on broken financial or order writes.'
+              : 'Use On Error Propagate for core transactions so callers receive clear failure codes and events can safely route to DLQ.')) + '"'
+      };
+    }
+
+    if (role === 'ba') {
+      var baMsg = res.isOk
+        ? '<strong>Customer Experience:</strong> Customer sees a normal confirmation screen (Order appears accepted / fallback shown). <strong>Order Outcome:</strong> Proceeds via backup path (' + res.httpStatus + '), but if downstream DB was skipped, manual reconciliation or retry queue is required.'
+        : '<strong>Customer Experience:</strong> Customer sees a checkout failure / "Unable to process request right now" error (' + res.httpStatus + '). <strong>Order Outcome:</strong> Order does NOT complete, triggering immediate revenue and SLA risk until connectivity recovers.';
+      return {
+        badge: '📊 BUSINESS / BA VIEW',
+        metaPill: res.isOk ? 'Risk: LOW · Order Continues' : 'Risk: HIGH · Order Fails',
+        metaTone: res.isOk ? 'meta-ok' : 'meta-err',
+        insightHtml: baMsg,
+        statusWhy: res.isOk
+          ? 'API recovers gracefully (200 OK), preventing visible checkout outage for customers.'
+          : 'API returns 500 Server Error — checkout/order request fails for the end user.',
+        nextWhy: res.nextRuns
+          ? 'Follow-up business steps (notifications, confirmation UI) continue running.'
+          : 'Follow-up steps (inventory commit, confirmation email) are skipped immediately.',
+        ruleLabel: '4. BUSINESS / CUSTOMER OUTCOME',
+        ruleText: '"' + (res.isOk
+          ? 'Graceful recovery protects customer conversion (0 failed orders), provided fallback behavior matches business SLA rules.'
+          : 'Hard 500 failure protects data accuracy by blocking broken orders, but directly impacts hourly order conversion until resolved.') + '"'
+      };
+    }
+
+    if (role === 'manager') {
+      var conf = 75;
+      if (res.caughtAt === 'listener') conf = 35;
+      else if (res.caughtAt === 'try' && res.caughtType === 'continue') conf = 72;
+      else if (res.caughtAt === 'private' && res.caughtType === 'continue') conf = 76;
+      else if (res.caughtAt === 'main' && res.caughtType === 'continue') conf = 82;
+      else if (mainH === 'propagate') conf = 90;
+
+      var pitch = res.isOk
+        ? 'Client Pitch: "Our MuleSoft API isolates the downstream connectivity glitch inside ' + res.caughtAt + ' scope and delivers a seamless 200 OK response with zero customer disruption."'
+        : (res.caughtAt === 'listener'
+            ? 'Client Pitch: "We identified an unhandled connectivity gap returning HTTP 500; adding a centralized error handler and retry policy will safeguard the API immediately."'
+            : 'Client Pitch: "Our MuleSoft integration enforces fail-fast protection—safely halting incomplete transactions at ' + res.caughtAt + ' scope and returning structured HTTP 500 telemetry for rapid recovery."');
+
+      return {
+        badge: '🤝 VENDOR / MANAGER VIEW',
+        metaPill: 'Confidence Score: ' + conf + '%',
+        metaTone: conf >= 80 ? 'meta-ok' : (conf >= 65 ? 'meta-warn' : 'meta-err'),
+        insightHtml: '<strong>Executive Summary (' + conf + '% Confidence):</strong> ' + pitch,
+        statusWhy: 'SLA Status: ' + res.httpStatus + ' reported cleanly to monitoring and API consumers (' + conf + '% architecture confidence).',
+        nextWhy: res.nextRuns
+          ? 'End-to-end SLA workflow stays unblocked after recovery handler executes.'
+          : 'Protective circuit stop avoids partial/corrupt client data.',
+        ruleLabel: '4. 1-LINE CLIENT PITCH',
+        ruleText: '"' + pitch.replace(/^Client Pitch:\s*"|"$/g, '') + '"'
+      };
+    }
+
+    // Default: developer
+    return {
+      badge: '💻 DEVELOPER VIEW',
+      metaPill: 'HTTP ' + res.httpStatus + ' · Technical Trace',
+      metaTone: res.isOk ? 'meta-ok' : 'meta-err',
+      insightHtml: '<strong>Technical Exact Output:</strong> Error Type = <code>HTTP:CONNECTIVITY</code> | Caught At = <code>' + res.caughtAt + ' (' + res.caughtType + ')</code> | Final HTTP = <strong>' + res.httpStatus + '</strong> | Config: Try=<code>' + tryLbl + '</code>, Private=<code>' + privLbl + '</code>, Main=<code>' + mainLbl + '</code>.',
+      statusWhy: res.statusWhy,
+      nextWhy: res.nextWhy,
+      ruleLabel: '4. 1-LINE INTERVIEW RULE',
+      ruleText: '"' + res.rule + '"'
+    };
+  }
+
+  window.updateBusinessImpactCalc = function() {
+    var ordersEl = document.getElementById('eh-biz-orders');
+    var aovEl = document.getElementById('eh-biz-aov');
+    var boxEl = document.getElementById('eh-biz-loss-box');
+    var headlineEl = document.getElementById('eh-biz-loss-headline');
+    var subEl = document.getElementById('eh-biz-loss-sub');
+    if (!boxEl || !headlineEl) return;
+
+    var orders = ordersEl ? Math.max(0, Number(ordersEl.value) || 0) : 0;
+    var aov = aovEl ? Math.max(0, Number(aovEl.value) || 0) : 0;
+    var isOk = lastEhState && lastEhState.res ? !!lastEhState.res.isOk : true;
+    var loss = isOk ? 0 : Math.round(orders * aov);
+    var formatted = formatIndianRupees(loss);
+
+    headlineEl.textContent = 'If this error happens for 1 Hour, Business Loss = Rs ' + formatted;
+    boxEl.classList.remove('eh-biz-safe', 'eh-biz-danger');
+    boxEl.classList.add(loss === 0 ? 'eh-biz-safe' : 'eh-biz-danger');
+
+    if (subEl) {
+      if (isOk) {
+        subEl.textContent = 'Simulation returned HTTP 200 OK — orders continue processing via fallback recovery (Loss = Rs 0/hr).';
+      } else {
+        subEl.textContent = 'Simulation propagated HTTP 500 Server Error — ' + orders + ' failed orders × Rs ' + formatIndianRupees(aov) + ' = Rs ' + formatted + ' hourly revenue impact.';
+      }
+    }
+  };
+
+  function renderSimulationResult(res, tryH, privH, mainH) {
+    lastEhState = {
+      tryH: tryH || document.getElementById('eh-try-select')?.value || 'continue',
+      privH: privH || document.getElementById('eh-private-select')?.value || 'none',
+      mainH: mainH || document.getElementById('eh-main-select')?.value || 'propagate',
+      res: res
+    };
+
+    var roleView = buildRoleView(activeEhRole, res, lastEhState.tryH, lastEhState.privH, lastEhState.mainH);
+
+    var roleBadge = document.getElementById('eh-role-badge');
+    var roleMeta = document.getElementById('eh-role-meta-pill');
+    var roleBody = document.getElementById('eh-role-insight-body');
+    if (roleBadge) roleBadge.textContent = roleView.badge;
+    if (roleMeta) {
+      roleMeta.textContent = roleView.metaPill;
+      roleMeta.classList.remove('meta-ok', 'meta-warn', 'meta-err');
+      roleMeta.classList.add(roleView.metaTone);
+    }
+    if (roleBody) roleBody.innerHTML = roleView.insightHtml;
+
     var statusBox = document.getElementById('eh-res-status-box');
     var statusCode = document.getElementById('eh-res-status-code');
     var statusWhy = document.getElementById('eh-res-status-why');
@@ -3625,6 +3891,7 @@ if (typeof window !== 'undefined') {
     var nextVal = document.getElementById('eh-res-next-val');
     var nextWhy = document.getElementById('eh-res-next-why');
     var payloadCode = document.getElementById('eh-res-payload-code');
+    var ruleLabel = document.getElementById('eh-res-rule-label');
     var ruleEl = document.getElementById('eh-res-rule');
     var traceEl = document.getElementById('eh-trace-log');
 
@@ -3633,19 +3900,33 @@ if (typeof window !== 'undefined') {
       statusBox.classList.add(res.isOk ? 'eh-res-ok' : 'eh-res-err');
     }
     if (statusCode) statusCode.textContent = res.httpStatus;
-    if (statusWhy) statusWhy.textContent = res.statusWhy;
+    if (statusWhy) statusWhy.textContent = roleView.statusWhy;
 
     if (nextBox) {
       nextBox.classList.remove('eh-res-neutral', 'eh-res-ok', 'eh-res-err');
       nextBox.classList.add(res.nextRuns ? 'eh-res-ok' : 'eh-res-err');
     }
     if (nextVal) nextVal.textContent = res.nextVal;
-    if (nextWhy) nextWhy.textContent = res.nextWhy;
+    if (nextWhy) nextWhy.textContent = roleView.nextWhy;
 
     if (payloadCode) payloadCode.textContent = res.payload;
-    if (ruleEl) ruleEl.textContent = '"' + res.rule + '"';
+    if (ruleLabel) ruleLabel.textContent = roleView.ruleLabel;
+    if (ruleEl) ruleEl.textContent = roleView.ruleText;
     if (traceEl) traceEl.textContent = res.trace;
+
+    window.updateBusinessImpactCalc();
   }
+
+  window.setEhRole = function(role, btnEl) {
+    activeEhRole = role || 'developer';
+    document.querySelectorAll('#eh-role-switcher .eh-role-btn').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-role') === activeEhRole);
+    });
+    if (!lastEhState.res) {
+      lastEhState.res = window.evaluateMuleErrorFlow(lastEhState.tryH, lastEhState.privH, lastEhState.mainH);
+    }
+    renderSimulationResult(lastEhState.res, lastEhState.tryH, lastEhState.privH, lastEhState.mainH);
+  };
 
   window.simulateMuleErrorFlow = function() {
     clearEhTimers();
@@ -3658,7 +3939,7 @@ if (typeof window !== 'undefined') {
     var res = window.evaluateMuleErrorFlow(tryH, privateH, mainH);
 
     // Update results immediately so screen readers and fast interactions always get deterministic state
-    renderSimulationResult(res);
+    renderSimulationResult(res, tryH, privateH, mainH);
 
     // Step-by-step animated highlight Left->Right (Desktop) / Top->Bottom (Mobile)
     clearNodeAnimationClasses();
@@ -3733,7 +4014,7 @@ if (typeof window !== 'undefined') {
     document.getElementById('eh-preset-mixed')?.classList.add('active');
 
     var res = window.evaluateMuleErrorFlow('continue', 'none', 'propagate');
-    renderSimulationResult(res);
+    renderSimulationResult(res, 'continue', 'none', 'propagate');
 
     var traceEl = document.getElementById('eh-trace-log');
     if (traceEl) {
@@ -3753,6 +4034,8 @@ if (typeof window !== 'undefined') {
       }
     });
     syncNodeHandlerBadges();
+    var initRes = window.evaluateMuleErrorFlow('continue', 'none', 'propagate');
+    renderSimulationResult(initRes, 'continue', 'none', 'propagate');
   }
 
   if (document.readyState === 'loading') {
@@ -3762,12 +4045,16 @@ if (typeof window !== 'undefined') {
   }
 })();
 
-/* Keep sticky filter bar docked cleanly beneath dynamic .hub-header height */
+/* Keep sticky utility bar & 280px sidebar docked cleanly beneath dynamic .hub-header height */
 (function initStickyHeaderSync() {
   function syncStickyHeaderHeight() {
     var hdr = document.querySelector('.hub-header');
     if (hdr) {
       document.documentElement.style.setProperty('--hub-header-h', hdr.offsetHeight + 'px');
+    }
+    var util = document.getElementById('utility-bar');
+    if (util) {
+      document.documentElement.style.setProperty('--utility-bar-h', util.offsetHeight + 'px');
     }
   }
   if (document.readyState === 'loading') {
@@ -3779,11 +4066,89 @@ if (typeof window !== 'undefined') {
   window.addEventListener('resize', syncStickyHeaderHeight);
 })();
 
+/* Study Progress Tracker + Sidebar Click Breadcrumb Sync */
+(function initStudyProgressAndNav() {
+  var STORAGE_KEY = 'mulesoft_hub_done_qas';
+  var TOTAL_QAS = 282;
+
+  function loadDoneSet() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      return new Set(Array.isArray(arr) ? arr : []);
+    } catch (e) {
+      return new Set();
+    }
+  }
+
+  function saveDoneSet(setObj) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(setObj)));
+    } catch (e) {}
+  }
+
+  window.updateProgressDisplay = function() {
+    var doneSet = loadDoneSet();
+    var count = Math.min(TOTAL_QAS, doneSet.size);
+    var txtEl = document.getElementById('utility-progress-text');
+    var fillEl = document.getElementById('utility-progress-fill');
+    if (txtEl) txtEl.textContent = count + '/' + TOTAL_QAS + ' done';
+    if (fillEl) fillEl.style.width = Math.min(100, Math.round((count / TOTAL_QAS) * 100)) + '%';
+  };
+
+  window.markQaCompleted = function(cardId) {
+    if (!cardId) return;
+    var doneSet = loadDoneSet();
+    if (!doneSet.has(cardId)) {
+      doneSet.add(cardId);
+      saveDoneSet(doneSet);
+      window.updateProgressDisplay();
+    }
+  };
+
+  function bindSidebarLinks() {
+    document.querySelectorAll('.quick-sidebar-link').forEach(function(link) {
+      if (link.dataset.bcBound) return;
+      link.dataset.bcBound = '1';
+      link.addEventListener('click', function() {
+        var modId = link.getAttribute('data-mod-id');
+        if (modId) {
+          var art = document.getElementById(modId);
+          if (art && typeof window.updateContentBreadcrumb === 'function') {
+            window.updateContentBreadcrumb(art);
+          }
+          if (window.innerWidth < 1024 && typeof window.toggleSidebarDrawer === 'function') {
+            window.toggleSidebarDrawer(false);
+          }
+        }
+      });
+    });
+    window.updateProgressDisplay();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindSidebarLinks);
+  } else {
+    bindSidebarLinks();
+  }
+})();
+
 /* ============================================================================
    UNIFIED FULLSCREEN ENGINE (INLINE PORTAL & MODAL EDGE-TO-EDGE FULLSCREEN)
    ============================================================================ */
 (function initUnifiedFullscreen() {
   var activeFs = null;
+
+  var FS_TITLES = {
+    'error-handling-simulator': '🔥 Interactive Error-Handling Flow Simulator',
+    'eh-role-results-section': '🎭 Role-Based Analysis & Simulation Results',
+    'eh-business-calc-section': '💰 Business Impact Calculator',
+    'main-learning-content': '📚 MuleSoft Learning Content & Modules',
+    'inline-dw-playground': '🧪 DataWeave 2.0 Studio Lab',
+    'vcore-calculator': '🧮 CloudHub vCore Sizing & Capacity Planner',
+    'dw-modal-container': '🧪 DataWeave 2.0 Playground',
+    'mock-modal-container': '⏱️ Timed Mock Interview'
+  };
 
   function ensurePortal() {
     var portal = document.getElementById('feature-fullscreen-portal');
@@ -3792,7 +4157,15 @@ if (typeof window !== 'undefined') {
       portal.id = 'feature-fullscreen-portal';
       portal.setAttribute('role', 'dialog');
       portal.setAttribute('aria-modal', 'true');
-      portal.setAttribute('aria-label', 'Fullscreen Interactive Workspace');
+      portal.setAttribute('aria-label', 'Full Screen Interactive Workspace');
+      portal.innerHTML =
+        '<div class="fs-portal-topbar">' +
+        '  <span class="fs-portal-title" id="fs-portal-title">Full Screen View</span>' +
+        '  <div class="fs-portal-right">' +
+        '    <span class="fs-esc-hint" id="fs-portal-esc-hint">ESC to Exit</span>' +
+        '    <button type="button" class="btn btn-sm btn-outline fs-portal-exit-btn" id="fs-portal-exit-btn" onclick="exitFeatureFullscreen()">Exit Full Screen ✕</button>' +
+        '  </div>' +
+        '</div>';
       document.body.appendChild(portal);
     }
     return portal;
@@ -3800,7 +4173,7 @@ if (typeof window !== 'undefined') {
 
   function setBtnState(btn, isFs) {
     if (!btn) return;
-    btn.textContent = isFs ? '↙ Exit Fullscreen' : '⛶ Fullscreen';
+    btn.textContent = isFs ? 'Exit Full Screen ✕' : '⛶ Full Screen';
     btn.classList.toggle('is-fullscreen', !!isFs);
     btn.setAttribute('aria-pressed', isFs ? 'true' : 'false');
   }
@@ -3827,7 +4200,13 @@ if (typeof window !== 'undefined') {
       if (portal) portal.classList.remove('active');
       document.body.classList.remove('feature-fs-body-lock');
       if (typeof st.scrollY === 'number') {
+        var prevBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
         window.scrollTo(0, st.scrollY);
+        document.documentElement.scrollTop = st.scrollY;
+        setTimeout(function() {
+          document.documentElement.style.scrollBehavior = prevBehavior;
+        }, 40);
       }
     }
 
@@ -3879,6 +4258,10 @@ if (typeof window !== 'undefined') {
         el.parentNode.insertBefore(placeholder, el);
       }
       var portal = ensurePortal();
+      var titleEl = document.getElementById('fs-portal-title');
+      if (titleEl) {
+        titleEl.textContent = FS_TITLES[targetId] || 'Full Screen Workspace';
+      }
       portal.appendChild(el);
       el.classList.add('feature-fullscreen-active');
       portal.classList.add('active');
@@ -3906,7 +4289,7 @@ if (typeof window !== 'undefined') {
           activeFs.usedNative = true;
         }
       }).catch(function() {
-        // Graceful CSS portal/modal fullscreen fallback when blocked
+        // Graceful CSS portal/modal fullscreen fallback
       });
     }
 

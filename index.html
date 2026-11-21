@@ -193,22 +193,61 @@
 </header>
 <!-- Off-Canvas Sidebar Backdrop -->
 <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebarDrawer(false)"></div>
-<!-- Sticky Category Navigation Bar -->
-<div class="sticky-filter-bar" role="navigation" aria-label="Main Sections"><span class="filter-bar-label">SECTIONS:</span><button class="cat-pill active" data-cat="all" onclick="filterBlogCategory('all', this)">All Sections (40)</button><button class="cat-pill" onclick="filterBlogCategory('Getting Started &amp; Strategy', this)">🚀 Getting Started &amp; Strategy (3)</button><button class="cat-pill" onclick="filterBlogCategory('Salesforce &amp; Enterprise Connectors', this)">🔌 Salesforce &amp; Enterprise Connectors (4)</button><button class="cat-pill" onclick="filterBlogCategory('AWS &amp; Messaging', this)">🌩️ AWS &amp; Messaging (3)</button><button class="cat-pill" onclick="filterBlogCategory('Flow Scopes &amp; Concurrency', this)">🔀 Flow Scopes &amp; Concurrency (5)</button><button class="cat-pill" onclick="filterBlogCategory('Error Handling &amp; Resiliency', this)">⚠️ Error Handling &amp; Resiliency (1)</button><button class="cat-pill" onclick="filterBlogCategory('ObjectStore &amp; API Governance', this)">💾 ObjectStore &amp; API Governance (3)</button><button class="cat-pill" onclick="filterBlogCategory('Testing &amp; CI/CD', this)">🧪 Testing &amp; CI/CD (1)</button><button class="cat-pill" onclick="filterBlogCategory('DataWeave 2.0 Masterclass', this)">💻 DataWeave 2.0 Masterclass (2)</button><button class="cat-pill" onclick="filterBlogCategory('Deployment &amp; CloudHub 2.0', this)">🌐 Deployment &amp; CloudHub 2.0 (1)</button><button class="cat-pill" onclick="filterBlogCategory('Production Scenarios &amp; Incidents', this)">🎯 Production Scenarios &amp; Incidents (1)</button><button class="cat-pill" onclick="filterBlogCategory('Live Whiteboard &amp; Architecture', this)">📐 Live Whiteboard &amp; Architecture (1)</button><button class="cat-pill" onclick="filterBlogCategory('Modern Architecture &amp; AI', this)">🤖 Modern Architecture &amp; AI (2)</button><button class="cat-pill" onclick="filterBlogCategory('Interview Traps &amp; Pitfalls', this)">⚡ Interview Traps &amp; Pitfalls (1)</button><button class="cat-pill" onclick="filterBlogCategory('Enterprise Architect Masterclass', this)">🎓 Enterprise Architect Masterclass (5)</button><button class="cat-pill" onclick="filterBlogCategory('Rapid Review &amp; Cheat Sheets', this)">🏆 Rapid Review &amp; Cheat Sheets (2)</button></div>
+<!-- Slim Utility Bar (Max 48px: Search, Practice Mode, Progress only) -->
+<div class="slim-utility-bar" id="utility-bar" role="toolbar" aria-label="Study Utilities">
+  <div class="utility-bar-inner">
+    <div class="utility-bar-left">
+      <button type="button" class="utility-btn" id="utility-search-btn" onclick="openSearchModal()" aria-label="Search 282+ topics (Ctrl+K)" title="Search Topics (Ctrl+K)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span class="utility-btn-label">Search</span>
+      </button>
+      <button type="button" class="utility-btn" id="utility-practice-btn" onclick="togglePracticeMode()" aria-pressed="false" title="Toggle Practice Mode (Hide/Show answers)">
+        <span aria-hidden="true">🎯</span>
+        <span id="utility-practice-label">Practice Mode</span>
+      </button>
+    </div>
+    <div class="utility-progress-pill" id="utility-progress-pill" title="Revealed Q&amp;A study progress (saved locally)">
+      <span class="utility-progress-icon" aria-hidden="true">📈</span>
+      <span id="utility-progress-text">0/282 done</span>
+      <span class="utility-progress-track" aria-hidden="true"><span class="utility-progress-fill" id="utility-progress-fill" style="width:0%;"></span></span>
+    </div>
+  </div>
+</div>
 <div class="hub-layout">
 <!-- Quick Navigation Sidebar -->
 <aside class="quick-sidebar" id="toc-sidebar">
 <div class="sidebar-header-box">
 <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
 <div>
-<div class="quick-sidebar-title" id="sidebar-section-title">Modules in Section</div>
+<div class="quick-sidebar-title" id="sidebar-section-title">All Modules</div>
 <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
 <span id="sidebar-module-count" style="font-size:0.72rem; color:var(--text-dim);">Showing all 40 modules</span>
-<button type="button" id="sidebar-reset-filter" class="sidebar-reset-btn" style="display:none;" onclick="filterBlogCategory('all', document.querySelector('.cat-pill[data-cat=all]'))">Show All</button>
+<button type="button" id="sidebar-reset-filter" class="sidebar-reset-btn" style="display:none;" onclick="filterBlogCategory('all')">Show All</button>
 </div>
 </div>
 <button aria-label="Close Topic Navigation" class="sidebar-close-btn" onclick="toggleSidebarDrawer(false)">✕</button>
 </div>
+</div>
+<div class="sidebar-section-filter-wrap">
+  <label class="sr-only" for="sidebar-section-select">Filter by Section</label>
+  <select id="sidebar-section-select" class="sidebar-section-select" onchange="filterBlogCategory(this.value)" aria-label="Filter by Section">
+    <option value="all">All Sections (40)</option>
+    <option value="Getting Started &amp; Strategy">🚀 Getting Started &amp; Strategy (3)</option>
+    <option value="Salesforce &amp; Enterprise Connectors">🔌 Salesforce &amp; Enterprise Connectors (4)</option>
+    <option value="AWS &amp; Messaging">🌩️ AWS &amp; Messaging (3)</option>
+    <option value="Flow Scopes &amp; Concurrency">🔀 Flow Scopes &amp; Concurrency (5)</option>
+    <option value="Error Handling &amp; Resiliency">⚠️ Error Handling &amp; Resiliency (1)</option>
+    <option value="ObjectStore &amp; API Governance">💾 ObjectStore &amp; API Governance (3)</option>
+    <option value="Testing &amp; CI/CD">🧪 Testing &amp; CI/CD (1)</option>
+    <option value="DataWeave 2.0 Masterclass">💻 DataWeave 2.0 Masterclass (2)</option>
+    <option value="Deployment &amp; CloudHub 2.0">🌐 Deployment &amp; CloudHub 2.0 (1)</option>
+    <option value="Production Scenarios &amp; Incidents">🎯 Production Scenarios &amp; Incidents (1)</option>
+    <option value="Live Whiteboard &amp; Architecture">📐 Live Whiteboard &amp; Architecture (1)</option>
+    <option value="Modern Architecture &amp; AI">🤖 Modern Architecture &amp; AI (2)</option>
+    <option value="Interview Traps &amp; Pitfalls">⚡ Interview Traps &amp; Pitfalls (1)</option>
+    <option value="Enterprise Architect Masterclass">🎓 Enterprise Architect Masterclass (5)</option>
+    <option value="Rapid Review &amp; Cheat Sheets">🏆 Rapid Review &amp; Cheat Sheets (2)</option>
+  </select>
 </div>
 <input class="sidebar-filter-input" oninput="filterSidebarModules(this.value)" placeholder="🔍 Filter modules..." type="text"/>
 <ul class="quick-sidebar-list">
@@ -473,7 +512,18 @@
 </div>
 </aside>
 <!-- Main Content Area -->
-<main class="main-stream">
+<main class="main-stream" id="main-learning-content">
+<!-- Content Breadcrumb & Full Screen Toggle -->
+<nav class="content-breadcrumb-bar" id="content-breadcrumb" aria-label="Breadcrumb">
+  <div class="breadcrumb-trail">
+    <a href="#hero-landing" class="bc-item bc-home" onclick="filterBlogCategory('all'); window.scrollTo({top:0, behavior:'smooth'}); return false;">Home</a>
+    <span class="bc-sep" aria-hidden="true">&gt;</span>
+    <span class="bc-item bc-section" id="bc-section-name">All Sections</span>
+    <span class="bc-sep" aria-hidden="true">&gt;</span>
+    <span class="bc-item bc-module" id="bc-module-name">Overview &amp; Quick Start</span>
+  </div>
+  <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="main-content-fullscreen-btn" onclick="toggleFeatureFullscreen('main-learning-content', this)" aria-pressed="false" title="Open Learning Content in Full Screen">⛶ Full Screen</button>
+</nav>
 <!-- Hero Section -->
 <section class="hero-portal hero-clean" id="hero-landing">
   <div class="hero-eyebrow">
@@ -510,7 +560,7 @@
       <div class="hero-step-num">1</div>
       <div class="hero-step-body">
         <div class="hero-step-title">📖 Learn by Section</div>
-        <div class="hero-step-desc">Pick a main section in the top bar, then jump to any module in the left sidebar.</div>
+        <div class="hero-step-desc">Filter by section or search modules in the left sidebar to jump directly to any topic.</div>
       </div>
     </div>
     <div class="hero-step-card" onclick="togglePracticeMode(true)">
@@ -4370,7 +4420,7 @@ paperless:     dynamoData.paperless default false
     </div>
     <div class="feature-header-controls">
       <span class="badge eh-runtime-badge">MULE 4 RUNTIME ENGINE</span>
-      <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="eh-fullscreen-btn" onclick="toggleFeatureFullscreen('error-handling-simulator', this)" aria-pressed="false" title="Toggle Fullscreen">⛶ Fullscreen</button>
+      <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="eh-fullscreen-btn" onclick="toggleFeatureFullscreen('error-handling-simulator', this)" aria-pressed="false" title="Toggle Full Screen">⛶ Full Screen</button>
     </div>
   </div>
 
@@ -4460,28 +4510,86 @@ paperless:     dynamoData.paperless default false
     <div class="eh-trace-log" id="eh-trace-log">Select error handlers above or pick a preset, then click <strong>"Throw Error - Simulate HTTP:CONNECTIVITY"</strong> to trace execution.</div>
   </div>
 
-  <!-- 4 Result Boxes (2x2 Grid on Desktop, Stacked Full-Width on Mobile) -->
-  <div class="eh-results-grid" id="eh-results-grid">
-    <div class="eh-result-box eh-res-neutral" id="eh-res-status-box">
-      <div class="eh-res-label">1. FINAL HTTP STATUS</div>
-      <div class="eh-res-big" id="eh-res-status-code">200 OK</div>
-      <div class="eh-res-desc" id="eh-res-status-why">Click Simulate to trace the active configuration (default: Mixed Real Interview Case).</div>
+  <!-- Role Switcher + 4 Result Boxes Section (Full Screen Capable) -->
+  <div class="eh-role-results-section" id="eh-role-results-section">
+    <div class="eh-subsection-header">
+      <div class="eh-subsection-title-wrap">
+        <span class="eh-subsection-title">🎭 Role-Based Analysis &amp; Simulation Results</span>
+        <span class="eh-subsection-sub">Switch roles to tailor the exact same simulation result for any stakeholder</span>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="eh-roles-fullscreen-btn" onclick="toggleFeatureFullscreen('eh-role-results-section', this)" aria-pressed="false" title="Toggle Full Screen">⛶ Full Screen</button>
     </div>
 
-    <div class="eh-result-box eh-res-neutral" id="eh-res-next-box">
-      <div class="eh-res-label">2. NEXT PROCESSOR</div>
-      <div class="eh-res-big" id="eh-res-next-val">YES — Runs</div>
-      <div class="eh-res-desc" id="eh-res-next-why">Try Scope catches and swallows the error via On Error Continue, so subsequent processors run normally.</div>
+    <!-- 5 Role Buttons (Default: Developer) -->
+    <div class="eh-role-grid" id="eh-role-switcher" role="tablist" aria-label="Role Perspective Switcher">
+      <button type="button" class="btn eh-role-btn" data-role="fresher" onclick="setEhRole('fresher', this)">🎓 Fresher</button>
+      <button type="button" class="btn eh-role-btn active" data-role="developer" onclick="setEhRole('developer', this)">💻 Developer</button>
+      <button type="button" class="btn eh-role-btn" data-role="architect" onclick="setEhRole('architect', this)">🏛️ MuleSoft Architect</button>
+      <button type="button" class="btn eh-role-btn" data-role="ba" onclick="setEhRole('ba', this)">📊 Business / BA</button>
+      <button type="button" class="btn eh-role-btn" data-role="manager" onclick="setEhRole('manager', this)">🤝 Vendor / Manager</button>
     </div>
 
-    <div class="eh-result-box" id="eh-res-payload-box">
-      <div class="eh-res-label">3. FINAL PAYLOAD RETURNED TO CALLER</div>
-      <pre class="eh-payload-pre"><code id="eh-res-payload-code">"Success — Main Flow completed using Try Scope On Error Continue recovery payload"</code></pre>
+    <!-- Role Perspective Insight Banner -->
+    <div class="eh-role-insight-card" id="eh-role-insight-card">
+      <div class="eh-role-insight-head">
+        <span class="badge eh-role-badge" id="eh-role-badge">💻 DEVELOPER VIEW</span>
+        <span class="badge eh-role-meta-pill" id="eh-role-meta-pill">HTTP 200 OK · Technical Trace</span>
+      </div>
+      <div class="eh-role-insight-body" id="eh-role-insight-body">
+        <strong>Mule 4 Runtime Execution:</strong> Try Scope's <code>On Error Continue</code> catches <code>HTTP:CONNECTIVITY</code>, logs it locally, and sets the Mule Event payload to recovery JSON. Execution resumes at the next processor and returns <strong>HTTP 200 OK</strong>.
+      </div>
     </div>
 
-    <div class="eh-result-box eh-res-rule-box" id="eh-res-rule-box">
-      <div class="eh-res-label">4. 1-LINE INTERVIEW RULE</div>
-      <div class="eh-res-rule-text" id="eh-res-rule">"On Error Continue inside a Try Scope swallows the error and returns a success event, so both Private Flow and Main Flow continue executing and the caller receives HTTP 200 OK."</div>
+    <!-- 4 Result Boxes (2x2 Grid on Desktop, Stacked Full-Width on Mobile) -->
+    <div class="eh-results-grid" id="eh-results-grid">
+      <div class="eh-result-box eh-res-neutral" id="eh-res-status-box">
+        <div class="eh-res-label">1. FINAL HTTP STATUS</div>
+        <div class="eh-res-big" id="eh-res-status-code">200 OK</div>
+        <div class="eh-res-desc" id="eh-res-status-why">Try Scope caught HTTP:CONNECTIVITY with On Error Continue and returned a success message to Private Flow and Main Flow.</div>
+      </div>
+
+      <div class="eh-result-box eh-res-neutral" id="eh-res-next-box">
+        <div class="eh-res-label">2. NEXT PROCESSOR</div>
+        <div class="eh-res-big" id="eh-res-next-val">YES — Runs</div>
+        <div class="eh-res-desc" id="eh-res-next-why">Try Scope catches and swallows the error via On Error Continue, so subsequent processors run normally.</div>
+      </div>
+
+      <div class="eh-result-box" id="eh-res-payload-box">
+        <div class="eh-res-label">3. FINAL PAYLOAD RETURNED TO CALLER</div>
+        <pre class="eh-payload-pre"><code id="eh-res-payload-code">"Success — Main Flow completed using Try Scope On Error Continue recovery payload"</code></pre>
+      </div>
+
+      <div class="eh-result-box eh-res-rule-box" id="eh-res-rule-box">
+        <div class="eh-res-label" id="eh-res-rule-label">4. 1-LINE INTERVIEW RULE</div>
+        <div class="eh-res-rule-text" id="eh-res-rule">"On Error Continue inside a Try Scope swallows the error and returns a success event, so both Private Flow and Main Flow continue executing and the caller receives HTTP 200 OK."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Business Impact Calculator Section (Full Screen Capable) -->
+  <div class="eh-business-calc-section" id="eh-business-calc-section">
+    <div class="eh-subsection-header">
+      <div class="eh-subsection-title-wrap">
+        <span class="eh-subsection-title">💰 Business Impact Calculator</span>
+        <span class="eh-subsection-sub">Estimate 1-hour revenue impact if this error occurs in production</span>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="eh-biz-fullscreen-btn" onclick="toggleFeatureFullscreen('eh-business-calc-section', this)" aria-pressed="false" title="Toggle Full Screen">⛶ Full Screen</button>
+    </div>
+
+    <div class="eh-biz-inputs-grid">
+      <div class="eh-control-group">
+        <label class="eh-control-label" for="eh-biz-orders">Orders Per Hour</label>
+        <input type="number" class="eh-biz-input" id="eh-biz-orders" value="100" min="0" step="1" oninput="updateBusinessImpactCalc()" />
+      </div>
+      <div class="eh-control-group">
+        <label class="eh-control-label" for="eh-biz-aov">Average Order Value (Rs)</label>
+        <input type="number" class="eh-biz-input" id="eh-biz-aov" value="1000" min="0" step="10" oninput="updateBusinessImpactCalc()" />
+      </div>
+    </div>
+
+    <div class="eh-biz-loss-box eh-biz-safe" id="eh-biz-loss-box" role="status" aria-live="polite">
+      <div class="eh-biz-loss-headline" id="eh-biz-loss-headline">If this error happens for 1 Hour, Business Loss = Rs 0</div>
+      <div class="eh-biz-loss-sub" id="eh-biz-loss-sub">Orders continue completing via fallback handling (HTTP 200 OK) — zero immediate hourly checkout revenue loss.</div>
     </div>
   </div>
 </div>
@@ -4818,7 +4926,7 @@ status: vars.httpStatus,</code></pre>
 <div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 <button type="button" class="btn btn-sm btn-primary" id="dw-run-btn" onclick="runDwTransformation('inline')" title="Run transformation in browser">▶ Run / Transform</button>
 <button type="button" class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
-<button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="inline-dw-fullscreen-btn" onclick="toggleFeatureFullscreen('inline-dw-playground', this)" aria-pressed="false" title="Toggle Fullscreen (keeps your current input &amp; mode)">⛶ Fullscreen</button>
+<button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="inline-dw-fullscreen-btn" onclick="toggleFeatureFullscreen('inline-dw-playground', this)" aria-pressed="false" title="Toggle Full Screen (keeps your current input &amp; mode)">⛶ Full Screen</button>
 </div>
 </div>
 
@@ -8761,7 +8869,7 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 </div>
 <div class="feature-header-controls">
 <span class="badge" style="background:rgba(0,240,255,0.15); color:#00f0ff; border:1px solid rgba(0,240,255,0.3); padding:4px 12px; border-radius:6px; font-weight:700; font-size:0.75rem;">2026 ARCHITECT DECISION TOOL</span>
-<button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="vcore-fullscreen-btn" onclick="toggleFeatureFullscreen('vcore-calculator', this)" aria-pressed="false" title="Toggle Fullscreen">⛶ Fullscreen</button>
+<button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="vcore-fullscreen-btn" onclick="toggleFeatureFullscreen('vcore-calculator', this)" aria-pressed="false" title="Toggle Full Screen">⛶ Full Screen</button>
 </div>
 </div>
 <!-- Main Calculator Grid -->
@@ -18896,7 +19004,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
       <div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
         <button type="button" class="btn btn-sm btn-primary" id="modal-dw-run-btn" onclick="runDwTransformation('modal')" title="Run transformation in browser">▶ Run / Transform</button>
         <button type="button" class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
-        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="dw-fullscreen-btn" onclick="toggleDwFullscreen()" aria-pressed="false" title="Toggle Fullscreen Mode">⛶ Fullscreen</button>
+        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="dw-fullscreen-btn" onclick="toggleDwFullscreen()" aria-pressed="false" title="Toggle Full Screen Mode">⛶ Full Screen</button>
         <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeDataWeaveModal()" title="Close Playground (Esc)">✕ Close</button>
       </div>
     </div>
@@ -19075,7 +19183,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
       <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
         <span class="mock-timer-pill" id="mock-timer-pill" style="display:none;">⏱️ 15:00</span>
         <button type="button" class="btn btn-sm" id="mock-pause-btn" onclick="toggleMockPause()" style="display:none;">⏸ Pause</button>
-        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="mock-fullscreen-btn" onclick="toggleFeatureFullscreen('mock-modal-container', this)" aria-pressed="false" title="Toggle Fullscreen">⛶ Fullscreen</button>
+        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="mock-fullscreen-btn" onclick="toggleFeatureFullscreen('mock-modal-container', this)" aria-pressed="false" title="Toggle Full Screen">⛶ Full Screen</button>
         <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeMockInterviewModal()" title="Close Simulator (Esc)">✕ Close</button>
       </div>
     </div>
@@ -19214,10 +19322,6 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 
 <!-- Floating Action Buttons for Mobile (< 1024px) -->
 <div class="fab-container">
-  <button aria-label="Open Technical Modules Navigation" class="fab-btn fab-modules" onclick="toggleSidebarDrawer()" title="Modules Menu">
-    <span class="fab-icon">☰</span>
-    <span class="fab-label">Modules</span>
-  </button>
   <button aria-label="Back to Top" class="fab-btn fab-top" id="fabBackToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="Back to Top">
     <span class="fab-icon">↑</span>
   </button>
