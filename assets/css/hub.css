@@ -3908,13 +3908,7 @@ pre:hover {
 }
 
 /* 9. Respect Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
+
 
 
 
@@ -4270,16 +4264,13 @@ pre:hover {
       72% { opacity: .9; }
       85%, 100% { transform: translateX(455px); opacity: 0; }
     }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-orbit, .hero-packet, .hero-aura, .hero-sheen { animation: none; }
-      .hero-sheen { display: none; }
-    }
+    
 
 /* ========================================= */
 
 .toolkit-trace {stroke-dasharray:8 92;animation:toolkit-trace 12s linear infinite}
     @keyframes toolkit-trace {from {stroke-dashoffset:100} to {stroke-dashoffset:0}}
-    @media(prefers-reduced-motion:reduce) {.toolkit-trace {animation:none}}
+    
 
 /* ========================================= */
 
@@ -4304,9 +4295,7 @@ pre:hover {
       50% { opacity: 0.7; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .pkt-flow, .pkt-flow-2, .pkt-flow-3, .pkt-fast, .pulse-glow { animation: none; stroke-dashoffset: 0; }
-    }
+    
 
 /* ========================================= */
 
@@ -4330,9 +4319,7 @@ pre:hover {
       50% { opacity: 0.7; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .b-trace, .b-trace-2, .b-trace-3, .b-pulse { animation: none; stroke-dashoffset: 0; }
-    }
+    
 
 /* ========================================= */
 
@@ -4364,9 +4351,7 @@ pre:hover {
       50% { opacity: 0.75; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .req-pkt, .req-pkt-2, .req-pkt-3, .resp-pkt, .resp-pkt-2, .pulse-layer { animation: none; stroke-dashoffset: 0; }
-    }
+    
 
 /* ========================================= */
 
@@ -4390,9 +4375,7 @@ pre:hover {
       50% { opacity: 0.75; }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .ch-trace, .ch-trace-2, .ch-trace-3, .ch-pulse { animation: none; stroke-dashoffset: 0; }
-    }
+    
 
 /* ========================================= */
 
@@ -4402,11 +4385,7 @@ pre:hover {
     @keyframes sig-write { from { stroke-dashoffset: 900; } to { stroke-dashoffset: 0; } }
     @keyframes sig-draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
     @keyframes sig-flow { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-    @media (prefers-reduced-motion: reduce) {
-      .sig-name { animation: none; stroke-dashoffset: 0; fill-opacity: 1; }
-      .sig-rule { animation: none; stroke-dashoffset: 0; }
-      .sig-in, .sig-flow { animation: none; }
-    }
+    
 
 /* === Accessibility: Skip Link & Focus Rings === */
 .skip-link {

@@ -241,8 +241,4 @@ g[data-step]:focus-visible {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  g[data-step] {
-    transition: none !important;
-  }
-}
+

@@ -158,7 +158,6 @@
     }
 
     function startPlay() {
-      if (prefersReducedMotion) return;
       if (timer) {
         stopPlay();
         return;
