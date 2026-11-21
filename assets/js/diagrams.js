@@ -1,79 +1,100 @@
 /**
  * MuleSoft Hub - Shared Diagram Engine
  * Handles Hotspots, Step Player, Full-Screen Overlay, and Deep Links.
+ * Uses lazy IntersectionObserver initialization so off-screen SVGs add zero startup overhead.
  */
 (function() {
   'use strict';
 
-  var activeStep = null;
-  var playingInterval = null;
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var enhancedCounter = 0;
 
-  function initDiagrams() {
-    var figures = document.querySelectorAll('.hub-diagram, .diagram-container');
-    figures.forEach(function(fig, figIndex) {
-      var svg = fig.querySelector('svg');
-      if (!svg) return;
+  function enhanceDiagram(fig, figIndex) {
+    if (!fig || fig.dataset.diagramEnhanced) return;
+    var svg = fig.querySelector('svg');
+    if (!svg) return;
 
-      var steps = Array.from(svg.querySelectorAll('g[data-step]'));
-      if (steps.length === 0) return;
+    var steps = Array.from(svg.querySelectorAll('g[data-step]'));
+    if (steps.length === 0) {
+      fig.dataset.diagramEnhanced = '1';
+      return;
+    }
+    fig.dataset.diagramEnhanced = '1';
 
-      // Ensure stable id on figure
-      if (!fig.id) {
-        var modSection = fig.closest('section');
-        var modId = modSection ? modSection.id : 'diagram-' + figIndex;
-        fig.id = modId + '-diagram';
-      }
+    if (!fig.id) {
+      var modSection = fig.closest('section');
+      var modId = modSection ? modSection.id : 'diagram-' + figIndex;
+      fig.id = modId + '-diagram';
+    }
 
-      // Hotspots setup
-      steps.sort(function(a, b) {
-        return parseInt(a.getAttribute('data-step') || '0', 10) - parseInt(b.getAttribute('data-step') || '0', 10);
-      });
-
-      steps.forEach(function(step) {
-        step.setAttribute('tabindex', '0');
-        step.setAttribute('role', 'button');
-        var title = step.getAttribute('data-title') || 'Step';
-        step.setAttribute('aria-label', title);
-      });
-
-      // Create Tooltip container
-      var tooltip = fig.querySelector('.diagram-tooltip');
-      if (!tooltip) {
-        tooltip = document.createElement('div');
-        tooltip.className = 'diagram-tooltip';
-        tooltip.innerHTML = '<div class="diagram-tooltip-title"></div><div class="diagram-tooltip-note"></div>';
-        fig.appendChild(tooltip);
-      }
-
-      // Create Step Controls if > 1 step
-      if (steps.length > 1 && !fig.querySelector('.diagram-controls')) {
-        var controls = document.createElement('div');
-        controls.className = 'diagram-controls';
-        controls.setAttribute('role', 'region');
-        controls.setAttribute('aria-label', 'Diagram step controls');
-
-        var dotsHtml = steps.map(function(s, idx) {
-          return '<span class="diagram-dot' + (idx === 0 ? ' active' : '') + '" data-step-idx="' + idx + '" title="Step ' + (idx + 1) + '"></span>';
-        }).join('');
-
-        controls.innerHTML = [
-          '<div class="diagram-btn-group">',
-          '  <button type="button" class="diagram-ctrl-btn btn-prev" aria-label="Previous step">◀ Prev</button>',
-          '  <button type="button" class="diagram-ctrl-btn btn-play" aria-label="Play step walkthrough">▶ Play</button>',
-          '  <button type="button" class="diagram-ctrl-btn btn-next" aria-label="Next step">Next ▶</button>',
-          '</div>',
-          '<div class="diagram-dots">' + dotsHtml + '</div>',
-          '<div class="diagram-step-counter">Step 1 of ' + steps.length + '</div>'
-        ].join('');
-
-        fig.appendChild(controls);
-        wireControls(fig, svg, steps, tooltip, controls);
-      }
+    steps.sort(function(a, b) {
+      return parseInt(a.getAttribute('data-step') || '0', 10) - parseInt(b.getAttribute('data-step') || '0', 10);
     });
 
-    handleDeepLink();
+    steps.forEach(function(step) {
+      step.setAttribute('tabindex', '0');
+      step.setAttribute('role', 'button');
+      var title = step.getAttribute('data-title') || 'Step';
+      step.setAttribute('aria-label', title);
+    });
+
+    var tooltip = fig.querySelector('.diagram-tooltip');
+    if (!tooltip) {
+      tooltip = document.createElement('div');
+      tooltip.className = 'diagram-tooltip';
+      tooltip.innerHTML = '<div class="diagram-tooltip-title"></div><div class="diagram-tooltip-note"></div>';
+      fig.appendChild(tooltip);
+    }
+
+    if (steps.length > 1 && !fig.querySelector('.diagram-controls')) {
+      var controls = document.createElement('div');
+      controls.className = 'diagram-controls';
+      controls.setAttribute('role', 'region');
+      controls.setAttribute('aria-label', 'Diagram step controls');
+
+      var dotsHtml = steps.map(function(s, idx) {
+        return '<span class="diagram-dot' + (idx === 0 ? ' active' : '') + '" data-step-idx="' + idx + '" title="Step ' + (idx + 1) + '"></span>';
+      }).join('');
+
+      controls.innerHTML = [
+        '<div class="diagram-btn-group">',
+        '  <button type="button" class="diagram-ctrl-btn btn-prev" aria-label="Previous step">◀ Prev</button>',
+        '  <button type="button" class="diagram-ctrl-btn btn-play" aria-label="Play step walkthrough">▶ Play</button>',
+        '  <button type="button" class="diagram-ctrl-btn btn-next" aria-label="Next step">Next ▶</button>',
+        '</div>',
+        '<div class="diagram-dots">' + dotsHtml + '</div>',
+        '<div class="diagram-step-counter">Step 1 of ' + steps.length + '</div>'
+      ].join('');
+
+      fig.appendChild(controls);
+      wireControls(fig, svg, steps, tooltip, controls);
+    }
   }
+
+  var diagramObserver = null;
+  if ('IntersectionObserver' in window) {
+    diagramObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        diagramObserver.unobserve(entry.target);
+        enhanceDiagram(entry.target, enhancedCounter++);
+      });
+    }, { rootMargin: '300px 0px' });
+  }
+
+  window.observeHubDiagrams = function(rootEl) {
+    var scope = (rootEl && typeof rootEl.querySelectorAll === 'function') ? rootEl : document;
+    var figures = scope.querySelectorAll('.hub-diagram, .diagram-container');
+    figures.forEach(function(fig) {
+      if (fig.dataset.diagramEnhanced || fig.dataset.diagramObserved) return;
+      fig.dataset.diagramObserved = '1';
+      if (diagramObserver) {
+        diagramObserver.observe(fig);
+      } else {
+        enhanceDiagram(fig, enhancedCounter++);
+      }
+    });
+  };
 
   function wireControls(fig, svg, steps, tooltip, controls) {
     var currentIndex = 0;
@@ -171,7 +192,6 @@
       });
     });
 
-    // Tap/Click on steps directly
     steps.forEach(function(step, idx) {
       step.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -188,7 +208,6 @@
     });
   }
 
-  // Delegated clear on outside click / escape
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.hub-diagram, .diagram-container')) {
       document.querySelectorAll('.hub-diagram.diagram-active').forEach(function(f) {
@@ -211,7 +230,6 @@
     }
   });
 
-  // Deep Link support: #mod-x-diagram-step-y
   function handleDeepLink() {
     var hash = window.location.hash;
     if (!hash) return;
@@ -219,25 +237,37 @@
     if (match) {
       var modId = match[1];
       var stepNum = match[2] ? parseInt(match[2], 10) : 1;
-      var fig = document.getElementById(modId + '-diagram') || document.querySelector('#' + modId + ' .hub-diagram');
-      if (fig) {
-        fig.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        var stepEl = fig.querySelector('g[data-step="' + stepNum + '"]');
-        if (stepEl) {
-          setTimeout(function() {
-            stepEl.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-          }, 400);
+      var locateAndTrigger = function() {
+        var fig = document.getElementById(modId + '-diagram') || document.querySelector('#' + modId + ' .hub-diagram');
+        if (fig) {
+          enhanceDiagram(fig, enhancedCounter++);
+          fig.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          var stepEl = fig.querySelector('g[data-step="' + stepNum + '"]');
+          if (stepEl) {
+            setTimeout(function() {
+              stepEl.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            }, 400);
+          }
         }
+      };
+      if (document.getElementById(modId)) {
+        locateAndTrigger();
+      } else if (typeof window.ensureModulesLoaded === 'function') {
+        window.ensureModulesLoaded({ sliced: false }).then(locateAndTrigger);
       }
     }
   }
 
   window.addEventListener('hashchange', handleDeepLink);
 
-  // Initialize once DOM is ready
+  function bootDiagrams() {
+    window.observeHubDiagrams(document);
+    handleDeepLink();
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDiagrams);
+    document.addEventListener('DOMContentLoaded', bootDiagrams);
   } else {
-    initDiagrams();
+    bootDiagrams();
   }
 })();

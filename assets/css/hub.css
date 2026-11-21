@@ -28,7 +28,7 @@
   --text-muted: #94a3b8;
   --text-dim: #64748b;
   
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Monaco, monospace;
   
   --radius-sm: 6px;
@@ -75,7 +75,6 @@ body {
   background-image: 
     radial-gradient(circle at 12% 12%, rgba(79, 172, 254, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 88% 88%, rgba(132, 94, 194, 0.08) 0%, transparent 40%);
-  background-attachment: fixed;
   overflow-x: hidden;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
@@ -94,9 +93,11 @@ body {
   left: 0;
   height: 3px;
   background: linear-gradient(90deg, #00F2FE, #4FACFE, #845EC2);
-  width: 0%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
   z-index: 9999;
-  transition: width 0.1s ease-out;
   box-shadow: 0 0 12px rgba(0, 242, 254, 0.7);
 }
 
@@ -105,9 +106,9 @@ body {
   position: sticky;
   top: 0;
   z-index: 1000;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: rgba(9, 13, 22, 0.84);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(9, 13, 22, 0.88);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -359,28 +360,6 @@ body {
   font-size: 0.78rem;
 }
 
-/* Sticky Category Filter Bar */
-.sticky-filter-bar {
-  position: sticky;
-  top: var(--hub-header-h, 65px);
-  z-index: 900;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background: rgba(9, 13, 22, 0.88);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 28px;
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
-[data-theme="light"] .sticky-filter-bar {
-  background: rgba(255, 255, 255, 0.95);
-  border-bottom: 1px solid #e2e8f0;
-}
-
 .cat-pill {
   white-space: nowrap;
   padding: 6px 14px;
@@ -556,9 +535,7 @@ body {
 
 /* Hero Portal */
 .hero-portal {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, rgba(15, 22, 38, 0.94), rgba(11, 16, 29, 0.94));
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 44px;
@@ -674,9 +651,7 @@ body {
 }
 
 .metric-card {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 22, 38, 0.85);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 18px 20px;
@@ -756,15 +731,22 @@ body {
 
 /* Article Container */
 .blog-article {
-  background: var(--bg-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(15, 22, 38, 0.92);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 36px;
   margin-bottom: 44px;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
   scroll-margin-top: 140px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+#mod-l,
+#mod-m,
+#mod-w,
+.blog-article.feature-fullscreen-active {
+  content-visibility: visible;
 }
 
 .blog-article:hover {
@@ -821,9 +803,7 @@ body {
 
 /* Smart Q&A Cards & Accordions */
 .faq-card {
-  background: rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(15, 22, 38, 0.92);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   margin-bottom: 22px;
@@ -960,19 +940,15 @@ body {
   color: #7e22ce;
 }
 
-/* Accordion Smooth Height Transition via CSS Grid */
+/* Accordion Answer Drawer (display:none when closed skips offscreen layout) */
 .answer-drawer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: none;
   background: rgba(9, 13, 22, 0.5);
   overflow: hidden;
-  visibility: hidden;
 }
 
 .answer-drawer.is-revealed {
-  grid-template-rows: 1fr;
-  visibility: visible;
+  display: block;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -1323,9 +1299,7 @@ body.practice-mode-on .faq-card {
 
 /* Responsive SVG Diagrams */
 .diagram-container {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(15, 22, 38, 0.92);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 24px;
@@ -1400,7 +1374,7 @@ body.practice-mode-on .faq-card {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.92);
   color: #00F2FE;
   border: 1px solid rgba(0, 242, 254, 0.4);
   border-radius: 6px;
@@ -1412,8 +1386,6 @@ body.practice-mode-on .faq-card {
   align-items: center;
   gap: 5px;
   z-index: 10;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   transition: all 0.2s ease;
 }
 
@@ -1590,16 +1562,14 @@ body.practice-mode-on .faq-card {
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  display: flex;
+  display: none;
   align-items: flex-start;
   justify-content: center;
   padding: 80px 20px 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
 }
 
 .modal-overlay.active {
+  display: flex;
   opacity: 1;
   pointer-events: auto;
 }
@@ -2145,8 +2115,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     border-right: 1px solid #e2e8f0;
     box-shadow: 12px 0 30px rgba(0, 0, 0, 0.12);
   }
+  .quick-sidebar:not(.drawer-open) {
+    visibility: hidden;
+    content-visibility: hidden;
+  }
   .quick-sidebar.drawer-open {
     transform: translateX(0);
+    visibility: visible;
+    content-visibility: visible;
   }
   .quick-sidebar-list {
     flex: 1;
@@ -2165,7 +2141,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     align-items: center;
   }
   .sidebar-backdrop {
-    display: block;
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -2175,11 +2151,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     z-index: 10000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
   }
   .sidebar-backdrop.active {
+    display: block;
     opacity: 1;
     pointer-events: auto;
   }
@@ -2499,11 +2473,10 @@ pre {
 
 /* Candidate Profile Card */
 .coaching-profile-card {
-  background: rgba(15, 21, 35, 0.85);
+  background: rgba(15, 21, 35, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
   padding: 28px;
-  backdrop-filter: blur(16px);
   box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.4);
 }
 [data-theme="light"] .coaching-profile-card {
@@ -2720,7 +2693,6 @@ pre {
 .battleboard-col {
   border-radius: 18px;
   padding: 24px;
-  backdrop-filter: blur(14px);
   position: relative;
   overflow: hidden;
 }
@@ -3201,274 +3173,13 @@ pre {
 }
 
 /* ==========================================================================
-   ENTERPRISE UTILITY BENCHMARKS
-   ========================================================================== */
-.ent-benchmarks-section {
-  background: rgba(15, 21, 35, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  padding: 26px 28px;
-  backdrop-filter: blur(14px);
-}
-[data-theme="light"] .ent-benchmarks-section {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-}
-
-.ent-bench-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 22px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-[data-theme="light"] .ent-bench-header {
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.ent-tag {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #00F2FE;
-  letter-spacing: 0.06em;
-  display: block;
-  margin-bottom: 4px;
-}
-[data-theme="light"] .ent-tag {
-  color: #0284c7;
-}
-
-.ent-bench-heading {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0;
-}
-[data-theme="light"] .ent-bench-heading {
-  color: #0f172a;
-}
-
-.ent-bench-sub {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  font-style: italic;
-}
-[data-theme="light"] .ent-bench-sub {
-  color: #64748b;
-}
-
-.ent-bench-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 14px;
-}
-@media (max-width: 1200px) {
-  .ent-bench-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@media (max-width: 640px) {
-  .ent-bench-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.ent-bench-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.2s ease;
-}
-.ent-bench-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0, 242, 254, 0.3);
-  background: rgba(255, 255, 255, 0.04);
-}
-[data-theme="light"] .ent-bench-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-}
-[data-theme="light"] .ent-bench-card:hover {
-  background: #ffffff;
-  border-color: #0284c7;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
-}
-
-.ent-bench-val {
-  font-family: var(--font-mono);
-  font-size: 1.7rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 6px;
-}
-
-.ent-bench-lbl {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 4px;
-}
-[data-theme="light"] .ent-bench-lbl {
-  color: #0f172a;
-}
-
-.ent-bench-subdetail {
-  font-size: 0.72rem;
-  color: #94a3b8;
-  line-height: 1.4;
-}
-[data-theme="light"] .ent-bench-subdetail {
-  color: #64748b;
-}
-
-/* ==========================================================================
-   TOPIC DIRECTORY QUICK-JUMP GRID
-   ========================================================================== */
-.topic-directory-section {
-  background: rgba(15, 21, 35, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  padding: 26px 28px;
-  backdrop-filter: blur(14px);
-}
-[data-theme="light"] .topic-directory-section {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-}
-
-.topic-dir-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-[data-theme="light"] .topic-dir-header {
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.topic-dir-tag {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #3E63DD;
-  letter-spacing: 0.06em;
-  display: block;
-  margin-bottom: 4px;
-}
-[data-theme="light"] .topic-dir-tag {
-  color: #2563eb;
-}
-
-.topic-dir-heading {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0;
-}
-[data-theme="light"] .topic-dir-heading {
-  color: #0f172a;
-}
-
-.topic-dir-count {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: #94a3b8;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px 10px;
-  border-radius: 9999px;
-}
-[data-theme="light"] .topic-dir-count {
-  color: #475569;
-  background: #f1f5f9;
-}
-
-.topic-directory-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 10px;
-}
-
-.topic-nav-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-.topic-nav-pill:hover {
-  background: rgba(0, 242, 254, 0.08);
-  border-color: rgba(0, 242, 254, 0.35);
-  transform: translateY(-2px);
-}
-[data-theme="light"] .topic-nav-pill {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-}
-[data-theme="light"] .topic-nav-pill:hover {
-  background: #f0f9ff;
-  border-color: #0284c7;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
-}
-
-.topic-nav-code {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #00F2FE;
-  background: rgba(0, 242, 254, 0.1);
-  padding: 3px 6px;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-[data-theme="light"] .topic-nav-code {
-  color: #0284c7;
-  background: #e0f2fe;
-}
-
-.topic-nav-icon {
-  font-size: 1.05rem;
-  flex-shrink: 0;
-}
-
-.topic-nav-title {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #cbd5e1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-[data-theme="light"] .topic-nav-title {
-  color: #334155;
-}
-
-  
-/* ==========================================================================
    GLOBAL PREMIUM UI/UX & RESPONSIVE DESIGN SYSTEM
    Targets: Mobile (360px), Tablet (768px), Laptop (1366px), Desktop (1920px)
    ========================================================================== */
 
 /* 1. Global Typography & Core Card System */
 :root {
-  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', Helvetica, Arial, sans-serif;
   --bg-card-dark: #0F1B2D;
   --border-card-dark: #2A3B5C;
   --radius-card: 16px;
@@ -4012,21 +3723,23 @@ html, body, .main-content, .container, .app-layout {
   background: rgba(22, 34, 58, 0.5) !important;
 }
 
-/* 4. Smooth Slide-Down for Answer Drawer (Zero Ghost Padding when Closed) */
+@keyframes answerDrawerFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 4. Crisp Toggle for Answer Drawer (display:none skips layout of closed drawers) */
 .answer-drawer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
-  opacity: 0;
+  display: none !important;
   overflow: hidden !important;
-  visibility: hidden;
   background: transparent !important;
 }
 
 .answer-drawer.is-revealed {
-  grid-template-rows: 1fr;
+  display: block !important;
   opacity: 1;
   visibility: visible;
+  animation: answerDrawerFadeIn 0.18s ease-out;
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
@@ -4089,16 +3802,7 @@ html, body, .main-content, .container, .app-layout {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* 6. Subtle Pulse Glow on Left Border of Callout Boxes */
-@keyframes borderPulse {
-  0%, 100% {
-    box-shadow: inset 4px 0 0 currentColor, 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  50% {
-    box-shadow: inset 4px 0 0 currentColor, -2px 0 14px currentColor, 0 4px 16px rgba(0, 0, 0, 0.35);
-  }
-}
-
+/* 6. Static Accent Borders on Callout Boxes (no infinite box-shadow repaint) */
 .callout {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -4108,19 +3812,14 @@ html, body, .main-content, .container, .app-layout {
 }
 
 .callout-info, .project-example-card {
-  animation: borderPulse 4.5s infinite ease-in-out;
   color: #3B82F6;
 }
 
 .callout-warning {
-  animation: borderPulse 4.5s infinite ease-in-out;
-  animation-delay: 1.5s;
   color: #F59E0B;
 }
 
 .callout-verbal, .interview-pitch-card {
-  animation: borderPulse 4.5s infinite ease-in-out;
-  animation-delay: 3s;
   color: #22C55E;
 }
 
@@ -4223,17 +3922,6 @@ pre:hover {
    TASK: COMPREHENSIVE LIGHT & DARK THEME HARMONIZATION SYSTEM
    Guarantees 100% crisp contrast, zero illegible grey text, and seamless transitions.
    ========================================================================== */
-
-/* Hide horizontal scrollbar track completely on sticky filter bar */
-.sticky-filter-bar {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-.sticky-filter-bar::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-}
 
 /* Profile Contact Buttons Base & Dark */
 .profile-contact-btn {
@@ -4810,12 +4498,6 @@ pre:hover {
   }
 }
 
-/* Category Filter Bar Horizontal Scroll Mask */
-.sticky-filter-bar {
-  mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
-}
-
 .cat-pill {
   min-height: 38px;
   padding: 6px 14px;
@@ -4828,18 +4510,17 @@ pre:hover {
 }
 
 .sidebar-backdrop {
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 10000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
 }
 
 .sidebar-backdrop.active {
+  display: block;
   opacity: 1;
   pointer-events: auto;
 }
@@ -7830,4 +7511,14 @@ body.feature-fs-body-lock {
     padding: 6px 10px !important;
     font-size: 0.78rem !important;
   }
+}
+
+/* Below-the-fold layout/paint skipping on heavy initial cards & footer */
+.diagram-container,
+.battleboard-section,
+.teleprompter-studio,
+.coaching-profile-card,
+footer.hub-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 340px;
 }
