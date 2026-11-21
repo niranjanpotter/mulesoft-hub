@@ -166,15 +166,15 @@
   </div>
 
   <div class="header-actions">
-    <button aria-label="Search topics and DataWeave scripts" class="btn btn-search-mobile" onclick="openSearchModal()" title="Search Topics">
+    <button aria-label="Search topics and DataWeave scripts" class="btn btn-search-mobile" onclick="openSearchModal()" title="Search Topics (Ctrl+K)">
       <svg fill="none" height="18" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="18"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
     </button>
-    <button class="btn" id="practice-btn" onclick="togglePracticeMode()" title="Self-Test Mode: Collapse all answers to test your active recall">🎯 Practice Mode</button>
-    <button class="btn btn-primary btn-dw-header" onclick="openDataWeaveModal()" title="Open Interactive DataWeave 2.0 Playground" aria-label="Open Interactive DataWeave 2.0 Playground">
+    <button class="btn has-tooltip" id="practice-btn" onclick="togglePracticeMode()" data-tooltip="Quiz yourself: hides all Q&amp;A answers so you can test active recall" title="Practice Mode: Hide all answers to test yourself">🎯 Practice Mode</button>
+    <button class="btn btn-primary btn-dw-header has-tooltip" onclick="openDataWeaveModal()" data-tooltip="Run &amp; test 26 live DataWeave 2.0 scripts right in your browser" title="Open Interactive DataWeave 2.0 Playground" aria-label="Open Interactive DataWeave 2.0 Playground">
       <span class="btn-dw-icon">🧪</span>
       <span class="btn-dw-label">DW Playground</span>
     </button>
-    <button aria-label="Toggle Dark and Light theme" class="btn" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+    <button aria-label="Toggle Dark and Light theme" class="btn has-tooltip" id="theme-btn" onclick="toggleTheme()" data-tooltip="Switch between Dark Mode and Light Mode" title="Toggle Dark/Light Mode">
       <span id="theme-icon">☀️</span>
     </button>
   </div>
@@ -182,15 +182,18 @@
 <!-- Off-Canvas Sidebar Backdrop -->
 <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebarDrawer(false)"></div>
 <!-- Sticky Category Navigation Bar -->
-<div class="sticky-filter-bar"><button class="cat-pill active" onclick="filterBlogCategory('all', this)">All Topics (40)</button><button class="cat-pill" onclick="filterBlogCategory('Getting Started &amp; Strategy', this)">🚀 Getting Started &amp; Strategy (3)</button><button class="cat-pill" onclick="filterBlogCategory('Salesforce &amp; Enterprise Connectors', this)">🔌 Salesforce &amp; Enterprise Connectors (4)</button><button class="cat-pill" onclick="filterBlogCategory('AWS &amp; Messaging', this)">🌩️ AWS &amp; Messaging (3)</button><button class="cat-pill" onclick="filterBlogCategory('Flow Scopes &amp; Concurrency', this)">🔀 Flow Scopes &amp; Concurrency (5)</button><button class="cat-pill" onclick="filterBlogCategory('Error Handling &amp; Resiliency', this)">⚠️ Error Handling &amp; Resiliency (1)</button><button class="cat-pill" onclick="filterBlogCategory('ObjectStore &amp; API Governance', this)">💾 ObjectStore &amp; API Governance (3)</button><button class="cat-pill" onclick="filterBlogCategory('Testing &amp; CI/CD', this)">🧪 Testing &amp; CI/CD (1)</button><button class="cat-pill" onclick="filterBlogCategory('DataWeave 2.0 Masterclass', this)">💻 DataWeave 2.0 Masterclass (2)</button><button class="cat-pill" onclick="filterBlogCategory('Deployment &amp; CloudHub 2.0', this)">🌐 Deployment &amp; CloudHub 2.0 (1)</button><button class="cat-pill" onclick="filterBlogCategory('Production Scenarios &amp; Incidents', this)">🎯 Production Scenarios &amp; Incidents (1)</button><button class="cat-pill" onclick="filterBlogCategory('Live Whiteboard &amp; Architecture', this)">📐 Live Whiteboard &amp; Architecture (1)</button><button class="cat-pill" onclick="filterBlogCategory('Modern Architecture &amp; AI', this)">🤖 Modern Architecture &amp; AI (2)</button><button class="cat-pill" onclick="filterBlogCategory('Interview Traps &amp; Pitfalls', this)">⚡ Interview Traps &amp; Pitfalls (1)</button><button class="cat-pill" onclick="filterBlogCategory('Enterprise Architect Masterclass', this)">🎓 Enterprise Architect Masterclass (5)</button><button class="cat-pill" onclick="filterBlogCategory('Rapid Review &amp; Cheat Sheets', this)">🏆 Rapid Review &amp; Cheat Sheets (2)</button></div>
+<div class="sticky-filter-bar" role="navigation" aria-label="Main Sections"><span class="filter-bar-label">SECTIONS:</span><button class="cat-pill active" data-cat="all" onclick="filterBlogCategory('all', this)">All Sections (40)</button><button class="cat-pill" onclick="filterBlogCategory('Getting Started &amp; Strategy', this)">🚀 Getting Started &amp; Strategy (3)</button><button class="cat-pill" onclick="filterBlogCategory('Salesforce &amp; Enterprise Connectors', this)">🔌 Salesforce &amp; Enterprise Connectors (4)</button><button class="cat-pill" onclick="filterBlogCategory('AWS &amp; Messaging', this)">🌩️ AWS &amp; Messaging (3)</button><button class="cat-pill" onclick="filterBlogCategory('Flow Scopes &amp; Concurrency', this)">🔀 Flow Scopes &amp; Concurrency (5)</button><button class="cat-pill" onclick="filterBlogCategory('Error Handling &amp; Resiliency', this)">⚠️ Error Handling &amp; Resiliency (1)</button><button class="cat-pill" onclick="filterBlogCategory('ObjectStore &amp; API Governance', this)">💾 ObjectStore &amp; API Governance (3)</button><button class="cat-pill" onclick="filterBlogCategory('Testing &amp; CI/CD', this)">🧪 Testing &amp; CI/CD (1)</button><button class="cat-pill" onclick="filterBlogCategory('DataWeave 2.0 Masterclass', this)">💻 DataWeave 2.0 Masterclass (2)</button><button class="cat-pill" onclick="filterBlogCategory('Deployment &amp; CloudHub 2.0', this)">🌐 Deployment &amp; CloudHub 2.0 (1)</button><button class="cat-pill" onclick="filterBlogCategory('Production Scenarios &amp; Incidents', this)">🎯 Production Scenarios &amp; Incidents (1)</button><button class="cat-pill" onclick="filterBlogCategory('Live Whiteboard &amp; Architecture', this)">📐 Live Whiteboard &amp; Architecture (1)</button><button class="cat-pill" onclick="filterBlogCategory('Modern Architecture &amp; AI', this)">🤖 Modern Architecture &amp; AI (2)</button><button class="cat-pill" onclick="filterBlogCategory('Interview Traps &amp; Pitfalls', this)">⚡ Interview Traps &amp; Pitfalls (1)</button><button class="cat-pill" onclick="filterBlogCategory('Enterprise Architect Masterclass', this)">🎓 Enterprise Architect Masterclass (5)</button><button class="cat-pill" onclick="filterBlogCategory('Rapid Review &amp; Cheat Sheets', this)">🏆 Rapid Review &amp; Cheat Sheets (2)</button></div>
 <div class="hub-layout">
 <!-- Quick Navigation Sidebar -->
 <aside class="quick-sidebar" id="toc-sidebar">
 <div class="sidebar-header-box">
 <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
 <div>
-<div class="quick-sidebar-title">Topic Navigation</div>
-<span style="font-size:0.72rem; color:var(--text-dim);">40 Technical Modules</span>
+<div class="quick-sidebar-title" id="sidebar-section-title">Modules in Section</div>
+<div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
+<span id="sidebar-module-count" style="font-size:0.72rem; color:var(--text-dim);">Showing all 40 modules</span>
+<button type="button" id="sidebar-reset-filter" class="sidebar-reset-btn" style="display:none;" onclick="filterBlogCategory('all', document.querySelector('.cat-pill[data-cat=all]'))">Show All</button>
+</div>
 </div>
 <button aria-label="Close Topic Navigation" class="sidebar-close-btn" onclick="toggleSidebarDrawer(false)">✕</button>
 </div>
@@ -438,23 +441,112 @@
 </a>
 </li>
 </ul>
+<div class="sidebar-tools-footer">
+  <div class="sidebar-tools-title">INTERACTIVE TOOLS</div>
+  <button type="button" class="sidebar-tool-btn" onclick="jumpToSectionTool('vcore-calculator'); toggleSidebarDrawer(false);">
+    <span>🧮 vCore Sizing Calculator</span>
+  </button>
+  <button type="button" class="sidebar-tool-btn" onclick="openDataWeaveModal(); toggleSidebarDrawer(false);">
+    <span>🧪 DataWeave 2.0 Playground</span>
+  </button>
+  <button type="button" class="sidebar-tool-btn" onclick="togglePracticeMode(); toggleSidebarDrawer(false);">
+    <span>🎯 Toggle Practice Mode</span>
+  </button>
+</div>
 </aside>
 <!-- Main Content Area -->
 <main class="main-stream">
 <!-- Hero Section -->
-<section class="hero-portal">
-<div class="hero-eyebrow">
-<span class="pulse-dot"></span>
-<span>Complete 2026 Production &amp; Architecture Reference</span>
-</div>
-<h1 class="hero-headline">
-          Master Enterprise MuleSoft &amp; <br/>
-<span class="hero-headline-gradient">Full-Scale Integration Architecture</span>
-</h1>
-<p class="hero-description">
-          The definitive technical knowledge base for Senior MuleSoft Developers, Technical Leads, and Integration Architects. Derived from the comprehensive 159-page enterprise runbook—covering Mule 4 Reactive threading, CloudHub 2.0 multi-AZ sizing, zero-downtime deployments, distributed Sagas, and production resilience.
-        </p>
-<!-- Executive Hero Banner -->
+<section class="hero-portal hero-clean" id="hero-landing">
+  <div class="hero-eyebrow">
+    <span class="pulse-dot"></span>
+    <span>MuleSoft Hub · 2026 Edition</span>
+  </div>
+  <h1 class="hero-headline">
+    Learn, Practice &amp; Test <br/>
+    <span class="hero-headline-gradient">Enterprise MuleSoft Architecture</span>
+  </h1>
+  <p class="hero-description">
+    Built for <strong>MuleSoft Developers, Technical Leads &amp; Integration Architects</strong> preparing for senior interviews and production projects. 282+ real-world Q&amp;As, interactive DataWeave 2.0 labs, and CloudHub vCore sizing—all on one fast workspace.
+  </p>
+
+  <!-- Primary CTA Row -->
+  <div class="hero-cta-row">
+    <a class="btn btn-primary hero-cta-btn" href="#mod-a" onclick="jumpToSectionTool('mod-a'); return false;">
+      <span>🚀 Start Learning</span>
+    </a>
+    <button type="button" class="btn hero-cta-btn has-tooltip" id="hero-practice-btn" onclick="togglePracticeMode(true)" data-tooltip="Hides all answers so you can quiz yourself before revealing">
+      <span>🎯 Try Practice Mode</span>
+    </button>
+    <button type="button" class="btn hero-cta-btn has-tooltip" onclick="openDataWeaveModal()" data-tooltip="Open the interactive 26-scenario DataWeave 2.0 Playground">
+      <span>🧪 Open DW Playground</span>
+    </button>
+  </div>
+
+  <!-- 3-Step Onboarding Strip -->
+  <div class="hero-steps-grid" aria-label="How to use MuleSoft Hub">
+    <div class="hero-step-card" onclick="jumpToSectionTool('mod-a')">
+      <div class="hero-step-num">1</div>
+      <div class="hero-step-body">
+        <div class="hero-step-title">📖 Learn by Section</div>
+        <div class="hero-step-desc">Pick a main section in the top bar, then jump to any module in the left sidebar.</div>
+      </div>
+    </div>
+    <div class="hero-step-card" onclick="togglePracticeMode(true)">
+      <div class="hero-step-num">2</div>
+      <div class="hero-step-body">
+        <div class="hero-step-title">🎯 Practice Active Recall</div>
+        <div class="hero-step-desc">Turn on Practice Mode to hide answers, quiz yourself aloud, then click to reveal.</div>
+      </div>
+    </div>
+    <div class="hero-step-card" onclick="openDataWeaveModal()">
+      <div class="hero-step-num">3</div>
+      <div class="hero-step-body">
+        <div class="hero-step-title">🧪 Test in Live Labs</div>
+        <div class="hero-step-desc">Run 26 DataWeave 2.0 scripts in the Playground and size workers in the vCore Calculator.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compact Stat Strip -->
+  <div class="metric-deck metric-deck-compact">
+    <div class="metric-card">
+      <span class="metric-val" style="color:#00f0ff;">40</span>
+      <span class="metric-label">Technical Modules</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-val" style="color:#3e63dd;">282+</span>
+      <span class="metric-label">Interview Q&amp;As</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-val" style="color:#10b981;">26</span>
+      <span class="metric-label">Live DataWeave Labs</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-val" style="color:#d65db1;">159</span>
+      <span class="metric-label">Pages Transcribed</span>
+    </div>
+  </div>
+
+  <!-- Global Study & Tool Controls with Clear Inline Explanations -->
+  <div class="global-toolbar">
+    <div class="global-toolbar-left">
+      <span class="toolbar-group-label">Study Controls:</span>
+      <button type="button" class="btn btn-sm has-tooltip" onclick="expandAllAnswers()" data-tooltip="Show all 282+ Q&amp;A answers at once for fast reading">📖 Expand All</button>
+      <button type="button" class="btn btn-sm has-tooltip" onclick="collapseAllAnswers()" data-tooltip="Hide all answers so you can quiz yourself question-by-question">🔒 Hide Answers (Self-Test)</button>
+    </div>
+    <div class="global-toolbar-right">
+      <span class="toolbar-group-label">Interactive Tools:</span>
+      <button type="button" class="btn btn-sm btn-primary has-tooltip" id="btn-jump-vcore" onclick="jumpToSectionTool('vcore-calculator')" data-tooltip="Jump to the CloudHub 1.0/2.0 vCore &amp; Replica Sizing Calculator">🧮 vCore Calculator</button>
+      <button type="button" class="btn btn-sm has-tooltip" id="btn-jump-inlinelab" onclick="jumpToSectionTool('inline-dw-playground')" data-tooltip="Jump to the embedded DataWeave 2.0 Lab inside the guide">🧪 Inline DW Lab</button>
+    </div>
+  </div>
+
+  <!-- Collapsible Executive Architecture Visual (kept out of first-view clutter) -->
+  <details class="author-showcase-toggle">
+    <summary>✨ View Author &amp; Architecture Visual Banner (Niranjan Kumar Potter)</summary>
+    <div class="author-showcase-inner">
+      <!-- Executive Hero Banner -->
 <div class="hero-svg-showcase" style="margin: 26px 0 32px 0; border-radius: 24px; overflow: hidden; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55); border: 1px solid rgba(83, 202, 221, 0.25);">
 <div class="diagram-svg-wrapper">
 <svg aria-labelledby="hero-title hero-desc" class="responsive-svg" height="500" role="img" viewbox="0 0 1200 500" width="1200" xmlns="http://www.w3.org/2000/svg">
@@ -551,38 +643,20 @@
 </svg>
 </div>
 </div>
-<!-- Metric Deck -->
-<div class="metric-deck">
-<div class="metric-card">
-<span class="metric-val" style="color:#00f0ff;">40</span>
-<span class="metric-label">Technical Modules</span>
-</div>
-<div class="metric-card">
-<span class="metric-val" style="color:#3e63dd;">282</span>
-<span class="metric-label">Interview Topics</span>
-</div>
-<div class="metric-card">
-<span class="metric-val" style="color:#10b981;">100%</span>
-<span class="metric-label">Content Fidelity</span>
-</div>
-<div class="metric-card">
-<span class="metric-val" style="color:#d65db1;">159</span>
-<span class="metric-label">Pages Transcribed</span>
-</div>
-</div>
-<!-- Global Convenience Toolbar -->
-<div class="global-toolbar">
-<div class="global-toolbar-left">
-<span style="font-size:0.85rem; font-weight:700; color:var(--text-main);">Study Controls:</span>
-<button class="btn btn-sm" onclick="expandAllAnswers()">📖 Expand All Answers</button>
-<button class="btn btn-sm" onclick="collapseAllAnswers()">🔒 Hide All (Self-Test)</button>
-</div>
-<div class="global-toolbar-right">
-<a class="btn btn-sm btn-primary" href="#vcore-calculator">🧮 vCore Calculator</a>
-<a class="btn btn-sm" href="#inline-dw-playground">🧪 Inline DW Lab</a>
-</div>
-</div>
+    </div>
+  </details>
 </section>
+
+<!-- Practice Mode Active Indicator Banner -->
+<div id="practice-mode-banner" class="practice-mode-banner" role="status" aria-live="polite" style="display:none;">
+  <div class="practice-banner-content">
+    <span class="practice-banner-icon">🎯</span>
+    <div>
+      <strong>Practice Mode is ON</strong> — All Q&amp;A answers are hidden so you can test your recall. Click any question card to reveal its answer.
+    </div>
+  </div>
+  <button type="button" class="btn btn-sm btn-outline" onclick="togglePracticeMode()">✕ Exit Practice Mode</button>
+</div>
 <!-- All 36 Technical Modules -->
 <section class="blog-article" data-category="Getting Started &amp; Strategy" data-role="Developer / Senior" id="mod-a" aria-labelledby="mod-a-title">
 <div class="article-header">
@@ -4739,9 +4813,9 @@ status: vars.httpStatus,</code></pre>
 </div>
 <!-- Controls Right -->
 <div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-<button class="btn btn-sm btn-primary" id="dw-run-btn" onclick="runDwTransformation()" title="Run transformation in browser">▶ Run / Transform</button>
-<button class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
-<button class="btn btn-sm btn-outline" onclick="openDataWeaveModal()" title="Expand to Fullscreen Modal">⛶ Fullscreen</button>
+<button type="button" class="btn btn-sm btn-primary" id="dw-run-btn" onclick="runDwTransformation('inline')" title="Run transformation in browser">▶ Run / Transform</button>
+<button type="button" class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
+<button type="button" class="btn btn-sm btn-outline" onclick="openDataWeaveModal(true)" title="Open Playground in Fullscreen">⛶ Fullscreen</button>
 </div>
 </div>
 <!-- Search & Category Filters -->
@@ -18731,122 +18805,116 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 <a href="#mod-g">Scatter-Gather Router</a>
 <a href="#mod-r">DataWeave 2.0 Lab</a>
 <a href="#mod-w">CloudHub 2.0 Sizing</a>
-<a href="#vcore-calculator">vCore Calculator</a>
+<a href="#vcore-calculator" onclick="jumpToSectionTool('vcore-calculator'); return false;">vCore Calculator</a>
 <a href="javascript:void(0)" onclick="openDataWeaveModal()">DW Playground</a>
 </div>
 <p>© 2026 MuleSoft Developer &amp; Enterprise Architect Hub · Authored with 100% full content fidelity from the 159-page Complete Interview Guide 2026.</p>
 <p style="font-size:0.8rem; color:var(--text-dim); margin-top:8px;">Designed and optimized for Senior Developers, Technical Leads, and Enterprise Architects.</p>
 </footer>
 <!-- Modals -->
-<div class="modal-overlay" id="dw-modal" onclick="closeDataWeaveModal(event)">
-<div class="dw-modal-container" onclick="event.stopPropagation()"><button class="btn btn-sm btn-outline" onclick="closeDataWeaveModal()" style="position:absolute; top:12px; right:16px; z-index:100;">✕ Close</button><div class="dw-inline-card" id="modal-dw-playground">
-<!-- Header Bar -->
-<div class="dw-toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
-<div class="dw-toolbar-left" style="display:flex; align-items:center; gap:12px;">
-<span style="font-size:1.8rem; background:rgba(99,91,255,0.15); padding:6px 10px; border-radius:8px;">🧪</span>
-<div>
-<div style="font-weight:800; font-size:1.25rem; color:#fff; display:flex; align-items:center; gap:10px;">
-<span>DataWeave 2.0 Studio Lab</span>
-<span class="badge" style="background:rgba(99,91,255,0.25); color:#a78bfa; border:1px solid rgba(99,91,255,0.4); font-size:0.7rem; padding:2px 8px; border-radius:4px;">Engine v2.4</span>
-</div>
-<div style="font-size:0.8rem; color:var(--text-dim);">Live In-Browser Transformation Engine · 26 Real Enterprise Scenarios</div>
-</div>
-</div>
-<!-- Controls Right -->
-<div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-<button class="btn btn-sm btn-primary" id="dw-run-btn" onclick="runDwTransformation()" title="Run transformation in browser">▶ Run / Transform</button>
-<button class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
-<button class="btn btn-sm btn-outline" onclick="openDataWeaveModal()" title="Expand to Fullscreen Modal">⛶ Fullscreen</button>
-</div>
-</div>
-<!-- Search & Category Filters -->
-<div class="dw-filter-bar" style="display:flex; flex-direction:column; gap:12px; margin: 16px 0 20px 0;">
-<div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-<!-- Search Input -->
-<div style="flex:1; min-width:260px; position:relative;">
-<input id="dw-search-input" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.9); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;" type="text"/>
-</div>
-<!-- Preset Dropdown -->
-<div style="flex:1.5; min-width:300px;">
-<select class="dw-select" id="dw-preset-select" onchange="loadDwPreset(this.value)" style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.95); border:1px solid rgba(99,91,255,0.5); border-radius:6px; color:#00f0ff; font-weight:700; font-size:0.88rem;">
-<!-- 26 Options dynamically injected by app.js -->
-</select>
-</div>
-</div>
-<!-- Category Pills -->
-<div class="dw-category-pills" style="display:flex; gap:6px; flex-wrap:wrap;">
-<button class="dw-cat-pill active" onclick="filterDwByCategory('all', this)">All (26)</button>
-<button class="dw-cat-pill" onclick="filterDwByCategory('json', this)">JSON (5)</button>
-<button class="dw-cat-pill" onclick="filterDwByCategory('xml', this)">XML (2)</button>
-<button class="dw-cat-pill" onclick="filterDwByCategory('csv', this)">CSV (2)</button>
-<button class="dw-cat-pill" onclick="filterDwByCategory('array', this)">Array Functions (7)</button>
-<button class="dw-cat-pill" onclick="filterDwByCategory('string', this)">String (2)</button>
-<button class="dw-cat-pill" onclick="filterDwByCategory('date', this)">Date (1)</button>
-<button class="dw-cat-pill" onclick="filterDwByCategory('advanced', this)">Enterprise Scenarios (7)</button>
-</div>
-</div>
-<!-- Mobile Tab Bar for DataWeave Studio (< 768px) -->
-<div class="dw-mobile-tab-bar" id="dwMobileTabs">
-  <button type="button" class="dw-tab-btn active" data-tab="input" onclick="switchDwMobileTab('input', this)">📥 Input</button>
-  <button type="button" class="dw-tab-btn" data-tab="script" onclick="switchDwMobileTab('script', this)">⚡ Script</button>
-  <button type="button" class="dw-tab-btn" data-tab="output" onclick="switchDwMobileTab('output', this)">📤 Output</button>
-  <button type="button" class="dw-tab-btn" data-tab="notes" onclick="switchDwMobileTab('notes', this)">💡 Notes</button>
-</div>
-<!-- 4-PANEL WORKSPACE (2x2 on Desktop, Tabbed on Mobile) -->
-<div class="dw-4panel-grid">
-<!-- PANEL 1: INPUT PAYLOAD -->
-<div class="dw-editor-panel dw-tab-active" id="dw-panel-input">
-<div class="dw-panel-header">
-<div style="display:flex; align-items:center; gap:8px;">
-<span>📥 INPUT PAYLOAD</span>
-<span class="dw-panel-format" id="dw-input-format-badge">JSON</span>
-</div>
-<button class="btn-copy-pane" onclick="copyDwPanel('input')" title="Copy Input Payload">📋 Copy Input</button>
-</div>
-<textarea class="dw-code-editor" id="dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
-</div>
-<!-- PANEL 2: DATAWEAVE SCRIPT -->
-<div class="dw-editor-panel" id="dw-panel-script">
-<div class="dw-panel-header">
-<div style="display:flex; align-items:center; gap:8px;">
-<span>⚡ DATAWEAVE SCRIPT (%dw 2.0)</span>
-<span style="font-size:0.7rem; color:rgba(0,240,255,0.7);">output application/...</span>
-</div>
-<div style="display:flex; gap:6px; align-items:center;">
-<span class="anypoint-note" style="font-size:0.7rem; color:#a78bfa; margin-right:4px;">💡 Try in Anypoint</span>
-<button class="btn-copy-pane" onclick="copyDwPanel('script')" title="Copy DW Script">📋 Copy Script</button>
-</div>
-</div>
-<textarea class="dw-code-editor" id="dw-script-editor" placeholder="%dw 2.0
-output application/json
----
-..." spellcheck="false"></textarea>
-</div>
-<!-- PANEL 3: OUTPUT PAYLOAD -->
-<div class="dw-editor-panel" id="dw-panel-output">
-<div class="dw-panel-header">
-<div style="display:flex; align-items:center; gap:8px;">
-<span>📤 TRANSFORMED OUTPUT</span>
-<span class="dw-status-indicator" id="dw-live-status" style="font-size:0.72rem; color:#34d399; font-weight:700;">✅ Evaluated</span>
-</div>
-<button class="btn-copy-pane" onclick="copyDwPanel('output')" title="Copy Output Payload">📋 Copy Output</button>
-</div>
-<textarea class="dw-code-editor" id="dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
-</div>
-<!-- PANEL 4: EXPLANATION PANEL (English / Hinglish) -->
-<div class="dw-editor-panel dw-explanation-panel" id="dw-panel-notes">
-<div class="dw-panel-header" style="background:rgba(99,91,255,0.15); border-bottom:1px solid rgba(99,91,255,0.3);">
-<div style="display:flex; align-items:center; gap:8px;">
-<span>💡 EXPLANATION &amp; ARCHITECT INTERVIEW NOTES</span>
-</div>
-<span style="font-size:0.7rem; color:#a78bfa;">Kya hua? &amp; Real Project Use Case</span>
-</div>
-<div class="dw-explanation-content" id="dw-explanation-box">
-<!-- Injected dynamically by loadDwPreset() -->
-</div>
-</div>
-</div>
-</div></div>
+<div class="modal-overlay" id="dw-modal" onclick="closeDataWeaveModal(event)" role="dialog" aria-modal="true" aria-label="DataWeave 2.0 Interactive Playground">
+  <div class="dw-modal-container" id="dw-modal-container" onclick="event.stopPropagation()">
+    <!-- Sticky Modal Top Bar -->
+    <div class="dw-modal-header-bar">
+      <div class="dw-toolbar-left" style="display:flex; align-items:center; gap:12px;">
+        <span class="dw-logo-badge">🧪</span>
+        <div>
+          <div class="dw-modal-title-row">
+            <span>DataWeave 2.0 Studio Lab</span>
+            <span class="badge dw-engine-badge">Engine v2.4</span>
+          </div>
+          <div class="dw-modal-subtitle">Live In-Browser Transformation Engine · 26 Real Enterprise Scenarios</div>
+        </div>
+      </div>
+      <div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn btn-sm btn-primary" id="modal-dw-run-btn" onclick="runDwTransformation('modal')" title="Run transformation in browser">▶ Run / Transform</button>
+        <button type="button" class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
+        <button type="button" class="btn btn-sm btn-outline" id="dw-fullscreen-btn" onclick="toggleDwFullscreen()" title="Toggle Fullscreen Mode">⛶ Fullscreen</button>
+        <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeDataWeaveModal()" title="Close Playground (Esc)">✕ Close</button>
+      </div>
+    </div>
+
+    <!-- Scrollable Modal Body (Fixes scroll cutoff bug on all viewports) -->
+    <div class="dw-modal-scroll-body" id="modal-dw-playground">
+      <!-- Search & Category Filters -->
+      <div class="dw-filter-bar" style="display:flex; flex-direction:column; gap:12px; margin: 0 0 16px 0;">
+        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+          <div style="flex:1; min-width:240px; position:relative;">
+            <input class="dw-search-input" id="modal-dw-search-input" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." type="text"/>
+          </div>
+          <div style="flex:1.5; min-width:260px;">
+            <select class="dw-select" id="modal-dw-preset-select" onchange="loadDwPreset(this.value)"></select>
+          </div>
+        </div>
+        <div class="dw-category-pills" style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button type="button" class="dw-cat-pill active" onclick="filterDwByCategory('all', this)">All (26)</button>
+          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('json', this)">JSON (5)</button>
+          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('xml', this)">XML (2)</button>
+          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('csv', this)">CSV (2)</button>
+          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('array', this)">Array Functions (7)</button>
+          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('string', this)">String (2)</button>
+          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('date', this)">Date (1)</button>
+          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('advanced', this)">Enterprise Scenarios (7)</button>
+        </div>
+      </div>
+
+      <!-- Mobile Tab Bar (< 768px) -->
+      <div class="dw-mobile-tab-bar" id="modal-dwMobileTabs">
+        <button type="button" class="dw-tab-btn active" data-tab="input" onclick="switchDwMobileTab('input', this, 'modal')">📥 Input</button>
+        <button type="button" class="dw-tab-btn" data-tab="script" onclick="switchDwMobileTab('script', this, 'modal')">⚡ Script</button>
+        <button type="button" class="dw-tab-btn" data-tab="output" onclick="switchDwMobileTab('output', this, 'modal')">📤 Output</button>
+        <button type="button" class="dw-tab-btn" data-tab="notes" onclick="switchDwMobileTab('notes', this, 'modal')">💡 Notes</button>
+      </div>
+
+      <!-- 4-PANEL WORKSPACE -->
+      <div class="dw-4panel-grid">
+        <div class="dw-editor-panel dw-tab-active" id="modal-dw-panel-input">
+          <div class="dw-panel-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span>📥 INPUT PAYLOAD</span>
+              <span class="dw-panel-format" id="modal-dw-input-format-badge">JSON</span>
+            </div>
+            <button type="button" class="btn-copy-pane" onclick="copyDwPanel('input', 'modal')" title="Copy Input Payload">📋 Copy Input</button>
+          </div>
+          <textarea class="dw-code-editor dw-input-editor" id="modal-dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
+        </div>
+
+        <div class="dw-editor-panel" id="modal-dw-panel-script">
+          <div class="dw-panel-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span>⚡ DATAWEAVE SCRIPT (%dw 2.0)</span>
+              <span style="font-size:0.7rem; opacity:0.8;">output application/...</span>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button type="button" class="btn-copy-pane" onclick="copyDwPanel('script', 'modal')" title="Copy DW Script">📋 Copy Script</button>
+            </div>
+          </div>
+          <textarea class="dw-code-editor dw-script-editor" id="modal-dw-script-editor" placeholder="%dw 2.0&#10;output application/json&#10;---" spellcheck="false"></textarea>
+        </div>
+
+        <div class="dw-editor-panel" id="modal-dw-panel-output">
+          <div class="dw-panel-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span>📤 TRANSFORMED OUTPUT</span>
+              <span class="dw-status-indicator" id="modal-dw-live-status" style="font-size:0.72rem; color:#34d399; font-weight:700;">✅ Evaluated</span>
+            </div>
+            <button type="button" class="btn-copy-pane" onclick="copyDwPanel('output', 'modal')" title="Copy Output Payload">📋 Copy Output</button>
+          </div>
+          <textarea class="dw-code-editor dw-output-viewer" id="modal-dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
+        </div>
+
+        <div class="dw-editor-panel dw-explanation-panel" id="modal-dw-panel-notes">
+          <div class="dw-panel-header dw-notes-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span>💡 EXPLANATION &amp; ARCHITECT INTERVIEW NOTES</span>
+            </div>
+            <span style="font-size:0.7rem; color:#a78bfa;">How it works &amp; Real Project Use Case</span>
+          </div>
+          <div class="dw-explanation-content" id="modal-dw-explanation-box"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="modal-overlay" id="search-modal" onclick="closeSearchModal(event)">
 <div class="search-modal-container" onclick="event.stopPropagation()">
