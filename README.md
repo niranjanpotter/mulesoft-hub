@@ -1,6 +1,6 @@
 # MuleSoft Enterprise Architecture & Interview Hub (2026 Edition)
 
-A high-performance, mobile-optimized static knowledge hub containing **282+ real-world scenario-based MuleSoft interview questions**, architectural diagrams, DataWeave 2.0 playground, and technical deep-dives.
+A high-performance, mobile-optimized static knowledge hub containing **268 real-world scenario-based MuleSoft interview questions**, architectural diagrams, DataWeave 2.0 playground, and technical deep-dives.
 
 **Live Website**: [https://niranjanpotter.github.io/](https://niranjanpotter.github.io/)  
 **Author**: Niranjan Potter
