@@ -4368,7 +4368,10 @@ paperless:     dynamoData.paperless default false
         <div class="eh-sim-subtitle">Solve MuleSoft's #1 interview trick question: trace <code>HTTP:CONNECTIVITY</code> across Try Scope, Private Flow &amp; Main Flow.</div>
       </div>
     </div>
-    <span class="badge eh-runtime-badge">MULE 4 RUNTIME ENGINE</span>
+    <div class="feature-header-controls">
+      <span class="badge eh-runtime-badge">MULE 4 RUNTIME ENGINE</span>
+      <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="eh-fullscreen-btn" onclick="toggleFeatureFullscreen('error-handling-simulator', this)" aria-pressed="false" title="Toggle Fullscreen">⛶ Fullscreen</button>
+    </div>
   </div>
 
   <!-- 3 Preset Buttons + Reset Button -->
@@ -4815,7 +4818,7 @@ status: vars.httpStatus,</code></pre>
 <div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
 <button type="button" class="btn btn-sm btn-primary" id="dw-run-btn" onclick="runDwTransformation('inline')" title="Run transformation in browser">▶ Run / Transform</button>
 <button type="button" class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
-<button type="button" class="btn btn-sm btn-outline" onclick="openDataWeaveModal(true)" title="Open Playground in Fullscreen">⛶ Fullscreen</button>
+<button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="inline-dw-fullscreen-btn" onclick="toggleFeatureFullscreen('inline-dw-playground', this)" aria-pressed="false" title="Toggle Fullscreen (keeps your current input &amp; mode)">⛶ Fullscreen</button>
 </div>
 </div>
 
@@ -8756,7 +8759,10 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 <div style="font-size:0.85rem; color:var(--text-dim);">Enterprise Decision Tool · Calculate Worker Size, Replicas &amp; Cost using Little's Law, HA rules &amp; JVM constraints</div>
 </div>
 </div>
+<div class="feature-header-controls">
 <span class="badge" style="background:rgba(0,240,255,0.15); color:#00f0ff; border:1px solid rgba(0,240,255,0.3); padding:4px 12px; border-radius:6px; font-weight:700; font-size:0.75rem;">2026 ARCHITECT DECISION TOOL</span>
+<button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="vcore-fullscreen-btn" onclick="toggleFeatureFullscreen('vcore-calculator', this)" aria-pressed="false" title="Toggle Fullscreen">⛶ Fullscreen</button>
+</div>
 </div>
 <!-- Main Calculator Grid -->
 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-bottom:24px;">
@@ -8891,7 +8897,7 @@ if ((n mod 2) =- 0) { result: "Even" } else { result: "Odd" }
 <tr>
 <td style="padding:8px; color:#facc15; font-weight:700;">Worker Too Big</td>
 <td style="padding:8px; color:#cbd5e1;">Over-provisioning, High Spend</td>
-<td style="padding:8px; color:var(--text-dim);">Paise waste! Idle JVM heap and unutilized vCores eating up corporate Anypoint subscription budget.</td>
+<td style="padding:8px; color:var(--text-dim);">Budget waste! Idle JVM heap and unutilized vCores consume corporate Anypoint subscription budget.</td>
 </tr>
 </tbody>
 </table>
@@ -18890,7 +18896,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
       <div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
         <button type="button" class="btn btn-sm btn-primary" id="modal-dw-run-btn" onclick="runDwTransformation('modal')" title="Run transformation in browser">▶ Run / Transform</button>
         <button type="button" class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
-        <button type="button" class="btn btn-sm btn-outline" id="dw-fullscreen-btn" onclick="toggleDwFullscreen()" title="Toggle Fullscreen Mode">⛶ Fullscreen</button>
+        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="dw-fullscreen-btn" onclick="toggleDwFullscreen()" aria-pressed="false" title="Toggle Fullscreen Mode">⛶ Fullscreen</button>
         <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeDataWeaveModal()" title="Close Playground (Esc)">✕ Close</button>
       </div>
     </div>
@@ -19056,7 +19062,7 @@ CloudHub Multi-Worker HA (Shared-Nothing):
 
 <!-- Timed Mock Interview Simulator Modal -->
 <div class="modal-overlay" id="mock-interview-modal" onclick="closeMockInterviewModal(event)" role="dialog" aria-modal="true" aria-label="Timed MuleSoft Mock Interview Simulator">
-  <div class="mock-modal-container" onclick="event.stopPropagation()">
+  <div class="mock-modal-container" id="mock-modal-container" onclick="event.stopPropagation()">
     <!-- Sticky Header -->
     <div class="mock-modal-header">
       <div style="display:flex; align-items:center; gap:12px;">
@@ -19066,9 +19072,10 @@ CloudHub Multi-Worker HA (Shared-Nothing):
           <div class="mock-modal-sub" id="mock-header-sub">Simulate a real technical panel · Self-grade &amp; get your Readiness Scorecard</div>
         </div>
       </div>
-      <div style="display:flex; align-items:center; gap:8px;">
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
         <span class="mock-timer-pill" id="mock-timer-pill" style="display:none;">⏱️ 15:00</span>
         <button type="button" class="btn btn-sm" id="mock-pause-btn" onclick="toggleMockPause()" style="display:none;">⏸ Pause</button>
+        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="mock-fullscreen-btn" onclick="toggleFeatureFullscreen('mock-modal-container', this)" aria-pressed="false" title="Toggle Fullscreen">⛶ Fullscreen</button>
         <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeMockInterviewModal()" title="Close Simulator (Esc)">✕ Close</button>
       </div>
     </div>

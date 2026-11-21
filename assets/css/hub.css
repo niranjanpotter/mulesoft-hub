@@ -7043,3 +7043,122 @@ pre, pre code {
   line-height: 1.55;
   color: #1e293b !important;
 }
+
+/* ==========================================================================
+   UNIFIED FULLSCREEN ENGINE (INLINE PORTAL & MODAL EDGE-TO-EDGE FULLSCREEN)
+   ========================================================================== */
+.feature-header-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.feature-fs-btn {
+  min-height: 36px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.feature-fs-btn.is-fullscreen {
+  background: rgba(0, 242, 254, 0.16) !important;
+  border-color: #00F2FE !important;
+  color: #00F2FE !important;
+}
+
+[data-theme="light"] .feature-fs-btn.is-fullscreen {
+  background: #e0f2fe !important;
+  border-color: #0284c7 !important;
+  color: #0369a1 !important;
+}
+
+@media (max-width: 767px) {
+  .feature-fs-btn {
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+}
+
+/* Top-level portal avoids .blog-article backdrop-filter containing block trap */
+#feature-fullscreen-portal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 12000;
+  background: #090d16;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 24px 36px;
+  box-sizing: border-box;
+}
+
+#feature-fullscreen-portal.active {
+  display: block;
+}
+
+[data-theme="light"] #feature-fullscreen-portal {
+  background: #f1f5f9;
+}
+
+body.feature-fs-body-lock {
+  overflow: hidden !important;
+}
+
+#feature-fullscreen-portal > .feature-fullscreen-active {
+  margin: 0 auto !important;
+  max-width: 1480px !important;
+  width: 100% !important;
+  min-height: calc(100dvh - 56px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+  #feature-fullscreen-portal {
+    padding: 10px 10px 28px;
+  }
+  #feature-fullscreen-portal > .feature-fullscreen-active {
+    min-height: calc(100dvh - 38px);
+    border-radius: 12px;
+  }
+}
+
+[data-theme="light"] #inline-dw-playground [style*="color:#fff"],
+[data-theme="light"] #inline-dw-playground .dw-modal-title-row {
+  color: #0f172a !important;
+}
+
+/* Modal edge-to-edge fullscreen without outer padding squeeze */
+#dw-modal.modal-overlay.modal-fullscreen-parent,
+#mock-interview-modal.modal-overlay.modal-fullscreen-parent,
+.modal-overlay.modal-fullscreen-parent {
+  padding: 0 !important;
+}
+
+.dw-modal-container.feature-fullscreen-active,
+.dw-modal-container.dw-fullscreen-active,
+.dw-modal-container:fullscreen,
+.mock-modal-container.feature-fullscreen-active,
+.mock-modal-container:fullscreen {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  border-radius: 0 !important;
+  border: none !important;
+  margin: 0 !important;
+}
+
+.mock-modal-container.feature-fullscreen-active .mock-modal-body,
+.dw-modal-container.feature-fullscreen-active .dw-modal-scroll-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}

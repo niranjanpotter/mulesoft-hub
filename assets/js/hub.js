@@ -2375,50 +2375,31 @@ if (typeof window !== 'undefined') {
 
   window.closeDataWeaveModal = function(e) {
     if (e && e.target !== e.currentTarget && !e.target.classList.contains('btn-close-modal')) return;
+    if (typeof window.exitFeatureFullscreen === 'function') {
+      window.exitFeatureFullscreen();
+    }
     var modal = document.getElementById('dw-modal');
     var container = document.getElementById('dw-modal-container');
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(function() {});
     }
-    if (container) container.classList.remove('dw-fullscreen-active');
+    if (container) container.classList.remove('dw-fullscreen-active', 'feature-fullscreen-active');
     var fsBtn = document.getElementById('dw-fullscreen-btn');
-    if (fsBtn) fsBtn.textContent = '⛶ Fullscreen';
-    if (modal) modal.classList.remove('active');
+    if (fsBtn) {
+      fsBtn.textContent = '⛶ Fullscreen';
+      fsBtn.classList.remove('is-fullscreen');
+      fsBtn.setAttribute('aria-pressed', 'false');
+    }
+    if (modal) modal.classList.remove('active', 'modal-fullscreen-parent');
     document.body.style.overflow = '';
   };
 
   window.toggleDwFullscreen = function(forceOn) {
-    var container = document.getElementById('dw-modal-container');
-    var fsBtn = document.getElementById('dw-fullscreen-btn');
-    if (!container) return;
-
-    var isCurrentlyFs = container.classList.contains('dw-fullscreen-active') || !!document.fullscreenElement;
-    var wantFs = (typeof forceOn === 'boolean') ? forceOn : !isCurrentlyFs;
-
-    if (wantFs) {
-      container.classList.add('dw-fullscreen-active');
-      if (fsBtn) fsBtn.textContent = '↙ Exit Fullscreen';
-      if (container.requestFullscreen && !document.fullscreenElement) {
-        container.requestFullscreen().catch(function() {
-          // Graceful CSS fullscreen fallback when browser blocks Fullscreen API
-        });
-      }
-    } else {
-      container.classList.remove('dw-fullscreen-active');
-      if (fsBtn) fsBtn.textContent = '⛶ Fullscreen';
-      if (document.fullscreenElement && document.exitFullscreen) {
-        document.exitFullscreen().catch(function() {});
-      }
+    if (typeof window.toggleFeatureFullscreen === 'function') {
+      return window.toggleFeatureFullscreen('dw-modal-container', document.getElementById('dw-fullscreen-btn'), forceOn);
     }
+    return false;
   };
-
-  document.addEventListener('fullscreenchange', function() {
-    var container = document.getElementById('dw-modal-container');
-    var fsBtn = document.getElementById('dw-fullscreen-btn');
-    if (!document.fullscreenElement && container && !container.classList.contains('dw-fullscreen-active')) {
-      if (fsBtn) fsBtn.textContent = '⛶ Fullscreen';
-    }
-  });
 
   // Close DW modal on Escape key (when not in native fullscreen)
   document.addEventListener('keydown', function(e) {
@@ -2678,9 +2659,12 @@ if (typeof window !== 'undefined') {
 
   window.closeMockInterviewModal = function(e) {
     if (e && e.target !== e.currentTarget && !e.target.classList.contains('btn-close-modal')) return;
+    if (typeof window.exitFeatureFullscreen === 'function') {
+      window.exitFeatureFullscreen();
+    }
     stopTimer();
     var modal = document.getElementById('mock-interview-modal');
-    if (modal) modal.classList.remove('active');
+    if (modal) modal.classList.remove('active', 'modal-fullscreen-parent');
     document.body.style.overflow = '';
   };
 
@@ -3793,4 +3777,158 @@ if (typeof window !== 'undefined') {
   }
   window.addEventListener('load', syncStickyHeaderHeight);
   window.addEventListener('resize', syncStickyHeaderHeight);
+})();
+
+/* ============================================================================
+   UNIFIED FULLSCREEN ENGINE (INLINE PORTAL & MODAL EDGE-TO-EDGE FULLSCREEN)
+   ============================================================================ */
+(function initUnifiedFullscreen() {
+  var activeFs = null;
+
+  function ensurePortal() {
+    var portal = document.getElementById('feature-fullscreen-portal');
+    if (!portal) {
+      portal = document.createElement('div');
+      portal.id = 'feature-fullscreen-portal';
+      portal.setAttribute('role', 'dialog');
+      portal.setAttribute('aria-modal', 'true');
+      portal.setAttribute('aria-label', 'Fullscreen Interactive Workspace');
+      document.body.appendChild(portal);
+    }
+    return portal;
+  }
+
+  function setBtnState(btn, isFs) {
+    if (!btn) return;
+    btn.textContent = isFs ? '↙ Exit Fullscreen' : '⛶ Fullscreen';
+    btn.classList.toggle('is-fullscreen', !!isFs);
+    btn.setAttribute('aria-pressed', isFs ? 'true' : 'false');
+  }
+
+  window.exitFeatureFullscreen = function() {
+    if (!activeFs) return false;
+    var st = activeFs;
+    activeFs = null;
+
+    if (st.el) {
+      st.el.classList.remove('feature-fullscreen-active', 'dw-fullscreen-active');
+    }
+
+    if (st.isModal) {
+      if (st.modalOverlay) {
+        st.modalOverlay.classList.remove('modal-fullscreen-parent');
+      }
+    } else {
+      if (st.placeholder && st.placeholder.parentNode && st.el) {
+        st.placeholder.parentNode.insertBefore(st.el, st.placeholder);
+        st.placeholder.parentNode.removeChild(st.placeholder);
+      }
+      var portal = document.getElementById('feature-fullscreen-portal');
+      if (portal) portal.classList.remove('active');
+      document.body.classList.remove('feature-fs-body-lock');
+      if (typeof st.scrollY === 'number') {
+        window.scrollTo(0, st.scrollY);
+      }
+    }
+
+    setBtnState(st.btn, false);
+
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(function() {});
+    }
+    return true;
+  };
+
+  window.toggleFeatureFullscreen = function(targetId, btnEl, forceOn) {
+    var el = document.getElementById(targetId);
+    if (!el) return false;
+
+    var btn = btnEl || el.querySelector('.feature-fs-btn');
+    var isCurrentlyFs = !!(activeFs && activeFs.id === targetId);
+    var wantFs = (typeof forceOn === 'boolean') ? forceOn : !isCurrentlyFs;
+
+    if (!wantFs) {
+      window.exitFeatureFullscreen();
+      return false;
+    }
+
+    if (activeFs && activeFs.id !== targetId) {
+      window.exitFeatureFullscreen();
+    } else if (isCurrentlyFs) {
+      return true;
+    }
+
+    var modalOverlay = el.closest('.modal-overlay');
+    var isModal = !!modalOverlay;
+    var placeholder = null;
+    var scrollY = 0;
+    var fsTarget = el;
+
+    if (isModal) {
+      modalOverlay.classList.add('modal-fullscreen-parent');
+      el.classList.add('feature-fullscreen-active');
+      if (targetId === 'dw-modal-container') {
+        el.classList.add('dw-fullscreen-active');
+      }
+    } else {
+      scrollY = window.scrollY || window.pageYOffset || 0;
+      placeholder = document.createElement('div');
+      placeholder.className = 'fs-origin-placeholder';
+      placeholder.style.display = 'none';
+      if (el.parentNode) {
+        el.parentNode.insertBefore(placeholder, el);
+      }
+      var portal = ensurePortal();
+      portal.appendChild(el);
+      el.classList.add('feature-fullscreen-active');
+      portal.classList.add('active');
+      portal.scrollTop = 0;
+      document.body.classList.add('feature-fs-body-lock');
+      fsTarget = portal;
+    }
+
+    setBtnState(btn, true);
+
+    activeFs = {
+      id: targetId,
+      el: el,
+      btn: btn,
+      isModal: isModal,
+      modalOverlay: modalOverlay,
+      placeholder: placeholder,
+      scrollY: scrollY,
+      usedNative: false
+    };
+
+    if (fsTarget && fsTarget.requestFullscreen && !document.fullscreenElement) {
+      fsTarget.requestFullscreen().then(function() {
+        if (activeFs && activeFs.id === targetId) {
+          activeFs.usedNative = true;
+        }
+      }).catch(function() {
+        // Graceful CSS portal/modal fullscreen fallback when blocked
+      });
+    }
+
+    return true;
+  };
+
+  window.getActiveFullscreenId = function() {
+    return activeFs ? activeFs.id : null;
+  };
+
+  document.addEventListener('fullscreenchange', function() {
+    if (!document.fullscreenElement && activeFs && activeFs.usedNative) {
+      window.exitFeatureFullscreen();
+    }
+  });
+
+  // Capture-phase Escape handler ensures Esc exits fullscreen first before closing a modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && activeFs) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      window.exitFeatureFullscreen();
+    }
+  }, true);
 })();
