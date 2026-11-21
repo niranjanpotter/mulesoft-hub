@@ -3496,3 +3496,284 @@ if (typeof window !== 'undefined') {
     }, 60);
   };
 })();
+
+
+// ============================================================================
+// INTERACTIVE MULE 4 ERROR-HANDLING FLOW SIMULATOR (100% OFFLINE, ENGLISH ONLY)
+// ============================================================================
+(function() {
+  var ehTimers = [];
+
+  function clearEhTimers() {
+    while (ehTimers.length) {
+      clearTimeout(ehTimers.pop());
+    }
+  }
+
+  function labelForHandler(val) {
+    if (val === 'continue') return 'On Error Continue';
+    if (val === 'propagate') return 'On Error Propagate';
+    return 'None';
+  }
+
+  function syncNodeHandlerBadges() {
+    var tryEl = document.getElementById('eh-try-select');
+    var privEl = document.getElementById('eh-private-select');
+    var mainEl = document.getElementById('eh-main-select');
+
+    var bTry = document.getElementById('eh-badge-try');
+    var bPriv = document.getElementById('eh-badge-private');
+    var bMain = document.getElementById('eh-badge-main');
+
+    if (tryEl && bTry) bTry.textContent = labelForHandler(tryEl.value);
+    if (privEl && bPriv) bPriv.textContent = labelForHandler(privEl.value);
+    if (mainEl && bMain) bMain.textContent = labelForHandler(mainEl.value);
+  }
+
+  window.evaluateMuleErrorFlow = function(tryH, privateH, mainH) {
+    // Case 1: Try Scope has On Error Continue -> caught and swallowed inside Try Scope
+    if (tryH === 'continue') {
+      return {
+        httpStatus: '200 OK',
+        isOk: true,
+        statusWhy: 'Try Scope caught HTTP:CONNECTIVITY with On Error Continue and returned a success message to Private Flow and Main Flow.',
+        nextRuns: true,
+        nextVal: 'YES — Runs',
+        nextWhy: 'Both the remaining Private Flow processor after Try Scope AND the Main Flow processor after Flow Ref execute normally.',
+        payload: '"Success — Main Flow completed using Try Scope On Error Continue recovery payload"',
+        rule: 'On Error Continue inside a Try Scope swallows the error and returns a success event, so both Private Flow and Main Flow continue executing and the caller receives HTTP 200 OK.',
+        caughtAt: 'try',
+        caughtType: 'continue',
+        trace: 'HTTP Listener -> Main Flow -> Flow Ref -> Private Flow -> Try Scope -> [Error Thrown: HTTP:CONNECTIVITY] -> Caught by Try Scope (On Error Continue) -> Private Flow & Main Flow continue -> HTTP 200 OK'
+      };
+    }
+
+    // Try Scope either has None or Propagate (so error leaves Try Scope into Private Flow)
+    var tryNote = (tryH === 'propagate')
+      ? 'Try Scope ran On Error Propagate and re-threw the error to Private Flow.'
+      : 'Try Scope had no handler, so the error bubbled immediately to Private Flow.';
+
+    // Case 2: Private Flow has On Error Continue -> catches error from Try Scope and returns success to Main Flow
+    if (privateH === 'continue') {
+      return {
+        httpStatus: '200 OK',
+        isOk: true,
+        statusWhy: tryNote + ' Private Flow caught it with On Error Continue and returned a success event to Main Flow.',
+        nextRuns: true,
+        nextVal: 'YES — Main Flow Runs',
+        nextWhy: 'Remaining processors inside Private Flow are skipped, but Main Flow continues executing the processor after Flow Reference.',
+        payload: '"Success — Main Flow completed using Private Flow On Error Continue payload"',
+        rule: 'When a Private Flow handles an error with On Error Continue, Flow Reference succeeds from the Main Flow perspective, so the Main Flow continues executing and returns HTTP 200 OK.',
+        caughtAt: 'private',
+        caughtType: 'continue',
+        trace: 'HTTP Listener -> Main Flow -> Flow Ref -> Private Flow -> Try Scope (' + labelForHandler(tryH) + ') -> [Error Thrown: HTTP:CONNECTIVITY] -> Caught by Private Flow (On Error Continue) -> Main Flow next processor runs -> HTTP 200 OK'
+      };
+    }
+
+    var privateNote = (privateH === 'propagate')
+      ? 'Private Flow ran On Error Propagate and re-threw the error back to Main Flow.'
+      : 'Private Flow had no handler, so the error bubbled through Flow Ref to Main Flow.';
+
+    // Case 3: Main Flow has On Error Continue -> skips remaining Main Flow steps, returns 200 OK
+    if (mainH === 'continue') {
+      return {
+        httpStatus: '200 OK',
+        isOk: true,
+        statusWhy: tryNote + ' ' + privateNote + ' Main Flow caught it with On Error Continue and returned a normal response.',
+        nextRuns: false,
+        nextVal: 'NO — Skipped',
+        nextWhy: 'Processors after Flow Reference in Main Flow are skipped because execution jumps straight into the Main Flow Error Handler, which then returns HTTP 200 OK.',
+        payload: '"Graceful Fallback Response from Main Flow On Error Continue"',
+        rule: 'On Error Continue in the Main Flow skips all remaining flow processors after the failing step, yet returns the error handler payload to the HTTP Listener with HTTP 200 OK.',
+        caughtAt: 'main',
+        caughtType: 'continue',
+        trace: 'HTTP Listener -> Main Flow -> Flow Ref -> Private Flow -> Try Scope (' + labelForHandler(tryH) + ') -> [Error] -> Private Flow (' + labelForHandler(privateH) + ') -> Caught by Main Flow (On Error Continue) -> Remaining steps skipped -> HTTP 200 OK'
+      };
+    }
+
+    // Case 4: Main Flow has On Error Propagate -> skips remaining steps, returns 500 Server Error
+    if (mainH === 'propagate') {
+      return {
+        httpStatus: '500 Server Error',
+        isOk: false,
+        statusWhy: tryNote + ' ' + privateNote + ' Main Flow ran On Error Propagate and re-threw the error to the HTTP Listener Error Response.',
+        nextRuns: false,
+        nextVal: 'NO — Skipped',
+        nextWhy: 'All remaining processors in Try Scope, Private Flow, and Main Flow are immediately aborted.',
+        payload: '{\n  "errorType": "HTTP:CONNECTIVITY",\n  "message": "Error propagated from Main Flow On Error Propagate",\n  "httpStatus": 500\n}',
+        rule: 'On Error Propagate executes its error handler processors and re-throws the error to the HTTP Listener, skipping all remaining processors and returning HTTP 500 Server Error.',
+        caughtAt: 'main',
+        caughtType: 'propagate',
+        trace: 'HTTP Listener -> Main Flow -> Flow Ref -> Private Flow -> Try Scope (' + labelForHandler(tryH) + ') -> [Error] -> Private Flow (' + labelForHandler(privateH) + ') -> Main Flow (On Error Propagate) -> Aborted -> HTTP 500 Server Error'
+      };
+    }
+
+    // Case 5: None in Try, None in Private, None in Main -> Default Mule Error Handler
+    return {
+      httpStatus: '500 Server Error',
+      isOk: false,
+      statusWhy: tryNote + ' ' + privateNote + ' Main Flow also had no handler, so Mule Runtime\'s Default Error Handler failed the request.',
+      nextRuns: false,
+      nextVal: 'NO — Skipped',
+      nextWhy: 'All remaining processors are aborted immediately when the unhandled exception bubbles to Mule Runtime.',
+      payload: '"HTTP:CONNECTIVITY — Unhandled error caught by Mule Default Error Handler (HTTP 500)"',
+      rule: 'When no error handler catches an exception at any scope (Try, Private Flow, or Main Flow), Mule\'s Default Error Handler logs the exception and returns HTTP 500 Server Error.',
+      caughtAt: 'listener',
+      caughtType: 'propagate',
+      trace: 'HTTP Listener -> Main Flow -> Flow Ref -> Private Flow (None) -> Try Scope (' + labelForHandler(tryH) + ') -> [Error] -> Main Flow (None) -> Mule Default Error Handler -> HTTP 500 Server Error'
+    };
+  };
+
+  function clearNodeAnimationClasses() {
+    ['eh-node-listener', 'eh-node-main', 'eh-node-flowref', 'eh-node-private', 'eh-node-try', 'eh-node-error'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('eh-node-visited', 'eh-node-flash-red', 'eh-node-caught-continue', 'eh-node-caught-propagate');
+      }
+    });
+  }
+
+  function renderSimulationResult(res) {
+    var statusBox = document.getElementById('eh-res-status-box');
+    var statusCode = document.getElementById('eh-res-status-code');
+    var statusWhy = document.getElementById('eh-res-status-why');
+    var nextBox = document.getElementById('eh-res-next-box');
+    var nextVal = document.getElementById('eh-res-next-val');
+    var nextWhy = document.getElementById('eh-res-next-why');
+    var payloadCode = document.getElementById('eh-res-payload-code');
+    var ruleEl = document.getElementById('eh-res-rule');
+    var traceEl = document.getElementById('eh-trace-log');
+
+    if (statusBox) {
+      statusBox.classList.remove('eh-res-neutral', 'eh-res-ok', 'eh-res-err');
+      statusBox.classList.add(res.isOk ? 'eh-res-ok' : 'eh-res-err');
+    }
+    if (statusCode) statusCode.textContent = res.httpStatus;
+    if (statusWhy) statusWhy.textContent = res.statusWhy;
+
+    if (nextBox) {
+      nextBox.classList.remove('eh-res-neutral', 'eh-res-ok', 'eh-res-err');
+      nextBox.classList.add(res.nextRuns ? 'eh-res-ok' : 'eh-res-err');
+    }
+    if (nextVal) nextVal.textContent = res.nextVal;
+    if (nextWhy) nextWhy.textContent = res.nextWhy;
+
+    if (payloadCode) payloadCode.textContent = res.payload;
+    if (ruleEl) ruleEl.textContent = '"' + res.rule + '"';
+    if (traceEl) traceEl.textContent = res.trace;
+  }
+
+  window.simulateMuleErrorFlow = function() {
+    clearEhTimers();
+    syncNodeHandlerBadges();
+
+    var tryH = document.getElementById('eh-try-select')?.value || 'continue';
+    var privateH = document.getElementById('eh-private-select')?.value || 'none';
+    var mainH = document.getElementById('eh-main-select')?.value || 'propagate';
+
+    var res = window.evaluateMuleErrorFlow(tryH, privateH, mainH);
+
+    // Update results immediately so screen readers and fast interactions always get deterministic state
+    renderSimulationResult(res);
+
+    // Step-by-step animated highlight Left->Right (Desktop) / Top->Bottom (Mobile)
+    clearNodeAnimationClasses();
+    var forwardNodes = ['eh-node-listener', 'eh-node-main', 'eh-node-flowref', 'eh-node-private', 'eh-node-try'];
+    forwardNodes.forEach(function(id, idx) {
+      ehTimers.push(setTimeout(function() {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('eh-node-visited');
+      }, idx * 70));
+    });
+
+    ehTimers.push(setTimeout(function() {
+      var errEl = document.getElementById('eh-node-error');
+      if (errEl) {
+        void errEl.offsetWidth;
+        errEl.classList.add('eh-node-flash-red');
+      }
+    }, 360));
+
+    ehTimers.push(setTimeout(function() {
+      var targetMap = { try: 'eh-node-try', private: 'eh-node-private', main: 'eh-node-main', listener: 'eh-node-listener' };
+      var targetEl = document.getElementById(targetMap[res.caughtAt]);
+      if (targetEl) {
+        targetEl.classList.remove('eh-node-visited');
+        targetEl.classList.add(res.caughtType === 'continue' ? 'eh-node-caught-continue' : 'eh-node-caught-propagate');
+      }
+    }, 520));
+  };
+
+  window.applyEhPreset = function(presetName) {
+    var tryEl = document.getElementById('eh-try-select');
+    var privEl = document.getElementById('eh-private-select');
+    var mainEl = document.getElementById('eh-main-select');
+    if (!tryEl || !privEl || !mainEl) return;
+
+    document.querySelectorAll('.eh-preset-btn').forEach(function(b) { b.classList.remove('active'); });
+
+    if (presetName === 'all-continue') {
+      tryEl.value = 'continue';
+      privEl.value = 'continue';
+      mainEl.value = 'continue';
+      document.getElementById('eh-preset-continue')?.classList.add('active');
+    } else if (presetName === 'all-propagate') {
+      tryEl.value = 'propagate';
+      privEl.value = 'propagate';
+      mainEl.value = 'propagate';
+      document.getElementById('eh-preset-propagate')?.classList.add('active');
+    } else {
+      tryEl.value = 'continue';
+      privEl.value = 'none';
+      mainEl.value = 'propagate';
+      document.getElementById('eh-preset-mixed')?.classList.add('active');
+    }
+
+    window.simulateMuleErrorFlow();
+  };
+
+  window.resetEhSimulator = function() {
+    clearEhTimers();
+    clearNodeAnimationClasses();
+
+    var tryEl = document.getElementById('eh-try-select');
+    var privEl = document.getElementById('eh-private-select');
+    var mainEl = document.getElementById('eh-main-select');
+    if (tryEl) tryEl.value = 'continue';
+    if (privEl) privEl.value = 'none';
+    if (mainEl) mainEl.value = 'propagate';
+
+    syncNodeHandlerBadges();
+
+    document.querySelectorAll('.eh-preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('eh-preset-mixed')?.classList.add('active');
+
+    var res = window.evaluateMuleErrorFlow('continue', 'none', 'propagate');
+    renderSimulationResult(res);
+
+    var traceEl = document.getElementById('eh-trace-log');
+    if (traceEl) {
+      traceEl.textContent = 'Simulator reset to default Mixed Real Interview Case. Click "Throw Error - Simulate HTTP:CONNECTIVITY" to animate.';
+    }
+  };
+
+  function bindEhListeners() {
+    ['eh-try-select', 'eh-private-select', 'eh-main-select'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && !el.dataset.ehBound) {
+        el.dataset.ehBound = '1';
+        el.addEventListener('change', function() {
+          document.querySelectorAll('.eh-preset-btn').forEach(function(b) { b.classList.remove('active'); });
+          syncNodeHandlerBadges();
+        });
+      }
+    });
+    syncNodeHandlerBadges();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindEhListeners);
+  } else {
+    bindEhListeners();
+  }
+})();
