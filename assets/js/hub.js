@@ -1396,7 +1396,7 @@ window.addEventListener('keydown', (e) => {
 // 5. DataWeave 2.0 Playground & Studio Lab Engine (26 Scenarios)
 // ==========================================
 
-var DW_PRESETS = [{"id": "json-to-json", "title": "JSON to JSON - Simple Mapping", "category": "json", "format": "json", "input": "{\n  \"order_id\": \"ORD-98214\",\n  \"cust_first_name\": \"Niranjan\",\n  \"cust_last_name\": \"Potter\",\n  \"cust_email\": \"niranjan@mulesoft.hub\",\n  \"billing_amount\": 499.50,\n  \"currency_code\": \"USD\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  orderId: payload.order_id,\n  customerName: payload.cust_first_name ++ \" \" ++ payload.cust_last_name,\n  emailAddress: lower(payload.cust_email),\n  invoice: {\n    total: payload.billing_amount,\n    currency: payload.currency_code,\n    isPaid: true\n  },\n  processedAt: now() as String {format: \"yyyy-MM-dd HH:mm:ss\"}\n}", "output": "{\n  \"orderId\": \"ORD-98214\",\n  \"customerName\": \"Niranjan Potter\",\n  \"emailAddress\": \"niranjan@mulesoft.hub\",\n  \"invoice\": {\n    \"total\": 499.5,\n    \"currency\": \"USD\",\n    \"isPaid\": true\n  },\n  \"processedAt\": \"2026-11-18 14:15:00\"\n}", "explanation": {"kyaHua": "Incoming JSON keys (snake_case) ko canonical enterprise camelCase JSON format me map kiya gaya hai. String concatenation (++) se full name banaya aur nested invoice object banaya.", "functionDetails": "String concatenation '++', lower(), now() as String {format: '...'}. Ye basic field remapping aur data normalization ke liye fundamental function hai.", "interviewQuestion": "Interviewer asks: 'How do you rename keys and concatenate strings while preserving data types in DataWeave?'", "realProjectUsage": "Experience API to Process API transformation: Client payload ko System API canonical data model me transform karne ke liye har API me use hota hai."}, "name": "JSON to JSON - Simple Mapping", "payload": "{\n  \"order_id\": \"ORD-98214\",\n  \"cust_first_name\": \"Niranjan\",\n  \"cust_last_name\": \"Potter\",\n  \"cust_email\": \"niranjan@mulesoft.hub\",\n  \"billing_amount\": 499.50,\n  \"currency_code\": \"USD\"\n}"}, {"id": "json-to-xml", "title": "JSON to XML", "category": "xml", "format": "json", "input": "{\n  \"account\": {\n    \"id\": \"ACC-7890\",\n    \"name\": \"Florida Power & Light\",\n    \"tier\": \"ENTERPRISE\",\n    \"active\": true\n  }\n}", "script": "%dw 2.0\noutput application/xml\n---\nAccountRequest @(xmlns: \"http://schemas.utility.com/account/v1\", id: payload.account.id): {\n  AccountName: payload.account.name,\n  AccountTier: payload.account.tier,\n  IsActive: payload.account.active\n}", "output": "<?xml version='1.0' encoding='UTF-8'?>\n<AccountRequest xmlns=\"http://schemas.utility.com/account/v1\" id=\"ACC-7890\">\n  <AccountName>Florida Power &amp; Light</AccountName>\n  <AccountTier>ENTERPRISE</AccountTier>\n  <IsActive>true</IsActive>\n</AccountRequest>", "explanation": {"kyaHua": "JSON object ko SOAP/XML schema compliant XML envelope me transform kiya gaya hai with XML Root Attributes (@(xmlns: ..., id: ...)).", "functionDetails": "XML root node declaration with '@(attr1: val, attr2: val)'. DataWeave output directive 'output application/xml' specify karta hai.", "interviewQuestion": "Interviewer asks: 'How do you add XML attributes and namespaces to the root tag in DataWeave 2.0?'", "realProjectUsage": "Legacy SOAP Web Service integration (SAP / Mainframe / Oracle EBS) jaha REST JSON input ko SOAP XML payload me convert karna padta hai."}, "name": "JSON to XML", "payload": "{\n  \"account\": {\n    \"id\": \"ACC-7890\",\n    \"name\": \"Florida Power & Light\",\n    \"tier\": \"ENTERPRISE\",\n    \"active\": true\n  }\n}"}, {"id": "xml-to-json", "title": "XML to JSON", "category": "xml", "format": "xml", "input": "<?xml version='1.0' encoding='UTF-8'?>\n<GetCustomerResponse xmlns=\"http://utility.fpl.com/service\">\n  <Customer id=\"C-9912\">\n    <Name>Nextera Energy</Name>\n    <MeterNumber>MTR-55410</MeterNumber>\n    <Status>ACTIVE</Status>\n    <CurrentReading unit=\"KWH\">4820.75</CurrentReading>\n  </Customer>\n</GetCustomerResponse>", "script": "%dw 2.0\noutput application/json\nns ns0 http://utility.fpl.com/service\n---\n{\n  customerId: payload.ns0#GetCustomerResponse.ns0#Customer.@id,\n  customerName: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#Name,\n  meterId: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#MeterNumber,\n  reading: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#CurrentReading as Number,\n  unit: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#CurrentReading.@unit,\n  status: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#Status\n}", "output": "{\n  \"customerId\": \"C-9912\",\n  \"customerName\": \"Nextera Energy\",\n  \"meterId\": \"MTR-55410\",\n  \"reading\": 4820.75,\n  \"unit\": \"KWH\",\n  \"status\": \"ACTIVE\"\n}", "explanation": {"kyaHua": "Namespaced XML SOAP payload ko parse karke attributes (.@attr) aur element text ko canonical JSON me extract kiya gaya hai.", "functionDetails": "Namespace declaration 'ns ns0 http://...', element namespace access 'ns0#Tag', aur attribute extraction '.@id' and '.@unit'.", "interviewQuestion": "Interviewer asks: 'How do you handle XML namespaces and attributes when parsing SOAP XML in DataWeave?'", "realProjectUsage": "SOAP Web Service System API response ko Process API ke JSON format me map karne ke liye."}, "name": "XML to JSON", "payload": "<?xml version='1.0' encoding='UTF-8'?>\n<GetCustomerResponse xmlns=\"http://utility.fpl.com/service\">\n  <Customer id=\"C-9912\">\n    <Name>Nextera Energy</Name>\n    <MeterNumber>MTR-55410</MeterNumber>\n    <Status>ACTIVE</Status>\n    <CurrentReading unit=\"KWH\">4820.75</CurrentReading>\n  </Customer>\n</GetCustomerResponse>"}, {"id": "json-to-csv", "title": "JSON to CSV", "category": "csv", "format": "json", "input": "[\n  { \"empId\": 101, \"name\": \"Niranjan Potter\", \"dept\": \"Integration\", \"salary\": 145000 },\n  { \"empId\": 102, \"name\": \"Amit Sharma\", \"dept\": \"Cloud\", \"salary\": 125000 },\n  { \"empId\": 103, \"name\": \"Pooja Verma\", \"dept\": \"Security\", \"salary\": 138000 }\n]", "script": "%dw 2.0\noutput application/csv header=true, separator=\",\"\n---\npayload map ((item) -> {\n  \"Employee ID\": item.empId,\n  \"Full Name\": upper(item.name),\n  \"Department\": item.dept,\n  \"Annual Salary (USD)\": item.salary\n})", "output": "\"Employee ID\",\"Full Name\",\"Department\",\"Annual Salary (USD)\"\n101,\"NIRANJAN POTTER\",\"Integration\",145000\n102,\"AMIT SHARMA\",\"Cloud\",125000\n103,\"POOJA VERMA\",\"Security\",138000", "explanation": {"kyaHua": "JSON array of objects ko structured CSV file format me transform kiya gaya hai with custom column headers and comma separator.", "functionDetails": "'output application/csv header=true, separator=\",\"'. Map function har object ko CSV row column headers ke sath map karta hai.", "interviewQuestion": "Interviewer asks: 'How do you generate a CSV file with custom header names and tab/pipe separators in DataWeave?'", "realProjectUsage": "SFTP file generation: Data warehouse ya payroll system ke liye nightly CSV exports create karna."}, "name": "JSON to CSV", "payload": "[\n  { \"empId\": 101, \"name\": \"Niranjan Potter\", \"dept\": \"Integration\", \"salary\": 145000 },\n  { \"empId\": 102, \"name\": \"Amit Sharma\", \"dept\": \"Cloud\", \"salary\": 125000 },\n  { \"empId\": 103, \"name\": \"Pooja Verma\", \"dept\": \"Security\", \"salary\": 138000 }\n]"}, {"id": "csv-to-json", "title": "CSV to JSON", "category": "csv", "format": "csv", "input": "MeterID,ReadingDate,ConsumptionKWH,Status\nM-1001,2026-11-01,340.50,CONFIRMED\nM-1002,2026-11-01,120.25,CONFIRMED\nM-1003,2026-11-01,0.00,INACTIVE", "script": "%dw 2.0\noutput application/json\n---\npayload map ((row) -> {\n  meterId: row.MeterID,\n  readingDate: row.ReadingDate as Date {format: \"yyyy-MM-dd\"},\n  kwh: row.ConsumptionKWH as Number,\n  isActive: row.Status == \"CONFIRMED\"\n})", "output": "[\n  {\n    \"meterId\": \"M-1001\",\n    \"readingDate\": \"2026-11-01\",\n    \"kwh\": 340.5,\n    \"isActive\": true\n  },\n  {\n    \"meterId\": \"M-1002\",\n    \"readingDate\": \"2026-11-01\",\n    \"kwh\": 120.25,\n    \"isActive\": true\n  },\n  {\n    \"meterId\": \"M-1003\",\n    \"readingDate\": \"2026-11-01\",\n    \"kwh\": 0,\n    \"isActive\": false\n  }\n]", "explanation": {"kyaHua": "Raw CSV rows ko parse karke strongly-typed JSON array me convert kiya gaya hai with proper Date, Number, aur Boolean data types.", "functionDetails": "CSV columns are automatically string-typed. 'as Number', 'as Date {format: \"...\"}' se type casting hoti hai.", "interviewQuestion": "Interviewer asks: 'CSV fields are always Strings. How do you convert CSV values to Numbers and Booleans safely?'", "realProjectUsage": "Batch Processing: File / SFTP inbound files ko parse karke database ya Salesforce me ingest karna."}, "name": "CSV to JSON", "payload": "MeterID,ReadingDate,ConsumptionKWH,Status\nM-1001,2026-11-01,340.50,CONFIRMED\nM-1002,2026-11-01,120.25,CONFIRMED\nM-1003,2026-11-01,0.00,INACTIVE"}, {"id": "sfdc-to-db", "title": "Salesforce to Database Mapping", "category": "advanced", "format": "json", "input": "{\n  \"Id\": \"0015g00001ABC12\",\n  \"Name\": \"Florida Health Systems\",\n  \"Type\": \"Customer - Direct\",\n  \"BillingStreet\": \"100 Ocean Drive\",\n  \"BillingCity\": \"Miami\",\n  \"BillingState\": \"FL\",\n  \"BillingPostalCode\": \"33139\",\n  \"AnnualRevenue\": 15000000,\n  \"LastModifiedDate\": \"2026-11-15T08:30:00.000Z\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  sfdc_account_id: payload.Id,\n  company_name: payload.Name,\n  account_type: if (payload.Type contains \"Customer\") \"ACTIVE_CLIENT\" else \"PROSPECT\",\n  address_line1: payload.BillingStreet,\n  city: payload.BillingCity,\n  state_code: payload.BillingState,\n  postal_code: payload.BillingPostalCode,\n  revenue: payload.AnnualRevenue default 0,\n  sync_timestamp: now() as String {format: \"yyyy-MM-dd HH:mm:ss.SSS\"}\n}", "output": "{\n  \"sfdc_account_id\": \"0015g00001ABC12\",\n  \"company_name\": \"Florida Health Systems\",\n  \"account_type\": \"ACTIVE_CLIENT\",\n  \"address_line1\": \"100 Ocean Drive\",\n  \"city\": \"Miami\",\n  \"state_code\": \"FL\",\n  \"postal_code\": \"33139\",\n  \"revenue\": 15000000,\n  \"sync_timestamp\": \"2026-11-18 14:20:00.123\"\n}", "explanation": {"kyaHua": "Salesforce SObject Account record ko SQL Database table schema ke column names aur business rules me map kiya gaya hai.", "functionDetails": "Contains check in conditional expression: 'if (payload.Type contains \"Customer\") ... else ...', default value operator 'default 0'.", "interviewQuestion": "Interviewer asks: 'How do you handle conditionally computed fields and null fallbacks when syncing Salesforce to Postgres/Oracle?'", "realProjectUsage": "Salesforce CDC (Change Data Capture) listener: Jab Salesforce me Account change ho to enterprise data warehouse me sync karna."}, "name": "Salesforce to Database Mapping", "payload": "{\n  \"Id\": \"0015g00001ABC12\",\n  \"Name\": \"Florida Health Systems\",\n  \"Type\": \"Customer - Direct\",\n  \"BillingStreet\": \"100 Ocean Drive\",\n  \"BillingCity\": \"Miami\",\n  \"BillingState\": \"FL\",\n  \"BillingPostalCode\": \"33139\",\n  \"AnnualRevenue\": 15000000,\n  \"LastModifiedDate\": \"2026-11-15T08:30:00.000Z\"\n}"}, {"id": "api-response-trans", "title": "API Response Transformation", "category": "json", "format": "json", "input": "{\n  \"rawStatus\": 200,\n  \"data\": [\n    { \"id\": 1, \"sku\": \"SOLAR-INV-100\", \"price\": 1200, \"stock\": 14 },\n    { \"id\": 2, \"sku\": \"SOLAR-BAT-50\", \"price\": 3400, \"stock\": 5 }\n  ],\n  \"serverTime\": 1731920000\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  status: \"SUCCESS\",\n  statusCode: 200,\n  correlationId: correlationId default \"CID-STATIC-1001\",\n  itemCount: sizeOf(payload.data),\n  inventory: payload.data map ((prod) -> {\n    productId: prod.id,\n    itemCode: prod.sku,\n    unitPrice: \"$\" ++ (prod.price as String {format: \"#,##0.00\"}),\n    inStock: prod.stock > 0\n  }),\n  metadata: {\n    apiVersion: \"v2.1\",\n    timestamp: now()\n  }\n}", "output": "{\n  \"status\": \"SUCCESS\",\n  \"statusCode\": 200,\n  \"correlationId\": \"CID-STATIC-1001\",\n  \"itemCount\": 2,\n  \"inventory\": [\n    {\n      \"productId\": 1,\n      \"itemCode\": \"SOLAR-INV-100\",\n      \"unitPrice\": \"$1,200.00\",\n      \"inStock\": true\n    },\n    {\n      \"productId\": 2,\n      \"itemCode\": \"SOLAR-BAT-50\",\n      \"unitPrice\": \"$3,400.00\",\n      \"inStock\": true\n    }\n  ],\n  \"metadata\": {\n    \"apiVersion\": \"v2.1\",\n    \"timestamp\": \"2026-11-18T14:20:00Z\"\n  }\n}", "explanation": {"kyaHua": "Backend raw API response ko enterprise standard API response wrapper me transform kiya gaya hai with status, correlationId, itemCount, and currency formatting.", "functionDetails": "String number formatting '#,##0.00', correlationId access, array sizeOf() helper.", "interviewQuestion": "Interviewer asks: 'What is your standard Experience API response wrapper pattern in MuleSoft?'", "realProjectUsage": "Experience API layer: Mobile App aur Web Portal ke liye clean, predictable API envelope banana."}, "name": "API Response Transformation", "payload": "{\n  \"rawStatus\": 200,\n  \"data\": [\n    { \"id\": 1, \"sku\": \"SOLAR-INV-100\", \"price\": 1200, \"stock\": 14 },\n    { \"id\": 2, \"sku\": \"SOLAR-BAT-50\", \"price\": 3400, \"stock\": 5 }\n  ],\n  \"serverTime\": 1731920000\n}"}, {"id": "filter-array", "title": "Filter Array (where condition)", "category": "array", "format": "json", "input": "[\n  { \"id\": 1, \"name\": \"John Doe\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.8 },\n  { \"id\": 2, \"name\": \"Jane Smith\", \"role\": \"MANAGER\", \"active\": false, \"rating\": 3.9 },\n  { \"id\": 3, \"name\": \"Mike Brown\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.2 },\n  { \"id\": 4, \"name\": \"Sarah Lee\", \"role\": \"ARCHITECT\", \"active\": true, \"rating\": 4.9 }\n]", "script": "%dw 2.0\noutput application/json\n---\npayload filter ($.active == true and $.role == \"DEVELOPER\" and $.rating >= 4.5)", "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"John Doe\",\n    \"role\": \"DEVELOPER\",\n    \"active\": true,\n    \"rating\": 4.8\n  }\n]", "explanation": {"kyaHua": "Array ke items par multiple boolean conditions apply karke sirf matching elements ko retain kiya gaya hai.", "functionDetails": "filter function takes a boolean predicate using '$' (current item) or explicit parameters ((item, index) -> ...).", "interviewQuestion": "Interviewer asks: 'How does filter work in DataWeave, and what happens if no records match?' -> Returns empty array [].", "realProjectUsage": "Filtering active customer accounts, pending orders, or valid sensor readings from a bulk payload."}, "name": "Filter Array (where condition)", "payload": "[\n  { \"id\": 1, \"name\": \"John Doe\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.8 },\n  { \"id\": 2, \"name\": \"Jane Smith\", \"role\": \"MANAGER\", \"active\": false, \"rating\": 3.9 },\n  { \"id\": 3, \"name\": \"Mike Brown\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.2 },\n  { \"id\": 4, \"name\": \"Sarah Lee\", \"role\": \"ARCHITECT\", \"active\": true, \"rating\": 4.9 }\n]"}, {"id": "map-array", "title": "Map Array - Add new field", "category": "array", "format": "json", "input": "[\n  { \"productId\": \"P1\", \"basePrice\": 100, \"category\": \"ELECTRONICS\" },\n  { \"productId\": \"P2\", \"basePrice\": 250, \"category\": \"FURNITURE\" },\n  { \"productId\": \"P3\", \"basePrice\": 50,  \"category\": \"GROCERY\" }\n]", "script": "%dw 2.0\noutput application/json\nvar taxRate = 0.08\n---\npayload map ((item, index) -> item ++ {\n  itemIndex: index + 1,\n  taxAmount: item.basePrice * taxRate,\n  finalPrice: item.basePrice * (1 + taxRate),\n  isTaxable: item.category != \"GROCERY\"\n})", "output": "[\n  {\n    \"productId\": \"P1\",\n    \"basePrice\": 100,\n    \"category\": \"ELECTRONICS\",\n    \"itemIndex\": 1,\n    \"taxAmount\": 8,\n    \"finalPrice\": 108,\n    \"isTaxable\": true\n  },\n  {\n    \"productId\": \"P2\",\n    \"basePrice\": 250,\n    \"category\": \"FURNITURE\",\n    \"itemIndex\": 2,\n    \"taxAmount\": 20,\n    \"finalPrice\": 270,\n    \"isTaxable\": true\n  },\n  {\n    \"productId\": \"P3\",\n    \"basePrice\": 50,\n    \"category\": \"GROCERY\",\n    \"itemIndex\": 3,\n    \"taxAmount\": 4,\n    \"finalPrice\": 54,\n    \"isTaxable\": false\n  }\n]", "explanation": {"kyaHua": "Array ke har object me naye fields calculate karke append kiye gaye hain bina purani keys ko drop kiye (`item ++ { newFields }`).", "functionDetails": "Object concatenation 'item ++ { key: value }' existing keys preserve karta hai. Index parameter provides 0-based iteration count.", "interviewQuestion": "Interviewer asks: 'How do you add a new key to an existing object inside map without rewriting all existing keys?'", "realProjectUsage": "Enrichment flow: Inbound records me audit timestamps, sequence numbers, ya computed tax rates add karna."}, "name": "Map Array - Add new field", "payload": "[\n  { \"productId\": \"P1\", \"basePrice\": 100, \"category\": \"ELECTRONICS\" },\n  { \"productId\": \"P2\", \"basePrice\": 250, \"category\": \"FURNITURE\" },\n  { \"productId\": \"P3\", \"basePrice\": 50,  \"category\": \"GROCERY\" }\n]"}, {"id": "groupby-dept", "title": "GroupBy - Group by Department", "category": "array", "format": "json", "input": "[\n  { \"name\": \"Alice\", \"dept\": \"Engineering\", \"salary\": 120000 },\n  { \"name\": \"Bob\",   \"dept\": \"Sales\",       \"salary\": 95000 },\n  { \"name\": \"Carol\", \"dept\": \"Engineering\", \"salary\": 140000 },\n  { \"name\": \"Dave\",  \"dept\": \"Sales\",       \"salary\": 85000 },\n  { \"name\": \"Eve\",   \"dept\": \"HR\",          \"salary\": 75000 }\n]", "script": "%dw 2.0\noutput application/json\n---\npayload groupBy ((emp) -> emp.dept)", "output": "{\n  \"Engineering\": [\n    { \"name\": \"Alice\", \"dept\": \"Engineering\", \"salary\": 120000 },\n    { \"name\": \"Carol\", \"dept\": \"Engineering\", \"salary\": 140000 }\n  ],\n  \"Sales\": [\n    { \"name\": \"Bob\", \"dept\": \"Sales\", \"salary\": 95000 },\n    { \"name\": \"Dave\", \"dept\": \"Sales\", \"salary\": 85000 }\n  ],\n  \"HR\": [\n    { \"name\": \"Eve\", \"dept\": \"HR\", \"salary\": 75000 }\n  ]\n}", "explanation": {"kyaHua": "Flat array of employee objects ko department-wise group karke structured JSON object banaya jisme keys department names hain.", "functionDetails": "groupBy returns an Object where each key is the criteria value and each value is an Array of matched elements.", "interviewQuestion": "Interviewer asks: 'What is the return type of groupBy? Is it an Array or an Object?' -> Always returns an Object.", "realProjectUsage": "Generating summary reports: Grouping orders by customerId, sensor readings by deviceId, or transactions by date."}, "name": "GroupBy - Group by Department", "payload": "[\n  { \"name\": \"Alice\", \"dept\": \"Engineering\", \"salary\": 120000 },\n  { \"name\": \"Bob\",   \"dept\": \"Sales\",       \"salary\": 95000 },\n  { \"name\": \"Carol\", \"dept\": \"Engineering\", \"salary\": 140000 },\n  { \"name\": \"Dave\",  \"dept\": \"Sales\",       \"salary\": 85000 },\n  { \"name\": \"Eve\",   \"dept\": \"HR\",          \"salary\": 75000 }\n]"}, {"id": "orderby-salary", "title": "OrderBy - Sort by Salary", "category": "array", "format": "json", "input": "[\n  { \"name\": \"Alice\", \"salary\": 95000 },\n  { \"name\": \"Bob\",   \"salary\": 140000 },\n  { \"name\": \"Carol\", \"salary\": 75000 },\n  { \"name\": \"Dave\",  \"salary\": 120000 }\n]", "script": "%dw 2.0\noutput application/json\n---\n// Descending sort: minus (-) sign reverses order\npayload orderBy -$.salary", "output": "[\n  { \"name\": \"Bob\", \"salary\": 140000 },\n  { \"name\": \"Dave\", \"salary\": 120000 },\n  { \"name\": \"Alice\", \"salary\": 95000 },\n  { \"name\": \"Carol\", \"salary\": 75000 }\n]", "explanation": {"kyaHua": "Array ko salary ke hisab se highest to lowest (descending order) me sort kiya gaya hai.", "functionDetails": "orderBy sorts ascending by default. Adding '-' before numeric expression inverts it to descending order (-$.salary).", "interviewQuestion": "Interviewer asks: 'How do you perform descending sorting in DataWeave without calling reverse()?'", "realProjectUsage": "Ranking top sales reps, finding highest priority tickets, or sorting timestamps from newest to oldest."}, "name": "OrderBy - Sort by Salary", "payload": "[\n  { \"name\": \"Alice\", \"salary\": 95000 },\n  { \"name\": \"Bob\",   \"salary\": 140000 },\n  { \"name\": \"Carol\", \"salary\": 75000 },\n  { \"name\": \"Dave\",  \"salary\": 120000 }\n]"}, {"id": "distinct-duplicates", "title": "Distinct - Remove duplicates", "category": "array", "format": "json", "input": "[\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 102, \"email\": \"bob@test.com\",   \"region\": \"UK\" },\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 103, \"email\": \"carol@test.com\", \"region\": \"US\" }\n]", "script": "%dw 2.0\noutput application/json\nimport * from dw::core::Arrays\n---\n// distinctBy takes criteria key\npayload distinctBy ((item) -> item.id)", "output": "[\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 102, \"email\": \"bob@test.com\", \"region\": \"UK\" },\n  { \"id\": 103, \"email\": \"carol@test.com\", \"region\": \"US\" }\n]", "explanation": {"kyaHua": "Duplicate records ko specific unique key (`item.id`) ke basis par filter out kiya gaya hai.", "functionDetails": "distinctBy retains the first occurrence of each unique key evaluation and drops subsequent duplicates.", "interviewQuestion": "Interviewer asks: 'What is the difference between distinct and distinctBy in DataWeave?'", "realProjectUsage": "Message Deduplication: At-least-once queues se aane wale duplicate payloads ko filter karna."}, "name": "Distinct - Remove duplicates", "payload": "[\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 102, \"email\": \"bob@test.com\",   \"region\": \"UK\" },\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 103, \"email\": \"carol@test.com\", \"region\": \"US\" }\n]"}, {"id": "reduce-sum", "title": "Reduce - Sum of Salary", "category": "array", "format": "json", "input": "[\n  { \"item\": \"Solar Panel 400W\", \"qty\": 10, \"unitPrice\": 250 },\n  { \"item\": \"Inverter 5KW\",      \"qty\": 2,  \"unitPrice\": 1200 },\n  { \"item\": \"Battery 10KWh\",     \"qty\": 1,  \"unitPrice\": 4500 }\n]", "script": "%dw 2.0\noutput application/json\n---\n{\n  totalItems: sizeOf(payload),\n  grandTotal: payload reduce ((line, acc = 0) -> acc + (line.qty * line.unitPrice)),\n  currency: \"USD\"\n}", "output": "{\n  \"totalItems\": 3,\n  \"grandTotal\": 9400,\n  \"currency\": \"USD\"\n}", "explanation": {"kyaHua": "Array ke line items ko fold/accumulate karke single aggregated grand total amount calculate kiya gaya hai.", "functionDetails": "reduce function takes an item and accumulator ((item, acc = initialValue) -> ...).", "interviewQuestion": "Interviewer asks: 'How do you calculate total order sum from a line-item array using reduce in DataWeave?'", "realProjectUsage": "Invoice and billing calculations: Line items ka sum, tax aggregation, and order summary generation."}, "name": "Reduce - Sum of Salary", "payload": "[\n  { \"item\": \"Solar Panel 400W\", \"qty\": 10, \"unitPrice\": 250 },\n  { \"item\": \"Inverter 5KW\",      \"qty\": 2,  \"unitPrice\": 1200 },\n  { \"item\": \"Battery 10KWh\",     \"qty\": 1,  \"unitPrice\": 4500 }\n]"}, {"id": "flatten-nested", "title": "Flatten - Nested Array", "category": "array", "format": "json", "input": "[\n  { \"orderId\": \"O1\", \"items\": [\"P-101\", \"P-102\"] },\n  { \"orderId\": \"O2\", \"items\": [\"P-201\"] },\n  { \"orderId\": \"O3\", \"items\": [\"P-301\", \"P-302\", \"P-303\"] }\n]", "script": "%dw 2.0\noutput application/json\n---\n{\n  allProductIds: flatten(payload.items)\n}", "output": "{\n  \"allProductIds\": [\n    \"P-101\",\n    \"P-102\",\n    \"P-201\",\n    \"P-301\",\n    \"P-302\",\n    \"P-303\"\n  ]\n}", "explanation": {"kyaHua": "Array of arrays (`[['P-101', 'P-102'], ['P-201'], ...]`) ko collapse karke single 1-dimensional array banaya gaya.", "functionDetails": "flatten() removes one level of array nesting. payload.items yields [[...], [...]], flatten makes it [...].", "interviewQuestion": "Interviewer asks: 'What does flatten() do and how is it different from flatMap()?'", "realProjectUsage": "Scatter-Gather results ya multiple database queries ke combined list ko flat array me convert karna."}, "name": "Flatten - Nested Array", "payload": "[\n  { \"orderId\": \"O1\", \"items\": [\"P-101\", \"P-102\"] },\n  { \"orderId\": \"O2\", \"items\": [\"P-201\"] },\n  { \"orderId\": \"O3\", \"items\": [\"P-301\", \"P-302\", \"P-303\"] }\n]"}, {"id": "coalesce-default", "title": "Coalesce / Default - Handle Nulls", "category": "json", "format": "json", "input": "{\n  \"customerId\": \"C-100\",\n  \"preferredName\": null,\n  \"legalName\": \"Niranjan Potter\",\n  \"billingPhone\": null,\n  \"mobilePhone\": \"305-555-0199\",\n  \"discountRate\": null\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  customerId: payload.customerId,\n  displayName: payload.preferredName default payload.legalName default \"Valued Customer\",\n  contactPhone: payload.billingPhone default payload.mobilePhone default \"N/A\",\n  appliedDiscount: payload.discountRate default 0.05,\n  hasPhone: (payload.billingPhone != null) or (payload.mobilePhone != null)\n}", "output": "{\n  \"customerId\": \"C-100\",\n  \"displayName\": \"Niranjan Potter\",\n  \"contactPhone\": \"305-555-0199\",\n  \"appliedDiscount\": 0.05,\n  \"hasPhone\": true\n}", "explanation": {"kyaHua": "Null values ko chain karke fallback default values provide kiye gaye hain bina NullPointerExceptions ke.", "functionDetails": "The 'default' keyword acts as a coalesce operator in DataWeave. If left-hand expression is null, it evaluates right-hand.", "interviewQuestion": "Interviewer asks: 'How do you handle NullPointerException in DataWeave when dealing with optional backend fields?'", "realProjectUsage": "Defensive DataWeave: Downstream systems ko clean non-null data bhejne ke liye standard pattern."}, "name": "Coalesce / Default - Handle Nulls", "payload": "{\n  \"customerId\": \"C-100\",\n  \"preferredName\": null,\n  \"legalName\": \"Niranjan Potter\",\n  \"billingPhone\": null,\n  \"mobilePhone\": \"305-555-0199\",\n  \"discountRate\": null\n}"}, {"id": "date-format", "title": "Date Format - Change Date Format", "category": "date", "format": "json", "input": "{\n  \"isoTimestamp\": \"2026-11-18T14:30:00.000Z\",\n  \"epochSeconds\": 1795000000,\n  \"legacyDate\": \"18/11/2026\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  standardIso: payload.isoTimestamp,\n  usFormatted: (payload.isoTimestamp as DateTime) as String {format: \"MM/dd/yyyy hh:mm a\"},\n  dateOnly: (payload.isoTimestamp as DateTime) as String {format: \"yyyy-MM-dd\"},\n  timeOnly: (payload.isoTimestamp as DateTime) as String {format: \"HH:mm:ss\"},\n  fromEpoch: (payload.epochSeconds as DateTime) as String {format: \"yyyy-MM-dd HH:mm:ss\"},\n  reparsedLegacy: (payload.legacyDate as Date {format: \"dd/MM/yyyy\"}) as String {format: \"yyyy-MM-dd\"}\n}", "output": "{\n  \"standardIso\": \"2026-11-18T14:30:00.000Z\",\n  \"usFormatted\": \"11/18/2026 02:30 PM\",\n  \"dateOnly\": \"2026-11-18\",\n  \"timeOnly\": \"14:30:00\",\n  \"fromEpoch\": \"2026-11-18 14:30:00\",\n  \"reparsedLegacy\": \"2026-11-18\"\n}", "explanation": {"kyaHua": "Dates ko ISO 8601, Epoch Unix timestamps, aur custom regional formats ke beech convert kiya gaya.", "functionDetails": "DataWeave types: DateTime, Date, Time. Syntax: (val as DateTime) as String {format: '...'}.", "interviewQuestion": "Interviewer asks: 'How do you parse a non-standard date string like dd/MM/yyyy into ISO yyyy-MM-dd in DataWeave?'", "realProjectUsage": "SAP and Mainframe integration jaha legacy date strings ko modern cloud standard dates me convert karna hota hai."}, "name": "Date Format - Change Date Format", "payload": "{\n  \"isoTimestamp\": \"2026-11-18T14:30:00.000Z\",\n  \"epochSeconds\": 1795000000,\n  \"legacyDate\": \"18/11/2026\"\n}"}, {"id": "string-functions", "title": "String Functions - Upper, Lower, Concat", "category": "string", "format": "json", "input": "{\n  \"firstName\": \"  niranjan \",\n  \"lastName\": \"POTTER  \",\n  \"rawId\": \"MULE-2026-PROD-99\",\n  \"notes\": \"urgent: client needs billing fix immediately\"\n}", "script": "%dw 2.0\noutput application/json\nimport * from dw::core::Strings\n---\n{\n  fullName: capitalize(trim(payload.firstName)) ++ \" \" ++ capitalize(trim(payload.lastName)),\n  upperCode: upper(payload.rawId),\n  systemTag: (payload.rawId splitBy \"-\")[1],\n  sequenceNum: (payload.rawId splitBy \"-\")[-1],\n  isUrgent: payload.notes startsWith \"urgent\",\n  notesSummary: substring(payload.notes, 8, 32),\n  paddedId: leftPad(\"42\", 6, \"0\")\n}", "output": "{\n  \"fullName\": \"Niranjan Potter\",\n  \"upperCode\": \"MULE-2026-PROD-99\",\n  \"systemTag\": \"2026\",\n  \"sequenceNum\": \"99\",\n  \"isUrgent\": true,\n  \"notesSummary\": \"client needs billing fix\",\n  \"paddedId\": \"000042\"\n}", "explanation": {"kyaHua": "String manipulation: trim whitespace, capitalize names, split identifiers by hyphens, substring extraction, aur leftPad formatting.", "functionDetails": "Functions from dw::core::Strings: capitalize, trim, leftPad, startsWith, splitBy.", "interviewQuestion": "Interviewer asks: 'How do you extract the last token from a hyphen-separated string?' -> (str splitBy '-')[-1].", "realProjectUsage": "Data cleansing, sanitizing user inputs, and extracting tokens from correlation IDs."}, "name": "String Functions - Upper, Lower, Concat", "payload": "{\n  \"firstName\": \"  niranjan \",\n  \"lastName\": \"POTTER  \",\n  \"rawId\": \"MULE-2026-PROD-99\",\n  \"notes\": \"urgent: client needs billing fix immediately\"\n}"}, {"id": "type-coercion", "title": "Type Coercion - String to Number", "category": "json", "format": "json", "input": "{\n  \"stringInt\": \"1050\",\n  \"stringFloat\": \"49.99\",\n  \"stringBool\": \"true\",\n  \"numVal\": 12500,\n  \"dateStr\": \"2026-11-18\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  intNumber: payload.stringInt as Number,\n  floatNumber: payload.stringFloat as Number,\n  boolValue: payload.stringBool as Boolean,\n  currencyString: \"$\" ++ (payload.numVal as String {format: \"#,##0.00\"}),\n  parsedDate: payload.dateStr as Date,\n  isPositive: (payload.stringFloat as Number) > 0\n}", "output": "{\n  \"intNumber\": 1050,\n  \"floatNumber\": 49.99,\n  \"boolValue\": true,\n  \"currencyString\": \"$12,500.00\",\n  \"parsedDate\": \"2026-11-18\",\n  \"isPositive\": true\n}", "explanation": {"kyaHua": "Strings ko strictly-typed Numbers, Booleans, aur Dates me convert kiya gaya hai (Type Coercion).", "functionDetails": "Keyword 'as': 'val as Number', 'val as Boolean', 'val as Date'.", "interviewQuestion": "Interviewer asks: 'What happens if you coerce an invalid string 'ABC' as Number?' -> Throws Cannot coerce String to Number exception.", "realProjectUsage": "Query parameters and HTTP headers are always strings. Backend databases me insert karne se pehle type cast karna padta hai."}, "name": "Type Coercion - String to Number", "payload": "{\n  \"stringInt\": \"1050\",\n  \"stringFloat\": \"49.99\",\n  \"stringBool\": \"true\",\n  \"numVal\": 12500,\n  \"dateStr\": \"2026-11-18\"\n}"}, {"id": "conditional-if-else", "title": "Conditional - If Else / Case", "category": "advanced", "format": "json", "input": "{\n  \"meterType\": \"COMMERCIAL\",\n  \"kwhUsage\": 1250,\n  \"paymentStatus\": \"OVERDUE\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  tariffRate: if (payload.meterType == \"RESIDENTIAL\") 0.12\n              else if (payload.meterType == \"COMMERCIAL\") 0.18\n              else 0.25,\n  accountAction: payload.paymentStatus match {\n    case \"PAID\" -> \"STANDARD_SERVICE\"\n    case \"OVERDUE\" -> \"DISPATCH_SMS_REMINDER\"\n    case \"DEFAULTED\" -> \"SHUTOFF_NOTICE\"\n    else -> \"REVIEW_REQUIRED\"\n  },\n  tier: if (payload.kwhUsage > 1000) \"HIGH_CONSUMPTION\" else \"STANDARD\"\n}", "output": "{\n  \"tariffRate\": 0.18,\n  \"accountAction\": \"DISPATCH_SMS_REMINDER\",\n  \"tier\": \"HIGH_CONSUMPTION\"\n}", "explanation": {"kyaHua": "Business logic routing: if-else conditions aur pattern matching ('match { case ... }') se dynamic outputs calculate kiye gaye.", "functionDetails": "DataWeave match-case construct provides cleaner, more declarative syntax than deeply nested if-else ladders.", "interviewQuestion": "Interviewer asks: 'When should you use match-case instead of if-else in DataWeave?'", "realProjectUsage": "Business rule engines: Tariff calculation, dynamic queue selection, and error code mapping."}, "name": "Conditional - If Else / Case", "payload": "{\n  \"meterType\": \"COMMERCIAL\",\n  \"kwhUsage\": 1250,\n  \"paymentStatus\": \"OVERDUE\"\n}"}, {"id": "lookup-function", "title": "Lookup Function", "category": "advanced", "format": "json", "input": "{\n  \"accountId\": \"ACC-552\",\n  \"zipCode\": \"33139\",\n  \"subtotal\": 1000\n}", "script": "%dw 2.0\noutput application/json\n// Note: In Anypoint Studio, lookup executes an in-memory Mule subflow\n// syntax: lookup('subflow-name', payload, timeoutMs)\n---\n{\n  accountId: payload.accountId,\n  zipCode: payload.zipCode,\n  subtotal: payload.subtotal,\n  // Simulated lookup return:\n  taxCalculation: {\n    stateTax: 60.00,\n    countyTax: 10.00,\n    totalWithTax: 1070.00\n  },\n  note: \"In Mule runtime: lookup('calculateTaxSubflow', {zip: payload.zipCode, amt: payload.subtotal})\"\n}", "output": "{\n  \"accountId\": \"ACC-552\",\n  \"zipCode\": \"33139\",\n  \"subtotal\": 1000,\n  \"taxCalculation\": {\n    \"stateTax\": 60,\n    \"countyTax\": 10,\n    \"totalWithTax\": 1070\n  },\n  \"note\": \"In Mule runtime: lookup('calculateTaxSubflow', {zip: payload.zipCode, amt: payload.subtotal})\"\n}", "explanation": {"kyaHua": "DataWeave script ke andar se directly dusre Mule sub-flow ko call karne ka pattern (lookup function).", "functionDetails": "lookup(flowName, payload, timeout). Note: lookup() only calls synchronous private flows without transactional boundaries.", "interviewQuestion": "Interviewer asks: 'Can the lookup() function call an asynchronous flow or a flow with HTTP listener?' -> No, only private/sub-flows.", "realProjectUsage": "In-flight data enrichment: DataWeave transformation ke dauran cache lookup ya utility subflow call karna."}, "name": "Lookup Function", "payload": "{\n  \"accountId\": \"ACC-552\",\n  \"zipCode\": \"33139\",\n  \"subtotal\": 1000\n}"}, {"id": "pluck-object-to-array", "title": "Pluck - Object to Array", "category": "array", "format": "json", "input": "{\n  \"US_EAST\": 450,\n  \"US_WEST\": 320,\n  \"EU_CENTRAL\": 190,\n  \"AP_SOUTH\": 610\n}", "script": "%dw 2.0\noutput application/json\n---\npayload pluck ((value, key, index) -> {\n  regionCode: key as String,\n  activeServers: value,\n  sequence: index + 1\n})", "output": "[\n  { \"regionCode\": \"US_EAST\", \"activeServers\": 450, \"sequence\": 1 },\n  { \"regionCode\": \"US_WEST\", \"activeServers\": 320, \"sequence\": 2 },\n  { \"regionCode\": \"EU_CENTRAL\", \"activeServers\": 190, \"sequence\": 3 },\n  { \"regionCode\": \"AP_SOUTH\", \"activeServers\": 610, \"sequence\": 4 }\n]", "explanation": {"kyaHua": "JSON Object ke key-value pairs ko iterate karke unhe structured Array of Objects me convert kiya gaya hai.", "functionDetails": "pluck((value, key, index) -> ...) is used exclusively on Objects to transform them into Arrays (complement of map on arrays).", "interviewQuestion": "Interviewer asks: 'How do you iterate over an Object instead of an Array in DataWeave?' -> Use pluck().", "realProjectUsage": "Database dynamic column maps ya key-value caches ko UI table rows me transform karna."}, "name": "Pluck - Object to Array", "payload": "{\n  \"US_EAST\": 450,\n  \"US_WEST\": 320,\n  \"EU_CENTRAL\": 190,\n  \"AP_SOUTH\": 610\n}"}, {"id": "merge-two-payloads", "title": "Merge Two Payloads", "category": "advanced", "format": "json", "input": "{\n  \"customer\": {\n    \"id\": \"C-101\",\n    \"name\": \"Niranjan Potter\"\n  },\n  \"billing\": {\n    \"accountNumber\": \"ACT-9901\",\n    \"balance\": 240.75,\n    \"status\": \"CURRENT\"\n  }\n}", "script": "%dw 2.0\noutput application/json\n---\npayload.customer ++ payload.billing ++ {\n  lastUpdated: now() as String {format: \"yyyy-MM-dd\"}\n}", "output": "{\n  \"id\": \"C-101\",\n  \"name\": \"Niranjan Potter\",\n  \"accountNumber\": \"ACT-9901\",\n  \"balance\": 240.75,\n  \"status\": \"CURRENT\",\n  \"lastUpdated\": \"2026-11-18\"\n}", "explanation": {"kyaHua": "Do alag alag objects (Customer + Billing) ko combine karke ek single consolidated enterprise customer profile banaya gaya.", "functionDetails": "Object concatenation '++' merges keys from both objects. If duplicate keys exist, right-hand object overrides left-hand.", "interviewQuestion": "Interviewer asks: 'What happens when you merge two objects with identical keys using ++ in DataWeave?'", "realProjectUsage": "Scatter-Gather aggregation: Customer CRM call aur Billing SAP call ke dono responses ko single canonical DTO me merge karna."}, "name": "Merge Two Payloads", "payload": "{\n  \"customer\": {\n    \"id\": \"C-101\",\n    \"name\": \"Niranjan Potter\"\n  },\n  \"billing\": {\n    \"accountNumber\": \"ACT-9901\",\n    \"balance\": 240.75,\n    \"status\": \"CURRENT\"\n  }\n}"}, {"id": "splitby-joinby", "title": "SplitBy / JoinBy", "category": "string", "format": "json", "input": "{\n  \"tags\": \"salesforce,mulesoft,aws,sap,kafka\",\n  \"phoneSegments\": [\"305\", \"555\", \"0144\"]\n}", "script": "%dw 2.0\noutput application/json\nimport * from dw::core::Strings\n---\n{\n  tagList: payload.tags splitBy \",\",\n  uppercaseTags: (payload.tags splitBy \",\") map upper($),\n  formattedPhone: payload.phoneSegments joinBy \"-\"\n}", "output": "{\n  \"tagList\": [\n    \"salesforce\",\n    \"mulesoft\",\n    \"aws\",\n    \"sap\",\n    \"kafka\"\n  ],\n  \"uppercaseTags\": [\n    \"SALESFORCE\",\n    \"MULESOFT\",\n    \"AWS\",\n    \"SAP\",\n    \"KAFKA\"\n  ],\n  \"formattedPhone\": \"305-555-0144\"\n}", "explanation": {"kyaHua": "Delimited string ko splitBy se array me break kiya, aur array of strings ko joinBy se hyphenated string me join kiya.", "functionDetails": "splitBy(delimiter) returns Array of String. joinBy(separator) converts Array of String to single String.", "interviewQuestion": "Interviewer asks: 'How do you convert a comma-separated string into an array and back into a hyphenated string?'", "realProjectUsage": "Parsing comma-separated query parameters (e.g. ?fields=id,name,email) and building database IN clauses."}, "name": "SplitBy / JoinBy", "payload": "{\n  \"tags\": \"salesforce,mulesoft,aws,sap,kafka\",\n  \"phoneSegments\": [\"305\", \"555\", \"0144\"]\n}"}, {"id": "batch-job-dw", "title": "Batch Job - DataWeave for Batch", "category": "advanced", "format": "json", "input": "[\n  { \"id\": \"1001\", \"meter\": \"MTR-1\", \"kwh\": 450, \"status\": \"READY\" },\n  { \"id\": \"1002\", \"meter\": \"MTR-2\", \"kwh\": 310, \"status\": \"READY\" },\n  { \"id\": \"1003\", \"meter\": \"MTR-3\", \"kwh\": 590, \"status\": \"READY\" }\n]", "script": "%dw 2.0\noutput application/json\n---\n// Preparing payload inside Batch Aggregator for bulk commit\npayload map ((record) -> {\n  External_Id__c: record.id,\n  Meter_Number__c: record.meter,\n  KWH_Usage__c: record.kwh,\n  Processed_Timestamp__c: now(),\n  Batch_Source__c: \"MULE_BATCH_STEP_2\"\n})", "output": "[\n  {\n    \"External_Id__c\": \"1001\",\n    \"Meter_Number__c\": \"MTR-1\",\n    \"KWH_Usage__c\": 450,\n    \"Processed_Timestamp__c\": \"2026-11-18T14:30:00Z\",\n    \"Batch_Source__c\": \"MULE_BATCH_STEP_2\"\n  },\n  {\n    \"External_Id__c\": \"1002\",\n    \"Meter_Number__c\": \"MTR-2\",\n    \"KWH_Usage__c\": 310,\n    \"Processed_Timestamp__c\": \"2026-11-18T14:30:00Z\",\n    \"Batch_Source__c\": \"MULE_BATCH_STEP_2\"\n  },\n  {\n    \"External_Id__c\": \"1003\",\n    \"Meter_Number__c\": \"MTR-3\",\n    \"KWH_Usage__c\": 590,\n    \"Processed_Timestamp__c\": \"2026-11-18T14:30:00Z\",\n    \"Batch_Source__c\": \"MULE_BATCH_STEP_2\"\n  }\n]", "explanation": {"kyaHua": "Batch Aggregator ke chunk (e.g. 200 records) ko Salesforce Bulk Upsert SObject format me map kiya gaya hai with External ID.", "functionDetails": "Batch Aggregator accumulates records into an Array. DataWeave transforms the aggregated array for bulk database/Salesforce commits.", "interviewQuestion": "Interviewer asks: 'What is the structure of payload inside a Batch Aggregator vs inside a Batch Step?' -> Batch Step payload is a single Record; Batch Aggregator payload is an Array of Records.", "realProjectUsage": "Nightly batch synchronization of 100,000 smart meter records into Salesforce Bulk API 2.0."}, "name": "Batch Job - DataWeave for Batch", "payload": "[\n  { \"id\": \"1001\", \"meter\": \"MTR-1\", \"kwh\": 450, \"status\": \"READY\" },\n  { \"id\": \"1002\", \"meter\": \"MTR-2\", \"kwh\": 310, \"status\": \"READY\" },\n  { \"id\": \"1003\", \"meter\": \"MTR-3\", \"kwh\": 590, \"status\": \"READY\" }\n]"}, {"id": "pagination-dw", "title": "Pagination - DataWeave for Pagination", "category": "advanced", "format": "json", "input": "{\n  \"totalRecords\": 245,\n  \"pageSize\": 50,\n  \"currentPage\": 2,\n  \"records\": [\n    { \"id\": 51, \"name\": \"Miami Utility Substation 4\" },\n    { \"id\": 52, \"name\": \"Fort Lauderdale Feeder Line\" }\n  ]\n}", "script": "%dw 2.0\noutput application/json\nvar totalPages = ceil(payload.totalRecords / payload.pageSize)\n---\n{\n  pagination: {\n    pageNumber: payload.currentPage,\n    pageSize: payload.pageSize,\n    totalItems: payload.totalRecords,\n    totalPages: totalPages,\n    hasNextPage: payload.currentPage < totalPages,\n    hasPrevPage: payload.currentPage > 1,\n    links: {\n      self: \"/api/v1/assets?page=\" ++ (payload.currentPage as String),\n      next: if (payload.currentPage < totalPages) \"/api/v1/assets?page=\" ++ ((payload.currentPage + 1) as String) else null,\n      prev: if (payload.currentPage > 1) \"/api/v1/assets?page=\" ++ ((payload.currentPage - 1) as String) else null\n    }\n  },\n  data: payload.records\n}", "output": "{\n  \"pagination\": {\n    \"pageNumber\": 2,\n    \"pageSize\": 50,\n    \"totalItems\": 245,\n    \"totalPages\": 5,\n    \"hasNextPage\": true,\n    \"hasPrevPage\": true,\n    \"links\": {\n      \"self\": \"/api/v1/assets?page=2\",\n      \"next\": \"/api/v1/assets?page=3\",\n      \"prev\": \"/api/v1/assets?page=1\"\n    }\n  },\n  \"data\": [\n    { \"id\": 51, \"name\": \"Miami Utility Substation 4\" },\n    { \"id\": 52, \"name\": \"Fort Lauderdale Feeder Line\" }\n  ]\n}", "explanation": {"kyaHua": "Standard HATEOAS RESTful pagination envelope generate kiya gaya hai with totalPages, hasNextPage, and navigation links.", "functionDetails": "ceil() from dw::core::Numbers (or math ceiling) to calculate totalPages. Dynamic string interpolation for URL generation.", "interviewQuestion": "Interviewer asks: 'How do you design a paginated API response in MuleSoft following enterprise REST standards?'", "realProjectUsage": "RESTful Experience API: Large datasets ko frontend UI tables me 50-records-per-page render karne ke liye."}, "name": "Pagination - DataWeave for Pagination", "payload": "{\n  \"totalRecords\": 245,\n  \"pageSize\": 50,\n  \"currentPage\": 2,\n  \"records\": [\n    { \"id\": 51, \"name\": \"Miami Utility Substation 4\" },\n    { \"id\": 52, \"name\": \"Fort Lauderdale Feeder Line\" }\n  ]\n}"}, {"id": "error-handling-dw", "title": "Error Handling - DataWeave with Error Payload", "category": "advanced", "format": "json", "input": "{\n  \"errorType\": \"HTTP:NOT_FOUND\",\n  \"errorDescription\": \"Customer with ID ACC-9912 was not found in SAP S/4HANA database.\",\n  \"path\": \"/api/v1/customers/ACC-9912\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  error: {\n    status: 404,\n    code: \"RESOURCE_NOT_FOUND\",\n    title: \"Entity Not Found\",\n    detail: payload.errorDescription,\n    sourcePath: payload.path,\n    correlationId: correlationId default \"CID-STATIC-ERR-99\",\n    timestamp: now() as String {format: \"yyyy-MM-dd'T'HH:mm:ss.SSSZ\"}\n  }\n}", "output": "{\n  \"error\": {\n    \"status\": 404,\n    \"code\": \"RESOURCE_NOT_FOUND\",\n    \"title\": \"Entity Not Found\",\n    \"detail\": \"Customer with ID ACC-9912 was not found in SAP S/4HANA database.\",\n    \"sourcePath\": \"/api/v1/customers/ACC-9912\",\n    \"correlationId\": \"CID-STATIC-ERR-99\",\n    \"timestamp\": \"2026-11-18T14:30:00.123+0000\"\n  }\n}", "explanation": {"kyaHua": "MuleSoft error object ko enterprise standard RFC 7807 (Problem Details for HTTP APIs) format me transform kiya gaya.", "functionDetails": "Constructs structured error JSON with HTTP status, standardized error code, correlationId for distributed log tracing, and ISO timestamp.", "interviewQuestion": "Interviewer asks: 'What is your standard error payload schema in MuleSoft Global Error Handlers?'", "realProjectUsage": "Enterprise Global Error Handler: Har MuleSoft API me On Error Propagate / Continue ke andar use hota hai."}, "name": "Error Handling - DataWeave with Error Payload", "payload": "{\n  \"errorType\": \"HTTP:NOT_FOUND\",\n  \"errorDescription\": \"Customer with ID ACC-9912 was not found in SAP S/4HANA database.\",\n  \"path\": \"/api/v1/customers/ACC-9912\"\n}"}];;
+var DW_PRESETS = [{"id": "json-to-json", "title": "JSON to JSON - Simple Mapping", "category": "json", "format": "json", "input": "{\n  \"order_id\": \"ORD-98214\",\n  \"cust_first_name\": \"Niranjan\",\n  \"cust_last_name\": \"Potter\",\n  \"cust_email\": \"niranjan@mulesoft.hub\",\n  \"billing_amount\": 499.50,\n  \"currency_code\": \"USD\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  orderId: payload.order_id,\n  customerName: payload.cust_first_name ++ \" \" ++ payload.cust_last_name,\n  emailAddress: lower(payload.cust_email),\n  invoice: {\n    total: payload.billing_amount,\n    currency: payload.currency_code,\n    isPaid: true\n  },\n  processedAt: now() as String {format: \"yyyy-MM-dd HH:mm:ss\"}\n}", "output": "{\n  \"orderId\": \"ORD-98214\",\n  \"customerName\": \"Niranjan Potter\",\n  \"emailAddress\": \"niranjan@mulesoft.hub\",\n  \"invoice\": {\n    \"total\": 499.5,\n    \"currency\": \"USD\",\n    \"isPaid\": true\n  },\n  \"processedAt\": \"2026-11-18 14:15:00\"\n}", "explanation": {"whatHappened": "Incoming JSON keys (snake_case) are mapped to canonical enterprise camelCase JSON format. Full name is created using string concatenation (++), and a nested invoice object is created.", "functionDetails": "Uses string concatenation (++), lower(), and now() as String {format: '...'} for core field remapping and data normalization.", "interviewQuestion": "Interviewer asks: 'How do you rename keys and concatenate strings while preserving data types in DataWeave?'", "realProjectUsage": "Experience API to Process API transformation: standardizes client payloads into the enterprise canonical data model."}, "name": "JSON to JSON - Simple Mapping", "payload": "{\n  \"order_id\": \"ORD-98214\",\n  \"cust_first_name\": \"Niranjan\",\n  \"cust_last_name\": \"Potter\",\n  \"cust_email\": \"niranjan@mulesoft.hub\",\n  \"billing_amount\": 499.50,\n  \"currency_code\": \"USD\"\n}"}, {"id": "json-to-xml", "title": "JSON to XML", "category": "xml", "format": "json", "input": "{\n  \"account\": {\n    \"id\": \"ACC-7890\",\n    \"name\": \"Florida Power & Light\",\n    \"tier\": \"ENTERPRISE\",\n    \"active\": true\n  }\n}", "script": "%dw 2.0\noutput application/xml\n---\nAccountRequest @(xmlns: \"http://schemas.utility.com/account/v1\", id: payload.account.id): {\n  AccountName: payload.account.name,\n  AccountTier: payload.account.tier,\n  IsActive: payload.account.active\n}", "output": "<?xml version='1.0' encoding='UTF-8'?>\n<AccountRequest xmlns=\"http://schemas.utility.com/account/v1\" id=\"ACC-7890\">\n  <AccountName>Florida Power &amp; Light</AccountName>\n  <AccountTier>ENTERPRISE</AccountTier>\n  <IsActive>true</IsActive>\n</AccountRequest>", "explanation": {"whatHappened": "The incoming JSON object is transformed into a schema-compliant XML envelope with root XML attributes (@(xmlns: ..., id: ...)).", "functionDetails": "Uses 'output application/xml' and root attribute syntax '@(attr1: val, attr2: val)' to attach namespaces and attributes.", "interviewQuestion": "Interviewer asks: 'How do you add XML attributes and namespaces to the root tag in DataWeave 2.0?'", "realProjectUsage": "Legacy SOAP Web Service integration (SAP, Mainframe, Oracle EBS) where REST JSON requests must be converted into SOAP XML payloads."}, "name": "JSON to XML", "payload": "{\n  \"account\": {\n    \"id\": \"ACC-7890\",\n    \"name\": \"Florida Power & Light\",\n    \"tier\": \"ENTERPRISE\",\n    \"active\": true\n  }\n}"}, {"id": "xml-to-json", "title": "XML to JSON", "category": "xml", "format": "xml", "input": "<?xml version='1.0' encoding='UTF-8'?>\n<GetCustomerResponse xmlns=\"http://utility.fpl.com/service\">\n  <Customer id=\"C-9912\">\n    <Name>Nextera Energy</Name>\n    <MeterNumber>MTR-55410</MeterNumber>\n    <Status>ACTIVE</Status>\n    <CurrentReading unit=\"KWH\">4820.75</CurrentReading>\n  </Customer>\n</GetCustomerResponse>", "script": "%dw 2.0\noutput application/json\nns ns0 http://utility.fpl.com/service\n---\n{\n  customerId: payload.ns0#GetCustomerResponse.ns0#Customer.@id,\n  customerName: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#Name,\n  meterId: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#MeterNumber,\n  reading: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#CurrentReading as Number,\n  unit: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#CurrentReading.@unit,\n  status: payload.ns0#GetCustomerResponse.ns0#Customer.ns0#Status\n}", "output": "{\n  \"customerId\": \"C-9912\",\n  \"customerName\": \"Nextera Energy\",\n  \"meterId\": \"MTR-55410\",\n  \"reading\": 4820.75,\n  \"unit\": \"KWH\",\n  \"status\": \"ACTIVE\"\n}", "explanation": {"whatHappened": "The namespaced SOAP XML payload is parsed by extracting XML attributes (.@attr) and element text values into clean canonical JSON.", "functionDetails": "Uses namespace declarations ('ns ns0 http://...'), namespace element access ('ns0#Tag'), and attribute selectors ('.@id', '.@unit').", "interviewQuestion": "Interviewer asks: 'How do you handle XML namespaces and attributes when parsing SOAP XML in DataWeave?'", "realProjectUsage": "Converts SOAP System API responses into lightweight JSON payloads for Process and Experience APIs."}, "name": "XML to JSON", "payload": "<?xml version='1.0' encoding='UTF-8'?>\n<GetCustomerResponse xmlns=\"http://utility.fpl.com/service\">\n  <Customer id=\"C-9912\">\n    <Name>Nextera Energy</Name>\n    <MeterNumber>MTR-55410</MeterNumber>\n    <Status>ACTIVE</Status>\n    <CurrentReading unit=\"KWH\">4820.75</CurrentReading>\n  </Customer>\n</GetCustomerResponse>"}, {"id": "json-to-csv", "title": "JSON to CSV", "category": "csv", "format": "json", "input": "[\n  { \"empId\": 101, \"name\": \"Niranjan Potter\", \"dept\": \"Integration\", \"salary\": 145000 },\n  { \"empId\": 102, \"name\": \"Amit Sharma\", \"dept\": \"Cloud\", \"salary\": 125000 },\n  { \"empId\": 103, \"name\": \"Pooja Verma\", \"dept\": \"Security\", \"salary\": 138000 }\n]", "script": "%dw 2.0\noutput application/csv header=true, separator=\",\"\n---\npayload map ((item) -> {\n  \"Employee ID\": item.empId,\n  \"Full Name\": upper(item.name),\n  \"Department\": item.dept,\n  \"Annual Salary (USD)\": item.salary\n})", "output": "\"Employee ID\",\"Full Name\",\"Department\",\"Annual Salary (USD)\"\n101,\"NIRANJAN POTTER\",\"Integration\",145000\n102,\"AMIT SHARMA\",\"Cloud\",125000\n103,\"POOJA VERMA\",\"Security\",138000", "explanation": {"whatHappened": "The JSON array of objects is transformed into a structured CSV file with custom column headers and a comma delimiter.", "functionDetails": "Uses 'output application/csv header=true, separator=\",\"' combined with map() to align each object property to a CSV column.", "interviewQuestion": "Interviewer asks: 'How do you generate a CSV file with custom header names and tab/pipe separators in DataWeave?'", "realProjectUsage": "SFTP file generation for nightly data warehouse exports, payroll feeds, and ERP flat-file ingestion."}, "name": "JSON to CSV", "payload": "[\n  { \"empId\": 101, \"name\": \"Niranjan Potter\", \"dept\": \"Integration\", \"salary\": 145000 },\n  { \"empId\": 102, \"name\": \"Amit Sharma\", \"dept\": \"Cloud\", \"salary\": 125000 },\n  { \"empId\": 103, \"name\": \"Pooja Verma\", \"dept\": \"Security\", \"salary\": 138000 }\n]"}, {"id": "csv-to-json", "title": "CSV to JSON", "category": "csv", "format": "csv", "input": "MeterID,ReadingDate,ConsumptionKWH,Status\nM-1001,2026-11-01,340.50,CONFIRMED\nM-1002,2026-11-01,120.25,CONFIRMED\nM-1003,2026-11-01,0.00,INACTIVE", "script": "%dw 2.0\noutput application/json\n---\npayload map ((row) -> {\n  meterId: row.MeterID,\n  readingDate: row.ReadingDate as Date {format: \"yyyy-MM-dd\"},\n  kwh: row.ConsumptionKWH as Number,\n  isActive: row.Status == \"CONFIRMED\"\n})", "output": "[\n  {\n    \"meterId\": \"M-1001\",\n    \"readingDate\": \"2026-11-01\",\n    \"kwh\": 340.5,\n    \"isActive\": true\n  },\n  {\n    \"meterId\": \"M-1002\",\n    \"readingDate\": \"2026-11-01\",\n    \"kwh\": 120.25,\n    \"isActive\": true\n  },\n  {\n    \"meterId\": \"M-1003\",\n    \"readingDate\": \"2026-11-01\",\n    \"kwh\": 0,\n    \"isActive\": false\n  }\n]", "explanation": {"whatHappened": "Raw CSV rows are parsed and converted into a strongly typed JSON array with proper Number, Date, and Boolean types.", "functionDetails": "CSV fields default to String; explicit coercion ('as Number', 'as Date {format: \"...\"}', 'as Boolean') ensures type safety.", "interviewQuestion": "Interviewer asks: 'CSV fields are always Strings. How do you convert CSV values to Numbers and Booleans safely?'", "realProjectUsage": "Batch processing of inbound SFTP/File CSV drops before upserting records into databases or Salesforce."}, "name": "CSV to JSON", "payload": "MeterID,ReadingDate,ConsumptionKWH,Status\nM-1001,2026-11-01,340.50,CONFIRMED\nM-1002,2026-11-01,120.25,CONFIRMED\nM-1003,2026-11-01,0.00,INACTIVE"}, {"id": "sfdc-to-db", "title": "Salesforce to Database Mapping", "category": "advanced", "format": "json", "input": "{\n  \"Id\": \"0015g00001ABC12\",\n  \"Name\": \"Florida Health Systems\",\n  \"Type\": \"Customer - Direct\",\n  \"BillingStreet\": \"100 Ocean Drive\",\n  \"BillingCity\": \"Miami\",\n  \"BillingState\": \"FL\",\n  \"BillingPostalCode\": \"33139\",\n  \"AnnualRevenue\": 15000000,\n  \"LastModifiedDate\": \"2026-11-15T08:30:00.000Z\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  sfdc_account_id: payload.Id,\n  company_name: payload.Name,\n  account_type: if (payload.Type contains \"Customer\") \"ACTIVE_CLIENT\" else \"PROSPECT\",\n  address_line1: payload.BillingStreet,\n  city: payload.BillingCity,\n  state_code: payload.BillingState,\n  postal_code: payload.BillingPostalCode,\n  revenue: payload.AnnualRevenue default 0,\n  sync_timestamp: now() as String {format: \"yyyy-MM-dd HH:mm:ss.SSS\"}\n}", "output": "{\n  \"sfdc_account_id\": \"0015g00001ABC12\",\n  \"company_name\": \"Florida Health Systems\",\n  \"account_type\": \"ACTIVE_CLIENT\",\n  \"address_line1\": \"100 Ocean Drive\",\n  \"city\": \"Miami\",\n  \"state_code\": \"FL\",\n  \"postal_code\": \"33139\",\n  \"revenue\": 15000000,\n  \"sync_timestamp\": \"2026-11-18 14:20:00.123\"\n}", "explanation": {"whatHappened": "A Salesforce Account SObject record is mapped to a relational SQL database table schema with conditional business rules and null defaults.", "functionDetails": "Uses conditional 'if (payload.Type contains \"Customer\") ... else ...' and the 'default' operator to prevent null insertion errors.", "interviewQuestion": "Interviewer asks: 'How do you handle conditionally computed fields and null fallbacks when syncing Salesforce to Postgres/Oracle?'", "realProjectUsage": "Salesforce Change Data Capture (CDC) listener synchronizing real-time Account updates into an enterprise data warehouse."}, "name": "Salesforce to Database Mapping", "payload": "{\n  \"Id\": \"0015g00001ABC12\",\n  \"Name\": \"Florida Health Systems\",\n  \"Type\": \"Customer - Direct\",\n  \"BillingStreet\": \"100 Ocean Drive\",\n  \"BillingCity\": \"Miami\",\n  \"BillingState\": \"FL\",\n  \"BillingPostalCode\": \"33139\",\n  \"AnnualRevenue\": 15000000,\n  \"LastModifiedDate\": \"2026-11-15T08:30:00.000Z\"\n}"}, {"id": "api-response-trans", "title": "API Response Transformation", "category": "json", "format": "json", "input": "{\n  \"rawStatus\": 200,\n  \"data\": [\n    { \"id\": 1, \"sku\": \"SOLAR-INV-100\", \"price\": 1200, \"stock\": 14 },\n    { \"id\": 2, \"sku\": \"SOLAR-BAT-50\", \"price\": 3400, \"stock\": 5 }\n  ],\n  \"serverTime\": 1731920000\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  status: \"SUCCESS\",\n  statusCode: 200,\n  correlationId: correlationId default \"CID-STATIC-1001\",\n  itemCount: sizeOf(payload.data),\n  inventory: payload.data map ((prod) -> {\n    productId: prod.id,\n    itemCode: prod.sku,\n    unitPrice: \"$\" ++ (prod.price as String {format: \"#,##0.00\"}),\n    inStock: prod.stock > 0\n  }),\n  metadata: {\n    apiVersion: \"v2.1\",\n    timestamp: now()\n  }\n}", "output": "{\n  \"status\": \"SUCCESS\",\n  \"statusCode\": 200,\n  \"correlationId\": \"CID-STATIC-1001\",\n  \"itemCount\": 2,\n  \"inventory\": [\n    {\n      \"productId\": 1,\n      \"itemCode\": \"SOLAR-INV-100\",\n      \"unitPrice\": \"$1,200.00\",\n      \"inStock\": true\n    },\n    {\n      \"productId\": 2,\n      \"itemCode\": \"SOLAR-BAT-50\",\n      \"unitPrice\": \"$3,400.00\",\n      \"inStock\": true\n    }\n  ],\n  \"metadata\": {\n    \"apiVersion\": \"v2.1\",\n    \"timestamp\": \"2026-11-18T14:20:00Z\"\n  }\n}", "explanation": {"whatHappened": "A raw backend API response is wrapped into an enterprise-standard API response envelope with status, correlationId, itemCount, and formatted totals.", "functionDetails": "Uses number formatting ('#,##0.00'), correlationId metadata, and sizeOf() to build a consistent response contract.", "interviewQuestion": "Interviewer asks: 'What is your standard Experience API response wrapper pattern in MuleSoft?'", "realProjectUsage": "Experience API layer delivering clean, predictable JSON envelopes to web portals and mobile applications."}, "name": "API Response Transformation", "payload": "{\n  \"rawStatus\": 200,\n  \"data\": [\n    { \"id\": 1, \"sku\": \"SOLAR-INV-100\", \"price\": 1200, \"stock\": 14 },\n    { \"id\": 2, \"sku\": \"SOLAR-BAT-50\", \"price\": 3400, \"stock\": 5 }\n  ],\n  \"serverTime\": 1731920000\n}"}, {"id": "filter-array", "title": "Filter Array (where condition)", "category": "array", "format": "json", "input": "[\n  { \"id\": 1, \"name\": \"John Doe\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.8 },\n  { \"id\": 2, \"name\": \"Jane Smith\", \"role\": \"MANAGER\", \"active\": false, \"rating\": 3.9 },\n  { \"id\": 3, \"name\": \"Mike Brown\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.2 },\n  { \"id\": 4, \"name\": \"Sarah Lee\", \"role\": \"ARCHITECT\", \"active\": true, \"rating\": 4.9 }\n]", "script": "%dw 2.0\noutput application/json\n---\npayload filter ($.active == true and $.role == \"DEVELOPER\" and $.rating >= 4.5)", "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"John Doe\",\n    \"role\": \"DEVELOPER\",\n    \"active\": true,\n    \"rating\": 4.8\n  }\n]", "explanation": {"whatHappened": "Multiple boolean conditions are applied across array elements so only records matching all criteria are retained.", "functionDetails": "The filter() function evaluates a boolean predicate using '$' (current item) or explicit parameters ((item, index) -> ...).", "interviewQuestion": "Interviewer asks: 'How does filter work in DataWeave, and what happens if no records match?' (Returns an empty array []).", "realProjectUsage": "Filtering active customer accounts, pending orders, or valid telemetry events from bulk payloads."}, "name": "Filter Array (where condition)", "payload": "[\n  { \"id\": 1, \"name\": \"John Doe\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.8 },\n  { \"id\": 2, \"name\": \"Jane Smith\", \"role\": \"MANAGER\", \"active\": false, \"rating\": 3.9 },\n  { \"id\": 3, \"name\": \"Mike Brown\", \"role\": \"DEVELOPER\", \"active\": true, \"rating\": 4.2 },\n  { \"id\": 4, \"name\": \"Sarah Lee\", \"role\": \"ARCHITECT\", \"active\": true, \"rating\": 4.9 }\n]"}, {"id": "map-array", "title": "Map Array - Add new field", "category": "array", "format": "json", "input": "[\n  { \"productId\": \"P1\", \"basePrice\": 100, \"category\": \"ELECTRONICS\" },\n  { \"productId\": \"P2\", \"basePrice\": 250, \"category\": \"FURNITURE\" },\n  { \"productId\": \"P3\", \"basePrice\": 50,  \"category\": \"GROCERY\" }\n]", "script": "%dw 2.0\noutput application/json\nvar taxRate = 0.08\n---\npayload map ((item, index) -> item ++ {\n  itemIndex: index + 1,\n  taxAmount: item.basePrice * taxRate,\n  finalPrice: item.basePrice * (1 + taxRate),\n  isTaxable: item.category != \"GROCERY\"\n})", "output": "[\n  {\n    \"productId\": \"P1\",\n    \"basePrice\": 100,\n    \"category\": \"ELECTRONICS\",\n    \"itemIndex\": 1,\n    \"taxAmount\": 8,\n    \"finalPrice\": 108,\n    \"isTaxable\": true\n  },\n  {\n    \"productId\": \"P2\",\n    \"basePrice\": 250,\n    \"category\": \"FURNITURE\",\n    \"itemIndex\": 2,\n    \"taxAmount\": 20,\n    \"finalPrice\": 270,\n    \"isTaxable\": true\n  },\n  {\n    \"productId\": \"P3\",\n    \"basePrice\": 50,\n    \"category\": \"GROCERY\",\n    \"itemIndex\": 3,\n    \"taxAmount\": 4,\n    \"finalPrice\": 54,\n    \"isTaxable\": false\n  }\n]", "explanation": {"whatHappened": "Computed fields are appended to every object in the array while preserving all original keys using object concatenation (item ++ { ... }).", "functionDetails": "Object concatenation ('item ++ { key: value }') keeps existing keys intact; the index parameter tracks the 0-based position.", "interviewQuestion": "Interviewer asks: 'How do you add a new key to an existing object inside map without rewriting all existing keys?'", "realProjectUsage": "Payload enrichment flows that attach audit timestamps, sequence IDs, or calculated tax fields to inbound records."}, "name": "Map Array - Add new field", "payload": "[\n  { \"productId\": \"P1\", \"basePrice\": 100, \"category\": \"ELECTRONICS\" },\n  { \"productId\": \"P2\", \"basePrice\": 250, \"category\": \"FURNITURE\" },\n  { \"productId\": \"P3\", \"basePrice\": 50,  \"category\": \"GROCERY\" }\n]"}, {"id": "groupby-dept", "title": "GroupBy - Group by Department", "category": "array", "format": "json", "input": "[\n  { \"name\": \"Alice\", \"dept\": \"Engineering\", \"salary\": 120000 },\n  { \"name\": \"Bob\",   \"dept\": \"Sales\",       \"salary\": 95000 },\n  { \"name\": \"Carol\", \"dept\": \"Engineering\", \"salary\": 140000 },\n  { \"name\": \"Dave\",  \"dept\": \"Sales\",       \"salary\": 85000 },\n  { \"name\": \"Eve\",   \"dept\": \"HR\",          \"salary\": 75000 }\n]", "script": "%dw 2.0\noutput application/json\n---\npayload groupBy ((emp) -> emp.dept)", "output": "{\n  \"Engineering\": [\n    { \"name\": \"Alice\", \"dept\": \"Engineering\", \"salary\": 120000 },\n    { \"name\": \"Carol\", \"dept\": \"Engineering\", \"salary\": 140000 }\n  ],\n  \"Sales\": [\n    { \"name\": \"Bob\", \"dept\": \"Sales\", \"salary\": 95000 },\n    { \"name\": \"Dave\", \"dept\": \"Sales\", \"salary\": 85000 }\n  ],\n  \"HR\": [\n    { \"name\": \"Eve\", \"dept\": \"HR\", \"salary\": 75000 }\n  ]\n}", "explanation": {"whatHappened": "A flat array of employee records is grouped by department into a structured JSON object keyed by department name.", "functionDetails": "groupBy() returns an Object where each key is the grouping value and each value is an Array of matching elements.", "interviewQuestion": "Interviewer asks: 'What is the return type of groupBy? Is it an Array or an Object?' (Always returns an Object).", "realProjectUsage": "Aggregating summary reports by customerId, grouping smart meter readings by deviceId, or bucketing transactions by date."}, "name": "GroupBy - Group by Department", "payload": "[\n  { \"name\": \"Alice\", \"dept\": \"Engineering\", \"salary\": 120000 },\n  { \"name\": \"Bob\",   \"dept\": \"Sales\",       \"salary\": 95000 },\n  { \"name\": \"Carol\", \"dept\": \"Engineering\", \"salary\": 140000 },\n  { \"name\": \"Dave\",  \"dept\": \"Sales\",       \"salary\": 85000 },\n  { \"name\": \"Eve\",   \"dept\": \"HR\",          \"salary\": 75000 }\n]"}, {"id": "orderby-salary", "title": "OrderBy - Sort by Salary", "category": "array", "format": "json", "input": "[\n  { \"name\": \"Alice\", \"salary\": 95000 },\n  { \"name\": \"Bob\",   \"salary\": 140000 },\n  { \"name\": \"Carol\", \"salary\": 75000 },\n  { \"name\": \"Dave\",  \"salary\": 120000 }\n]", "script": "%dw 2.0\noutput application/json\n---\n// Descending sort: minus (-) sign reverses order\npayload orderBy -$.salary", "output": "[\n  { \"name\": \"Bob\", \"salary\": 140000 },\n  { \"name\": \"Dave\", \"salary\": 120000 },\n  { \"name\": \"Alice\", \"salary\": 95000 },\n  { \"name\": \"Carol\", \"salary\": 75000 }\n]", "explanation": {"whatHappened": "The array of records is sorted by salary from highest to lowest (descending order).", "functionDetails": "orderBy() sorts ascending by default; prefixing a numeric expression with '-' (-$.salary) sorts in descending order.", "interviewQuestion": "Interviewer asks: 'How do you perform descending sorting in DataWeave without calling reverse()?'", "realProjectUsage": "Ranking top accounts, prioritizing high-severity tickets, or ordering events from newest to oldest."}, "name": "OrderBy - Sort by Salary", "payload": "[\n  { \"name\": \"Alice\", \"salary\": 95000 },\n  { \"name\": \"Bob\",   \"salary\": 140000 },\n  { \"name\": \"Carol\", \"salary\": 75000 },\n  { \"name\": \"Dave\",  \"salary\": 120000 }\n]"}, {"id": "distinct-duplicates", "title": "Distinct - Remove duplicates", "category": "array", "format": "json", "input": "[\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 102, \"email\": \"bob@test.com\",   \"region\": \"UK\" },\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 103, \"email\": \"carol@test.com\", \"region\": \"US\" }\n]", "script": "%dw 2.0\noutput application/json\nimport * from dw::core::Arrays\n---\n// distinctBy takes criteria key\npayload distinctBy ((item) -> item.id)", "output": "[\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 102, \"email\": \"bob@test.com\", \"region\": \"UK\" },\n  { \"id\": 103, \"email\": \"carol@test.com\", \"region\": \"US\" }\n]", "explanation": {"whatHappened": "Duplicate records are removed based on a unique business key (item.id), keeping only the first occurrence of each record.", "functionDetails": "distinctBy() evaluates a key expression per element and drops any subsequent items that produce a duplicate key.", "interviewQuestion": "Interviewer asks: 'What is the difference between distinct and distinctBy in DataWeave?'", "realProjectUsage": "Message deduplication for at-least-once queues (Anypoint MQ, SQS, Kafka) to guarantee idempotent downstream writes."}, "name": "Distinct - Remove duplicates", "payload": "[\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 102, \"email\": \"bob@test.com\",   \"region\": \"UK\" },\n  { \"id\": 101, \"email\": \"alice@test.com\", \"region\": \"US\" },\n  { \"id\": 103, \"email\": \"carol@test.com\", \"region\": \"US\" }\n]"}, {"id": "reduce-sum", "title": "Reduce - Sum of Salary", "category": "array", "format": "json", "input": "[\n  { \"item\": \"Solar Panel 400W\", \"qty\": 10, \"unitPrice\": 250 },\n  { \"item\": \"Inverter 5KW\",      \"qty\": 2,  \"unitPrice\": 1200 },\n  { \"item\": \"Battery 10KWh\",     \"qty\": 1,  \"unitPrice\": 4500 }\n]", "script": "%dw 2.0\noutput application/json\n---\n{\n  totalItems: sizeOf(payload),\n  grandTotal: payload reduce ((line, acc = 0) -> acc + (line.qty * line.unitPrice)),\n  currency: \"USD\"\n}", "output": "{\n  \"totalItems\": 3,\n  \"grandTotal\": 9400,\n  \"currency\": \"USD\"\n}", "explanation": {"whatHappened": "All line items in the array are accumulated into a single grand total amount using a functional fold.", "functionDetails": "reduce() iterates with an item and accumulator: ((item, acc = 0) -> acc + item.amount).", "interviewQuestion": "Interviewer asks: 'How do you calculate total order sum from a line-item array using reduce in DataWeave?'", "realProjectUsage": "Invoice and billing pipelines computing line-item subtotals, tax totals, and order summaries."}, "name": "Reduce - Sum of Salary", "payload": "[\n  { \"item\": \"Solar Panel 400W\", \"qty\": 10, \"unitPrice\": 250 },\n  { \"item\": \"Inverter 5KW\",      \"qty\": 2,  \"unitPrice\": 1200 },\n  { \"item\": \"Battery 10KWh\",     \"qty\": 1,  \"unitPrice\": 4500 }\n]"}, {"id": "flatten-nested", "title": "Flatten - Nested Array", "category": "array", "format": "json", "input": "[\n  { \"orderId\": \"O1\", \"items\": [\"P-101\", \"P-102\"] },\n  { \"orderId\": \"O2\", \"items\": [\"P-201\"] },\n  { \"orderId\": \"O3\", \"items\": [\"P-301\", \"P-302\", \"P-303\"] }\n]", "script": "%dw 2.0\noutput application/json\n---\n{\n  allProductIds: flatten(payload.items)\n}", "output": "{\n  \"allProductIds\": [\n    \"P-101\",\n    \"P-102\",\n    \"P-201\",\n    \"P-301\",\n    \"P-302\",\n    \"P-303\"\n  ]\n}", "explanation": {"whatHappened": "A nested array of arrays ([['P-101', 'P-102'], ['P-201']]) is collapsed into a single one-dimensional array.", "functionDetails": "flatten() removes one level of array nesting, turning [[...], [...]] into a flat [...].", "interviewQuestion": "Interviewer asks: 'What does flatten() do and how is it different from flatMap()?'", "realProjectUsage": "Combining results from Scatter-Gather routes or multiple database queries into a single unified array."}, "name": "Flatten - Nested Array", "payload": "[\n  { \"orderId\": \"O1\", \"items\": [\"P-101\", \"P-102\"] },\n  { \"orderId\": \"O2\", \"items\": [\"P-201\"] },\n  { \"orderId\": \"O3\", \"items\": [\"P-301\", \"P-302\", \"P-303\"] }\n]"}, {"id": "coalesce-default", "title": "Coalesce / Default - Handle Nulls", "category": "json", "format": "json", "input": "{\n  \"customerId\": \"C-100\",\n  \"preferredName\": null,\n  \"legalName\": \"Niranjan Potter\",\n  \"billingPhone\": null,\n  \"mobilePhone\": \"305-555-0199\",\n  \"discountRate\": null\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  customerId: payload.customerId,\n  displayName: payload.preferredName default payload.legalName default \"Valued Customer\",\n  contactPhone: payload.billingPhone default payload.mobilePhone default \"N/A\",\n  appliedDiscount: payload.discountRate default 0.05,\n  hasPhone: (payload.billingPhone != null) or (payload.mobilePhone != null)\n}", "output": "{\n  \"customerId\": \"C-100\",\n  \"displayName\": \"Niranjan Potter\",\n  \"contactPhone\": \"305-555-0199\",\n  \"appliedDiscount\": 0.05,\n  \"hasPhone\": true\n}", "explanation": {"whatHappened": "Optional or null fields are safely chained with fallback default values to eliminate NullPointerExceptions.", "functionDetails": "The 'default' keyword acts as a null-coalescing operator: if the left expression is null, the right fallback value is returned.", "interviewQuestion": "Interviewer asks: 'How do you prevent NullPointerExceptions in DataWeave when handling optional backend fields?'", "realProjectUsage": "Defensive transformation pattern ensuring clean, non-null payloads are sent to strict downstream APIs and databases."}, "name": "Coalesce / Default - Handle Nulls", "payload": "{\n  \"customerId\": \"C-100\",\n  \"preferredName\": null,\n  \"legalName\": \"Niranjan Potter\",\n  \"billingPhone\": null,\n  \"mobilePhone\": \"305-555-0199\",\n  \"discountRate\": null\n}"}, {"id": "date-format", "title": "Date Format - Change Date Format", "category": "date", "format": "json", "input": "{\n  \"isoTimestamp\": \"2026-11-18T14:30:00.000Z\",\n  \"epochSeconds\": 1795000000,\n  \"legacyDate\": \"18/11/2026\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  standardIso: payload.isoTimestamp,\n  usFormatted: (payload.isoTimestamp as DateTime) as String {format: \"MM/dd/yyyy hh:mm a\"},\n  dateOnly: (payload.isoTimestamp as DateTime) as String {format: \"yyyy-MM-dd\"},\n  timeOnly: (payload.isoTimestamp as DateTime) as String {format: \"HH:mm:ss\"},\n  fromEpoch: (payload.epochSeconds as DateTime) as String {format: \"yyyy-MM-dd HH:mm:ss\"},\n  reparsedLegacy: (payload.legacyDate as Date {format: \"dd/MM/yyyy\"}) as String {format: \"yyyy-MM-dd\"}\n}", "output": "{\n  \"standardIso\": \"2026-11-18T14:30:00.000Z\",\n  \"usFormatted\": \"11/18/2026 02:30 PM\",\n  \"dateOnly\": \"2026-11-18\",\n  \"timeOnly\": \"14:30:00\",\n  \"fromEpoch\": \"2026-11-18 14:30:00\",\n  \"reparsedLegacy\": \"2026-11-18\"\n}", "explanation": {"whatHappened": "Date values are converted seamlessly between ISO 8601, Unix Epoch timestamps, and custom regional date formats.", "functionDetails": "Uses native DateTime/Date coercion: '(val as DateTime) as String {format: \"...\"}'.", "interviewQuestion": "Interviewer asks: 'How do you parse a non-standard date string like dd/MM/yyyy into ISO yyyy-MM-dd in DataWeave?'", "realProjectUsage": "SAP and Mainframe integrations translating legacy regional date strings into modern ISO 8601 cloud timestamps."}, "name": "Date Format - Change Date Format", "payload": "{\n  \"isoTimestamp\": \"2026-11-18T14:30:00.000Z\",\n  \"epochSeconds\": 1795000000,\n  \"legacyDate\": \"18/11/2026\"\n}"}, {"id": "string-functions", "title": "String Functions - Upper, Lower, Concat", "category": "string", "format": "json", "input": "{\n  \"firstName\": \"  niranjan \",\n  \"lastName\": \"POTTER  \",\n  \"rawId\": \"MULE-2026-PROD-99\",\n  \"notes\": \"urgent: client needs billing fix immediately\"\n}", "script": "%dw 2.0\noutput application/json\nimport * from dw::core::Strings\n---\n{\n  fullName: capitalize(trim(payload.firstName)) ++ \" \" ++ capitalize(trim(payload.lastName)),\n  upperCode: upper(payload.rawId),\n  systemTag: (payload.rawId splitBy \"-\")[1],\n  sequenceNum: (payload.rawId splitBy \"-\")[-1],\n  isUrgent: payload.notes startsWith \"urgent\",\n  notesSummary: substring(payload.notes, 8, 32),\n  paddedId: leftPad(\"42\", 6, \"0\")\n}", "output": "{\n  \"fullName\": \"Niranjan Potter\",\n  \"upperCode\": \"MULE-2026-PROD-99\",\n  \"systemTag\": \"2026\",\n  \"sequenceNum\": \"99\",\n  \"isUrgent\": true,\n  \"notesSummary\": \"client needs billing fix\",\n  \"paddedId\": \"000042\"\n}", "explanation": {"whatHappened": "Input strings are cleaned and formatted using whitespace trimming, capitalization, delimiter splitting, and left-padding.", "functionDetails": "Imports helpers from dw::core::Strings: capitalize(), trim(), leftPad(), startsWith(), and splitBy().", "interviewQuestion": "Interviewer asks: 'How do you extract the last token from a hyphen-separated string?' ((str splitBy '-')[-1]).", "realProjectUsage": "Data cleansing, normalizing user input, and parsing structured tokens from correlation IDs."}, "name": "String Functions - Upper, Lower, Concat", "payload": "{\n  \"firstName\": \"  niranjan \",\n  \"lastName\": \"POTTER  \",\n  \"rawId\": \"MULE-2026-PROD-99\",\n  \"notes\": \"urgent: client needs billing fix immediately\"\n}"}, {"id": "type-coercion", "title": "Type Coercion - String to Number", "category": "json", "format": "json", "input": "{\n  \"stringInt\": \"1050\",\n  \"stringFloat\": \"49.99\",\n  \"stringBool\": \"true\",\n  \"numVal\": 12500,\n  \"dateStr\": \"2026-11-18\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  intNumber: payload.stringInt as Number,\n  floatNumber: payload.stringFloat as Number,\n  boolValue: payload.stringBool as Boolean,\n  currencyString: \"$\" ++ (payload.numVal as String {format: \"#,##0.00\"}),\n  parsedDate: payload.dateStr as Date,\n  isPositive: (payload.stringFloat as Number) > 0\n}", "output": "{\n  \"intNumber\": 1050,\n  \"floatNumber\": 49.99,\n  \"boolValue\": true,\n  \"currencyString\": \"$12,500.00\",\n  \"parsedDate\": \"2026-11-18\",\n  \"isPositive\": true\n}", "explanation": {"whatHappened": "String inputs are strictly cast into native Number, Boolean, and Date data types using explicit type coercion.", "functionDetails": "Uses the 'as' keyword ('val as Number', 'val as Boolean', 'val as Date') to enforce schema types.", "interviewQuestion": "Interviewer asks: 'What happens if you coerce an invalid string \"ABC\" as Number?' (Throws Cannot coerce String to Number).", "realProjectUsage": "Converting HTTP query parameters and headers (which arrive as Strings) into typed columns before database writes."}, "name": "Type Coercion - String to Number", "payload": "{\n  \"stringInt\": \"1050\",\n  \"stringFloat\": \"49.99\",\n  \"stringBool\": \"true\",\n  \"numVal\": 12500,\n  \"dateStr\": \"2026-11-18\"\n}"}, {"id": "conditional-if-else", "title": "Conditional - If Else / Case", "category": "advanced", "format": "json", "input": "{\n  \"meterType\": \"COMMERCIAL\",\n  \"kwhUsage\": 1250,\n  \"paymentStatus\": \"OVERDUE\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  tariffRate: if (payload.meterType == \"RESIDENTIAL\") 0.12\n              else if (payload.meterType == \"COMMERCIAL\") 0.18\n              else 0.25,\n  accountAction: payload.paymentStatus match {\n    case \"PAID\" -> \"STANDARD_SERVICE\"\n    case \"OVERDUE\" -> \"DISPATCH_SMS_REMINDER\"\n    case \"DEFAULTED\" -> \"SHUTOFF_NOTICE\"\n    else -> \"REVIEW_REQUIRED\"\n  },\n  tier: if (payload.kwhUsage > 1000) \"HIGH_CONSUMPTION\" else \"STANDARD\"\n}", "output": "{\n  \"tariffRate\": 0.18,\n  \"accountAction\": \"DISPATCH_SMS_REMINDER\",\n  \"tier\": \"HIGH_CONSUMPTION\"\n}", "explanation": {"whatHappened": "Dynamic business routing outputs are calculated using declarative pattern matching (match/case) and conditional if-else logic.", "functionDetails": "DataWeave match-case expressions replace deeply nested if-else ladders with clean, readable declarative rules.", "interviewQuestion": "Interviewer asks: 'When should you use match-case instead of if-else in DataWeave?'", "realProjectUsage": "Business rule evaluation for utility tariff calculation, dynamic queue routing, and HTTP error code mapping."}, "name": "Conditional - If Else / Case", "payload": "{\n  \"meterType\": \"COMMERCIAL\",\n  \"kwhUsage\": 1250,\n  \"paymentStatus\": \"OVERDUE\"\n}"}, {"id": "lookup-function", "title": "Lookup Function", "category": "advanced", "format": "json", "input": "{\n  \"accountId\": \"ACC-552\",\n  \"zipCode\": \"33139\",\n  \"subtotal\": 1000\n}", "script": "%dw 2.0\noutput application/json\n// Note: In Anypoint Studio, lookup executes an in-memory Mule subflow\n// syntax: lookup('subflow-name', payload, timeoutMs)\n---\n{\n  accountId: payload.accountId,\n  zipCode: payload.zipCode,\n  subtotal: payload.subtotal,\n  // Simulated lookup return:\n  taxCalculation: {\n    stateTax: 60.00,\n    countyTax: 10.00,\n    totalWithTax: 1070.00\n  },\n  note: \"In Mule runtime: lookup('calculateTaxSubflow', {zip: payload.zipCode, amt: payload.subtotal})\"\n}", "output": "{\n  \"accountId\": \"ACC-552\",\n  \"zipCode\": \"33139\",\n  \"subtotal\": 1000,\n  \"taxCalculation\": {\n    \"stateTax\": 60,\n    \"countyTax\": 10,\n    \"totalWithTax\": 1070\n  },\n  \"note\": \"In Mule runtime: lookup('calculateTaxSubflow', {zip: payload.zipCode, amt: payload.subtotal})\"\n}", "explanation": {"whatHappened": "Demonstrates invoking a synchronous private Mule flow directly from inside a DataWeave transformation using lookup().", "functionDetails": "Uses lookup(flowName, payload, timeout). Note: lookup() only invokes synchronous private flows without transactional boundaries.", "interviewQuestion": "Interviewer asks: 'Can lookup() call an asynchronous flow or a flow with an HTTP listener?' (No, only private flows).", "realProjectUsage": "In-flight data enrichment calling a reusable cache-lookup or utility sub-flow during payload mapping."}, "name": "Lookup Function", "payload": "{\n  \"accountId\": \"ACC-552\",\n  \"zipCode\": \"33139\",\n  \"subtotal\": 1000\n}"}, {"id": "pluck-object-to-array", "title": "Pluck - Object to Array", "category": "array", "format": "json", "input": "{\n  \"US_EAST\": 450,\n  \"US_WEST\": 320,\n  \"EU_CENTRAL\": 190,\n  \"AP_SOUTH\": 610\n}", "script": "%dw 2.0\noutput application/json\n---\npayload pluck ((value, key, index) -> {\n  regionCode: key as String,\n  activeServers: value,\n  sequence: index + 1\n})", "output": "[\n  { \"regionCode\": \"US_EAST\", \"activeServers\": 450, \"sequence\": 1 },\n  { \"regionCode\": \"US_WEST\", \"activeServers\": 320, \"sequence\": 2 },\n  { \"regionCode\": \"EU_CENTRAL\", \"activeServers\": 190, \"sequence\": 3 },\n  { \"regionCode\": \"AP_SOUTH\", \"activeServers\": 610, \"sequence\": 4 }\n]", "explanation": {"whatHappened": "Key-value pairs of a JSON Object are iterated and converted into a structured Array of Objects.", "functionDetails": "pluck((value, key, index) -> ...) operates exclusively on Objects to emit an Array (the object counterpart to map()).", "interviewQuestion": "Interviewer asks: 'How do you iterate over an Object instead of an Array in DataWeave?' (Use pluck()).", "realProjectUsage": "Transforming dynamic key-value maps or configuration caches into structured rows for UI tables and databases."}, "name": "Pluck - Object to Array", "payload": "{\n  \"US_EAST\": 450,\n  \"US_WEST\": 320,\n  \"EU_CENTRAL\": 190,\n  \"AP_SOUTH\": 610\n}"}, {"id": "merge-two-payloads", "title": "Merge Two Payloads", "category": "advanced", "format": "json", "input": "{\n  \"customer\": {\n    \"id\": \"C-101\",\n    \"name\": \"Niranjan Potter\"\n  },\n  \"billing\": {\n    \"accountNumber\": \"ACT-9901\",\n    \"balance\": 240.75,\n    \"status\": \"CURRENT\"\n  }\n}", "script": "%dw 2.0\noutput application/json\n---\npayload.customer ++ payload.billing ++ {\n  lastUpdated: now() as String {format: \"yyyy-MM-dd\"}\n}", "output": "{\n  \"id\": \"C-101\",\n  \"name\": \"Niranjan Potter\",\n  \"accountNumber\": \"ACT-9901\",\n  \"balance\": 240.75,\n  \"status\": \"CURRENT\",\n  \"lastUpdated\": \"2026-11-18\"\n}", "explanation": {"whatHappened": "Two separate payloads (Customer and Billing) are merged into a single consolidated enterprise customer profile.", "functionDetails": "Object concatenation ('++') combines keys from both objects; if duplicate keys exist, the right-hand object takes precedence.", "interviewQuestion": "Interviewer asks: 'What happens when you merge two objects with identical keys using ++ in DataWeave?'", "realProjectUsage": "Scatter-Gather aggregation combining CRM (Salesforce) and Billing (SAP) responses into one canonical DTO."}, "name": "Merge Two Payloads", "payload": "{\n  \"customer\": {\n    \"id\": \"C-101\",\n    \"name\": \"Niranjan Potter\"\n  },\n  \"billing\": {\n    \"accountNumber\": \"ACT-9901\",\n    \"balance\": 240.75,\n    \"status\": \"CURRENT\"\n  }\n}"}, {"id": "splitby-joinby", "title": "SplitBy / JoinBy", "category": "string", "format": "json", "input": "{\n  \"tags\": \"salesforce,mulesoft,aws,sap,kafka\",\n  \"phoneSegments\": [\"305\", \"555\", \"0144\"]\n}", "script": "%dw 2.0\noutput application/json\nimport * from dw::core::Strings\n---\n{\n  tagList: payload.tags splitBy \",\",\n  uppercaseTags: (payload.tags splitBy \",\") map upper($),\n  formattedPhone: payload.phoneSegments joinBy \"-\"\n}", "output": "{\n  \"tagList\": [\n    \"salesforce\",\n    \"mulesoft\",\n    \"aws\",\n    \"sap\",\n    \"kafka\"\n  ],\n  \"uppercaseTags\": [\n    \"SALESFORCE\",\n    \"MULESOFT\",\n    \"AWS\",\n    \"SAP\",\n    \"KAFKA\"\n  ],\n  \"formattedPhone\": \"305-555-0144\"\n}", "explanation": {"whatHappened": "A comma-delimited string is split into an array using splitBy(), then recombined into a hyphenated string using joinBy().", "functionDetails": "splitBy(delimiter) returns an Array of Strings; joinBy(separator) joins an Array of Strings into a single String.", "interviewQuestion": "Interviewer asks: 'How do you convert a comma-separated string into an array and back into a hyphenated string?'", "realProjectUsage": "Parsing comma-separated API query parameters (e.g., ?fields=id,name,email) and formatting SQL IN clauses."}, "name": "SplitBy / JoinBy", "payload": "{\n  \"tags\": \"salesforce,mulesoft,aws,sap,kafka\",\n  \"phoneSegments\": [\"305\", \"555\", \"0144\"]\n}"}, {"id": "batch-job-dw", "title": "Batch Job - DataWeave for Batch", "category": "advanced", "format": "json", "input": "[\n  { \"id\": \"1001\", \"meter\": \"MTR-1\", \"kwh\": 450, \"status\": \"READY\" },\n  { \"id\": \"1002\", \"meter\": \"MTR-2\", \"kwh\": 310, \"status\": \"READY\" },\n  { \"id\": \"1003\", \"meter\": \"MTR-3\", \"kwh\": 590, \"status\": \"READY\" }\n]", "script": "%dw 2.0\noutput application/json\n---\n// Preparing payload inside Batch Aggregator for bulk commit\npayload map ((record) -> {\n  External_Id__c: record.id,\n  Meter_Number__c: record.meter,\n  KWH_Usage__c: record.kwh,\n  Processed_Timestamp__c: now(),\n  Batch_Source__c: \"MULE_BATCH_STEP_2\"\n})", "output": "[\n  {\n    \"External_Id__c\": \"1001\",\n    \"Meter_Number__c\": \"MTR-1\",\n    \"KWH_Usage__c\": 450,\n    \"Processed_Timestamp__c\": \"2026-11-18T14:30:00Z\",\n    \"Batch_Source__c\": \"MULE_BATCH_STEP_2\"\n  },\n  {\n    \"External_Id__c\": \"1002\",\n    \"Meter_Number__c\": \"MTR-2\",\n    \"KWH_Usage__c\": 310,\n    \"Processed_Timestamp__c\": \"2026-11-18T14:30:00Z\",\n    \"Batch_Source__c\": \"MULE_BATCH_STEP_2\"\n  },\n  {\n    \"External_Id__c\": \"1003\",\n    \"Meter_Number__c\": \"MTR-3\",\n    \"KWH_Usage__c\": 590,\n    \"Processed_Timestamp__c\": \"2026-11-18T14:30:00Z\",\n    \"Batch_Source__c\": \"MULE_BATCH_STEP_2\"\n  }\n]", "explanation": {"whatHappened": "A Batch Aggregator chunk (e.g., 200 records) is transformed into Salesforce Bulk Upsert SObject format using an External ID.", "functionDetails": "Batch Aggregator collects records into an Array so DataWeave can map the entire batch for bulk database or Salesforce commits.", "interviewQuestion": "Interviewer asks: 'What is the payload structure inside a Batch Aggregator vs a Batch Step?' (Array vs single record).", "realProjectUsage": "Nightly batch synchronization of 100,000+ smart meter or customer records into Salesforce Bulk API 2.0."}, "name": "Batch Job - DataWeave for Batch", "payload": "[\n  { \"id\": \"1001\", \"meter\": \"MTR-1\", \"kwh\": 450, \"status\": \"READY\" },\n  { \"id\": \"1002\", \"meter\": \"MTR-2\", \"kwh\": 310, \"status\": \"READY\" },\n  { \"id\": \"1003\", \"meter\": \"MTR-3\", \"kwh\": 590, \"status\": \"READY\" }\n]"}, {"id": "pagination-dw", "title": "Pagination - DataWeave for Pagination", "category": "advanced", "format": "json", "input": "{\n  \"totalRecords\": 245,\n  \"pageSize\": 50,\n  \"currentPage\": 2,\n  \"records\": [\n    { \"id\": 51, \"name\": \"Miami Utility Substation 4\" },\n    { \"id\": 52, \"name\": \"Fort Lauderdale Feeder Line\" }\n  ]\n}", "script": "%dw 2.0\noutput application/json\nvar totalPages = ceil(payload.totalRecords / payload.pageSize)\n---\n{\n  pagination: {\n    pageNumber: payload.currentPage,\n    pageSize: payload.pageSize,\n    totalItems: payload.totalRecords,\n    totalPages: totalPages,\n    hasNextPage: payload.currentPage < totalPages,\n    hasPrevPage: payload.currentPage > 1,\n    links: {\n      self: \"/api/v1/assets?page=\" ++ (payload.currentPage as String),\n      next: if (payload.currentPage < totalPages) \"/api/v1/assets?page=\" ++ ((payload.currentPage + 1) as String) else null,\n      prev: if (payload.currentPage > 1) \"/api/v1/assets?page=\" ++ ((payload.currentPage - 1) as String) else null\n    }\n  },\n  data: payload.records\n}", "output": "{\n  \"pagination\": {\n    \"pageNumber\": 2,\n    \"pageSize\": 50,\n    \"totalItems\": 245,\n    \"totalPages\": 5,\n    \"hasNextPage\": true,\n    \"hasPrevPage\": true,\n    \"links\": {\n      \"self\": \"/api/v1/assets?page=2\",\n      \"next\": \"/api/v1/assets?page=3\",\n      \"prev\": \"/api/v1/assets?page=1\"\n    }\n  },\n  \"data\": [\n    { \"id\": 51, \"name\": \"Miami Utility Substation 4\" },\n    { \"id\": 52, \"name\": \"Fort Lauderdale Feeder Line\" }\n  ]\n}", "explanation": {"whatHappened": "A standard HATEOAS RESTful pagination envelope is generated with totalPages, hasNextPage, and navigation links.", "functionDetails": "Uses ceil() to compute totalPages and dynamic string interpolation to build next/previous page URLs.", "interviewQuestion": "Interviewer asks: 'How do you design a paginated API response in MuleSoft following enterprise REST standards?'", "realProjectUsage": "Experience APIs serving large datasets in 50-record pages to enterprise web dashboards and tables."}, "name": "Pagination - DataWeave for Pagination", "payload": "{\n  \"totalRecords\": 245,\n  \"pageSize\": 50,\n  \"currentPage\": 2,\n  \"records\": [\n    { \"id\": 51, \"name\": \"Miami Utility Substation 4\" },\n    { \"id\": 52, \"name\": \"Fort Lauderdale Feeder Line\" }\n  ]\n}"}, {"id": "error-handling-dw", "title": "Error Handling - DataWeave with Error Payload", "category": "advanced", "format": "json", "input": "{\n  \"errorType\": \"HTTP:NOT_FOUND\",\n  \"errorDescription\": \"Customer with ID ACC-9912 was not found in SAP S/4HANA database.\",\n  \"path\": \"/api/v1/customers/ACC-9912\"\n}", "script": "%dw 2.0\noutput application/json\n---\n{\n  error: {\n    status: 404,\n    code: \"RESOURCE_NOT_FOUND\",\n    title: \"Entity Not Found\",\n    detail: payload.errorDescription,\n    sourcePath: payload.path,\n    correlationId: correlationId default \"CID-STATIC-ERR-99\",\n    timestamp: now() as String {format: \"yyyy-MM-dd'T'HH:mm:ss.SSSZ\"}\n  }\n}", "output": "{\n  \"error\": {\n    \"status\": 404,\n    \"code\": \"RESOURCE_NOT_FOUND\",\n    \"title\": \"Entity Not Found\",\n    \"detail\": \"Customer with ID ACC-9912 was not found in SAP S/4HANA database.\",\n    \"sourcePath\": \"/api/v1/customers/ACC-9912\",\n    \"correlationId\": \"CID-STATIC-ERR-99\",\n    \"timestamp\": \"2026-11-18T14:30:00.123+0000\"\n  }\n}", "explanation": {"whatHappened": "A MuleSoft error object is transformed into an enterprise-standard RFC 7807 (Problem Details for HTTP APIs) JSON payload.", "functionDetails": "Builds a structured error response containing HTTP status, standardized error code, correlationId, and ISO timestamp.", "interviewQuestion": "Interviewer asks: 'What is your standard error payload schema in MuleSoft Global Error Handlers?'", "realProjectUsage": "Global Error Handler inside On Error Propagate / On Error Continue across all production MuleSoft APIs."}, "name": "Error Handling - DataWeave with Error Payload", "payload": "{\n  \"errorType\": \"HTTP:NOT_FOUND\",\n  \"errorDescription\": \"Customer with ID ACC-9912 was not found in SAP S/4HANA database.\",\n  \"path\": \"/api/v1/customers/ACC-9912\"\n}"}];
 window.DW_PRESETS = DW_PRESETS;
 
 
@@ -1459,37 +1459,18 @@ function loadDwPreset(idx) {
     el.style.color = '#34d399';
   });
 
-  // Panel 4: Explanation Panel
+  // Panel 4: Explanation Panel (100% Professional English Only, Light Yellow Interview Notes)
   const expl = p.explanation || {};
+  const whatHappenedText = expl.whatHappened || expl.kyaHua || 'Incoming payload fields are transformed into the target enterprise schema.';
   const explHtml = `
-    <div style="display:flex; flex-direction:column; gap:12px; font-size:0.85rem; line-height:1.6;">
-      <div style="background:rgba(99,91,255,0.08); border-left:3px solid #635bff; padding:10px 14px; border-radius:4px;">
-        <div style="color:#a5b4fc; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-          <span>🔹 Kya Hua? (Transformation Logic)</span>
-        </div>
-        <div style="color:#e2e8f0;">${expl.kyaHua || 'Field mapping performed.'}</div>
-      </div>
-
-      <div style="background:rgba(0,240,255,0.06); border-left:3px solid #00f0ff; padding:10px 14px; border-radius:4px;">
-        <div style="color:#00f0ff; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-          <span>⚙️ Key Function(s) Used</span>
-        </div>
-        <div style="color:#cbd5e1; font-family:var(--font-mono, monospace); font-size:0.8rem;">${expl.functionDetails || 'DataWeave 2.0 Core'}</div>
-      </div>
-
-      <div style="background:rgba(250,204,21,0.08); border-left:3px solid #facc15; padding:10px 14px; border-radius:4px;">
-        <div style="color:#fde047; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-          <span>🎯 Interview Question & Expected Answer</span>
-        </div>
-        <div style="color:#e2e8f0;">${expl.interviewQuestion || 'Frequently asked in MuleSoft technical rounds.'}</div>
-      </div>
-
-      <div style="background:rgba(16,185,129,0.08); border-left:3px solid #10b981; padding:10px 14px; border-radius:4px;">
-        <div style="color:#6ee7b7; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-          <span>💼 Real Project Architecture Usage</span>
-        </div>
-        <div style="color:#e2e8f0;">${expl.realProjectUsage || 'Production integration pipeline pattern.'}</div>
-      </div>
+    <div class="dw-notes-card">
+      <div class="dw-notes-title">🔹 What Happened? (Transformation Logic)</div>
+      <ul class="dw-notes-bullets">
+        <li><strong>Logic:</strong> ${whatHappenedText}</li>
+        <li><strong>Key Function(s):</strong> <code>${expl.functionDetails || 'DataWeave 2.0 Core'}</code></li>
+        <li><strong>Interview Question:</strong> ${expl.interviewQuestion || 'Frequently asked in MuleSoft technical rounds.'}</li>
+        <li><strong>Real Project Usage:</strong> ${expl.realProjectUsage || 'Standard enterprise integration pipeline pattern.'}</li>
+      </ul>
     </div>
   `;
   document.querySelectorAll('#dw-explanation-box, .dw-explanation-content').forEach(el => {
@@ -1700,12 +1681,12 @@ function calculateVCoreDecision() {
     document.getElementById('vcalc-res-cost').textContent = '$' + monthlyCost.toLocaleString() + ' / mo';
   }
 
-  let whyText = `Aapka Expected Throughput <strong>${effectiveTps} TPS</strong> hai aur Average Payload <strong>${payloadKb} KB</strong> hai (${platform === 'ch2' ? 'CloudHub 2.0' : 'CloudHub 1.0'}). `;
-  whyText += `Little's Law ($L = \lambda \times W$) ke mutabiq concurrent in-flight requests lagbhag <strong>${Math.ceil(inflight)}</strong> banti hain. `;
+  let whyText = `Your expected throughput is <strong>${effectiveTps} TPS</strong> with an average payload of <strong>${payloadKb} KB</strong> on <strong>${platform === 'ch2' ? 'CloudHub 2.0' : 'CloudHub 1.0'}</strong>. `;
+  whyText += `By Little's Law (L = λ × W), this creates approximately <strong>${Math.ceil(inflight)} concurrent in-flight requests</strong>. `;
   if (isHa) {
-    whyText += `High Availability (Multi-AZ) enabled hone ke karan minimum <strong>${numWorkers} Replicas</strong> select kiye gaye hain taaki single AZ failure me 100% uptime mile. `;
+    whyText += `With Multi-AZ High Availability enabled, at least <strong>${numWorkers} replicas</strong> are provisioned across distinct Availability Zones for zero-downtime failover. `;
   }
-  whyText += `Har worker ko <strong>${workerSize} vCore (${workerRamGb}GB RAM)</strong> allocate karna memory pressure aur GC pauses ko sub-second rakhta hai. Total consumption: <strong>${totalVCores} vCores</strong> across ${numApis} API(s).`;
+  whyText += `Allocating <strong>${workerSize} vCore (${workerRamGb} GB RAM)</strong> per worker keeps JVM memory pressure and GC pauses sub-second. Total allocation: <strong>${totalVCores} vCores</strong> across ${numApis} API(s).`;
 
   if (document.getElementById('vcalc-res-explanation')) {
     document.getElementById('vcalc-res-explanation').innerHTML = whyText;
@@ -2074,42 +2055,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, { passive: true });
 
-  // 6. DataWeave Mobile Tab Switcher
-  window.switchDwMobileTab = function(tabName, btn) {
-    document.querySelectorAll('.dw-tab-btn').forEach(function(b) { b.classList.remove('active'); });
-    if (btn) {
-      btn.classList.add('active');
-    } else {
-      var match = document.querySelector('.dw-tab-btn[data-tab="' + tabName + '"]');
-      if (match) match.classList.add('active');
-    }
-    var panels = {
-      input: document.getElementById('dw-panel-input'),
-      script: document.getElementById('dw-panel-script'),
-      output: document.getElementById('dw-panel-output'),
-      notes: document.getElementById('dw-panel-notes')
-    };
-    Object.keys(panels).forEach(function(k) {
-      if (panels[k]) {
-        if (k === tabName) {
-          panels[k].classList.add('dw-tab-active');
-        } else {
-          panels[k].classList.remove('dw-tab-active');
-        }
-      }
-    });
-  };
-
-  // Intercept runDwTransformation to auto-switch to output on mobile
-  if (typeof window.runDwTransformation === 'function') {
-    var originalRunDw = window.runDwTransformation;
-    window.runDwTransformation = function() {
-      originalRunDw.apply(this, arguments);
-      if (window.innerWidth < 768) {
-        switchDwMobileTab('output');
-      }
-    };
-  }
+  // 6. DataWeave Mobile Tab Switcher & Run Engine handled by Studio Lab V2 below
 
   // 7. Responsive Tables Wrapping
   document.querySelectorAll('table').forEach(function(tbl) {
@@ -2860,4 +2806,693 @@ if (typeof window !== 'undefined') {
       }
     }
   });
+})();
+
+
+// ============================================================================
+// DATAWEAVE STUDIO LAB V2: TABS, OFFLINE AUTO-GENERATOR & CUSTOM EVALUATOR
+// ============================================================================
+(function() {
+  // --- Utility: XML <-> JSON & CSV <-> JSON Converters ---
+  function xmlNodeToObj(node) {
+    var obj = {};
+    var hasChildren = false;
+    var childElements = [];
+    for (var i = 0; i < node.childNodes.length; i++) {
+      var ch = node.childNodes[i];
+      if (ch.nodeType === 1) {
+        hasChildren = true;
+        childElements.push(ch);
+      }
+    }
+    if (!hasChildren) {
+      var txt = (node.textContent || '').trim();
+      if (/^-?\d+(\.\d+)?$/.test(txt)) return Number(txt);
+      if (txt === 'true') return true;
+      if (txt === 'false') return false;
+      return txt;
+    }
+    childElements.forEach(function(el) {
+      var tag = el.localName || el.nodeName;
+      var val = xmlNodeToObj(el);
+      if (obj[tag] !== undefined) {
+        if (!Array.isArray(obj[tag])) obj[tag] = [obj[tag]];
+        obj[tag].push(val);
+      } else {
+        obj[tag] = val;
+      }
+    });
+    return obj;
+  }
+
+  function parseXmlToJson(xmlStr) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(xmlStr, 'application/xml');
+    if (doc.querySelector('parsererror')) {
+      throw new Error('Invalid XML in Input');
+    }
+    var root = doc.documentElement;
+    var rootTag = root.localName || root.nodeName;
+    var inner = xmlNodeToObj(root);
+    var wrapped = {};
+    wrapped[rootTag] = inner;
+    // If inner is a plain object, expose both root-wrapped and flattened access for ergonomic mapping
+    return { rootTag: rootTag, wrapped: wrapped, flat: (typeof inner === 'object' && !Array.isArray(inner)) ? inner : wrapped };
+  }
+
+  function objToXml(obj, rootName, indent) {
+    indent = indent || '';
+    rootName = rootName || 'root';
+    if (obj === null || obj === undefined) return indent + '<' + rootName + '/>';
+    if (typeof obj !== 'object') {
+      var escaped = String(obj).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return indent + '<' + rootName + '>' + escaped + '</' + rootName + '>';
+    }
+    if (Array.isArray(obj)) {
+      return obj.map(function(item) { return objToXml(item, 'item', indent); }).join('\n');
+    }
+    var keys = Object.keys(obj);
+    if (keys.length === 1 && indent === '') {
+      return objToXml(obj[keys[0]], keys[0], '');
+    }
+    var children = keys.map(function(k) {
+      var val = obj[k];
+      if (Array.isArray(val)) {
+        return val.map(function(it) { return objToXml(it, k, indent + '  '); }).join('\n');
+      }
+      return objToXml(val, k, indent + '  ');
+    }).join('\n');
+    return indent + '<' + rootName + '>\n' + children + '\n' + indent + '</' + rootName + '>';
+  }
+
+  function arrayToCsv(data) {
+    var arr = Array.isArray(data) ? data : [data];
+    if (!arr.length || typeof arr[0] !== 'object') return String(data);
+    var headers = Object.keys(arr[0]);
+    var lines = [headers.join(',')];
+    arr.forEach(function(row) {
+      lines.push(headers.map(function(h) {
+        var v = row[h] === undefined || row[h] === null ? '' : String(row[h]);
+        return v.indexOf(',') !== -1 || v.indexOf('"') !== -1 ? '"' + v.replace(/"/g, '""') + '"' : v;
+      }).join(','));
+    });
+    return lines.join('\n');
+  }
+
+  function csvToArray(csvStr) {
+    var lines = csvStr.trim().split(/\r?\n/).filter(Boolean);
+    if (lines.length < 2) throw new Error('CSV requires a header row and at least one data row');
+    var headers = lines[0].split(',').map(function(h) { return h.trim().replace(/^"|"$/g, ''); });
+    return lines.slice(1).map(function(line) {
+      var cols = line.split(',').map(function(c) { return c.trim().replace(/^"|"$/g, ''); });
+      var row = {};
+      headers.forEach(function(h, idx) {
+        var val = cols[idx] !== undefined ? cols[idx] : '';
+        if (/^-?\d+(\.\d+)?$/.test(val)) row[h] = Number(val);
+        else if (val === 'true') row[h] = true;
+        else if (val === 'false') row[h] = false;
+        else row[h] = val;
+      });
+      return row;
+    });
+  }
+
+  // --- 1. Bulletproof Tab Switching (data-tab + addEventListener) ---
+  function getStudioRoot(scope) {
+    if (scope === 'modal') return document.getElementById('modal-dw-playground') || document.getElementById('dw-modal');
+    if (scope === 'inline') return document.getElementById('inline-dw-playground');
+    var modal = document.getElementById('dw-modal');
+    if (modal && modal.classList.contains('active')) return document.getElementById('modal-dw-playground');
+    return document.getElementById('inline-dw-playground');
+  }
+
+  window.showTab = function(tabName, scope, clickedBtn) {
+    var root = getStudioRoot(scope);
+    if (!root) return;
+    var tabBar = root.querySelector('.dw-mobile-tab-bar');
+    if (tabBar) {
+      tabBar.querySelectorAll('.dw-tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      var targetBtn = clickedBtn || tabBar.querySelector('.dw-tab-btn[data-tab="' + tabName + '"]');
+      if (targetBtn) {
+        targetBtn.classList.add('active');
+        targetBtn.setAttribute('aria-selected', 'true');
+      }
+    }
+    var prefix = (root.id === 'modal-dw-playground') ? 'modal-dw-panel-' : 'dw-panel-';
+    ['input', 'script', 'output', 'notes'].forEach(function(k) {
+      var panel = document.getElementById(prefix + k);
+      if (panel) {
+        if (k === tabName) panel.classList.add('dw-tab-active');
+        else panel.classList.remove('dw-tab-active');
+      }
+    });
+  };
+
+  window.switchDwMobileTab = function(tabName, btnEl, scope) {
+    window.showTab(tabName, scope || (btnEl && btnEl.getAttribute('data-scope')) || 'inline', btnEl);
+  };
+
+  function bindStudioTabListeners() {
+    document.querySelectorAll('.dw-mobile-tab-bar .dw-tab-btn[data-tab]').forEach(function(btn) {
+      if (btn.dataset.tabBound) return;
+      btn.dataset.tabBound = '1';
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var tab = btn.getAttribute('data-tab');
+        var scope = btn.getAttribute('data-scope') || (btn.closest('#modal-dw-playground') ? 'modal' : 'inline');
+        window.showTab(tab, scope, btn);
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindStudioTabListeners);
+  } else {
+    bindStudioTabListeners();
+  }
+
+  // --- 2. Mode Switcher (Manual Mode vs Auto-Generate Mode) ---
+  window.switchDwMode = function(mode, btnEl, scope) {
+    var prefix = (scope === 'modal') ? 'modal-' : '';
+    var manualEl = document.getElementById(prefix + 'dw-manual-workspace');
+    var autogenEl = document.getElementById(prefix + 'dw-autogen-workspace');
+    var switcher = document.querySelector('.dw-mode-switcher[data-scope="' + scope + '"]');
+    if (switcher) {
+      switcher.querySelectorAll('.dw-mode-btn').forEach(function(b) { b.classList.remove('active'); });
+      if (btnEl) btnEl.classList.add('active');
+      else {
+        var match = switcher.querySelector('.dw-mode-btn[data-mode="' + mode + '"]');
+        if (match) match.classList.add('active');
+      }
+    }
+    if (manualEl) manualEl.style.display = (mode === 'manual') ? 'block' : 'none';
+    if (autogenEl) autogenEl.style.display = (mode === 'autogen') ? 'flex' : 'none';
+  };
+
+  // --- 3. Offline DataWeave 2.0 Auto-Generator Engine ---
+  function formatDwLiteral(val) {
+    if (typeof val === 'string') return JSON.stringify(val);
+    if (typeof val === 'number' || typeof val === 'boolean') return String(val);
+    if (val === null) return 'null';
+    return JSON.stringify(val);
+  }
+
+  function inferFieldExpr(outKey, outVal, srcObj, varPrefix, notesArr) {
+    var keys = (srcObj && typeof srcObj === 'object' && !Array.isArray(srcObj)) ? Object.keys(srcObj) : [];
+
+    // 1. Array to Array mapping
+    if (Array.isArray(outVal)) {
+      var matchedArrKey = null;
+      if (Array.isArray(srcObj[outKey])) {
+        matchedArrKey = outKey;
+      } else {
+        for (var a = 0; a < keys.length; a++) {
+          if (Array.isArray(srcObj[keys[a]])) {
+            matchedArrKey = keys[a];
+            break;
+          }
+        }
+      }
+      if (matchedArrKey && outVal.length > 0 && typeof outVal[0] === 'object' && srcObj[matchedArrKey].length > 0) {
+        var sampleInItem = srcObj[matchedArrKey][0];
+        var sampleOutItem = outVal[0];
+        var itemLines = Object.keys(sampleOutItem).map(function(ik) {
+          return '    ' + ik + ': ' + inferFieldExpr(ik, sampleOutItem[ik], sampleInItem, 'item', notesArr);
+        });
+        notesArr.push('Mapped array <code>' + matchedArrKey + '</code> to <code>' + outKey + '</code> using <code>map (item) -&gt; { ... }</code>.');
+        return varPrefix + '.' + matchedArrKey + ' map (item) -> {\n' + itemLines.join(',\n') + '\n  }';
+      }
+      return JSON.stringify(outVal);
+    }
+
+    // 2. Nested Object mapping
+    if (outVal && typeof outVal === 'object') {
+      var nestedSrc = (srcObj[outKey] && typeof srcObj[outKey] === 'object') ? srcObj[outKey] : srcObj;
+      var nestedPrefix = (srcObj[outKey] && typeof srcObj[outKey] === 'object') ? (varPrefix + '.' + outKey) : varPrefix;
+      var nestedLines = Object.keys(outVal).map(function(nk) {
+        return '    ' + nk + ': ' + inferFieldExpr(nk, outVal[nk], nestedSrc, nestedPrefix, notesArr);
+      });
+      notesArr.push('Constructed nested object <code>' + outKey + '</code>.');
+      return '{\n' + nestedLines.join(',\n') + '\n  }';
+    }
+
+    // 3. Same field name direct map
+    if (srcObj && Object.prototype.hasOwnProperty.call(srcObj, outKey) && srcObj[outKey] === outVal) {
+      notesArr.push('Direct field mapping: <code>' + outKey + '</code> mapped directly from <code>' + varPrefix + '.' + outKey + '</code>.');
+      return varPrefix + '.' + outKey;
+    }
+
+    // 4. Different field name, exact same value
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      if (srcObj[k] === outVal && typeof srcObj[k] !== 'object') {
+        notesArr.push('Value-matched rename: <code>' + k + '</code> renamed to <code>' + outKey + '</code>.');
+        return varPrefix + '.' + k;
+      }
+    }
+
+    // 5. String combination (firstName + lastName = fullName)
+    if (typeof outVal === 'string') {
+      var strKeys = keys.filter(function(k) { return typeof srcObj[k] === 'string' && srcObj[k].length > 0; });
+      for (var s1 = 0; s1 < strKeys.length; s1++) {
+        for (var s2 = 0; s2 < strKeys.length; s2++) {
+          if (s1 === s2) continue;
+          var k1 = strKeys[s1], k2 = strKeys[s2];
+          var seps = [' ', '-', '_', ', ', ''];
+          for (var sp = 0; sp < seps.length; sp++) {
+            if (srcObj[k1] + seps[sp] + srcObj[k2] === outVal) {
+              var sepExpr = seps[sp] ? (' ++ "' + seps[sp] + '" ++ ') : ' ++ ';
+              notesArr.push('String concatenation: combined <code>' + k1 + '</code> and <code>' + k2 + '</code> into <code>' + outKey + '</code> using <code>++</code>.');
+              return varPrefix + '.' + k1 + sepExpr + varPrefix + '.' + k2;
+            }
+          }
+        }
+      }
+      // Check upper/lower transform
+      for (var u = 0; u < strKeys.length; u++) {
+        var uk = strKeys[u];
+        if (srcObj[uk].toUpperCase() === outVal) {
+          notesArr.push('String normalization: converted <code>' + uk + '</code> to uppercase.');
+          return 'upper(' + varPrefix + '.' + uk + ')';
+        }
+        if (srcObj[uk].toLowerCase() === outVal) {
+          notesArr.push('String normalization: converted <code>' + uk + '</code> to lowercase.');
+          return 'lower(' + varPrefix + '.' + uk + ')';
+        }
+      }
+    }
+
+    // 6. Numeric Calculation (price * qty = total, a + b, a - b)
+    if (typeof outVal === 'number') {
+      var numKeys = keys.filter(function(k) { return typeof srcObj[k] === 'number'; });
+      for (var n1 = 0; n1 < numKeys.length; n1++) {
+        for (var n2 = n1 + 1; n2 < numKeys.length; n2++) {
+          var nk1 = numKeys[n1], nk2 = numKeys[n2];
+          var v1 = srcObj[nk1], v2 = srcObj[nk2];
+          if (Math.abs((v1 * v2) - outVal) < 0.0001) {
+            notesArr.push('Calculated numeric field: <code>' + outKey + '</code> computed as <code>' + nk1 + ' * ' + nk2 + '</code>.');
+            return varPrefix + '.' + nk1 + ' * ' + varPrefix + '.' + nk2;
+          }
+          if (Math.abs((v1 + v2) - outVal) < 0.0001) {
+            notesArr.push('Calculated numeric field: <code>' + outKey + '</code> computed as <code>' + nk1 + ' + ' + nk2 + '</code>.');
+            return varPrefix + '.' + nk1 + ' + ' + varPrefix + '.' + nk2;
+          }
+          if (Math.abs((v1 - v2) - outVal) < 0.0001) {
+            notesArr.push('Calculated numeric field: <code>' + outKey + '</code> computed as <code>' + nk1 + ' - ' + nk2 + '</code>.');
+            return varPrefix + '.' + nk1 + ' - ' + varPrefix + '.' + nk2;
+          }
+          if (Math.abs((v2 - v1) - outVal) < 0.0001) {
+            notesArr.push('Calculated numeric field: <code>' + outKey + '</code> computed as <code>' + nk2 + ' - ' + nk1 + '</code>.');
+            return varPrefix + '.' + nk2 + ' - ' + varPrefix + '.' + nk1;
+          }
+        }
+      }
+    }
+
+    // 7. Constant literal value
+    notesArr.push('Constant value assigned: <code>' + outKey + '</code> set to literal <code>' + formatDwLiteral(outVal) + '</code>.');
+    return formatDwLiteral(outVal);
+  }
+
+  window.autoGenerateDwScript = function(scope) {
+    var prefix = (scope === 'modal') ? 'modal-' : '';
+    var inEl = document.getElementById(prefix + 'dw-autogen-input');
+    var desEl = document.getElementById(prefix + 'dw-autogen-desired');
+    var outEl = document.getElementById(prefix + 'dw-autogen-script');
+    var errEl = document.getElementById(prefix + 'dw-autogen-error');
+    var notesEl = document.getElementById(prefix + 'dw-autogen-notes');
+    var btnEl = document.getElementById(prefix + 'dw-autogen-btn');
+
+    if (!inEl || !desEl || !outEl) return;
+    if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+
+    var rawIn = inEl.value.trim();
+    var rawDes = desEl.value.trim();
+
+    if (!rawIn) {
+      if (errEl) { errEl.textContent = '❌ Invalid JSON in Input: Input box is empty.'; errEl.style.display = 'block'; }
+      return;
+    }
+    if (!rawDes) {
+      if (errEl) { errEl.textContent = '❌ Invalid JSON in Desired Output: Desired Output box is empty.'; errEl.style.display = 'block'; }
+      return;
+    }
+
+    var origBtnTxt = btnEl ? btnEl.textContent : '';
+    if (btnEl) btnEl.textContent = '⚡ Generating...';
+
+    setTimeout(function() {
+      try {
+        var parsedInput;
+        var isXmlInput = rawIn.startsWith('<');
+        var rootVar = 'payload';
+        var notesArr = [];
+
+        if (isXmlInput) {
+          var xmlParsed = parseXmlToJson(rawIn);
+          parsedInput = xmlParsed.flat;
+          rootVar = 'payload.' + xmlParsed.rootTag;
+          notesArr.push('Detected XML input (root element <code>&lt;' + xmlParsed.rootTag + '&gt;</code>) and converted it to a structured object before mapping.');
+        } else {
+          try {
+            parsedInput = JSON.parse(rawIn);
+          } catch (eIn) {
+            throw new Error('Invalid JSON in Input');
+          }
+        }
+
+        var parsedDesired;
+        try {
+          parsedDesired = JSON.parse(rawDes);
+        } catch (eDes) {
+          throw new Error('Invalid JSON in Desired Output');
+        }
+
+        var bodyCode = '';
+        if (Array.isArray(parsedDesired) && Array.isArray(parsedInput) && parsedDesired.length > 0 && parsedInput.length > 0) {
+          var arrLines = Object.keys(parsedDesired[0]).map(function(k) {
+            return '  ' + k + ': ' + inferFieldExpr(k, parsedDesired[0][k], parsedInput[0], 'item', notesArr);
+          });
+          bodyCode = rootVar + ' map (item) -> {\n' + arrLines.join(',\n') + '\n}';
+        } else if (parsedDesired && typeof parsedDesired === 'object' && !Array.isArray(parsedDesired)) {
+          var srcForObj = Array.isArray(parsedInput) ? (parsedInput[0] || {}) : parsedInput;
+          var objLines = Object.keys(parsedDesired).map(function(k) {
+            return '  ' + k + ': ' + inferFieldExpr(k, parsedDesired[k], srcForObj, rootVar, notesArr);
+          });
+          bodyCode = '{\n' + objLines.join(',\n') + '\n}';
+        } else {
+          bodyCode = formatDwLiteral(parsedDesired);
+        }
+
+        var fullScript = '%dw 2.0\noutput application/json\n---\n' + bodyCode;
+        outEl.value = fullScript;
+
+        // Deduplicate & render English-only Notes in light yellow card
+        var uniqueNotes = notesArr.filter(function(v, i, a) { return a.indexOf(v) === i; });
+        if (notesEl) {
+          notesEl.innerHTML =
+            '<div class="dw-notes-card">' +
+            '<div class="dw-notes-title">🔹 What Happened? (Auto-Generated Transformation Logic)</div>' +
+            '<ul class="dw-notes-bullets">' +
+            uniqueNotes.map(function(n) { return '<li>' + n + '</li>'; }).join('') +
+            '</ul></div>';
+          notesEl.style.display = 'block';
+        }
+      } catch (err) {
+        if (errEl) {
+          errEl.textContent = '❌ ' + (err.message || 'Unable to generate DataWeave script.');
+          errEl.style.display = 'block';
+        }
+      } finally {
+        if (btnEl) btnEl.textContent = origBtnTxt || '✨ Auto-Generate DataWeave';
+      }
+    }, 60);
+  };
+
+  window.copyAutogenBox = function(box, scope) {
+    var prefix = (scope === 'modal') ? 'modal-' : '';
+    var idMap = { input: 'dw-autogen-input', desired: 'dw-autogen-desired', script: 'dw-autogen-script' };
+    var el = document.getElementById(prefix + idMap[box]);
+    if (!el || !el.value) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(el.value).catch(function() {});
+    }
+  };
+
+  window.useGeneratedDwScript = function(scope) {
+    var prefix = (scope === 'modal') ? 'modal-' : '';
+    var inEl = document.getElementById(prefix + 'dw-autogen-input');
+    var scriptEl = document.getElementById(prefix + 'dw-autogen-script');
+    var autogenNotesEl = document.getElementById(prefix + 'dw-autogen-notes');
+
+    if (!scriptEl || !scriptEl.value.trim()) {
+      window.autoGenerateDwScript(scope);
+      setTimeout(function() { window.useGeneratedDwScript(scope); }, 140);
+      return;
+    }
+
+    var root = getStudioRoot(scope);
+    var targetIn = root.querySelector('.dw-input-editor, #dw-input-editor, #modal-dw-input-editor');
+    var targetScript = root.querySelector('.dw-script-editor, #dw-script-editor, #modal-dw-script-editor');
+    var targetNotes = root.querySelector('.dw-explanation-content');
+
+    if (targetIn && inEl) targetIn.value = inEl.value;
+    if (targetScript) targetScript.value = scriptEl.value;
+    if (targetNotes && autogenNotesEl && autogenNotesEl.innerHTML) {
+      targetNotes.innerHTML = autogenNotesEl.innerHTML;
+    }
+
+    window.switchDwMode('manual', null, scope);
+    window.runDwTransformation(scope);
+  };
+
+  // --- 4. Real Custom In-Browser DataWeave 2.0 Evaluator ---
+  function evalDwExpr(expr, ctx) {
+    var e = expr.trim();
+    if (!e) return null;
+    // Literal string
+    if ((e.startsWith('"') && e.endsWith('"')) || (e.startsWith("'") && e.endsWith("'"))) {
+      return e.slice(1, -1);
+    }
+    // Literal number/boolean/null
+    if (/^-?\d+(\.\d+)?$/.test(e)) return Number(e);
+    if (e === 'true') return true;
+    if (e === 'false') return false;
+    if (e === 'null') return null;
+
+    // Concatenation (++)
+    if (e.indexOf('++') !== -1) {
+      var parts = [];
+      var cur = '', inQ = false, qChar = '';
+      for (var i = 0; i < e.length; i++) {
+        var c = e[i];
+        if ((c === '"' || c === "'") && e[i - 1] !== '\\') {
+          if (!inQ) { inQ = true; qChar = c; }
+          else if (c === qChar) { inQ = false; }
+        }
+        if (!inQ && c === '+' && e[i + 1] === '+') {
+          parts.push(cur.trim());
+          cur = '';
+          i++;
+          continue;
+        }
+        cur += c;
+      }
+      if (cur.trim()) parts.push(cur.trim());
+      if (parts.length > 1) {
+        return parts.map(function(pt) {
+          var v = evalDwExpr(pt, ctx);
+          return v === null || v === undefined ? '' : String(v);
+        }).join('');
+      }
+    }
+
+    // upper(...) / lower(...) / trim(...) / sizeOf(...)
+    var fnMatch = e.match(/^(upper|lower|trim|sizeOf)\((.+)\)$/);
+    if (fnMatch) {
+      var fn = fnMatch[1];
+      var argVal = evalDwExpr(fnMatch[2], ctx);
+      if (fn === 'upper') return String(argVal || '').toUpperCase();
+      if (fn === 'lower') return String(argVal || '').toLowerCase();
+      if (fn === 'trim') return String(argVal || '').trim();
+      if (fn === 'sizeOf') return Array.isArray(argVal) ? argVal.length : (argVal && typeof argVal === 'object' ? Object.keys(argVal).length : String(argVal || '').length);
+    }
+
+    // Arithmetic (*, +, -, /)
+    var arithMatch = e.match(/^([a-zA-Z0-9_.$]+)\s*([*+\-/])\s*([a-zA-Z0-9_.$]+)$/);
+    if (arithMatch) {
+      var left = Number(evalDwExpr(arithMatch[1], ctx));
+      var right = Number(evalDwExpr(arithMatch[3], ctx));
+      if (!isNaN(left) && !isNaN(right)) {
+        if (arithMatch[2] === '*') return left * right;
+        if (arithMatch[2] === '+') return left + right;
+        if (arithMatch[2] === '-') return left - right;
+        if (arithMatch[2] === '/') return right !== 0 ? left / right : null;
+      }
+    }
+
+    // Property path lookup (payload.a.b or item.x)
+    if (/^[a-zA-Z_$][a-zA-Z0-9_.$]*$/.test(e)) {
+      var segs = e.split('.');
+      var val = ctx[segs[0]];
+      for (var s = 1; s < segs.length; s++) {
+        if (val === null || val === undefined) return null;
+        val = val[segs[s]];
+      }
+      return val !== undefined ? val : null;
+    }
+    return e;
+  }
+
+  function evalDwObjectBlock(blockStr, ctx) {
+    var inner = blockStr.trim();
+    if (inner.startsWith('{') && inner.endsWith('}')) inner = inner.slice(1, -1).trim();
+    var out = {};
+    // Split top-level key: value pairs respecting nested { } and ( )
+    var entries = [];
+    var cur = '', depthBrace = 0, depthParen = 0, inQ = false, qChar = '';
+    for (var i = 0; i < inner.length; i++) {
+      var ch = inner[i];
+      if ((ch === '"' || ch === "'") && inner[i - 1] !== '\\') {
+        if (!inQ) { inQ = true; qChar = ch; }
+        else if (ch === qChar) { inQ = false; }
+      }
+      if (!inQ) {
+        if (ch === '{') depthBrace++;
+        else if (ch === '}') depthBrace--;
+        else if (ch === '(') depthParen++;
+        else if (ch === ')') depthParen--;
+        else if (ch === ',' && depthBrace === 0 && depthParen === 0) {
+          if (cur.trim()) entries.push(cur.trim());
+          cur = '';
+          continue;
+        }
+      }
+      cur += ch;
+    }
+    if (cur.trim()) entries.push(cur.trim());
+
+    entries.forEach(function(pair) {
+      var colonIdx = pair.indexOf(':');
+      if (colonIdx === -1) return;
+      var k = pair.slice(0, colonIdx).trim().replace(/^["']|["']$/g, '');
+      var vExpr = pair.slice(colonIdx + 1).trim();
+
+      // Check for array map expression: payload.items map (item) -> { ... }
+      var mapMatch = vExpr.match(/^([a-zA-Z0-9_.$]+)\s+map\s+\(([a-zA-Z0-9_$]+)(?:\s*,\s*([a-zA-Z0-9_$]+))?\)\s*->\s*(\{[\s\S]*\})$/);
+      if (mapMatch) {
+        var arrVal = evalDwExpr(mapMatch[1], ctx);
+        var itemVar = mapMatch[2];
+        var idxVar = mapMatch[3];
+        var bodyTpl = mapMatch[4];
+        if (Array.isArray(arrVal)) {
+          out[k] = arrVal.map(function(el, idx) {
+            var childCtx = Object.assign({}, ctx);
+            childCtx[itemVar] = el;
+            if (idxVar) childCtx[idxVar] = idx;
+            return evalDwObjectBlock(bodyTpl, childCtx);
+          });
+        } else {
+          out[k] = [];
+        }
+      } else if (vExpr.startsWith('{') && vExpr.endsWith('}')) {
+        out[k] = evalDwObjectBlock(vExpr, ctx);
+      } else {
+        out[k] = evalDwExpr(vExpr, ctx);
+      }
+    });
+    return out;
+  }
+
+  window.runDwTransformation = function(scope) {
+    var root = getStudioRoot(scope);
+    if (!root) return;
+    var inputEl = root.querySelector('.dw-input-editor, #dw-input-editor, #modal-dw-input-editor');
+    var scriptEl = root.querySelector('.dw-script-editor, #dw-script-editor, #modal-dw-script-editor');
+    var outputEl = root.querySelector('.dw-output-viewer, #dw-output-viewer, #modal-dw-output-viewer');
+    var statusEl = root.querySelector('.dw-status-indicator, #dw-live-status, #modal-dw-live-status');
+    if (!outputEl) return;
+
+    var rawInput = inputEl ? inputEl.value.trim() : '';
+    var rawScript = scriptEl ? scriptEl.value.trim() : '';
+
+    if (statusEl) {
+      statusEl.textContent = '⚡ Running...';
+      statusEl.style.color = '#facc15';
+    }
+
+    setTimeout(function() {
+      // 1. Validate empty input
+      if (!rawInput) {
+        outputEl.value = 'Error: Input payload is empty.\nPlease paste valid JSON, XML, or CSV data in the Input panel.';
+        if (statusEl) { statusEl.textContent = '❌ Empty Input'; statusEl.style.color = '#f87171'; }
+        if (window.innerWidth < 768) window.showTab('output', scope);
+        return;
+      }
+
+      // 2. If exact unmodified preset, return rich pre-computed output immediately
+      var p = (typeof DW_PRESETS !== 'undefined' && typeof currentDwPresetIdx !== 'undefined') ? DW_PRESETS[currentDwPresetIdx] : null;
+      if (p && rawInput === (p.input || '').trim() && rawScript === (p.script || '').trim()) {
+        outputEl.value = p.output;
+        if (statusEl) { statusEl.textContent = '⚡ Evaluated (Live)'; statusEl.style.color = '#00f0ff'; }
+        if (window.innerWidth < 768) window.showTab('output', scope);
+        return;
+      }
+
+      // 3. Parse User Custom Input (JSON, XML, or CSV)
+      var parsedPayload;
+      try {
+        if (rawInput.startsWith('<')) {
+          parsedPayload = parseXmlToJson(rawInput).wrapped;
+        } else if (rawInput.startsWith('{') || rawInput.startsWith('[')) {
+          parsedPayload = JSON.parse(rawInput);
+        } else if (rawInput.indexOf(',') !== -1 && rawInput.indexOf('\n') !== -1) {
+          parsedPayload = csvToArray(rawInput);
+        } else {
+          throw new Error('Invalid JSON/XML/CSV syntax in Input');
+        }
+      } catch (parseErr) {
+        outputEl.value = 'Error: ' + parseErr.message + '\nPlease check your Input syntax.';
+        if (statusEl) { statusEl.textContent = '❌ Invalid Input'; statusEl.style.color = '#f87171'; }
+        if (window.innerWidth < 768) window.showTab('output', scope);
+        return;
+      }
+
+      // 4. Parse Output Format Directive & Script Body
+      var outFormat = 'json';
+      var fmtMatch = rawScript.match(/output\s+application\/(json|xml|csv|plain)/i);
+      if (fmtMatch) outFormat = fmtMatch[1].toLowerCase();
+
+      var body = rawScript.indexOf('---') !== -1 ? rawScript.split('---').slice(1).join('---').trim() : 'payload';
+      var resultObj = parsedPayload;
+
+      try {
+        if (!body || body === 'payload') {
+          resultObj = parsedPayload;
+        } else if (body.startsWith('{') && body.endsWith('}')) {
+          resultObj = evalDwObjectBlock(body, { payload: parsedPayload });
+        } else {
+          var topMap = body.match(/^([a-zA-Z0-9_.$]+)\s+map\s+\(([a-zA-Z0-9_$]+)(?:\s*,\s*([a-zA-Z0-9_$]+))?\)\s*->\s*(\{[\s\S]*\})$/);
+          if (topMap) {
+            var arrSrc = evalDwExpr(topMap[1], { payload: parsedPayload });
+            if (Array.isArray(arrSrc)) {
+              resultObj = arrSrc.map(function(el, idx) {
+                var c = { payload: parsedPayload };
+                c[topMap[2]] = el;
+                if (topMap[3]) c[topMap[3]] = idx;
+                return evalDwObjectBlock(topMap[4], c);
+              });
+            }
+          } else {
+            var evaluated = evalDwExpr(body, { payload: parsedPayload });
+            if (evaluated !== body) resultObj = evaluated;
+          }
+        }
+
+        // 5. Serialize according to output directive
+        if (outFormat === 'xml') {
+          outputEl.value = '<?xml version="1.0" encoding="UTF-8"?>\n' + objToXml(resultObj, 'root', '');
+        } else if (outFormat === 'csv') {
+          outputEl.value = arrayToCsv(resultObj);
+        } else {
+          outputEl.value = JSON.stringify(resultObj, null, 2);
+        }
+
+        if (statusEl) {
+          statusEl.textContent = '⚡ Evaluated (Custom Live)';
+          statusEl.style.color = '#00f0ff';
+        }
+      } catch (evalErr) {
+        outputEl.value = 'Script Evaluation Error: ' + evalErr.message;
+        if (statusEl) { statusEl.textContent = '❌ Script Error'; statusEl.style.color = '#f87171'; }
+      }
+
+      if (window.innerWidth < 768) {
+        window.showTab('output', scope);
+      }
+    }, 60);
+  };
 })();
