@@ -2305,9 +2305,8 @@ BillingCity: rec.city
 <p class="doc-p">Synchronous flows: Until Successful with 3 retries + 30s delay. After exhaustion → On Error Continue</p>
 <p class="doc-p">→ update Salesforce with SAP_Error_Status__c = 'FAILED' → Anypoint Alert to ops team.</p>
 <p class="doc-p">Asynchronous flows (preferred): Publish the Platform Event payload to Anypoint MQ — messages</p>
-<p class="doc-p">persist (7-day retention) and process when SAP recovers. MQ consumer checks ObjectStore</p>
+<p class="doc-p">persist cleanly (default 4–7 day retention, configurable up to 14 days) and drain reliably when SAP recovers. MQ consumer checks ObjectStore</p>
 <p class="doc-p">idempotency key before each attempt to prevent duplicate SAP orders on retry.</p>
-<p class="doc-p">G 🔀  Scatter-Gather NEW ⭐</p>
 <div class="callout callout-verbal interview-pitch-card">
 <div class="callout-header"><span class="callout-icon">🎯</span><strong>🎯 Interview Pitch - Say It Like This (30 Sec)</strong></div>
 <div class="callout-body">
@@ -3043,7 +3042,6 @@ paperless:     dynamoData.paperless default false
 </tbody>
 </table>
 </div>
-<p class="doc-p">I ⚙  Batch Processing NEW ⭐</p>
 <div class="callout callout-verbal interview-pitch-card">
 <div class="callout-header"><span class="callout-icon">🎯</span><strong>🎯 Interview Pitch - Say It Like This (30 Sec)</strong></div>
 <div class="callout-body">
@@ -3473,7 +3471,6 @@ paperless:     dynamoData.paperless default false
 <p class="doc-p">flow that deletes/reverses the successfully inserted records based on a tracking field.</p>
 <p class="doc-p">Two-phase approach: First batch step writes to a staging table. Second batch step (accept only</p>
 <p class="doc-p">successful records) moves to production table. On Complete: delete staging table if any failures.</p>
-<p class="doc-p">J 🔁  Until Successful NEW ⭐</p>
 <div class="callout callout-verbal interview-pitch-card">
 <div class="callout-header"><span class="callout-icon">🎯</span><strong>🎯 Interview Pitch - Say It Like This (30 Sec)</strong></div>
 <div class="callout-body">
@@ -6104,10 +6101,7 @@ sizeOf(("MULESOFT-CLOUD" splitBy "") filter (c) -&gt; c == "O")
 <p class="doc-p">VPN support.</p>
 <p class="doc-p">VPC vs VPN VPC = private network in CloudHub. VPN = encrypted tunnel connecting VPC to on-</p>
 <p class="doc-p">premise. VPC is where apps live; VPN is how they connect.</p>
-<p class="doc-p">U</p>
-<p class="doc-p">📋  Real Interview Q&amp;A Collection</p>
-<p class="doc-p">NEW ⭐</p>
-<p class="doc-p">🔹  Flows, Scopes &amp; Processing</p></div>
+</div>
 <div class="faq-card" data-role="developer" id="mod-r-q1">
 <div class="faq-header">
 <div class="faq-meta-row">
@@ -7103,8 +7097,7 @@ put:</code></pre>
 <div class="doc-step-item"><span class="step-num">5.</span><span>mvn deploy -DmuleDeploy  (with Mule Maven Plugin) — deploy to CloudHub target environment</span></div>
 <p class="doc-p">Secrets (CloudHub credentials, connected app keys) stored in GitHub Secrets, passed as environment</p>
 <p class="doc-p">variables to Maven. Deployment targets vary by branch: develop→sandbox, qa-branch→qa,</p>
-<p class="doc-p">main→production. Maven parent POM contains all shared plugin versions — 44+ APIs inherit from it.</p>
-<p class="doc-p">V 🧮  DataWeave Deep Dive NEW ⭐</p>
+<p class="doc-p">main→production. Maven Parent POM / BOM centralizes all shared plugin and connector versions — every enterprise API inherits from it.</p>
 </div>
 </div>
 </div>
@@ -7665,9 +7658,7 @@ if ((n mod 2) == 0) { result: "Even" } else { result: "Odd" }
 <p class="doc-p">345.60 as String    // "345.6"</p>
 <p class="doc-p">// String to Date:</p>
 <p class="doc-p">"2026-10-16" as Date {format: "yyyy-MM-dd"}</p>
-<p class="doc-p">W</p>
-<p class="doc-p">☁  CloudHub 1.0 vs 2.0 &amp; Team Lead Topics</p>
-<p class="doc-p">NEW ⭐</p></div>
+</div>
 <div class="faq-card" data-role="senior" id="mod-v-q1">
 <div class="faq-header">
 <div class="faq-meta-row">
@@ -8371,7 +8362,7 @@ if ((n mod 2) == 0) { result: "Even" } else { result: "Odd" }
 <div>
 <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:4px;">Interviewer Cross-Question: "How do you decide worker size and replica count in CloudHub?"</div>
 <p style="font-size:0.85rem; line-height:1.6; color:#cbd5e1; margin:0;">
-<strong>Answer:</strong> <em>"Worker size is determined by <strong>Little's Law</strong> ($L = \lambda \times W$) and CPU/Memory constraints. We evaluate 5 core parameters: 1) Peak TPS ($\lambda$); 2) Average End-to-End Latency ($W$); 3) Average Payload Size in Memory; 4) Transformation Complexity (DataWeave heap consumption); and 5) High Availability (HA) mandates. For production APIs, we always recommend <strong>at least 2 workers</strong> across different Availability Zones to prevent downtime during CloudHub automated platform OS maintenance. We start with 0.2 vCore $\times$ 2 workers, monitor CPU and memory utilization under load testing in JMeter, and scale horizontally before scaling vertically."</em>
+<strong>Answer:</strong> <em>"Worker/replica sizing is determined by <strong>Little's Law</strong> (<i>L</i> = λ × <i>W</i>) and CPU/Memory constraints. We evaluate 5 core parameters: 1) Peak TPS (λ); 2) Average End-to-End Latency (<i>W</i>); 3) Average Payload Size in Memory; 4) Transformation Complexity (DataWeave heap consumption); and 5) High Availability (HA) mandates. For production APIs, we always recommend <strong>at least 2 workers/replicas</strong> across separate Availability Zones to prevent downtime during CloudHub automated platform maintenance. We typically start with 0.2 vCore × 2 replicas, monitor CPU and memory utilization under JMeter load tests, and scale horizontally before scaling vertically."</em>
 </p>
 </div>
 </div>
@@ -9784,19 +9775,13 @@ if ((n mod 2) == 0) { result: "Even" } else { result: "Odd" }
 <div class="answer-drawer-inner">
 <div class="answer-body-content">
 <div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
-<p class="doc-p">A Parent POM is a Maven POM with pom  inherited via by all child Mule projects. It centralizes:</p>
-<p class="doc-p">connector versions, MUnit version, mule-maven-plugin config, Nexus/Exchange repos.</p>
-<p class="doc-p">Why it matters: "Which connector version are we on?" should be answered by one file. With a</p>
-<p class="doc-p">Parent POM, upgrading a connector means changing one line → publishing the parent → child</p>
-<p class="doc-p">projects update their → pick up on next build.</p>
+<p class="doc-p">A Parent POM is a Maven POM with <code>&lt;packaging&gt;pom&lt;/packaging&gt;</code> inherited via <code>&lt;parent&gt;</code> across all child Mule projects. It centralizes connector versions, MUnit version, <code>mule-maven-plugin</code> configuration, and Nexus/Exchange repositories.</p>
+<p class="doc-p">Why it matters: "Which connector version is production running?" is answered in one file. Upgrading a connector means updating one property in the Parent POM → publishing a new parent release → bumping <code>&lt;parent&gt;&lt;version&gt;</code> in child APIs.</p>
 <div class="answer-badge-tag"><span class="badge badge-success">✅  RULES</span></div>
-<p class="doc-p">Child projects declare dependencies WITHOUT versions — inherited from parent</p>
-<p class="doc-p">Never hardcode connector versions in child pom.xml</p>
-<p class="doc-p">Test parent upgrades on a representative child before rolling out to all 44+ APIs</p>
-<p class="doc-p">Use a BOM (imported in ) when you can't use inheritance</p>
-<p class="doc-p">Z</p>
-<p class="doc-p">🎯  Scenario Questions &amp; Cross-Questions Interviewers Ask</p>
-<p class="doc-p">MUST READ ⭐</p>
+<p class="doc-p">Child projects declare dependencies WITHOUT versions — inherited cleanly from parent <code>&lt;dependencyManagement&gt;</code></p>
+<p class="doc-p">Never hardcode connector versions inside child <code>pom.xml</code> files</p>
+<p class="doc-p">Validate parent upgrades on a canary/representative API before rolling out across enterprise child APIs</p>
+<p class="doc-p">Use a Maven BOM (imported inside <code>&lt;dependencyManagement&gt;</code> with <code>&lt;scope&gt;import&lt;/scope&gt;</code>) when parent inheritance is already occupied</p>
 </div>
 </div>
 </div>
@@ -10986,7 +10971,7 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span class="q-read-time">⏱️ 1 min read</span>
 <span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module BB</span>
 </div>
-<h3 class="q-title">. What is the MuleSoft MCP Connector and how does it connect MuleSoft to AI agents?</h3>
+<h3 class="q-title">What is the MuleSoft MCP Connector and how does it connect MuleSoft to AI agents?</h3>
 <div class="faq-action-bar">
 <button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
 <span class="reveal-btn-icon">👁️</span>
@@ -11026,7 +11011,7 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span class="q-read-time">⏱️ 1 min read</span>
 <span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module BB</span>
 </div>
-<h3 class="q-title">. What is the Anypoint Terraform Provider and why would you use it?</h3>
+<h3 class="q-title">What is the Anypoint Terraform Provider and why would you use it?</h3>
 <div class="faq-action-bar">
 <button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
 <span class="reveal-btn-icon">👁️</span>
@@ -11067,7 +11052,7 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span class="q-read-time">⏱️ 1 min read</span>
 <span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module BB</span>
 </div>
-<h3 class="q-title">. When would you choose Anypoint Secrets Manager over AWS Secrets Manager (or vice versa)?</h3>
+<h3 class="q-title">When would you choose Anypoint Secrets Manager over AWS Secrets Manager (or vice versa)?</h3>
 <div class="faq-action-bar">
 <button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
 <span class="reveal-btn-icon">👁️</span>
@@ -11111,7 +11096,7 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span class="q-read-time">⏱️ 1 min read</span>
 <span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module BB</span>
 </div>
-<h3 class="q-title">. How do you use Anypoint Visualizer in an enterprise context?</h3>
+<h3 class="q-title">How do you use Anypoint Visualizer in an enterprise context?</h3>
 <div class="faq-action-bar">
 <button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
 <span class="reveal-btn-icon">👁️</span>
@@ -11148,7 +11133,7 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span class="q-read-time">⏱️ 1 min read</span>
 <span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module BB</span>
 </div>
-<h3 class="q-title">. What is the MuleSoft certification path and what does each certification validate?</h3>
+<h3 class="q-title">What is the MuleSoft certification path and what does each certification validate?</h3>
 <div class="faq-action-bar">
 <button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
 <span class="reveal-btn-icon">👁️</span>
@@ -11275,7 +11260,7 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span class="q-read-time">⏱️ 2 min read</span>
 <span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module CC</span>
 </div>
-<h3 class="q-title">. What is the difference between HTTP 401 and 403, and how do you handle both in MuleSoft?</h3>
+<h3 class="q-title">What is the difference between HTTP 401 and 403, and how do you handle both in MuleSoft?</h3>
 <div class="faq-action-bar">
 <button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
 <span class="reveal-btn-icon">👁️</span>
@@ -11289,30 +11274,17 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <div class="answer-body-content">
 <p class="doc-p">This is a classic interview trap — many developers confuse these two codes. Knowing the exact</p>
 <p class="doc-p">distinction shows API design maturity.</p>
-<p class="doc-p">Aspect 401 Unauthorized 403 Forbidden</p>
-<p class="doc-p">Meaning</p>
-<p class="doc-p">Authentication missing or invalid —</p>
-<p class="doc-p">server does not know who you are</p>
-<p class="doc-p">Authenticated but not authorized —</p>
-<p class="doc-p">server knows you but you are not</p>
-<p class="doc-p">allowed</p>
-<p class="doc-p">Example Expired JWT token, missing Authorization</p>
-<p class="doc-p">header, wrong API key</p>
-<p class="doc-p">Valid token but role does not allow</p>
-<p class="doc-p">DELETE operations</p>
-<p class="doc-p">MuleSoft</p>
-<p class="doc-p">handling</p>
-<p class="doc-p">JWT/OAuth policy throws JWT:REJECTED</p>
-<p class="doc-p">→ APIKit global error handler maps to</p>
-<p class="doc-p">401</p>
-<p class="doc-p">Custom RBAC logic in flow: if role does</p>
-<p class="doc-p">not match → set HTTP status 403</p>
-<p class="doc-p">Response</p>
-<p class="doc-p">header</p>
-<p class="doc-p">Must include WWW-Authenticate header</p>
-<p class="doc-p">per RFC 7235</p>
-<p class="doc-p">No mandatory additional header</p>
-<p class="doc-p">required</p>
+<div class="table-responsive">
+<table class="responsive-table doc-table">
+<thead><tr><th>ASPECT</th><th>401 UNAUTHORIZED</th><th>403 FORBIDDEN</th></tr></thead>
+<tbody>
+<tr><td data-label="ASPECT"><strong>Meaning</strong></td><td data-label="401 UNAUTHORIZED">Authentication missing, expired, or invalid — identity not verified</td><td data-label="403 FORBIDDEN">Authenticated successfully, but caller lacks permission/role for the resource</td></tr>
+<tr><td data-label="ASPECT"><strong>Example</strong></td><td data-label="401 UNAUTHORIZED">Expired JWT token, missing <code>Authorization</code> header, invalid client credentials</td><td data-label="403 FORBIDDEN">Valid OAuth token, but caller role permits <code>GET</code> only and not <code>DELETE</code></td></tr>
+<tr><td data-label="ASPECT"><strong>MuleSoft Handling</strong></td><td data-label="401 UNAUTHORIZED">JWT / OAuth policy raises auth error (mapped to HTTP 401 by policy / handler)</td><td data-label="403 FORBIDDEN">Flow RBAC check or OAuth scope failure maps to HTTP 403</td></tr>
+<tr><td data-label="ASPECT"><strong>Response Header</strong></td><td data-label="401 UNAUTHORIZED">Should return <code>WWW-Authenticate</code> per RFC 7235 / RFC 9110</td><td data-label="403 FORBIDDEN">No <code>WWW-Authenticate</code> header required</td></tr>
+</tbody>
+</table>
+</div>
 <p class="doc-p">MuleSoft implementation pattern:</p>
 <p class="doc-p">Global error handler: on-error-propagate type="JWT:REJECTED"  → HTTP 401 with message Token</p>
 <p class="doc-p">invalid or expired</p>
@@ -11335,7 +11307,7 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <span class="q-read-time">⏱️ 2 min read</span>
 <span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module CC</span>
 </div>
-<h3 class="q-title">. Design Scenario: A banking client needs an API handling 10,000 transactions/minute with PCI-</h3>
+<h3 class="q-title">Design Scenario: A banking client needs an API handling 10,000 transactions/minute with PCI-DSS compliance — how do you architect it?</h3>
 <div class="faq-action-bar">
 <button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
 <span class="reveal-btn-icon">👁️</span>
@@ -11347,7 +11319,6 @@ zipCode: install.ns0#PremiseDetails?-ns0#PostalCode default ""
 <div class="answer-drawer">
 <div class="answer-drawer-inner">
 <div class="answer-body-content">
-<p class="doc-p">DSS compliance. How do you architect it?</p>
 <p class="doc-p">This scenario tests your ability to combine security, performance, and compliance in a real-world</p>
 <p class="doc-p">banking context.</p>
 <p class="doc-p">Architecture layers:</p>
