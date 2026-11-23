@@ -1,6 +1,6 @@
 # MuleSoft Enterprise Architecture & Interview Hub (2026 Edition)
 
-A high-performance, mobile-optimized static knowledge hub containing **268 real-world scenario-based MuleSoft interview questions**, architectural diagrams, DataWeave 2.0 playground, and technical deep-dives.
+A high-performance, mobile-optimized static knowledge hub containing **308 real-world scenario-based MuleSoft interview questions**, architectural diagrams, DataWeave 2.0 playground, and technical deep-dives.
 
 **Live Website**: [https://niranjanpotter.github.io/](https://niranjanpotter.github.io/)  
 **Author**: Niranjan Potter
@@ -11,8 +11,10 @@ A high-performance, mobile-optimized static knowledge hub containing **268 real-
 
 ```text
 niranjanpotter.github.io/
-├── index.html                 # Main knowledge hub with 40 modules & 270+ Q&A cards
+├── index.html                 # Main knowledge hub with 45 modules & 308 Q&A cards
 ├── sitemap.xml                # Canonical XML sitemap for search engine indexing
+├── sitemap-hub.xml            # Alternate cache-busting XML sitemap for GSC
+├── sitemap.txt                # Plain-text URL list sitemap fallback
 ├── robots.txt                 # Search engine crawler policies and sitemap pointer
 ├── 404.html                   # Custom brand-consistent 404 error page
 ├── assets/

@@ -9,7 +9,7 @@
 <meta name="color-scheme" content="dark light"/>
 <title>MuleSoft Interview Questions &amp; Answers (2026) | 308 Real-World Scenario Q&amp;A</title>
 <meta content="Master MuleSoft interviews with 308 real-time scenario-based questions, CloudHub 2.0 migration, DataWeave 2.0, API-led connectivity diagrams, and senior architect pitches." name="description"/>
-<meta content="mulesoft interview questions, mulesoft scenario based questions, cloudhub 2.0 interview questions, anypoint platform interview, dataweave 2.0 questions, mulesoft senior developer interview, mulesoft technical lead questions, mulesoft batch processing, mulesoft error handling" name="keywords"/>
+<meta content="mulesoft interview questions, mulesoft scenario based questions, cloudhub 2.0 interview questions, cloudhub 1.0 to 2.0 migration, anypoint platform interview, dataweave 2.0 questions, mulesoft senior developer interview, mulesoft technical lead questions, mulesoft architect interview, mulesoft batch processing, mulesoft error handling, anypoint mq dlq fifo, object store vs cache, mulesoft xa transactions, dedicated load balancer vpc, mulesoft salesforce bulk api 2.0, sap connector idoc bapi, mulesoft agentforce mcp, mule maven plugin cicd, mulesoft java interview questions" name="keywords"/>
 <meta content="Niranjan Potter" name="author"/>
 <meta content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" name="robots"/>
 <link href="https://niranjanpotter.github.io/" rel="canonical"/>
@@ -128,7 +128,7 @@
   <link rel="stylesheet" href="assets/css/hub.min.css?v=202609">
   <link rel="stylesheet" href="assets/css/diagrams.min.css?v=202609" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="assets/css/diagrams.min.css?v=202609"></noscript>
-  <script src="assets/js/hub.min.js?v=202609" defer></script>
+  <script src="assets/js/hub.min.js?v=202611" defer></script>
   <script src="assets/js/diagrams.min.js?v=202609" defer></script>
 </head>
 <body>
@@ -158,7 +158,7 @@
     <button type="button" class="search-trigger" onclick="openSearchModal()" aria-label="Search questions and topics (Ctrl+K)">
       <div style="display:flex; align-items:center; gap:10px;">
         <svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-        <span>Search 260+ topics, DW scripts, error codes...</span>
+        <span>Search 308 topics, DW scripts, error codes...</span>
       </div>
       <span class="search-shortcut">Ctrl+K</span>
     </button>
@@ -220,7 +220,7 @@
 <div>
 <div class="quick-sidebar-title" id="sidebar-section-title">All Modules</div>
 <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
-<span id="sidebar-module-count" style="font-size:0.72rem; color:var(--text-dim);">Showing all 40 modules</span>
+<span id="sidebar-module-count" style="font-size:0.72rem; color:var(--text-dim);">Showing all 45 modules</span>
 <button type="button" id="sidebar-reset-filter" class="sidebar-reset-btn" style="display:none;" onclick="filterBlogCategory('all')">Show All</button>
 </div>
 </div>
@@ -230,21 +230,21 @@
 <div class="sidebar-section-filter-wrap">
   <label class="sr-only" for="sidebar-section-select">Filter by Section</label>
   <select id="sidebar-section-select" class="sidebar-section-select" onchange="filterBlogCategory(this.value)" aria-label="Filter by Section">
-    <option value="all">All Sections (40)</option>
+    <option value="all">All Sections (45)</option>
     <option value="Getting Started &amp; Strategy">🚀 Getting Started &amp; Strategy (3)</option>
     <option value="Salesforce &amp; Enterprise Connectors">🔌 Salesforce &amp; Enterprise Connectors (4)</option>
     <option value="Security &amp; Connectivity">🔐 Security &amp; Connectivity (1)</option>
     <option value="AWS &amp; Messaging">🌩️ AWS &amp; Messaging (3)</option>
     <option value="Flow Scopes &amp; Concurrency">🔀 Flow Scopes &amp; Concurrency (5)</option>
     <option value="Error Handling &amp; Resiliency">⚠️ Error Handling &amp; Resiliency (1)</option>
-    <option value="ObjectStore &amp; API Governance">💾 ObjectStore &amp; API Governance (3)</option>
+    <option value="ObjectStore &amp; API Governance">💾 ObjectStore &amp; API Governance (4)</option>
     <option value="Testing &amp; CI/CD">🧪 Testing &amp; CI/CD (1)</option>
-    <option value="DataWeave 2.0 Masterclass">💻 DataWeave 2.0 Masterclass (2)</option>
-    <option value="Deployment &amp; CloudHub 2.0">🌐 Deployment &amp; CloudHub 2.0 (2)</option>
-    <option value="Production Scenarios &amp; Incidents">🎯 Production Scenarios &amp; Incidents (1)</option>
+    <option value="DataWeave 2.0 Masterclass">💻 DataWeave 2.0 Masterclass (3)</option>
+    <option value="Deployment &amp; CloudHub 2.0">🌐 Deployment &amp; CloudHub 2.0 (3)</option>
+    <option value="Production Scenarios &amp; Incidents">🎯 Production Scenarios &amp; Incidents (2)</option>
     <option value="Live Whiteboard &amp; Architecture">📐 Live Whiteboard &amp; Architecture (1)</option>
     <option value="Modern Architecture &amp; AI">🤖 Modern Architecture &amp; AI (3)</option>
-    <option value="Interview Traps &amp; Pitfalls">⚡ Interview Traps &amp; Pitfalls (1)</option>
+    <option value="Interview Traps &amp; Pitfalls">⚡ Interview Traps &amp; Pitfalls (2)</option>
     <option value="Enterprise Architect Masterclass">🎓 Enterprise Architect Masterclass (6)</option>
     <option value="Senior Developer &amp; Lead Technical Interview">🧠 Senior Developer &amp; Lead Technical Interview (1)</option>
     <option value="Rapid Review &amp; Cheat Sheets">🏆 Rapid Review &amp; Cheat Sheets (2)</option>
@@ -255,13 +255,13 @@
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-a" href="#mod-a" data-category="Getting Started &amp; Strategy">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🚀 Interview Coaching, Strategy &amp; Project Overview</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-b" href="#mod-b" data-category="Salesforce &amp; Enterprise Connectors">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☁️ Salesforce Connector &amp; Bulk API 2.0</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">6</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
@@ -273,7 +273,7 @@
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-d" href="#mod-d" data-category="Security &amp; Connectivity">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔑 OAuth 2.0 &amp; JWT Bearer Token Flow</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">6</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
@@ -285,25 +285,25 @@
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-f" href="#mod-f" data-category="Salesforce &amp; Enterprise Connectors">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔄 SAP + Salesforce End-to-End Integration</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-g" href="#mod-g" data-category="Flow Scopes &amp; Concurrency">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔀 Scatter-Gather Router Deep Dive</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-h" href="#mod-h" data-category="Flow Scopes &amp; Concurrency">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔁 ForEach &amp; Parallel ForEach Scopes</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-i" href="#mod-i" data-category="Flow Scopes &amp; Concurrency">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📊 Batch Processing Deep Dive</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">7</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
@@ -363,13 +363,13 @@
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-s" href="#mod-s" data-category="Getting Started &amp; Strategy">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">⚡ Enterprise Utility &amp; Energy Platform Deep Dive</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">1</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-t" href="#mod-t" data-category="Rapid Review &amp; Cheat Sheets">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📝 Quick Reference Interview Cheat Sheet</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">9</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">6</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
@@ -399,7 +399,7 @@
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-tips" href="#mod-tips" data-category="Getting Started &amp; Strategy">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🎯 Interview Day Strategy &amp; STAR Method</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">1</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">Guide</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
@@ -429,7 +429,7 @@
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-cc" href="#mod-cc" data-category="Interview Traps &amp; Pitfalls">
 <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🪤 Top 20 Interview Traps &amp; Senior Corrections (T1-T20)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">24</span>
+<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">22</span>
 </a>
 </li>
 <li class="quick-sidebar-item">
@@ -614,7 +614,7 @@
   <!-- Compact Stat Strip -->
   <div class="metric-deck metric-deck-compact">
     <div class="metric-card">
-      <span class="metric-val" style="color:#00f0ff;">40</span>
+      <span class="metric-val" style="color:#00f0ff;">45</span>
       <span class="metric-label">Technical Modules</span>
     </div>
     <div class="metric-card">
@@ -658,7 +658,7 @@
   </div>
   <button type="button" class="btn btn-sm btn-outline" onclick="togglePracticeMode()">✕ Exit Practice Mode</button>
 </div>
-<!-- All 36 Technical Modules -->
+<!-- All 45 Technical Modules -->
 <section class="blog-article" data-category="Getting Started &amp; Strategy" data-role="Developer / Senior" id="mod-a" aria-labelledby="mod-a-title">
 <div class="article-header">
 <div class="article-meta">
@@ -667,7 +667,7 @@
 <span class="badge badge-primary">Getting Started &amp; Strategy</span>
 <span>⏱️ 6 min read</span>
 <span>📄 Guide Pages 1–4</span>
-<span>🎯 4 Interview Topics</span>
+<span>🎯 3 Interview Topics</span>
 </div>
 <h2 class="article-title">🚀 Interview Coaching, Strategy &amp; Project Overview</h2>
 <p class="article-excerpt">Interactive 2-minute pitch studio, enterprise API-led architecture, business outcomes, and key performance engineering.</p>
@@ -1540,7 +1540,7 @@
           <div class="mock-choice-grid" id="mock-role-choices">
             <button type="button" class="mock-choice-card active" data-role="all" onclick="selectMockRole('all', this)">
               <div class="mock-choice-title">🌐 All Levels (Mixed)</div>
-              <div class="mock-choice-desc">Balanced mix from all 40 modules &amp; 270+ real scenarios</div>
+              <div class="mock-choice-desc">Balanced mix from all 45 modules &amp; 308 real scenarios</div>
             </button>
             <button type="button" class="mock-choice-card" data-role="developer" onclick="selectMockRole('developer', this)">
               <div class="mock-choice-title">💻 MuleSoft Developer</div>

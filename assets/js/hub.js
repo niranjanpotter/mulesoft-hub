@@ -21,7 +21,7 @@ window._modulesLoaded = false;
   window.ensureSearchIndexLoaded = function() {
     if (window._searchIndexLoaded) return Promise.resolve(SEARCH_INDEX);
     if (searchPromise) return searchPromise;
-    searchPromise = fetch('assets/data/search-index.json?v=202604')
+    searchPromise = fetch('assets/data/search-index.json?v=202611')
       .then(function(r) {
         if (!r.ok) throw new Error('Failed search-index fetch: ' + r.status);
         return r.json();
@@ -43,7 +43,7 @@ window._modulesLoaded = false;
   window.ensureDwPresetsLoaded = function() {
     if (window._dwPresetsLoaded) return Promise.resolve(DW_PRESETS);
     if (dwPromise) return dwPromise;
-    dwPromise = fetch('assets/data/dw-presets.json?v=202604')
+    dwPromise = fetch('assets/data/dw-presets.json?v=202611')
       .then(function(r) {
         if (!r.ok) throw new Error('Failed dw-presets fetch: ' + r.status);
         return r.json();
@@ -157,7 +157,7 @@ window._modulesLoaded = false;
     }
     if (!fetchStarted) {
       fetchStarted = true;
-      fetch('assets/data/modules.html?v=202604')
+      fetch('assets/data/modules.html?v=202611')
         .then(function(r) {
           if (!r.ok) throw new Error('Failed modules fetch: ' + r.status);
           return r.text();
@@ -1394,7 +1394,7 @@ function filterSidebarModules(query) {
   if (countEl) {
     countEl.textContent = (activeCat === 'all' && !q)
       ? ('Showing all ' + shownCount + ' modules')
-      : ('Showing ' + shownCount + ' of 40 modules');
+      : ('Showing ' + shownCount + ' of 45 modules');
   }
 }
 
@@ -2381,7 +2381,7 @@ if (typeof window !== 'undefined') {
       var cElPre = document.getElementById('sidebar-module-count');
       var rBtnPre = document.getElementById('sidebar-reset-filter');
       if (tElPre) tElPre.textContent = (nextCat === 'all') ? 'All Modules' : nextCat;
-      if (cElPre) cElPre.textContent = (nextCat === 'all') ? ('Showing all ' + preCount + ' modules') : ('Showing ' + preCount + ' of 40 modules');
+      if (cElPre) cElPre.textContent = (nextCat === 'all') ? ('Showing all ' + preCount + ' modules') : ('Showing ' + preCount + ' of 45 modules');
       if (rBtnPre) rBtnPre.style.display = (nextCat === 'all') ? 'none' : 'inline-block';
       window.ensureModulesLoaded({ sliced: false }).then(function() {
         window.filterBlogCategory(nextCat, btn, opts);
@@ -2431,7 +2431,7 @@ if (typeof window !== 'undefined') {
     if (countEl) {
       countEl.textContent = (nextCat === 'all')
         ? ('Showing all ' + shownCount + ' modules')
-        : ('Showing ' + shownCount + ' of 40 modules');
+        : ('Showing ' + shownCount + ' of 45 modules');
     }
     if (resetBtn) {
       resetBtn.style.display = (nextCat === 'all') ? 'none' : 'inline-block';
