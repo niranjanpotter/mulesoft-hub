@@ -1888,5 +1888,285 @@
     "title": "How do you implement gRPC services in MuleSoft with Protocol Buffers and HTTP/2 multiplexing?",
     "tag": "Q2",
     "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"For high-frequency, low-latency microservice communications (e.g., real-time smart meter fraud detection), REST/JSON incurs significant serialization overhead and HTTP/1.1 head-of-line blocking. With the MuleSoft gRPC Connector, we define service contracts using Protocol Buffers (.proto files). MuleSoft compiles these protobuf schemas into binary serializers runnin"
+  },
+  {
+    "id": 270,
+    "elementId": "mod-nn-q1",
+    "title": "You are building a high-throughput API that processes large payloads (>5 MB) and calls multiple downstream systems. How do you design it without memory crashes?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"To handle large payloads (>5 MB) under high throughput, I decouple ingestion from processing using Anypoint MQ as an asynchronous persistent buffer. I enable Repeatable File Store Streams to prevent loading multi-megabyte payloads into JVM heap memory. For downstream calls, I use Scatter-Gather with strict branch timeouts, wrapping each branch in a local Try scope with On Error Continue so a slow downstream system never blocks overall throughput.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Telecom Order Fulfillment API.<br><strong>Problem:</strong> Upstream billing sent 12 MB XML bulk activation files; concurrent calls triggered JVM java.lang.OutOfMemoryError: Java heap space on 0.2 vCore workers.<br><strong>Solution:</strong> Configured Repeatable File Store Stream with in-memory buffer limit of 512 KB, spooled overflow to local disk, published messages to Anypoint MQ FIFO queue, and invoked downstream CRM and Inventory in parallel with Scatter-Gather."
+  },
+  {
+    "id": 271,
+    "elementId": "mod-nn-q2",
+    "title": "In MuleSoft, if your Batch Job is processing 10,000 records but the system restarts mid-way, what happens to the remaining records?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In CloudHub 1.0 or on-premise standalone runtimes, Batch Jobs persist individual record states in an embedded disk-backed queue. When the Mule runtime restarts gracefully, the Batch engine detects unfinished instances in persistent storage and resumes processing from the last uncommitted batch step. However, if CloudHub restarts due to worker redeployment on a new virtual machine, local ephemeral disk is lost and the job fails unless state is tracked in Object Store or persistent external queues.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Enterprise Payroll & Bonus Sync.<br><strong>Design:</strong> 10,000 employee records split into chunks of 100. Before batch processing, we generate a Batch Instance ID and write it to persistent ObjectStore v2. If a worker terminates, our dead-man monitoring flow detects the stale job status and re-queues only unacknowledged batches from Anypoint MQ."
+  },
+  {
+    "id": 272,
+    "elementId": "mod-nn-q3",
+    "title": "What happens if we deploy a MuleSoft API without API Manager? How can we secure the API without applied policies?",
+    "tag": "Q3",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"If an API is deployed without API Autodiscovery or API Manager pairing, it runs as an unmanaged API with zero out-of-the-box policy enforcement. To secure it natively in Mule 4, we must implement security directly in the Mule XML configuration: configure HTTPS with Mutual TLS (mTLS) on the HTTP Listener, enforce IP allowlisting using HTTP filter expressions, validate JWT or OAuth tokens via custom DataWeave or Java filters, and secure database/backend credentials using the Secure Configuration Properties tool.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Internal Microservice in Private Network.<br><strong>Implementation:</strong> Configured HTTP Listener with TLS Keystore and Truststore for client-certificate authentication (mTLS). Added a Choice router validating Authorization headers against an internal Redis token blacklist, ensuring that zero traffic entered without cryptographic verification even without API Manager."
+  },
+  {
+    "id": 273,
+    "elementId": "mod-nn-q4",
+    "title": "How does Anypoint MQ handle queue retry, Dead Letter Queues (DLQ), and manual message acknowledgment (ACK/NACK)?",
+    "tag": "Q4",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Anypoint MQ supports both standard and FIFO queues with customizable delivery counts and acknowledgment modes. By setting ackMode='MANUAL', the consumer receives a message and processes it within an ackTimeout window. If processing succeeds, we issue an MQ:ACK. If a downstream backend fails, we issue an MQ:NACK or let the ackTimeout expire, returning the message to the queue. Once the message delivery count exceeds the configured maximum retries, Anypoint MQ automatically routes it to the designated Dead Letter Queue (DLQ).\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Real-time SAP Order Ingestion.<br><strong>Configuration:</strong> Max Delivery Attempts = 5, Default Ack Timeout = 30s. Consumer flow uses manual ACK only after successful SAP commit. If SAP returns HTTP 503, an On Error Propagate block sends an MQ:NACK with a retry backoff. After 5 failed attempts, the message lands in SAP-ORDER-DLQ for alerts via Anypoint Monitoring."
+  },
+  {
+    "id": 274,
+    "elementId": "mod-nn-q5",
+    "title": "Object Store vs Cache Scope in MuleSoft \u2014 when should you use which and why?",
+    "tag": "Q5",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Cache Scope is strictly designed to optimize read performance and avoid repeated expensive backend queries by caching flow responses in-memory or in an Object Store. It operates automatically based on payload hashing and HTTP headers. Object Store, however, is a general-purpose key-value storage used for state management, watermarking, OAuth token persistence, and cross-flow synchronization. You use Cache Scope for idempotent GET responses, and Object Store for mutable business state.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Customer Portal API.<br><strong>Implementation:</strong> Used Cache Scope with a 15-minute TTL on GET /products to reduce database load by 85%. Used ObjectStore v2 to store customer cart session tokens and SFDC Bulk API job IDs where explicit CRUD operations (Store, Retrieve, Remove) were required."
+  },
+  {
+    "id": 275,
+    "elementId": "mod-nn-q6",
+    "title": "How does MuleSoft Transaction Manager handle Local vs Extended Architecture (XA) Transactions?",
+    "tag": "Q6",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"A Local Transaction involves a single resource (e.g. a single database or single JMS broker) and is lightweight with minimal locking overhead. An XA (Extended Architecture) Distributed Transaction involves multiple distinct transactional resources (e.g., committing to a Database AND publishing to a JMS broker simultaneously) coordinated via a Two-Phase Commit (2PC) protocol managed by the Bitronix Transaction Manager in Mule. If any participant fails in Phase 2, all operations rollback.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Banking Wire Transfer API.<br><strong>Architecture:</strong> Wrapped JDBC DB debit operation and ActiveMQ credit notification inside an XA Transactional scope. If the ActiveMQ broker went down after the DB debit, Bitronix rolled back the database debit automatically, preventing phantom fund loss."
+  },
+  {
+    "id": 276,
+    "elementId": "mod-nn-q7",
+    "title": "Why are Parent POM and BOM (Bill of Materials) critical in enterprise MuleSoft project standards?",
+    "tag": "Q7",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In enterprise MuleSoft environments with dozens of APIs, managing individual connector versions, Mule runtime versions, and plugin configurations in each project POM leads to version drift, dependency conflicts, and vulnerability nightmares. A centralized Parent POM defines organizational repositories, distribution management, common Maven plugins, and deployment configs. A BOM (Bill of Materials) defines locked dependency versions for HTTP, Salesforce, DB, and Kafka connectors, ensuring all teams build against identical, certified libraries.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Enterprise API Factory Standards.<br><strong>Setup:</strong> Published corporate-parent-pom:2.4.0 and corporate-mule-bom:2.4.0 to JFrog Artifactory. When upgrading Salesforce Connector from 10.14 to 10.18 for a security patch, we updated only the BOM version, and all 45 microservices inherited the security fix upon next CI/CD build."
+  },
+  {
+    "id": 277,
+    "elementId": "mod-nn-q8",
+    "title": "How do you handle production incidents where a downstream third-party system experiences high latency breaching API SLAs?",
+    "tag": "Q8",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"When a downstream system slows down, requests pile up in MuleSoft worker thread pools, leading to thread exhaustion and cascading failure of the entire API. To prevent this, I implement three layers of resiliency: First, strict HTTP request connection and response timeouts (e.g. 3000ms). Second, Circuit Breaker pattern or Until Successful with exponential backoff and jitter. Third, local fallback payloads in Try scopes with On Error Continue returning cached data or HTTP 202 Accepted.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Healthcare Patient Record Retrieval.<br><strong>Incident:</strong> Legacy EHR database query latency surged from 300ms to 12s during morning peak, exhausting HTTP Grizzly selector threads and crashing the customer portal.<br><strong>Fix:</strong> Enforced 2500ms response timeout on EHR connector, wrapped call in Try scope, and returned partial cached data with a warning flag, dropping overall failure rate from 88% to 0%."
+  },
+  {
+    "id": 278,
+    "elementId": "mod-oo-q1",
+    "title": "What is Anypoint Exchange and why must RAML/OAS specifications be published to Exchange before implementation?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Anypoint Exchange is the central enterprise catalog for API assets, connectors, fragments, and templates. Publishing an API specification (RAML or OAS) to Exchange creates a shared contract that enables the API-led development lifecycle: business analysts and frontend teams test mocking service endpoints without waiting for backend development, governance rule-sets automatically validate corporate security standards, and API Versioning is strictly managed.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Banking Open API Initiative.<br><strong>Workflow:</strong> Created customer-account-api in Design Center, published v1.0.0 to Exchange. Frontend mobile developers used Exchange Mocking Service to develop UI screens in parallel while MuleSoft developers built the backend implementation against the Exchange contract."
+  },
+  {
+    "id": 279,
+    "elementId": "mod-oo-q2",
+    "title": "When is a Dedicated Load Balancer (DLB) mandatory with Anypoint VPC, and how do you configure path-based routing?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"A Dedicated Load Balancer (DLB) is mandatory when you require: custom enterprise domain names (e.g. api.company.com instead of *.cloudhub.io), custom SSL/TLS certificates, internal VPC-only private routing without exposing endpoints to the public internet, or two-way Mutual TLS (mTLS) with external clients. Path-based routing is configured using DLB Mapping Rules that match incoming URI patterns to specific CloudHub app names.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Retail Global API Gateway.<br><strong>Mapping Rule:</strong> Input Path: <code>/orders/{app}</code> \u2794 App Name: <code>{app}-prc-api</code> \u2794 Output Path: <code>/</code>. External client calls <code>https://api.retail.com/orders/v1</code> and DLB securely routes traffic internally to <code>v1-prc-api.internal.cloudhub.io:8092</code> over HTTPS."
+  },
+  {
+    "id": 280,
+    "elementId": "mod-oo-q3",
+    "title": "How do you set up nodes for high availability in an On-Premise Mule cluster, and what happens to in-flight payloads if a node fails?",
+    "tag": "Q3",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In customer-hosted runtimes, high availability is achieved by creating an active-active Mule cluster using Hazelcast distributed memory fabric. When multiple Mule runtime nodes join a cluster, shared Object Stores and VM queues are distributed across all nodes. If Node 1 crashes mid-flight, Node 2 detects the heartbeat loss within seconds, assumes ownership of Node 1's shared queues, and resumes processing pending messages. For synchronous HTTP requests, the external hardware load balancer detects node failure and reroutes new calls to Node 2.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Manufacturing ERP On-Prem Cluster.<br><strong>Setup:</strong> 4-node Mule 4 cluster deployed on RHEL with F5 BIG-IP load balancer. During an unannounced VM hypervisor failure on Node 3, F5 immediately stopped routing to Node 3, while Hazelcast redistributed in-memory VM queues across Nodes 1, 2, and 4 with zero message loss."
+  },
+  {
+    "id": 281,
+    "elementId": "mod-oo-q4",
+    "title": "How does API Autodiscovery work internally between CloudHub/On-Prem and API Manager?",
+    "tag": "Q4",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"API Autodiscovery links a deployed Mule application to its API Manager instance using the <code>api-gateway:autodiscovery</code> component. At application startup, the Mule runtime uses the global Client ID and Client Secret (<code>anypoint.platform.client_id</code> and <code>client_secret</code>) to poll API Manager with the configured <code>apiId</code>. It downloads all active policies (Rate Limiting, Client ID enforcement, JWT) and starts an internal policy gatekeeper. Until policy synchronization completes successfully, the HTTP Listener blocks external traffic, returning HTTP 503.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Fintech Payment Gateway API.<br><strong>Configuration:</strong> Defined <code>&lt;api-gateway:autodiscovery apiId=\"1928472\" flowRef=\"payment-api-main\" /&gt;</code>. Passed platform credentials via Maven deployment arguments. When an administrator enables IP White-listing in API Manager UI, the API Gateway polls and applies the policy in runtime memory within 30 seconds without restarting the app."
+  },
+  {
+    "id": 282,
+    "elementId": "mod-oo-q5",
+    "title": "Rate Limiting vs Spike Control policies in API Manager \u2014 what is the technical difference?",
+    "tag": "Q5",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Rate Limiting policy restricts the total number of API requests a consumer can make within a specified timeframe (e.g. 1000 requests per hour) for quota management, monetization, and SLA tiering; once exhausted, it immediately returns HTTP 429 Too Many Requests. Spike Control policy protects backend infrastructure from sudden traffic surges and DoS bursts using a sliding window algorithm (token bucket); it smooths traffic spikes by queuing incoming requests or rejecting bursts that exceed allowable velocity.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Black Friday E-Commerce Gateway.<br><strong>Strategy:</strong> Configured Rate Limiting (Tier 1: 50,000 requests/day per Client ID) for billing. Layered a Spike Control policy (max 100 requests per second with delay queue of 200ms) above it to prevent database connection pool starvation during flash sale traffic surges."
+  },
+  {
+    "id": 283,
+    "elementId": "mod-oo-q6",
+    "title": "What are RAML Fragments, and how do you use DataType, Trait, ResourceType, and Library fragments?",
+    "tag": "Q6",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"RAML Fragments are modular, reusable API contract components that eliminate duplication across enterprise APIs. A DataType defines schema models (e.g., Customer.raml). A Trait defines reusable request/response behaviors like headers, query parameters, or standard error responses (e.g., hasCorrelationId.raml). A ResourceType defines common HTTP method patterns (e.g., collection or item). A Library bundles multiple DataTypes, Traits, and ResourceTypes into a single namespace imported using <code>uses:</code>.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Enterprise API Style Guide Standards.<br><strong>Design:</strong> Built a corporate <code>api-standards-library.raml</code> containing standard error responses (400, 401, 404, 500) and headers (X-Transaction-ID, Client-ID). All 35 enterprise APIs import this library with one line: <code>uses: Common: libraries/common.raml</code>."
+  },
+  {
+    "id": 284,
+    "elementId": "mod-oo-q7",
+    "title": "How do you create and consume SOAP services in Mule 4 using the Web Service Consumer connector?",
+    "tag": "Q7",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"To consume a SOAP web service in Mule 4, we use the Web Service Consumer (WSC) connector. We configure the WSDL location (local file or remote URL), Service name, Port, and Address. In the flow, we use a Transform Message component to construct the SOAP XML Body using DataWeave matching the WSDL schema. The WSC:CONSUME operation dispatches the request over HTTP, and the response XML payload is transformed back to JSON or business objects. For WS-Security, we configure WSS UsernameToken or Signature configurations.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Legacy Core Banking Integration.<br><strong>Implementation:</strong> Configured WSC with <code>AccountService.wsdl</code>. DataWeave mapped incoming REST JSON into SOAP envelope: <code>Body: { ns0#GetBalance: { AccountNumber: vars.accNo } }</code>. The connector handled SOAPAction headers, namespaces, and SOAP Fault extraction seamlessly."
+  },
+  {
+    "id": 285,
+    "elementId": "mod-oo-q8",
+    "title": "What are the key technical differences between RAML 1.0 and OAS 3.0 (OpenAPI Specification)?",
+    "tag": "Q8",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"RAML 1.0 is a human-centric YAML modeling language designed by MuleSoft with first-class support for Traits, ResourceTypes, and modular Fragments. OAS 3.0 (OpenAPI) is the broad industry standard supported by Swagger, cloud vendors, and API tools. OAS 3.0 uses JSON Schema with support for callbacks, links (hypermedia), and multiple server objects with URL templating. In modern Anypoint Platform, MuleSoft provides native dual support: you can design, import, and generate Mule flows from both RAML 1.0 and OAS 3.0 with zero friction.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Partner Integration Portal.<br><strong>Decision:</strong> Used RAML 1.0 internally for rapid modeling and fragment reuse across Mule developers. When publishing external APIs to third-party bank partners, we used Exchange to automatically export the specification as OAS 3.0 JSON, allowing external partners to generate client SDKs in Python, Go, and TypeScript."
+  },
+  {
+    "id": 286,
+    "elementId": "mod-pp-q1",
+    "title": "Horizontal scaling vs Vertical scaling in CloudHub \u2014 when do you choose which, and how does rolling update work?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Vertical scaling increases the computational capacity of individual workers (e.g. from 0.1 vCore to 0.5 or 1.0 vCore) to handle memory-heavy operations like large payload transformations or caching. Horizontal scaling increases the number of worker instances (e.g. from 1 worker to 4 workers) to distribute concurrent load and provide high availability. During updates, CloudHub performs a zero-downtime rolling update: it provisions the new worker, waits for successful health checks, switches traffic via DNS/Load Balancer, and terminates the old worker.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Flash-Sale E-Commerce API.<br><strong>Strategy:</strong> Standard baseline was 2 workers of 0.2 vCore. During holiday peak, we scaled horizontally to 8 workers of 0.2 vCore behind CloudHub Shared Load Balancer. For a nightly batch reconciler processing 100 MB files, we scaled vertically to 1 worker of 1.0 vCore to provide 3.2 GB of heap memory."
+  },
+  {
+    "id": 287,
+    "elementId": "mod-pp-q2",
+    "title": "What is the CloudHub log storage limit per application, and how do you implement external log streaming?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"CloudHub 1.0 provides up to 100 MB of log storage or up to 30 days of logs per application per worker, whichever limit is reached first. Once the 100 MB buffer is full, older logs are permanently purged in a FIFO manner. For enterprise auditing and compliance, we disable CloudHub default logging or configure external log forwarders: either using the Anypoint Monitoring Titanium telemetry engine or configuring Log4j2 Appenders (Syslog / HTTP Appender) to stream logs in real-time to Splunk, Datadog, or AWS CloudWatch.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Banking Compliance Audit Logs.<br><strong>Implementation:</strong> Configured custom <code>log4j2.xml</code> with an asynchronous Splunk HTTP Event Collector (HEC) appender. Disabled CloudHub system logs in Runtime Manager, routing all application logs directly to corporate Splunk with zero risk of 100 MB truncation."
+  },
+  {
+    "id": 288,
+    "elementId": "mod-pp-q3",
+    "title": "How do you mask sensitive properties in Runtime Manager and encrypt properties using the Secure Configuration Properties tool?",
+    "tag": "Q3",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"To prevent passwords and API keys from appearing in plain text in Runtime Manager, we declare them in <code>mule-artifact.json</code> under the <code>secureProperties</code> array (e.g. <code>[\"db.password\", \"sfdc.token\"]</code>); Runtime Manager replaces their values with asterisks. To encrypt properties inside YAML/properties files, we use the MuleSoft Secure Configuration Properties Tool JAR with algorithms like AES-CBC or AES-GCM, wrapping encrypted values in <code>![encrypted_string]</code>, and injecting the decryption key at runtime via <code>-Druntime.encryption.key</code>.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> HIPAA Protected Health Gateway.<br><strong>Command:</strong> <code>java -jar secure-properties-tool.jar string encrypt Blowfish CBC MyKey123 \"PatientDbPass\"</code>. In <code>config-prod.yaml</code>: <code>db.password: \"![3Kx7d9+qwe=]\"</code>. In <code>mule-artifact.json</code>: <code>\"secureProperties\": [\"db.password\"]</code>."
+  },
+  {
+    "id": 289,
+    "elementId": "mod-pp-q4",
+    "title": "What are CloudHub Persistent Queues, how do they differ from VM queues, and what is their performance overhead?",
+    "tag": "Q4",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"CloudHub Persistent Queues provide a reliable, disk-backed queuing mechanism for VM connector queues and batch processing across CloudHub workers. When enabled in Runtime Manager settings, Mule offloads queue payloads to an external Amazon SQS/S3 persistence layer. If a worker crashes, messages are not lost. However, because every enqueue and dequeue operation requires remote network serialization and disk writes, persistent queues introduce a 10x-20x latency overhead compared to pure in-memory VM queues.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Financial Billing Settlement.<br><strong>Design:</strong> Enabled Persistent Queues on payment-settlement-api to guarantee zero message loss during worker updates. For high-frequency caching lookups where microsecond latency was needed, used in-memory Object Store instead."
+  },
+  {
+    "id": 290,
+    "elementId": "mod-pp-q5",
+    "title": "In which timezone does the MuleSoft Scheduler component run, and how do you handle regional execution?",
+    "tag": "Q5",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"By default, the MuleSoft Scheduler component runs in UTC (Coordinated Universal Time) when deployed to CloudHub, regardless of the AWS region selected for deployment. In on-premise runtimes, it runs in the host machine's operating system timezone. To execute jobs at specific local business hours (e.g. 2:00 AM EST), we must either calculate the corresponding UTC offset in a fixed frequency schedule or explicitly configure the Cron expression with a specified timezone (e.g. <code>0 0 2 * * ? America/New_York</code>).\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Daily SAP GL Balancing Flow.<br><strong>Configuration:</strong> Configured Scheduler with Cron expression: <code>0 30 23 ? * MON-FRI</code> with Time Zone configured as <code>America/Chicago</code>. The job triggers reliably at 11:30 PM Central Time, automatically accounting for Daylight Saving Time (DST) transitions."
+  },
+  {
+    "id": 291,
+    "elementId": "mod-pp-q6",
+    "title": "How do you automate zero-downtime CI/CD deployments to CloudHub using the Mule Maven Plugin?",
+    "tag": "Q6",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"We automate deployments using the <code>mule-maven-plugin</code> configured with the <code>&lt;cloudhubDeployment&gt;</code> (or <code>&lt;cloudhub2Deployment&gt;</code>) goal. The plugin packages the deployable JAR, uploads it to Anypoint Runtime Manager via platform REST APIs, configures worker size (vCore), worker count, region, environment, and property overrides. In Jenkins/GitHub Actions, we invoke <code>mvn clean deploy -DmuleDeploy</code> passing environment variables securely.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Enterprise GitHub Actions CI/CD Pipeline.<br><strong>Command:</strong> <code>mvn clean deploy -DmuleDeploy -Danypoint.platform.client_id=$CLIENT_ID -Danypoint.platform.client_secret=$CLIENT_SECRET -Denv=Production -Dworkers=2 -DvCore=0.2</code>. The plugin verifies application health before marking the pipeline step successful."
+  },
+  {
+    "id": 292,
+    "elementId": "mod-pp-q7",
+    "title": "Standalone Mule Runtime on Linux vs CloudHub \u2014 what are the operational and cost differences?",
+    "tag": "Q7",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"CloudHub is a fully managed multi-tenant and single-tenant iPaaS where MuleSoft handles infrastructure provisioning, OS patching, load balancers, high availability, and security compliance (SOC2/PCI-DSS). Standalone Mule runtime on customer-hosted Linux servers requires the customer to manage OS patching, Java upgrades, clustering, load balancers (F5/NGINX), and monitoring agents manually. Standalone reduces subscription vCore licensing costs for massive internal workloads, but significantly increases infrastructure and DevOps overhead.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Banking On-Prem Core vs Cloud Digital APIs.<br><strong>Architecture:</strong> Deployed high-volume, sub-millisecond mainframe integration microservices on an On-Prem 6-node RHEL Mule Cluster to satisfy strict data sovereignty laws. Deployed all customer-facing mobile Experience and Process APIs to CloudHub for global autoscaling and rapid delivery."
+  },
+  {
+    "id": 293,
+    "elementId": "mod-pp-q8",
+    "title": "How do you implement Active-Active vs Active-Passive multi-region disaster recovery in CloudHub?",
+    "tag": "Q8",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In CloudHub, Active-Passive disaster recovery deploys the application to a primary region (e.g. us-east-1) and standby region (e.g. us-west-2). A Global Traffic Management (GTM) DNS service like AWS Route 53 performs health checks on the primary region; if it fails, DNS traffic fails over to the standby region. In Active-Active disaster recovery, applications run in both regions simultaneously behind Route 53 Weighted/Latency routing. For stateful data, we replicate databases or use multi-region event brokers like Kafka or Anypoint MQ with dual-region publishers.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Global Airline Ticketing API.<br><strong>DR Architecture:</strong> Deployed identical 4-worker clusters in us-east-1 (N. Virginia) and eu-west-1 (Ireland). Route 53 routed users to the lowest latency region. Backend booking events synchronized asynchronously via global AWS DynamoDB Global Tables and Kafka topics."
+  },
+  {
+    "id": 294,
+    "elementId": "mod-qq-q1",
+    "title": "How does the lookup() function work in DataWeave, and what are its strict architectural constraints?",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"The <code>lookup()</code> function in DataWeave allows you to execute another flow within the same Mule application directly from a DataWeave transformation (e.g. <code>lookup('enrichment-subflow', payload)</code>). However, it has strict constraints: the target flow must be a synchronous flow or subflow with NO HTTP Listener or asynchronous routers; it accepts only a single payload argument; and calling it inside a large <code>map</code> loop creates serious performance bottlenecks because it serializes and dispatches Mule events sequentially across flow boundaries.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Currency Conversion Lookup.<br><strong>Code:</strong> <code>convertedAmount: lookup('fetch-forex-rate-subflow', { from: 'USD', to: 'EUR', amount: $.total })</code>.<br><strong>Refactoring:</strong> Replaced loop-based lookup with a single batch REST call and pre-cached rates in an ObjectStore Map to avoid 500 individual flow invocations."
+  },
+  {
+    "id": 295,
+    "elementId": "mod-qq-q2",
+    "title": "What is the difference between mapObject and pluck in DataWeave 2.0?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Both functions iterate over key-value pairs of a JSON/Java Object. <code>mapObject</code> iterates through an Object and returns another Object with transformed keys and values (using <code>(value, key, index) -> { ... }</code>). <code>pluck</code> iterates through an Object and extracts values, keys, or indices into a flat Array. Use <code>mapObject</code> when you want to modify or filter fields while keeping an Object structure, and use <code>pluck</code> when you need to convert an Object into a list/array for downstream mapping.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Input:</strong> <code>{ \"name\": \"Niranjan\", \"role\": \"Lead\" }</code>.<br><strong>mapObject:</strong> <code>payload mapObject (v, k) -> { (upper(k)): upper(v) }</code> \u2794 <code>{ \"NAME\": \"NIRANJAN\", \"ROLE\": \"LEAD\" }</code>.<br><strong>pluck:</strong> <code>payload pluck (v, k) -> v</code> \u2794 <code>[\"Niranjan\", \"Lead\"]</code>."
+  },
+  {
+    "id": 296,
+    "elementId": "mod-qq-q3",
+    "title": "What is the p() function in DataWeave 2.0 and how does it differ from Mule property expressions?",
+    "tag": "Q3",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"The <code>p('property.key')</code> function in DataWeave dynamically reads configuration properties defined in <code>config.yaml</code> or runtime system environment properties directly inside a DataWeave script. Unlike Mule XML syntax <code>${property.key}</code> which resolves at flow initialization/compilation time, <code>p()</code> evaluates dynamically during script execution and supports dynamic property key concatenation (e.g. <code>p('api.endpoint.' ++ vars.env)</code>).\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Code:</strong><br><code>%dw 2.0<br>output application/json<br>---<br>{<br>  targetHost: p('sap.host'),<br>  timeout: p('sap.timeout') as Number default 5000,<br>  dynamicUrl: p('partner.' ++ payload.partnerId ++ '.endpoint')<br>}</code>"
+  },
+  {
+    "id": 297,
+    "elementId": "mod-qq-q4",
+    "title": "How do you skip null values in DataWeave 2.0 across complex nested structures?",
+    "tag": "Q4",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In DataWeave 2.0, you can skip null fields globally or locally. Globally, set the output directive with <code>output application/json skipNullOn=\"everywhere\"</code> (or <code>skipNullOn=\"objects\"</code> / <code>skipNullOn=\"arrays\"</code>). Locally, you can filter keys conditionally using the <code>filterObject</code> function: <code>payload filterObject ((value) -> value != null)</code>, or enclose optional fields in parentheses: <code>(bonus: payload.bonus) if (payload.bonus != null)</code>.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Code:</strong><br><code>%dw 2.0<br>output application/json skipNullOn=\"everywhere\"<br>---<br>{<br>  id: payload.id,<br>  name: payload.name,<br>  email: payload.email,<br>  details: {<br>    phone: payload.phone,<br>    address: null<br>  }<br>}</code><br><strong>Result:</strong> Automatically removes the <code>address</code> field from the output JSON."
+  },
+  {
+    "id": 298,
+    "elementId": "mod-qq-q5",
+    "title": "How do you use reduce, groupBy, and flatten in DataWeave for heavy array aggregation?",
+    "tag": "Q5",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"<code>groupBy</code> splits an array into an Object of arrays based on a grouping key. <code>reduce</code> iterates over an array with an accumulator to compute a single aggregated value (like a sum, count, or consolidated object). <code>flatten</code> collapses nested multi-dimensional arrays (e.g. <code>[[1,2],[3,4]]</code>) into a single flat 1D array. Combining these three functions provides declarative MapReduce capabilities inside MuleSoft without needing Java code.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Order Invoice Rollup.<br><strong>Code:</strong><br><code>%dw 2.0<br>output application/json<br>var groupedOrders = payload groupBy $.customerId<br>---<br>groupedOrders mapObject (orders, customerId) -> {<br>  (customerId): {<br>    totalSpend: orders.amount reduce ((item, sum = 0) -> sum + item),<br>    orderCount: sizeOf(orders)<br>  }<br>}</code>"
+  },
+  {
+    "id": 299,
+    "elementId": "mod-qq-q6",
+    "title": "How do you invoke custom Java classes and static methods directly inside DataWeave 2.0?",
+    "tag": "Q6",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"DataWeave 2.0 supports direct Java interoperability. We can import a Java class using the <code>import java!com::company::utils::EncryptionUtil</code> directive and invoke static methods directly: <code>EncryptionUtil::hashSha256(payload.ssn)</code>. For instantiating non-static Java classes, we use <code>java!com::company::models::User::new(payload.name, payload.email)</code>. DataWeave automatically marshals Java Strings, Maps, and Lists into native DataWeave types.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Proprietary Checksum Generator.<br><strong>DataWeave Code:</strong><br><code>%dw 2.0<br>import java!com::bank::security::HmacSigner<br>output application/json<br>---<br>{<br>  transactionId: payload.id,<br>  signature: HmacSigner::generateSignature(payload.amount as String, p('secure.secret'))<br>}</code>"
+  },
+  {
+    "id": 300,
+    "elementId": "mod-qq-q7",
+    "title": "How do you transform Fixed-Width and FlatFile legacy mainframe formats to JSON using FlatFile Definition (FFD) schemas?",
+    "tag": "Q7",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"MuleSoft handles fixed-width and mainframe flat files natively using the <code>application/flatfile</code> MIME type backed by a FlatFile Definition (.ffd) schema. The .ffd file defines record types, column names, character widths, and data types (e.g. position 1-10: AccountId, position 11-30: Name). In the Transform Message component, we set the input or output type to <code>output application/flatfile schemaPath=\"schemas/AccountRecord.ffd\"</code> and DataWeave maps it to or from JSON automatically.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>FFD Schema:</strong> <code>form: FIXEDWIDTH<br>structures:<br>- id: 'Accounts'<br>  data:<br>  - { name: 'AccId', type: String, length: 8 }<br>  - { name: 'Balance', type: Integer, length: 10 }</code>.<br><strong>DataWeave:</strong> Maps incoming JSON array into the exact padded fixed-width mainframe file format."
+  },
+  {
+    "id": 301,
+    "elementId": "mod-qq-q8",
+    "title": "How does DataWeave 2.0 streaming work, and how do you process 500 MB+ JSON/CSV payloads without memory overflow?",
+    "tag": "Q8",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"DataWeave 2.0 uses a streaming engine with deferred execution. When processing large files, we set <code>output application/json deferred=true</code> or use <code>@StreamCapable</code> DataWeave transformations. In streaming mode, DataWeave processes data in a forward-only pipelined stream directly from the incoming HTTP/File stream to the output stream without loading the entire JSON tree into JVM memory. However, random-access operators like <code>groupBy</code> or <code>orderBy</code> break streaming because they require the full dataset in memory.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Daily Medical Claim Ingestion (800 MB CSV).<br><strong>Configuration:</strong> Configured File Read with Repeatable File Store Stream. DataWeave script used streaming pipeline: <code>%dw 2.0<br>output application/json deferred=true<br>---<br>payload map (record) -> { claimId: record.ID, patient: record.NAME }</code>, processing 2 million records with under 256 MB of JVM heap."
+  },
+  {
+    "id": 302,
+    "elementId": "mod-rr-q1",
+    "title": "How can you make a Parallel ForEach scope behave like a standard ForEach scope, and why would an interviewer ask this? (PWC / Deloitte)",
+    "tag": "Q1",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"An interviewer asks this to test your understanding of concurrency controls and thread pools in Mule 4. You make a Parallel ForEach scope execute sequentially by setting its <code>maxConcurrency=\"1\"</code> attribute. When <code>maxConcurrency</code> is set to 1, the scope allocates only one worker thread from the CPU pool at a time, processing elements one by one in serial order. Unlike standard ForEach, however, it still aggregates individual route execution results and exceptions into a composite collection.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Scenario:</strong> A legacy database rejects concurrent writes from multiple threads, but you still require the aggregated composite result map that Parallel ForEach provides. By setting <code>&lt;parallel-foreach collection=\"#[payload]\" maxConcurrency=\"1\"&gt;</code>, the flow processes records sequentially while preserving the final consolidated payload structure."
+  },
+  {
+    "id": 303,
+    "elementId": "mod-rr-q2",
+    "title": "How do you prevent exceeding Salesforce Governor Limits when syncing 50,000 records from MuleSoft?",
+    "tag": "Q2",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Salesforce enforces strict governor limits: max 100,000 daily API calls, max 200 records per synchronous REST/SOAP commit, and strict CPU execution timeouts. To sync 50,000 records without hitting limits, I use the Salesforce Bulk API 2.0 connector instead of standard REST Create/Upsert. Bulk API 2.0 processes data asynchronously in bulk batches of up to 10,000 records, counts as a single API call against daily limits, and automatically optimizes ingestion on Salesforce servers.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Nightly SAP Customer Sync to Salesforce.<br><strong>Implementation:</strong> Configured <code>salesforce:create-job-bulk-api-v2</code> with operation 'upsert' and an External ID field (<code>SAP_Customer_Number__c</code>). Uploaded the 50,000 CSV records in a single call. A polling flow checked job status every 30 seconds until completed."
+  },
+  {
+    "id": 304,
+    "elementId": "mod-rr-q3",
+    "title": "How do you securely manage Salesforce OAuth credentials, and how does the Mule Salesforce connector handle token renewal?",
+    "tag": "Q3",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In enterprise production, we use the OAuth JWT Bearer Flow with the Salesforce Connector. We generate an X.509 Certificate and RSA private key, upload the certificate to a Salesforce Connected App, and pre-authorize an integration user. The MuleSoft Salesforce connector automatically constructs a signed JWT assertion, exchanges it for an OAuth session token, and caches it. When the session token expires, the connector transparently handles token refresh without dropping active integration requests.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Configuration:</strong> <code>&lt;salesforce:sfdc-config name=\"Salesforce_JWT\"&gt;&lt;salesforce:jwt-connection consumerKey=\"${sfdc.consumerKey}\" keyStore=\"keystore.jks\" storePassword=\"${secure::sfdc.storePass}\" principal=\"integration@company.com\" tokenEndpoint=\"https://login.salesforce.com/services/oauth2/token\" /&gt;&lt;/salesforce:sfdc-config&gt;</code>."
+  },
+  {
+    "id": 305,
+    "elementId": "mod-rr-q4",
+    "title": "SAP Connector in MuleSoft: When do you use IDoc vs BAPI / RFC, and how are they configured?",
+    "tag": "Q4",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"In the MuleSoft SAP Connector, IDocs (Intermediate Documents) are asynchronous, document-oriented messaging structures best suited for bulk event-driven data exchange (e.g. Orders, Invoices, Shipments) between SAP ERP and MuleSoft. BAPIs (Business Application Programming Interfaces) and RFCs are synchronous, function-call oriented interfaces best suited for real-time transactional queries (e.g. Check Inventory Balance, Validate Credit Limit). IDocs guarantee asynchronous delivery, while BAPIs provide immediate synchronous validation.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> SAP S/4HANA Supply Chain.<br><strong>Architecture:</strong> Incoming purchase orders from Salesforce trigger an asynchronous <code>ORDERS05</code> IDoc into SAP via <code>sap:document-listener</code>. Before dispatch, a synchronous BAPI call (<code>BAPI_MATERIAL_AVAILABILITY</code>) checks stock levels in under 200ms."
+  },
+  {
+    "id": 306,
+    "elementId": "mod-rr-q5",
+    "title": "ActiveMQ / RabbitMQ vs Anypoint MQ \u2014 what are the protocol, infrastructure, and architectural differences?",
+    "tag": "Q5",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Anypoint MQ is a fully managed cloud-native multi-tenant message broker hosted in AWS by MuleSoft with built-in Runtime Manager integration, zero server maintenance, REST APIs, and native connectors. ActiveMQ is a traditional JMS (Java Message Service) broker running on dedicated servers supporting JMS 1.1/2.0 specifications, XA transactions, and durable topics. RabbitMQ is an AMQP broker optimized for complex topic routing and message exchanges. Use Anypoint MQ for CloudHub-native serverless messaging; use ActiveMQ/RabbitMQ for on-premise JMS compliance or multi-cloud workloads.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Hybrid Cloud Event Mesh.<br><strong>Architecture:</strong> On-Premise mainframe and legacy Java apps publish to an on-premise clustered ActiveMQ broker. A MuleSoft bridging flow forwards critical business events to Anypoint MQ in CloudHub for consumption by cloud microservices."
+  },
+  {
+    "id": 307,
+    "elementId": "mod-rr-q6",
+    "title": "How do you implement end-to-end Correlation ID propagation across HTTP, JMS, and Anypoint MQ in an API-led architecture?",
+    "tag": "Q6",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"End-to-end Correlation ID propagation guarantees distributed tracing across Experience, Process, and System APIs. At the Experience layer HTTP Listener, we inspect incoming headers for <code>X-Correlation-ID</code>; if absent, we generate a UUID: <code>correlationId: message.attributes.headers['x-correlation-id'] default uuid()</code>. When calling downstream Process or System APIs, we inject this ID into outgoing HTTP headers (<code>x-correlation-id: correlationId</code>), JMS user properties, or Anypoint MQ user properties. In every Log4j2 pattern, we include <code>%X{correlationId}</code> so logs across all microservices correlate in Splunk.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Banking Payment Traceability.<br><strong>Trace Flow:</strong> Client calls eAPI with ID <code>98a1-77b</code>. eAPI propagates it to pAPI, which passes it as a JMS property into ActiveMQ. The backend sAPI consumer logs the exact same <code>98a1-77b</code> in Splunk, reducing root-cause incident diagnosis from 2 hours to 30 seconds."
+  },
+  {
+    "id": 308,
+    "elementId": "mod-rr-q7",
+    "title": "How do you implement Dynamic Endpoint Routing in Mule 4 without hardcoding downstream URLs?",
+    "tag": "Q7",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"Dynamic Endpoint Routing is implemented in Mule 4 by parameterizing the HTTP Request connector configuration using flow variables or Mule expressions. Instead of creating 10 separate HTTP request configurations for 10 third-party vendors, we create a single generic HTTP Request configuration with dynamic host and path expressions: <code>host=\"#[vars.targetHost]\" path=\"#[vars.targetPath]\"</code>. Before the request, a Choice router or DataWeave lookup dynamically assigns the host and credentials based on incoming message metadata or a database lookup table.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Project:</strong> Multi-Vendor Shipping Carrier Integration.<br><strong>Design:</strong> Incoming order specifies carrier ('FEDEX', 'UPS', 'DHL'). DataWeave evaluates: <code>vars.carrierConfig = p('carrier.' ++ payload.carrier)</code>. A single HTTP Request connector executes <code>url=\"#[vars.carrierConfig.url]\"</code>, reducing connector count from 15 to 1."
+  },
+  {
+    "id": 309,
+    "elementId": "mod-rr-q8",
+    "title": "How do you construct a standardized global error response payload with custom HTTP status codes (400, 401, 404, 500)?",
+    "tag": "Q8",
+    "answer": "\ud83c\udfaf HOW TO ANSWER (VERBAL SCRIPT)\n\"To guarantee consistent error contracts across all enterprise APIs, we implement a Global Error Handler in a shared common library. We map Mule error types to HTTP status codes: <code>APIKIT:BAD_REQUEST</code> \u2794 400, <code>HTTP:UNAUTHORIZED</code> \u2794 401, <code>APIKIT:NOT_FOUND</code> \u2794 404, <code>HTTP:TIMEOUT</code> \u2794 504, and default to 500. We set <code>vars.httpStatus</code> and construct a standard JSON error payload containing timestamp, correlationId, errorType, and user-friendly error message, returning it cleanly through On Error Propagate.\"\n\n\ud83d\udcbc REAL PROJECT EXAMPLE\n<strong>Standard Error Contract:</strong><br><code>{<br>  \"success\": false,<br>  \"correlationId\": correlationId,<br>  \"timestamp\": now(),<br>  \"error\": {<br>    \"code\": vars.httpStatus default 500,<br>    \"type\": error.errorType.identifier,<br>    \"message\": error.description<br>  }<br>}</code>"
   }
 ]
