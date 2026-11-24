@@ -157,7 +157,7 @@ window._modulesLoaded = false;
     }
     if (!fetchStarted) {
       fetchStarted = true;
-      fetch('assets/data/modules.html?v=202612')
+      fetch('assets/data/modules.html?v=202613')
         .then(function(r) {
           if (!r.ok) throw new Error('Failed modules fetch: ' + r.status);
           return r.text();
@@ -4652,3 +4652,35 @@ if (typeof window !== 'undefined') {
     }
   }, true);
 })();
+
+window.copyLinkedInShareText = function(btn) {
+  var shareText = 'Preparing for a MuleSoft interview? Check out this 100% free, no-login MuleSoft Hub (308 real scenarios across 45 modules + live DataWeave 2.0 playground + Error Simulator + vCore calculator + timed mock interviews): https://niranjanpotter.github.io/ — Drop your feedback or favorite topic in the comments! #MuleSoft #Anypoint #DataWeave #Integration';
+  var applyCopied = function() {
+    if (!btn) return;
+    if (!btn.dataset.origLabel) btn.dataset.origLabel = btn.textContent;
+    btn.textContent = '✓ Copied for LinkedIn!';
+    if (btn._copyTimer) clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(function() {
+      if (btn.dataset.origLabel) btn.textContent = btn.dataset.origLabel;
+    }, 2400);
+  };
+  var fallbackCopy = function() {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = shareText;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      applyCopied();
+    } catch (err) {}
+  };
+  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareText).then(applyCopied).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+};
