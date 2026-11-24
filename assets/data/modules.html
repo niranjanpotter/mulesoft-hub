@@ -2891,7 +2891,7 @@ paperless:     dynamoData.paperless default false
     </div>
 
     <!-- 5 Role Buttons (Default: Developer) -->
-    <div class="eh-role-grid" id="eh-role-switcher" role="tablist" aria-label="Role Perspective Switcher">
+    <div class="eh-role-grid" id="eh-role-switcher" role="group" aria-label="Role Perspective Switcher">
       <button type="button" class="btn eh-role-btn" data-role="fresher" onclick="setEhRole('fresher', this)">🎓 Fresher</button>
       <button type="button" class="btn eh-role-btn active" data-role="developer" onclick="setEhRole('developer', this)">💻 Developer</button>
       <button type="button" class="btn eh-role-btn" data-role="architect" onclick="setEhRole('architect', this)">🏛️ MuleSoft Architect</button>
@@ -3319,7 +3319,8 @@ status: vars.httpStatus,</code><button type="button" class="code-copy-btn" aria-
         <span>📥 1. INPUT (JSON / XML)</span>
         <button type="button" class="btn-copy-pane" onclick="copyAutogenBox('input', 'inline')">📋 Copy</button>
       </div>
-      <textarea class="dw-code-editor dw-autogen-input" id="dw-autogen-input" spellcheck="false" placeholder="Paste JSON or XML input payload...">{
+      <label class="sr-only" for="dw-autogen-input">Input JSON or XML payload for Auto-Generate DataWeave</label>
+<textarea class="dw-code-editor dw-autogen-input" id="dw-autogen-input" aria-label="Input JSON or XML payload for Auto-Generate DataWeave" spellcheck="false" placeholder="Paste JSON or XML input payload...">{
   "firstName": "Niranjan",
   "lastName": "Potter",
   "price": 50,
@@ -3335,7 +3336,8 @@ status: vars.httpStatus,</code><button type="button" class="code-copy-btn" aria-
         <span>🎯 2. DESIRED OUTPUT (JSON)</span>
         <button type="button" class="btn-copy-pane" onclick="copyAutogenBox('desired', 'inline')">📋 Copy</button>
       </div>
-      <textarea class="dw-code-editor dw-autogen-desired" id="dw-autogen-desired" spellcheck="false" placeholder="Paste desired JSON output...">{
+      <label class="sr-only" for="dw-autogen-desired">Desired JSON output payload for Auto-Generate DataWeave</label>
+<textarea class="dw-code-editor dw-autogen-desired" id="dw-autogen-desired" aria-label="Desired JSON output payload for Auto-Generate DataWeave" spellcheck="false" placeholder="Paste desired JSON output...">{
   "fullName": "Niranjan Potter",
   "total": 150,
   "city": "Abu",
@@ -3353,7 +3355,8 @@ status: vars.httpStatus,</code><button type="button" class="code-copy-btn" aria-
           <button type="button" class="btn-copy-pane dw-use-script-btn" id="dw-use-script-btn" onclick="useGeneratedDwScript('inline')">⚡ Use This Script</button>
         </div>
       </div>
-      <textarea class="dw-code-editor dw-autogen-script" id="dw-autogen-script" spellcheck="false" readonly="" placeholder="Click 'Auto-Generate DataWeave' to generate your %dw 2.0 script..."></textarea>
+      <label class="sr-only" for="dw-autogen-script">Auto-Generated DataWeave 2.0 script</label>
+<textarea class="dw-code-editor dw-autogen-script" id="dw-autogen-script" aria-label="Auto-Generated DataWeave 2.0 script" spellcheck="false" readonly="" placeholder="Click 'Auto-Generate DataWeave' to generate your %dw 2.0 script..."></textarea>
     </div>
   </div>
   <div class="dw-autogen-notes" id="dw-autogen-notes" style="display:none;"></div>
@@ -3364,11 +3367,13 @@ status: vars.httpStatus,</code><button type="button" class="code-copy-btn" aria-
 <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
 <!-- Search Input -->
 <div style="flex:1; min-width:260px; position:relative;">
-<input id="dw-search-input" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.9); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;" type="text"/>
+<label class="sr-only" for="dw-search-input">Search DataWeave 2.0 examples</label>
+<input id="dw-search-input" aria-label="Search DataWeave 2.0 examples" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.9); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;" type="text"/>
 </div>
 <!-- Preset Dropdown -->
 <div style="flex:1.5; min-width:300px;">
-<select class="dw-select" id="dw-preset-select" onchange="loadDwPreset(this.value)" style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.95); border:1px solid rgba(99,91,255,0.5); border-radius:6px; color:#00f0ff; font-weight:700; font-size:0.88rem;">
+<label class="sr-only" for="dw-preset-select">DataWeave 2.0 Preset Scenario</label>
+<select class="dw-select" id="dw-preset-select" aria-label="DataWeave 2.0 Preset Scenario" onchange="loadDwPreset(this.value)" style="width:100%; padding:9px 14px; background:rgba(11,15,25,0.95); border:1px solid rgba(99,91,255,0.5); border-radius:6px; color:#00f0ff; font-weight:700; font-size:0.88rem;">
 <!-- 26 Options dynamically injected by app.js -->
 </select>
 </div>
@@ -3403,7 +3408,8 @@ status: vars.httpStatus,</code><button type="button" class="code-copy-btn" aria-
 </div>
 <button class="btn-copy-pane" onclick="copyDwPanel('input')" title="Copy Input Payload">📋 Copy Input</button>
 </div>
-<textarea class="dw-code-editor dw-input-editor" id="dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
+<label class="sr-only" for="dw-input-editor">DataWeave input payload editor</label>
+<textarea class="dw-code-editor dw-input-editor" id="dw-input-editor" aria-label="DataWeave input payload editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
 </div>
 <!-- PANEL 2: DATAWEAVE SCRIPT -->
 <div class="dw-editor-panel" id="dw-panel-script">
@@ -3417,7 +3423,8 @@ status: vars.httpStatus,</code><button type="button" class="code-copy-btn" aria-
 <button class="btn-copy-pane" onclick="copyDwPanel('script')" title="Copy DW Script">📋 Copy Script</button>
 </div>
 </div>
-<textarea class="dw-code-editor dw-script-editor" id="dw-script-editor" placeholder="%dw 2.0
+<label class="sr-only" for="dw-script-editor">DataWeave 2.0 transformation script editor</label>
+<textarea class="dw-code-editor dw-script-editor" id="dw-script-editor" aria-label="DataWeave 2.0 transformation script editor" placeholder="%dw 2.0
 output application/json
 ---
 ..." spellcheck="false"></textarea>
@@ -3431,7 +3438,8 @@ output application/json
 </div>
 <button class="btn-copy-pane" onclick="copyDwPanel('output')" title="Copy Output Payload">📋 Copy Output</button>
 </div>
-<textarea class="dw-code-editor dw-output-viewer" id="dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
+<label class="sr-only" for="dw-output-viewer">Evaluated DataWeave transformation output</label>
+<textarea class="dw-code-editor dw-output-viewer" id="dw-output-viewer" aria-label="Evaluated DataWeave transformation output" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
 </div>
 <!-- PANEL 4: EXPLANATION PANEL (Professional English Only) -->
 <div class="dw-editor-panel dw-explanation-panel" id="dw-panel-notes">
@@ -6938,14 +6946,14 @@ if ((n mod 2) == 0) { result: "Even" } else { result: "Odd" }
 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-bottom:24px;">
 <!-- LEFT COLUMN: User Inputs -->
 <div style="display:flex; flex-direction:column; gap:16px; background:rgba(11,15,25,0.7); padding:22px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-<h4 style="color:#00f0ff; margin-bottom:2px; font-size:0.95rem; text-transform:uppercase; letter-spacing:0.5px;">1. Workload Parameters</h4>
+<h3 style="color:#00f0ff; margin-bottom:2px; font-size:0.95rem; text-transform:uppercase; letter-spacing:0.5px;">1. Workload Parameters</h3>
 <!-- TPS -->
 <div>
 <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; margin-bottom:6px;">
-<span>Expected Throughput (TPS / req/sec):</span>
+<label for="vcalc-tps" style="margin:0; font:inherit; color:inherit;">Expected Throughput (TPS / req/sec):</label>
 <span id="vcalc-tps-val" style="color:#00f0ff; font-family:var(--font-mono); font-weight:700;">50 req/sec</span>
 </div>
-<input id="vcalc-tps" max="2000" min="5" oninput="calculateVCoreDecision()" step="5" style="width:100%; accent-color:#00f0ff;" type="range" value="50"/>
+<input id="vcalc-tps" aria-label="Expected Throughput (Transactions per second)" max="2000" min="5" oninput="calculateVCoreDecision()" step="5" style="width:100%; accent-color:#00f0ff;" type="range" value="50"/>
 <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
 <button class="btn-preset-chip" onclick="setVCoreTps(10)" type="button">10 TPS</button>
 <button class="btn-preset-chip" onclick="setVCoreTps(50)" type="button">50 TPS</button>
@@ -6957,10 +6965,10 @@ if ((n mod 2) == 0) { result: "Even" } else { result: "Odd" }
 <!-- Average Payload Size (KB) -->
 <div>
 <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; margin-bottom:6px;">
-<span>Average Payload Size:</span>
+<label for="vcalc-payload" style="margin:0; font:inherit; color:inherit;">Average Payload Size:</label>
 <span id="vcalc-payload-val" style="color:#a78bfa; font-family:var(--font-mono); font-weight:700;">10 KB</span>
 </div>
-<input id="vcalc-payload" max="10000" min="1" oninput="calculateVCoreDecision()" step="5" style="width:100%; accent-color:#a78bfa;" type="range" value="10"/>
+<input id="vcalc-payload" aria-label="Average Payload Size in KB" max="10000" min="1" oninput="calculateVCoreDecision()" step="5" style="width:100%; accent-color:#a78bfa;" type="range" value="10"/>
 <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
 <button class="btn-preset-chip" onclick="setVCorePayload(5)" type="button">5 KB</button>
 <button class="btn-preset-chip" onclick="setVCorePayload(50)" type="button">50 KB</button>
@@ -6971,13 +6979,13 @@ if ((n mod 2) == 0) { result: "Even" } else { result: "Odd" }
 </div>
 <!-- Number of APIs / Applications -->
 <div>
-<label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Number of APIs / Applications:</label>
-<input id="vcalc-apis" max="100" min="1" oninput="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.9rem;" type="number" value="1"/>
+<label for="vcalc-apis" style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Number of APIs / Applications:</label>
+<input id="vcalc-apis" aria-label="Number of APIs or Applications" max="100" min="1" oninput="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.9rem;" type="number" value="1"/>
 </div>
 <!-- Application Type -->
 <div>
-<label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Application Type &amp; Processing Pattern:</label>
-<select id="vcalc-type" onchange="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;">
+<label for="vcalc-type" style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Application Type &amp; Processing Pattern:</label>
+<select id="vcalc-type" aria-label="Application Type and Processing Pattern" onchange="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;">
 <option value="realtime">⚡ Real-time Synchronous REST / GraphQL API</option>
 <option value="batch">📊 Batch Job / Bulk Ingestion (Salesforce / DB)</option>
 <option value="scheduled">⏳ Scheduled ETL / Polling Service</option>
@@ -6986,8 +6994,8 @@ if ((n mod 2) == 0) { result: "Even" } else { result: "Odd" }
 </div>
 <!-- CloudHub Target (1.0 vs 2.0) -->
 <div>
-<label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Deployment Platform:</label>
-<select id="vcalc-platform" onchange="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;">
+<label for="vcalc-platform" style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Deployment Platform:</label>
+<select id="vcalc-platform" aria-label="Deployment Platform" onchange="calculateVCoreDecision()" style="width:100%; padding:9px 12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#fff; font-size:0.85rem;">
 <option value="ch2">☁️ CloudHub 2.0 (Private Space / Shared Space)</option>
 <option value="ch1">🏢 CloudHub 1.0 (VPC / DLB / AWS EC2)</option>
 </select>

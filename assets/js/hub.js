@@ -21,7 +21,7 @@ window._modulesLoaded = false;
   window.ensureSearchIndexLoaded = function() {
     if (window._searchIndexLoaded) return Promise.resolve(SEARCH_INDEX);
     if (searchPromise) return searchPromise;
-    searchPromise = fetch('assets/data/search-index.json?v=202611')
+    searchPromise = fetch('assets/data/search-index.json?v=202612')
       .then(function(r) {
         if (!r.ok) throw new Error('Failed search-index fetch: ' + r.status);
         return r.json();
@@ -43,7 +43,7 @@ window._modulesLoaded = false;
   window.ensureDwPresetsLoaded = function() {
     if (window._dwPresetsLoaded) return Promise.resolve(DW_PRESETS);
     if (dwPromise) return dwPromise;
-    dwPromise = fetch('assets/data/dw-presets.json?v=202611')
+    dwPromise = fetch('assets/data/dw-presets.json?v=202612')
       .then(function(r) {
         if (!r.ok) throw new Error('Failed dw-presets fetch: ' + r.status);
         return r.json();
@@ -157,7 +157,7 @@ window._modulesLoaded = false;
     }
     if (!fetchStarted) {
       fetchStarted = true;
-      fetch('assets/data/modules.html?v=202611')
+      fetch('assets/data/modules.html?v=202612')
         .then(function(r) {
           if (!r.ok) throw new Error('Failed modules fetch: ' + r.status);
           return r.text();

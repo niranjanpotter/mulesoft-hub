@@ -125,10 +125,10 @@
 @font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 </style>
-  <link rel="stylesheet" href="assets/css/hub.min.css?v=202609">
+  <link rel="stylesheet" href="assets/css/hub.min.css?v=202612">
   <link rel="stylesheet" href="assets/css/diagrams.min.css?v=202609" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="assets/css/diagrams.min.css?v=202609"></noscript>
-  <script src="assets/js/hub.min.js?v=202611" defer></script>
+  <script src="assets/js/hub.min.js?v=202612" defer></script>
   <script src="assets/js/diagrams.min.js?v=202609" defer></script>
 </head>
 <body>
@@ -155,7 +155,7 @@
   </div>
 
   <div class="header-center">
-    <button type="button" class="search-trigger" onclick="openSearchModal()" aria-label="Search questions and topics (Ctrl+K)">
+    <button type="button" class="search-trigger" onclick="openSearchModal()" aria-label="Search 308 topics, DW scripts, error codes (Ctrl+K)">
       <div style="display:flex; align-items:center; gap:10px;">
         <svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
         <span>Search 308 topics, DW scripts, error codes...</span>
@@ -181,7 +181,7 @@
       <svg fill="none" height="18" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="18"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
     </button>
     <button class="btn has-tooltip" id="practice-btn" onclick="togglePracticeMode()" data-tooltip="Quiz yourself: hides all Q&amp;A answers so you can test active recall" title="Practice Mode: Hide all answers to test yourself">🎯 Practice Mode</button>
-    <button class="btn btn-primary btn-dw-header has-tooltip" onclick="openDataWeaveModal()" data-tooltip="Run &amp; test 26 live DataWeave 2.0 scripts right in your browser" title="Open Interactive DataWeave 2.0 Playground" aria-label="Open Interactive DataWeave 2.0 Playground">
+    <button class="btn btn-primary btn-dw-header has-tooltip" onclick="openDataWeaveModal()" data-tooltip="Run &amp; test 26 live DataWeave 2.0 scripts right in your browser" title="Open Interactive DataWeave 2.0 Playground" aria-label="DW Playground — Open Interactive DataWeave 2.0 Playground">
       <span class="btn-dw-icon">🧪</span>
       <span class="btn-dw-label">DW Playground</span>
     </button>
@@ -250,7 +250,8 @@
     <option value="Rapid Review &amp; Cheat Sheets">🏆 Rapid Review &amp; Cheat Sheets (2)</option>
   </select>
 </div>
-<input class="sidebar-filter-input" oninput="filterSidebarModules(this.value)" placeholder="🔍 Filter modules..." type="text"/>
+<label class="sr-only" for="sidebar-filter-input">Filter technical modules</label>
+<input id="sidebar-filter-input" class="sidebar-filter-input" aria-label="Filter technical modules" oninput="filterSidebarModules(this.value)" placeholder="🔍 Filter modules..." type="text"/>
 <ul class="quick-sidebar-list">
 <li class="quick-sidebar-item">
 <a class="quick-sidebar-link" data-mod-id="mod-a" href="#mod-a" data-category="Getting Started &amp; Strategy">
@@ -693,7 +694,7 @@
 <div class="battleboard-header">
 <div class="bb-header-icon">✅</div>
 <div class="bb-header-text">
-<h4 class="bb-title">KILLER PHRASES TO USE</h4>
+<h3 class="bb-title">KILLER PHRASES TO USE</h3>
 <span class="bb-subtitle">Signals Senior &amp; Architect Maturity</span>
 </div>
 </div>
@@ -747,7 +748,7 @@
 <div class="battleboard-header">
 <div class="bb-header-icon">❌</div>
 <div class="bb-header-text">
-<h4 class="bb-title">CAREER TRAPS — NEVER SAY THESE</h4>
+<h3 class="bb-title">CAREER TRAPS — NEVER SAY THESE</h3>
 <span class="bb-subtitle">Instant Junior / Low-Impact Red Flags</span>
 </div>
 </div>
@@ -850,22 +851,22 @@
 <div class="delivery-rules-grid">
 <div class="delivery-rule-card">
 <div class="dr-icon">⏱️</div>
-<h5 class="dr-card-title">Pacing &amp; Cadence</h5>
+<h4 class="dr-card-title">Pacing &amp; Cadence</h4>
 <p class="dr-card-desc">Speak at a moderate pace (85–95 words per minute). Don't rush. Senior interviewers value clarity, gravitas, and executive composure over rapid-fire speed.</p>
 </div>
 <div class="delivery-rule-card">
 <div class="dr-icon">⏸️</div>
-<h5 class="dr-card-title">The 1-Second Pause</h5>
+<h4 class="dr-card-title">The 1-Second Pause</h4>
 <p class="dr-card-desc">When you say <strong>"5 million+ monthly API calls"</strong> — pause for 1 full second. Let the magnitude of the enterprise scale sink into the room.</p>
 </div>
 <div class="delivery-rule-card">
 <div class="dr-icon">👁️</div>
-<h5 class="dr-card-title">Unwavering Eye Contact</h5>
+<h4 class="dr-card-title">Unwavering Eye Contact</h4>
 <p class="dr-card-desc">Maintain steady, direct eye contact when saying <strong>"95% MUnit test coverage"</strong> — this communicates uncompromising standards in software reliability.</p>
 </div>
 <div class="delivery-rule-card">
 <div class="dr-icon">🎯</div>
-<h5 class="dr-card-title">The Power Handoff</h5>
+<h4 class="dr-card-title">The Power Handoff</h4>
 <p class="dr-card-desc">End with: <em>"I'd love to dive deeper into any of these areas — what would you like to explore first?"</em> This immediately gives YOU psychological control of the interview agenda.</p>
 </div>
 </div>
@@ -1317,7 +1318,7 @@
 <a href="#mod-r">DataWeave 2.0 Lab</a>
 <a href="#mod-w">CloudHub 2.0 Sizing</a>
 <a href="#vcore-calculator" onclick="jumpToSectionTool('vcore-calculator'); return false;">vCore Calculator</a>
-<a href="javascript:void(0)" onclick="openDataWeaveModal()">DW Playground</a>
+<button type="button" class="footer-link-btn" onclick="openDataWeaveModal()">DW Playground</button>
 </div>
 <p>© 2026 MuleSoft Developer &amp; Enterprise Architect Hub · Authored with 100% full content fidelity from the 159-page Complete Interview Guide 2026.</p>
 <p style="font-size:0.8rem; color:var(--text-dim); margin-top:8px;">Designed and optimized for Senior Developers, Technical Leads, and Enterprise Architects.</p>
@@ -1367,7 +1368,8 @@
         <span>📥 1. INPUT (JSON / XML)</span>
         <button type="button" class="btn-copy-pane" onclick="copyAutogenBox('input', 'modal')">📋 Copy</button>
       </div>
-      <textarea class="dw-code-editor dw-autogen-input" id="modal-dw-autogen-input" spellcheck="false" placeholder="Paste JSON or XML input payload...">{
+      <label class="sr-only" for="modal-dw-autogen-input">Input JSON or XML payload for Auto-Generate DataWeave</label>
+  <textarea class="dw-code-editor dw-autogen-input" id="modal-dw-autogen-input" aria-label="Input JSON or XML payload for Auto-Generate DataWeave" spellcheck="false" placeholder="Paste JSON or XML input payload...">{
   "firstName": "Niranjan",
   "lastName": "Potter",
   "price": 50,
@@ -1383,7 +1385,8 @@
         <span>🎯 2. DESIRED OUTPUT (JSON)</span>
         <button type="button" class="btn-copy-pane" onclick="copyAutogenBox('desired', 'modal')">📋 Copy</button>
       </div>
-      <textarea class="dw-code-editor dw-autogen-desired" id="modal-dw-autogen-desired" spellcheck="false" placeholder="Paste desired JSON output...">{
+      <label class="sr-only" for="modal-dw-autogen-desired">Desired JSON output payload for Auto-Generate DataWeave</label>
+  <textarea class="dw-code-editor dw-autogen-desired" id="modal-dw-autogen-desired" aria-label="Desired JSON output payload for Auto-Generate DataWeave" spellcheck="false" placeholder="Paste desired JSON output...">{
   "fullName": "Niranjan Potter",
   "total": 150,
   "city": "Abu",
@@ -1401,7 +1404,8 @@
           <button type="button" class="btn-copy-pane dw-use-script-btn" id="modal-dw-use-script-btn" onclick="useGeneratedDwScript('modal')">⚡ Use This Script</button>
         </div>
       </div>
-      <textarea class="dw-code-editor dw-autogen-script" id="modal-dw-autogen-script" spellcheck="false" readonly="" placeholder="Click 'Auto-Generate DataWeave' to generate your %dw 2.0 script..."></textarea>
+      <label class="sr-only" for="modal-dw-autogen-script">Auto-Generated DataWeave 2.0 script</label>
+  <textarea class="dw-code-editor dw-autogen-script" id="modal-dw-autogen-script" aria-label="Auto-Generated DataWeave 2.0 script" spellcheck="false" readonly="" placeholder="Click 'Auto-Generate DataWeave' to generate your %dw 2.0 script..."></textarea>
     </div>
   </div>
   <div class="dw-autogen-notes" id="modal-dw-autogen-notes" style="display:none;"></div>
@@ -1412,10 +1416,12 @@
       <div class="dw-filter-bar" style="display:flex; flex-direction:column; gap:12px; margin: 0 0 16px 0;">
         <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
           <div style="flex:1; min-width:240px; position:relative;">
-            <input class="dw-search-input" id="modal-dw-search-input" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." type="text"/>
+            <label class="sr-only" for="modal-dw-search-input">Search DataWeave 2.0 examples</label>
+            <input class="dw-search-input" id="modal-dw-search-input" aria-label="Search DataWeave 2.0 examples" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." type="text"/>
           </div>
           <div style="flex:1.5; min-width:260px;">
-            <select class="dw-select" id="modal-dw-preset-select" onchange="loadDwPreset(this.value)"></select>
+            <label class="sr-only" for="modal-dw-preset-select">DataWeave 2.0 Preset Scenario</label>
+            <select class="dw-select" id="modal-dw-preset-select" aria-label="DataWeave 2.0 Preset Scenario" onchange="loadDwPreset(this.value)"></select>
           </div>
         </div>
         <div class="dw-category-pills" style="display:flex; gap:6px; flex-wrap:wrap;">
@@ -1448,7 +1454,8 @@
             </div>
             <button type="button" class="btn-copy-pane" onclick="copyDwPanel('input', 'modal')" title="Copy Input Payload">📋 Copy Input</button>
           </div>
-          <textarea class="dw-code-editor dw-input-editor" id="modal-dw-input-editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
+          <label class="sr-only" for="modal-dw-input-editor">DataWeave input payload editor</label>
+          <textarea class="dw-code-editor dw-input-editor" id="modal-dw-input-editor" aria-label="DataWeave input payload editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
         </div>
 
         <div class="dw-editor-panel" id="modal-dw-panel-script">
@@ -1461,7 +1468,8 @@
               <button type="button" class="btn-copy-pane" onclick="copyDwPanel('script', 'modal')" title="Copy DW Script">📋 Copy Script</button>
             </div>
           </div>
-          <textarea class="dw-code-editor dw-script-editor" id="modal-dw-script-editor" placeholder="%dw 2.0&#10;output application/json&#10;---" spellcheck="false"></textarea>
+          <label class="sr-only" for="modal-dw-script-editor">DataWeave 2.0 transformation script editor</label>
+          <textarea class="dw-code-editor dw-script-editor" id="modal-dw-script-editor" aria-label="DataWeave 2.0 transformation script editor" placeholder="%dw 2.0&#10;output application/json&#10;---" spellcheck="false"></textarea>
         </div>
 
         <div class="dw-editor-panel" id="modal-dw-panel-output">
@@ -1472,7 +1480,8 @@
             </div>
             <button type="button" class="btn-copy-pane" onclick="copyDwPanel('output', 'modal')" title="Copy Output Payload">📋 Copy Output</button>
           </div>
-          <textarea class="dw-code-editor dw-output-viewer" id="modal-dw-output-viewer" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
+          <label class="sr-only" for="modal-dw-output-viewer">Evaluated DataWeave transformation output</label>
+          <textarea class="dw-code-editor dw-output-viewer" id="modal-dw-output-viewer" aria-label="Evaluated DataWeave transformation output" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
         </div>
 
         <div class="dw-editor-panel dw-explanation-panel" id="modal-dw-panel-notes">
@@ -1493,7 +1502,8 @@
 <div class="search-modal-container" onclick="event.stopPropagation()">
 <div class="search-input-wrapper">
 <svg fill="none" height="20" stroke="#00f0ff" stroke-width="2.5" viewbox="0 0 24 24" width="20"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-<input class="search-input-field" id="search-input-field" oninput="handleSearchInput(event)" onkeydown="handleSearchKeydown(event)" placeholder="Search 260+ topics, DW scripts, error codes..." type="text"/>
+<label class="sr-only" for="search-input-field">Search topics, DataWeave scripts, and error codes</label>
+<input class="search-input-field" id="search-input-field" aria-label="Search topics, DataWeave scripts, and error codes" oninput="handleSearchInput(event)" onkeydown="handleSearchKeydown(event)" placeholder="Search 308 topics, DW scripts, error codes..." type="text"/>
 <button class="btn btn-sm" id="btn-close-search" onclick="closeSearchModal()">Esc</button>
 </div>
 <div class="search-history-row" id="search-history-container" style="display:none; padding:8px 20px; border-bottom:1px solid var(--border); font-size:0.75rem; color:var(--text-dim); align-items:center; gap:8px;">
