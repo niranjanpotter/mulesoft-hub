@@ -47,6 +47,16 @@
     }
 
     var activeCat = 'all';
+    var SAVED_KEY = 'mulesoft_saved_guides';
+    function getSavedSlugs() {
+      try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch (e) { return []; }
+    }
+    var savedChip = document.getElementById('filter-saved-chip');
+    function updateSavedChipCount() {
+      if (savedChip) savedChip.textContent = '🔖 Saved (' + getSavedSlugs().length + ')';
+    }
+    updateSavedChipCount();
+
     try {
       var params = new URLSearchParams(window.location.search);
       var qParam = params.get('q') || '';
@@ -58,10 +68,14 @@
 
     function filterCards(sourceVal) {
       var q = (sourceVal || '').toLowerCase().trim();
+      var savedSlugs = activeCat === 'saved' ? getSavedSlugs() : [];
       var visible = 0;
       cards.forEach(function (card) {
         var cats = (card.getAttribute('data-cat') || '').split(/\s+/);
-        var matchCat = activeCat === 'all' || cats.indexOf(activeCat) !== -1;
+        var slug = card.getAttribute('data-slug') || '';
+        var matchCat = activeCat === 'all'
+          ? true
+          : (activeCat === 'saved' ? savedSlugs.indexOf(slug) !== -1 : cats.indexOf(activeCat) !== -1);
         var matchQ = !q || card.textContent.toLowerCase().indexOf(q) !== -1;
         var show = matchCat && matchQ;
         card.style.display = show ? '' : 'none';
@@ -336,6 +350,98 @@
     });
   }
 
+  function copyTextSafe(txt, onOk) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(onOk).catch(function () { fallbackCopy(txt, onOk); });
+    } else {
+      fallbackCopy(txt, onOk);
+    }
+  }
+  function fallbackCopy(txt, onOk) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (onOk) onOk();
+    } catch (e) {}
+  }
+
+  function initReadProgress() {
+    var bar = document.querySelector('.read-progress-bar');
+    if (!bar) return;
+    function updateBar() {
+      var doc = document.documentElement;
+      var max = (doc.scrollHeight - window.innerHeight);
+      var ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      bar.style.transform = 'scaleX(' + ratio.toFixed(4) + ')';
+    }
+    window.addEventListener('scroll', updateBar, { passive: true });
+    updateBar();
+  }
+
+  function initViralShareAndBookmarks() {
+    var SAVED_KEY = 'mulesoft_saved_guides';
+    function getSaved() {
+      try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch (e) { return []; }
+    }
+    function setSaved(arr) {
+      try { localStorage.setItem(SAVED_KEY, JSON.stringify(arr)); } catch (e) {}
+    }
+
+    document.querySelectorAll('.viral-share-bar').forEach(function (bar) {
+      var slug = bar.getAttribute('data-slug') || '';
+      var canonical = bar.getAttribute('data-url') || window.location.href;
+      var copyLiBtn = bar.querySelector('.btn-copy-li-post');
+      var copyUrlBtn = bar.querySelector('.btn-copy-article-url');
+      var saveBtn = bar.querySelector('.btn-bookmark-guide');
+
+      if (copyLiBtn) {
+        copyLiBtn.addEventListener('click', function () {
+          var h1 = document.querySelector('h1');
+          var desc = document.querySelector('meta[name="description"]');
+          var title = h1 ? h1.textContent.trim() : 'MuleSoft Hands-On Guide';
+          var summary = desc ? desc.getAttribute('content') : '';
+          var post = '🚀 ' + title + '\n\n' + summary + '\n\nIncludes Real Anypoint View, animated Mule 4 flow simulator & 3-tab setup guide:\n👉 ' + canonical + '\n\nWhat do you think — drop your thoughts in the comments! #MuleSoft #Anypoint #MuleSoft2026 #IntegrationArchitect';
+          copyTextSafe(post, function () {
+            copyLiBtn.textContent = '✓ LinkedIn Post Copied!';
+            setTimeout(function () { copyLiBtn.textContent = '📋 Copy LinkedIn Post'; }, 2400);
+          });
+        });
+      }
+
+      if (copyUrlBtn) {
+        copyUrlBtn.addEventListener('click', function () {
+          copyTextSafe(canonical, function () {
+            copyUrlBtn.textContent = '✓ Link Copied!';
+            setTimeout(function () { copyUrlBtn.textContent = '🔗 Copy Link'; }, 2000);
+          });
+        });
+      }
+
+      if (saveBtn && slug) {
+        function syncSaveBtn() {
+          var isSaved = getSaved().indexOf(slug) !== -1;
+          saveBtn.setAttribute('aria-pressed', isSaved ? 'true' : 'false');
+          saveBtn.textContent = isSaved ? '🔖 Saved ✓' : '🔖 Save Guide';
+        }
+        syncSaveBtn();
+        saveBtn.addEventListener('click', function () {
+          var cur = getSaved();
+          var i = cur.indexOf(slug);
+          if (i === -1) cur.push(slug); else cur.splice(i, 1);
+          setSaved(cur);
+          syncSaveBtn();
+        });
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
     initSearchAndFilters();
@@ -344,5 +450,7 @@
     initFlowSimulators();
     initSetupChecklists();
     initHelpfulWidgets();
+    initReadProgress();
+    initViralShareAndBookmarks();
   });
 })();

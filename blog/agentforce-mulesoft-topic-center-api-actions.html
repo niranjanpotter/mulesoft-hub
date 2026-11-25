@@ -34,19 +34,21 @@
 }
 </script>
 <script defer src="../assets/js/blog-portal.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
 </head>
 <body>
+<div class="read-progress-bar" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="../index.html">
       <span class="portal-brand-mark" aria-hidden="true">⚡</span>
       <span>MuleSoft Blog</span>
-      <span class="portal-brand-pill">2026 · 28 Guides</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="../index.html">All Blogs</a>
@@ -77,7 +79,18 @@
         </header>
 
         <div class="post-body">
-          <h2 id="tldr">TL;DR</h2>
+          
+<!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="agentforce-mulesoft-topic-center-api-actions" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fagentforce-mulesoft-topic-center-api-actions.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=Salesforce+Agentforce+%2B+MuleSoft+End-to-End%3A+Topic+Center%2C+API+Catalog+%26+External+Actions+Setup+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fagentforce-mulesoft-topic-center-api-actions.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+<h2 id="tldr">TL;DR</h2>
           <ul>
             <li><strong>Eliminate Apex glue code:</strong> Connect Anypoint Platform and Salesforce at the tenant level so governed MuleSoft APIs synchronize natively into Salesforce <strong>API Catalog</strong> as <strong>External Services</strong> and Agentforce <strong>Topics &amp; Actions</strong>.</li>
             <li><strong>Shift agent semantics left in ACB:</strong> Use <strong>MuleSoft Topic Center</strong> in Anypoint Code Builder (ACB) to author Topics, classification descriptions, scopes, natural-language action instructions, and API Governance checks right next to your OpenAPI 3.0 contract.</li>

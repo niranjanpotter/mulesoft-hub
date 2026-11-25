@@ -7,6 +7,54 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/scatter-gather-vs-parallel-foreach-dynamic-db-secrets.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html</loc>
     <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>

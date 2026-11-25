@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven &amp; Debug Playbook | MuleSoft Blog</title>
+  <meta name="description" content="Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven &amp; Debug Playbook">
+  <meta property="og:description" content="Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="../assets/css/blog-portal.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven & Debug Playbook", "description": "Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html", "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I have to rewrite Mule XML code when migrating from Anypoint Studio to ACB?", "acceptedAnswer": {"@type": "Answer", "text": "No. Both Anypoint Studio and Anypoint Code Builder execute the exact same Mule 4 XML schemas, DataWeave 2.0 scripts, and Maven pom.xml build structure. Migration focuses on clean Maven dependencies, Java 17 upgrades, and .vscode/launch.json run configs."}}, {"@type": "Question", "name": "Where do Anypoint Studio VM Arguments go in Anypoint Code Builder?", "acceptedAnswer": {"@type": "Answer", "text": "They move into the project's `.vscode/launch.json` configuration file under the `vmArgs` array (for example, `-Dmule.env=local` and prompted `-Dmule.key`)."}}, {"@type": "Question", "name": "Why does my project build cleanly in Anypoint Studio but fail in ACB?", "acceptedAnswer": {"@type": "Answer", "text": "Studio silently resolves some legacy workspace metadata and bundled Enterprise Maven credentials behind the scenes, whereas ACB strictly relies on your terminal `~/.m2/settings.xml`, Java 17 JDK, and valid pom.xml plugin declarations."}}, {"@type": "Question", "name": "Can half of my team use Anypoint Studio while the other half uses ACB on the same repo?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — provided `.gitignore` excludes IDE-specific metadata (`.metadata/`, `.project`, personal `launch.json`) and everyone standardizes on identical `pom.xml` versions and Java 17."}}, {"@type": "Question", "name": "Which IDE is required for MuleSoft Vibes and Topic Center?", "acceptedAnswer": {"@type": "Answer", "text": "Anypoint Code Builder (ACB) is the primary modern IDE housing MuleSoft Vibes (Agentforce Dev Agent) and native Topic Center authoring workflows."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mulesoft.niranjanpotter.dpdns.org/"}, {"@type": "ListItem", "position": 2, "name": "Studio to ACB Migration", "item": "https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html"}]}</script>
+  <script defer src="../assets/js/blog-portal.js"></script>
+</head>
+<body>
+<div class="read-progress-bar" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › Studio to ACB Migration</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Trending Sep–Nov 2026 · End-to-End Hands-On Guide</span>
+          <h1>Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven &amp; Debug Playbook</h1>
+          <p class="post-lede">Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.</p>
+          <div class="post-meta">
+            <span class="trend-pill">🔥 New Nov 2026</span>
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 15 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <div class="quick-answer-box" role="note" aria-label="Quick answer summary">
+            <span class="quick-answer-head">⚡ Quick Answer</span>
+            <p>Migrating a Mule 4 project from Anypoint Studio to Anypoint Code Builder (ACB) succeeds when you migrate three layers explicitly: (1) upgrade pom.xml to Java 17 and Mule Maven Plugin 4.x before opening the folder, (2) translate Studio Run Configuration VM arguments (-Dmule.env, -Dmule.key, debug port 6666) into .vscode/launch.json, and (3) ensure ~/.m2/settings.xml authenticates cleanly against Mule Enterprise Nexus without Eclipse workspace metadata collisions.</p>
+          </div>
+
+          <!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="anypoint-studio-to-acb-migration-launch-json-guide" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fanypoint-studio-to-acb-migration-launch-json-guide.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=Anypoint+Studio+to+Anypoint+Code+Builder+%28ACB%29+Migration%3A+.vscode%2Flaunch.json%2C+Maven+%26+Debug+Playbook+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fanypoint-studio-to-acb-migration-launch-json-guide.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+
+          <h2 id="overview">What It Is &amp; Why It Is Trending (Nov 2026)</h2>
+          <p>Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Code Builder (VS Code) · Migrated Project + launch.json</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">JDK 17 · ~/.m2/settings.xml Validated · Debug :6666</span>
+        <span class="anypoint-status-ok">● ACB DEBUG ATTACHED</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">VS Code Debug File</span><span class="anypoint-kpi-val">.vscode/launch.json (VM Args)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Maven Alignment</span><span class="anypoint-kpi-val">Strict pom.xml + MMP 4.2.0</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">IDE Footprint</span><span class="anypoint-kpi-val">Desktop VS Code Profile</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Coexistence Rule</span><span class="anypoint-kpi-val">Git XML Compatible Both IDEs</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Studio Run Config -&gt; ACB .vscode/launch.json</div>
+          <div class="anypoint-pane-bd">&quot;vmArgs&quot;: [
+  &quot;-Dmule.env=local&quot;,
+  &quot;-Dmule.key=Dev32CharMasterAesGcmKeyHere!!&quot;,
+  &quot;-M-XX:+UseG1GC&quot;,
+  &quot;-Danypoint.platform.gatekeeper=disabled&quot;
+]</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Pre-Import Health Check (5-Minute Audit)</div>
+          <div class="anypoint-pane-bd">[PASS] Java 17 JDK configured as JAVA_HOME
+[PASS] mvn -B validate exits 0 in terminal first
+[PASS] .gitignore excludes .vscode/launch.json secrets
+[PASS] Clean ACB Profile (no conflicting XML extensions)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Mapping legacy Anypoint Studio UI Run Arguments cleanly into VS Code launch.json while keeping Maven builds 100% compatible across Studio and ACB.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
+
+          <h2 id="architecture">Architecture &amp; End-to-End Flow</h2>
+          <p>Explore each stage of the production runtime flow below — hit <strong>Play Flow Animation</strong> to watch an event step through the components, click any node to inspect its Studio Properties, and copy the validated Mule configuration XML.</p>
+
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">☕</span><span class="flow-node-title">JDK 17 + Maven Check</span><span class="flow-node-type">mvn validate Pre-Flight</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📂</span><span class="flow-node-title">Open Existing Folder</span><span class="flow-node-type">File -&gt; Open Folder</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚙️</span><span class="flow-node-title">Author launch.json</span><span class="flow-node-type">.vscode/launch.json</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔎</span><span class="flow-node-title">Resolve XML / DW Lint</span><span class="flow-node-type">Strict XSD &amp; DW LSP</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🐞</span><span class="flow-node-title">F5 Debug &amp; MUnit</span><span class="flow-node-type">Live Local Breakpoints</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. JDK 17 + Maven Check (mvn validate Pre-Flight)</h3>
+      <p class="insp-node-what">Runs `java -version` (17) and `mvn -B clean compile` in your terminal BEFORE opening ACB, catching missing Nexus repos or Java 8 plugins immediately.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">JAVA_HOME=Temurin-17 | MMP=4.2.0</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Check 1</th><td>java -version -&gt; 17.x</td></tr>
+<tr><th scope="row">Check 2</th><td>mvn -B validate == 0</td></tr>
+<tr><th scope="row">Fix First</th><td>~/.m2/settings.xml Nexus creds</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+      xsi:schemaLocation=&quot;http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                          http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd&quot;&gt;
+  &lt;!-- Ensure strict xsi:schemaLocation headers exist in every XML file so ACB validates zero errors --&gt;
+  &lt;flow name=&quot;acb-migrated-health-flow&quot;&gt;
+    &lt;http:listener config-ref=&quot;HTTP_Listener_config&quot; path=&quot;/api/health&quot;/&gt;
+    &lt;set-payload value=&#x27;#[output application/json --- { status: &quot;UP&quot;, ide: &quot;ACB-Ready&quot;, runtime: p(&quot;app.runtime&quot;) default &quot;4.9.3&quot; }]&#x27;/&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "☕", "label": "JDK 17 + Maven Check", "type": "mvn validate Pre-Flight", "what": "Runs `java -version` (17) and `mvn -B clean compile` in your terminal BEFORE opening ACB, catching missing Nexus repos or Java 8 plugins immediately.", "config_values": "JAVA_HOME=Temurin-17 | MMP=4.2.0", "studio_props": [["Check 1", "java -version -> 17.x"], ["Check 2", "mvn -B validate == 0"], ["Fix First", "~/.m2/settings.xml Nexus creds"]]}, {"icon": "📂", "label": "Open Existing Folder", "type": "File -> Open Folder", "what": "Opens the Git repo root directly in a clean ACB VS Code Profile (do NOT recreate projects via wizard or copy Eclipse `.project`/`.classpath` clutter).", "config_values": "Keep pom.xml + mule-artifact.json clean", "studio_props": [["Import Style", "Open Folder directly"], ["Clean Legacy", "Do not commit .metadata/ or .project"]]}, {"icon": "⚙️", "label": "Author launch.json", "type": ".vscode/launch.json", "what": "Maps Studio Run Configuration VM arguments (`-Dmule.env=dev`, `-Dmule.key=...`, `-Danypoint.platform.gatekeeper=disabled`) into standard VS Code debug profiles.", "config_values": "vmArgs mapped + DataWeave/Flow breakpoints active", "studio_props": [["Debug File", ".vscode/launch.json"], ["Secret Hygiene", "Use launch.template.json without real keys"]]}, {"icon": "🔎", "label": "Resolve XML / DW Lint", "type": "Strict XSD & DW LSP", "what": "Fixes strict XSD attribute ordering or deprecated Mule 4.3 namespace typos that legacy Studio tolerated silently.", "config_values": "Standardize xmlns:xsi & schemaLocation URLs", "studio_props": [["Validator", "ACB Strict Mule XML LSP"], ["DataWeave", "Add explicit input metadata samples"]]}, {"icon": "🐞", "label": "F5 Debug & MUnit", "type": "Live Local Breakpoints", "what": "Presses F5 in ACB to attach the live Mule Debugger on port 6666, step through DataWeave evaluations, and run MUnit 3 tests locally.", "config_values": "Debug attached -> Breakpoints hit cleanly", "studio_props": [["Shortcut", "F5 (Debug Mule Application)"], ["Port", "6666 Default Mule Debugger"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n      xsi:schemaLocation=\"http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd\n                          http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd\">\n  <!-- Ensure strict xsi:schemaLocation headers exist in every XML file so ACB validates zero errors -->\n  <flow name=\"acb-migrated-health-flow\">\n    <http:listener config-ref=\"HTTP_Listener_config\" path=\"/api/health\"/>\n    <set-payload value='#[output application/json --- { status: \"UP\", ide: \"ACB-Ready\", runtime: p(\"app.runtime\") default \"4.9.3\" }]'/>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="anypoint-studio-to-acb-migration-launch-json-guide">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Confirm mvn clean compile passes in CLI before opening ACB</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Isolate ACB inside its own dedicated VS Code Profile</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Convert Studio VM arguments into .vscode/launch.json</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Check .gitignore so personal encryption keys aren&#x27;t pushed</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Verify breakpoints (F5) and MUnit tests run cleanly</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-anypoint-studio-to-acb-migration-launch-json-guide" aria-selected="true" aria-controls="panel-studio-anypoint-studio-to-acb-migration-launch-json-guide" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-anypoint-studio-to-acb-migration-launch-json-guide" aria-selected="false" aria-controls="panel-platform-anypoint-studio-to-acb-migration-launch-json-guide" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-anypoint-studio-to-acb-migration-launch-json-guide" aria-selected="false" aria-controls="panel-test-anypoint-studio-to-acb-migration-launch-json-guide" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-anypoint-studio-to-acb-migration-launch-json-guide" aria-labelledby="btn-tab-studio-anypoint-studio-to-acb-migration-launch-json-guide">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>migrated-acb-workspace</code> · <strong>Target Runtime:</strong> <code>Anypoint Code Builder (VS Code) · JDK 17 · Mule 4.9 LTS / 4.13 Edge</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>// .vscode/launch.json (translate Studio Run Configurations here; commit ONLY launch.template.json!)
+{
+  &quot;version&quot;: &quot;0.2.0&quot;,
+  &quot;configurations&quot;: [
+    {
+      &quot;type&quot;: &quot;mule-xml-debug&quot;,
+      &quot;request&quot;: &quot;launch&quot;,
+      &quot;name&quot;: &quot;Run Migrated App (Local)&quot;,
+      &quot;vmArgs&quot;: [
+        &quot;-Dmule.env=local&quot;,
+        &quot;-Dmule.key=${input:muleMasterKey}&quot;,
+        &quot;-Danypoint.platform.gatekeeper=disabled&quot;
+      ]
+    }
+  ],
+  &quot;inputs&quot;: [
+    { &quot;id&quot;: &quot;muleMasterKey&quot;, &quot;type&quot;: &quot;promptString&quot;, &quot;description&quot;: &quot;Enter AES master key&quot;, &quot;password&quot;: true }
+  ]
+}</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Maven Requirement</code></td><td><code>Maven 3.9+ &amp; JDK 17 strictly</code></td><td>Unlike Studio&#x27;s embedded runtime bundle, ACB relies directly on your Maven pom</td></tr>
+<tr><td><code>Global Elements Split</code></td><td><code>Keep global-config.xml clean</code></td><td>ACB navigates clean shared XML files faster than 3,000-line monoliths</td></tr>
+<tr><td><code>DataWeave Preview</code></td><td><code>src/test/resources/sample_data/</code></td><td>Ensure sample payload metadata paths are relative, not C:\Users\...</td></tr>
+<tr><td><code>Studio Coexistence</code></td><td><code>Keep pure Mule XML + pom.xml</code></td><td>Devs on Studio and Devs on ACB can collaborate on the exact same Git repo</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-anypoint-studio-to-acb-migration-launch-json-guide" aria-labelledby="btn-tab-platform-anypoint-studio-to-acb-migration-launch-json-guide" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Use VS Code Profiles (`Gear -&gt; Profiles -&gt; Create Profile`) dedicated purely to MuleSoft ACB Extensions.</li>
+        <li>Adopt ACB first for **greenfield API specs, Vibes flows, Agentforce Topics, and lightweight integrations**, while migrating complex legacy Studio monoliths iteratively as you upgrade to Java 17.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-anypoint-studio-to-acb-migration-launch-json-guide" aria-labelledby="btn-tab-test-anypoint-studio-to-acb-migration-launch-json-guide" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>Press F5 in ACB -&gt; hit GET http://localhost:8081/api/health with debugger breakpoint active</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s &quot;http://localhost:8081/api/health&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{ &quot;status&quot;: &quot;UP&quot;, &quot;ide&quot;: &quot;ACB-Ready&quot;, &quot;runtime&quot;: &quot;4.9.3&quot; }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>Unresolved connector dependencies when opening folder in ACB</code></td><td>pom.xml relies on Studio-bundled repo or expired ~/.m2/settings.xml creds</td><td>Run `mvn clean test -U` in terminal first and fix Maven settings.xml</td></tr>
+<tr><td><code>Properties like ${secure::db.pass} fail locally in ACB</code></td><td>Studio Run Config VM arguments weren&#x27;t copied to .vscode/launch.json</td><td>Add -Dmule.env &amp; -Dmule.key (using VS Code password input!) to launch.json</td></tr>
+<tr><td><code>DataWeave LSP fails or highlights false errors</code></td><td>Non-standard Studio workspace metadata or old DW sample paths</td><td>Move external DataWeave files to src/main/resources/dwl/ with relative test JSONs</td></tr>
+<tr><td><code>Heavy RAM / Extension UI freeze in VS Code</code></td><td>Personal Python/Java/Docker extensions clashing with ACB Extension Pack</td><td>Isolate ACB inside a dedicated clean VS Code Profile</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
+
+          <h2 id="when-acb-vs-studio">Anypoint Code Builder vs. Anypoint Studio in Late 2026 — When to Use Which</h2>
+          <p>Rather than rewriting every legacy Studio project overnight, high-performing MuleSoft teams match the IDE to the workload:</p><div class="table-wrap"><table><thead><tr><th scope="col">Scenario</th><th scope="col">Recommended IDE</th><th scope="col">Why</th></tr></thead><tbody><tr><td><strong>New APIs, OAS 3.1, Agentforce Topics &amp; MCP Tools</strong></td><td><strong>Anypoint Code Builder (ACB)</strong></td><td>Native Topic Center, MuleSoft Vibes AI Dev Agent, vertical flow UI, &amp; instant git workflow</td></tr><tr><td><strong>Massive 20-flow legacy XML ERP apps</strong></td><td><strong>Anypoint Studio 7.19+</strong></td><td>Multi-flow bird's-eye canvas visualization for deep legacy maintenance</td></tr><tr><td><strong>CI/CD builds &amp; PR reviews</strong></td><td><strong>Identical (Maven + Java 17)</strong></td><td>Both IDEs compile the exact same Mule 4 XML &amp; <code>pom.xml</code> artifacts</td></tr></tbody></table></div>
+          <h2 id="launch-json-secrets">Safe launch.json pattern: Never leak -Dmule.key into Git</h2>
+          <p>One of the most common migration bugs on Reddit is developers pasting production or sandbox <code>-Dmule.key</code> plaintext directly inside committed <code>.vscode/launch.json</code>. Use VS Code's built-in <code>inputs</code> prompt with <code>"password": true</code> so every developer types or pulls the key locally without ever risking a Git secret leak.</p>
+
+          <h2 id="troubleshooting">Troubleshooting &amp; Production Edge Cases</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Symptom</th><th scope="col">Root Cause</th><th scope="col">Production Fix</th></tr></thead>
+              <tbody>
+              <tr><td><code>Unresolved connector dependencies when opening folder in ACB</code></td><td>pom.xml relies on Studio-bundled repo or expired ~/.m2/settings.xml creds</td><td>Run `mvn clean test -U` in terminal first and fix Maven settings.xml</td></tr>
+              <tr><td><code>Properties like ${secure::db.pass} fail locally in ACB</code></td><td>Studio Run Config VM arguments weren&#x27;t copied to .vscode/launch.json</td><td>Add -Dmule.env &amp; -Dmule.key (using VS Code password input!) to launch.json</td></tr>
+              <tr><td><code>DataWeave LSP fails or highlights false errors</code></td><td>Non-standard Studio workspace metadata or old DW sample paths</td><td>Move external DataWeave files to src/main/resources/dwl/ with relative test JSONs</td></tr>
+              <tr><td><code>Heavy RAM / Extension UI freeze in VS Code</code></td><td>Personal Python/Java/Docker extensions clashing with ACB Extension Pack</td><td>Isolate ACB inside a dedicated clean VS Code Profile</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production Readiness Checklist</h2>
+          <ul class="checklist">
+            <li>Confirm mvn clean compile passes in CLI before opening ACB</li>
+            <li>Isolate ACB inside its own dedicated VS Code Profile</li>
+            <li>Convert Studio VM arguments into .vscode/launch.json</li>
+            <li>Check .gitignore so personal encryption keys aren&#x27;t pushed</li>
+            <li>Verify breakpoints (F5) and MUnit tests run cleanly</li>
+          </ul>
+
+          <h2 id="interview">Frequently Asked Questions &amp; Interview Q&amp;A</h2>
+          <details class="qa"><summary>Do I have to rewrite Mule XML code when migrating from Anypoint Studio to ACB?</summary><div><p>No. Both Anypoint Studio and Anypoint Code Builder execute the exact same Mule 4 XML schemas, DataWeave 2.0 scripts, and Maven pom.xml build structure. Migration focuses on clean Maven dependencies, Java 17 upgrades, and .vscode/launch.json run configs.</p></div></details>
+          <details class="qa"><summary>Where do Anypoint Studio VM Arguments go in Anypoint Code Builder?</summary><div><p>They move into the project&#x27;s `.vscode/launch.json` configuration file under the `vmArgs` array (for example, `-Dmule.env=local` and prompted `-Dmule.key`).</p></div></details>
+          <details class="qa"><summary>Why does my project build cleanly in Anypoint Studio but fail in ACB?</summary><div><p>Studio silently resolves some legacy workspace metadata and bundled Enterprise Maven credentials behind the scenes, whereas ACB strictly relies on your terminal `~/.m2/settings.xml`, Java 17 JDK, and valid pom.xml plugin declarations.</p></div></details>
+          <details class="qa"><summary>Can half of my team use Anypoint Studio while the other half uses ACB on the same repo?</summary><div><p>Yes — provided `.gitignore` excludes IDE-specific metadata (`.metadata/`, `.project`, personal `launch.json`) and everyone standardizes on identical `pom.xml` versions and Java 17.</p></div></details>
+          <details class="qa"><summary>Which IDE is required for MuleSoft Vibes and Topic Center?</summary><div><p>Anypoint Code Builder (ACB) is the primary modern IDE housing MuleSoft Vibes (Agentforce Dev Agent) and native Topic Center authoring workflows.</p></div></details>
+
+          <h2 id="sources">Sources &amp; Official Documentation</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/anypoint-code-builder/int-migrate-from-studio" target="_blank" rel="noopener noreferrer">Migrate Projects from Anypoint Studio to Anypoint Code Builder</a></li>
+            <li><a href="https://docs.mulesoft.com/anypoint-code-builder/troubleshoot-acb" target="_blank" rel="noopener noreferrer">Troubleshooting Anypoint Code Builder Builds &amp; Debug Configs</a></li>
+            <li><a href="https://www.reddit.com/r/MuleSoft/" target="_blank" rel="noopener noreferrer">MuleSoft Developer Community (r/MuleSoft) Discussions</a></li>
+          </ul>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="anypoint-studio-to-acb-migration-launch-json-guide" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="../blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html"><span>← Previous Guide</span><strong>MuleSoft Vibes (ACB Dev Agent)</strong></a>
+  <a class="next" href="../blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html"><span>Next Guide →</span><strong>Omni Gateway (v1.14.5) &amp; PDK</strong></a>
+</nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">What It Is &amp; Why It Is Trending (Nov 2026)</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; End-to-End Flow</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#when-acb-vs-studio">Anypoint Code Builder vs. Anypoint Studio in Late 2026 — When to Use Which</a></li>
+        <li><a href="#launch-json-secrets">Safe launch.json pattern: Never leak -Dmule.key into Git</a></li>
+        <li><a href="#troubleshooting">Troubleshooting &amp; Production Edge Cases</a></li>
+        <li><a href="#checklist">Production Readiness Checklist</a></li>
+        <li><a href="#interview">Frequently Asked Questions &amp; Interview Q&amp;A</a></li>
+        <li><a href="#sources">Sources &amp; Official Documentation</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

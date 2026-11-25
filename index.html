@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>MuleSoft Engineering Blog (2026) — 28 End-to-End AI, MCP, CloudHub &amp; Setup Guides</title>
-  <meta name="description" content="100% free MuleSoft engineering blog with 28 hands-on setup guides: Agent Fabric, MCP, A2A, Agentforce, RAG, Flex Gateway AI policies, CloudHub 2.0, DataWeave, Batch &amp; Security.">
+  <title>MuleSoft Engineering Blog (2026) — 36 End-to-End AI, Vibes, Omni Gateway, RTF &amp; CloudHub Guides</title>
+  <meta name="description" content="36 free hands-on MuleSoft setup guides updated Nov 2026: MuleSoft Vibes, ACB migration, Omni Gateway 1.14.5, RTF 3.x Kubernetes, RAML to OAS 3.1, Data Cloud Zero Copy, Agent Fabric, MCP, A2A &amp; CloudHub 2.0.">
   <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="feed.xml">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="MuleSoft Engineering Blog (2026) — 28 End-to-End Hands-On Setup Guides">
-  <meta property="og:description" content="Real Anypoint Views, interactive Mule 4.9 animated flows, copy-paste XML/Maven code, and 3-tab Setup Playbooks from Beginner to Architect.">
+  <meta property="og:title" content="MuleSoft Engineering Blog (2026) — 36 End-to-End Hands-On Setup Guides">
+  <meta property="og:description" content="Real Anypoint Views, interactive Mule 4.9/4.13 animated flow simulators, Studio Properties inspectors, 3-tab setups, and late-2026 release coverage.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/">
   <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-hub.png">
   <meta property="og:image:width" content="1200">
@@ -23,31 +24,23 @@
 <link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
 <style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
   <link rel="stylesheet" href="assets/css/blog-portal.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "MuleSoft Hub Engineering Blog",
-    "url": "https://mulesoft.niranjanpotter.dpdns.org/",
-    "description": "28 end-to-end hands-on MuleSoft architecture and setup guides covering Agent Fabric, MCP, A2A, Agentforce, MuleSoft AI Chain, Flex Gateway AI policies, CloudHub 2.0, and core Mule 4 patterns.",
-    "author": { "@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171" },
-    "publisher": { "@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/" }
-  }
-  </script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Blog", "name": "MuleSoft Hub Engineering Blog", "url": "https://mulesoft.niranjanpotter.dpdns.org/", "description": "36 end-to-end hands-on MuleSoft setup blogs covering MuleSoft Vibes, ACB migration, Omni Gateway 1.14.5, RTF 3.x Kubernetes, Agent Fabric, MCP, A2A, Agentforce Topic Center, MAC RAG, CloudHub 2.0, and core Mule 4 architecture.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "36 Hands-On MuleSoft Setup Guides (2026)", "numberOfItems": 36, "itemListElement": [{"@type": "ListItem", "position": 1, "name": "MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills & MCP Dev Workflows", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html"}, {"@type": "ListItem", "position": 2, "name": "Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven & Debug Playbook", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html"}, {"@type": "ListItem", "position": 3, "name": "MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning & AI Policies", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html"}, {"@type": "ListItem", "position": 4, "name": "Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration & Zero-Downtime Upgrades", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html"}, {"@type": "ListItem", "position": 5, "name": "RAML to OpenAPI (OAS 3.1) Migration in MuleSoft: Modular $ref Structure, APIKit & Exchange Governance", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html"}, {"@type": "ListItem", "position": 6, "name": "Salesforce Data Cloud (Data 360) Zero Copy vs. MuleSoft for Flow & Composer: Enterprise Decision Guide", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html"}, {"@type": "ListItem", "position": 7, "name": "Scatter-Gather vs. Parallel For-Each & Zero-Redeploy Dynamic DB Password Rotation in Mule 4", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/scatter-gather-vs-parallel-foreach-dynamic-db-secrets.html"}, {"@type": "ListItem", "position": 8, "name": "2026 Salesforce Certified MuleSoft Developer & Platform Architect Exam Guide: Changes, Retirements & Study Plan", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html"}, {"@type": "ListItem", "position": 9, "name": "MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners & Governance", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html"}, {"@type": "ListItem", "position": 10, "name": "MuleSoft MCP Connector Hands-On: Build an MCP Server & Client in Mule 4", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html"}, {"@type": "ListItem", "position": 11, "name": "MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html"}, {"@type": "ListItem", "position": 12, "name": "Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation & Multi-Cloud Orchestration", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html"}, {"@type": "ListItem", "position": 13, "name": "Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog & External Actions Setup", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html"}, {"@type": "ListItem", "position": 14, "name": "MuleSoft AI Chain (MAC), Einstein Trust Layer & Inference Connector: Build Enterprise RAG in Mule 4", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html"}, {"@type": "ListItem", "position": 15, "name": "Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking & Semantic Cache", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/flex-gateway-ai-policies-llm-guardrails.html"}, {"@type": "ListItem", "position": 16, "name": "Testing, Observability & FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals & Cost Guardrails", "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html"}, {"@type": "ListItem", "position": 17, "name": "CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist", "url": "https://mulesoft.niranjanpotter.dpdns.org/cloudhub-1-to-2-migration-guide.html"}, {"@type": "ListItem", "position": 18, "name": "DataWeave 2.0 Performance Tuning: Tail Recursion & Memory Optimization", "url": "https://mulesoft.niranjanpotter.dpdns.org/dataweave-performance-tuning-patterns.html"}, {"@type": "ListItem", "position": 19, "name": "MuleSoft Batch Processing Interview Questions & Architecture (2026 Guide)", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-batch-processing-interview-questions.html"}, {"@type": "ListItem", "position": 20, "name": "Anypoint MQ & DLQ Architecture: Interview Questions & Best Practices", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-anypoint-mq-dlq-fifo-interview.html"}, {"@type": "ListItem", "position": 21, "name": "Salesforce Bulk API 2.0 in MuleSoft: Complete Interview & Performance Guide", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-salesforce-bulk-api-2-interview.html"}, {"@type": "ListItem", "position": 22, "name": "OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-oauth-jwt-bearer-token-interview.html"}, {"@type": "ListItem", "position": 23, "name": "MuleSoft Scatter-Gather Router: Interview Questions & Error Recovery", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scatter-gather-interview-questions.html"}, {"@type": "ListItem", "position": 24, "name": "OpenTelemetry in MuleSoft: Direct Telemetry Export & Distributed Tracing", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-opentelemetry-tracing-observability.html"}, {"@type": "ListItem", "position": 25, "name": "MuleSoft CI/CD Pipeline Guide: Maven Plugin & GitHub Actions (2026)", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-cicd-maven-pipeline-guide.html"}, {"@type": "ListItem", "position": 26, "name": "MuleSoft Terraform Provider Guide: Infrastructure as Code (IaC)", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-terraform-provider-guide.html"}, {"@type": "ListItem", "position": 27, "name": "SAP S/4HANA OData vs JCo RFC Connector in MuleSoft: Architecture Guide", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-sap-s4hana-odata-interview.html"}, {"@type": "ListItem", "position": 28, "name": "MuleSoft Snowflake Connector: High-Volume Ingestion & Staging Patterns", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-snowflake-connector-patterns.html"}, {"@type": "ListItem", "position": 29, "name": "Anypoint Partner Manager & B2B EDI X12/EDIFACT: Interview Guide", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-partner-manager-b2b-edi-interview.html"}, {"@type": "ListItem", "position": 30, "name": "Reusable MuleSoft Global Error Handler Plugin: Enterprise Architecture", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-reusable-error-handler-plugin.html"}, {"@type": "ListItem", "position": 31, "name": "MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-secure-properties-encryption-guide.html"}, {"@type": "ListItem", "position": 32, "name": "Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine & Concurrency", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-java-interview-mastery.html"}, {"@type": "ListItem", "position": 33, "name": "Top 20 MuleSoft Scenario-Based Interview Questions & Incident Solutions", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scenario-based-interview-questions.html"}, {"@type": "ListItem", "position": 34, "name": "MuleSoft & Salesforce Agentforce: Topic Center Actions (2026 Guide)", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-agentforce-topic-center-actions.html"}, {"@type": "ListItem", "position": 35, "name": "MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-mcp-connector-ai-agents.html"}, {"@type": "ListItem", "position": 36, "name": "MuleSoft Model Proxy: Semantic Caching & LLM Token Cost Optimization", "url": "https://mulesoft.niranjanpotter.dpdns.org/mulesoft-model-proxy-semantic-cache.html"}]}</script>
   <script defer src="assets/js/blog-portal.js"></script>
 </head>
 <body>
+<div class="read-progress-bar" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="index.html">
       <span class="portal-brand-mark" aria-hidden="true">⚡</span>
       <span>MuleSoft Blog</span>
-      <span class="portal-brand-pill">2026 · 28 Guides</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="index.html" aria-current="page">All Blogs</a>
@@ -62,45 +55,179 @@
 <div class="portal-wrap">
   <main id="main">
     <section class="portal-hero" aria-labelledby="portal-hero-h1">
-      <span class="hero-kicker">Dedicated MuleSoft Engineering Blog · 100% Free &amp; Open</span>
-      <h1 id="portal-hero-h1">Hands-On MuleSoft Setup Guides — From Zero to Production</h1>
-      <p class="portal-hero-sub">Every single one of the 28 articles includes a <strong>Real Anypoint View</strong> screen breakdown, an <strong>interactive Mule 4.9 flow simulator</strong> with Studio Properties Inspector, copy-paste Maven/XML/YAML code, 3-tab exact setup walkthroughs, and <code>curl</code> tests. Looking for interview flashcards? Visit our <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 MuleSoft Interview Q&amp;As &amp; Mock Labs ↗</a>.</p>
+      <span class="hero-kicker">Dedicated MuleSoft Engineering Blog · 100% Free &amp; Open · Updated Nov 2026</span>
+      <h1 id="portal-hero-h1">36 End-to-End MuleSoft Setup Guides — Built for Production</h1>
+      <p class="portal-hero-sub">Every guide covers setup from zero to live <code>curl</code> verification with a <strong>Real Anypoint View</strong> mockup, interactive <strong>Mule 4.9 / 4.13 animated flow simulator</strong>, Studio Properties Inspector, copy-paste XML/YAML/Maven configs, and 3-tab setup steps. Practicing for interviews? Visit our companion <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 MuleSoft Interview Q&amp;As &amp; Mock Labs ↗</a>.</p>
 
       <div class="trust-strip" role="note" aria-label="Portal highlights">
         <span>📅 Updated Nov 2026</span>
-        <span>📚 28 Guides</span>
-        <span>☕ Mule 4.9 LTS &amp; Java 17</span>
+        <span>📚 36 Hands-On Guides</span>
+        <span>☕ Mule 4.9 LTS &amp; 4.13 Edge</span>
         <span>🎓 Beginner to Architect</span>
         <span>⚡ Interactive Flow Labs</span>
       </div>
 
       <div class="filter-controls" role="region" aria-label="Search and filter blog guides">
         <label class="sr-only" for="blog-search">Filter blogs by topic or connector keyword</label>
-        <input id="blog-search" class="portal-search-input" type="search" placeholder="Filter by keyword (e.g., Agent Fabric, mcp-connector, pgvector, CloudHub 2.0, OAuth, SAP, Batch)...">
+        <input id="blog-search" class="portal-search-input" type="search" placeholder="Filter by keyword (e.g., Vibes, launch.json, Omni Gateway, RTF 3.0, OAS 3.1, Zero Copy, Agent Fabric, MCP, Batch)...">
         <div class="filter-pills" role="group" aria-label="Category filters">
-          <button type="button" class="filter-pill" data-cat="all" aria-pressed="true">All Guides (28)</button>
+          <button type="button" class="filter-pill" data-cat="all" aria-pressed="true">All Guides (36)</button>
+          <button type="button" class="filter-pill" data-cat="trending" aria-pressed="false">🔥 Trending Nov 2026 (8)</button>
           <button type="button" class="filter-pill" data-cat="fabric" aria-pressed="false">Agent Fabric &amp; A2A</button>
-          <button type="button" class="filter-pill" data-cat="mcp" aria-pressed="false">MCP Server &amp; Bridge</button>
-          <button type="button" class="filter-pill" data-cat="rag" aria-pressed="false">Agentforce &amp; RAG</button>
-          <button type="button" class="filter-pill" data-cat="gov" aria-pressed="false">AI Gateway &amp; FinOps</button>
+          <button type="button" class="filter-pill" data-cat="mcp" aria-pressed="false">MCP &amp; OpenAPI</button>
+          <button type="button" class="filter-pill" data-cat="rag" aria-pressed="false">Agentforce, Data Cloud &amp; RAG</button>
+          <button type="button" class="filter-pill" data-cat="gov" aria-pressed="false">Omni Gateway, OTel &amp; FinOps</button>
           <button type="button" class="filter-pill" data-cat="core" aria-pressed="false">Core Mule 4 Playbooks</button>
+          <button type="button" class="filter-pill" id="filter-saved-chip" data-cat="saved" aria-pressed="false">🔖 Saved (0)</button>
         </div>
         <div class="filter-status-row">
-          <span id="portal-result-count" aria-live="polite">Showing 28 of 28 guides</span>
-          <span>💡 Click any guide for interactive flow animation &amp; 3-tab setup</span>
+          <span id="portal-result-count" aria-live="polite">Showing 36 of 36 guides</span>
+          <span>💡 Save your favorite playbooks with the 🔖 button inside any guide</span>
         </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="trending-track">
+      <div class="track-header">
+        <h2 id="trending-track">🔥 Trending Late-2026 Releases &amp; High-Demand Guides (8 New Deep Dives)</h2>
+        <p class="track-sub">MuleSoft Vibes, Studio → ACB migration, Omni Gateway v1.14.5, RTF 3.0.41102, OAS 3.1, Data Cloud Zero Copy &amp; 2026 Certs</p>
+      </div>
+      <div class="card-grid">
+      <a class="post-card" data-cat="rag trending" data-slug="mulesoft-vibes-agentforce-acb-dev-agent-setup" href="blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          </div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills &amp; MCP Dev Workflows</h3>
+        <p>Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.</p>
+        <div class="card-meta">
+          <span>⏱️ 16 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core trending" data-slug="anypoint-studio-to-acb-migration-launch-json-guide" href="blog/anypoint-studio-to-acb-migration-launch-json-guide.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven &amp; Debug Playbook</h3>
+        <p>Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.</p>
+        <div class="card-meta">
+          <span>⏱️ 15 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="gov trending" data-slug="mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" href="blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          </div>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning &amp; AI Policies</h3>
+        <p>Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.</p>
+        <div class="card-meta">
+          <span>⏱️ 17 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core trending" data-slug="anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" href="blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration &amp; Zero-Downtime Upgrades</h3>
+        <p>Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.</p>
+        <div class="card-meta">
+          <span>⏱️ 18 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="mcp trending" data-slug="raml-to-openapi-oas-3-1-modular-migration-mulesoft" href="blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          </div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>RAML to OpenAPI (OAS 3.1) Migration in MuleSoft: Modular $ref Structure, APIKit &amp; Exchange Governance</h3>
+        <p>Convert legacy RAML 1.0 specs to modular OpenAPI 3.0 / 3.1 contracts with clean external $ref files, APIKit scaffolding, Anypoint API Governance, and MCP Bridge readiness.</p>
+        <div class="card-meta">
+          <span>⏱️ 15 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="rag trending" data-slug="salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer" href="blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          </div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>Salesforce Data Cloud (Data 360) Zero Copy vs. MuleSoft for Flow &amp; Composer: Enterprise Decision Guide</h3>
+        <p>Architect the modern Salesforce integration stack clearly: know when to use Data Cloud Zero Copy federation, MuleSoft API-Led / MuleSoft for Flow, or MuleSoft Composer (and understand Composer&#x27;s auto-deactivation rules).</p>
+        <div class="card-meta">
+          <span>⏱️ 15 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core trending" data-slug="scatter-gather-vs-parallel-foreach-dynamic-db-secrets" href="blog/scatter-gather-vs-parallel-foreach-dynamic-db-secrets.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>Scatter-Gather vs. Parallel For-Each &amp; Zero-Redeploy Dynamic DB Password Rotation in Mule 4</h3>
+        <p>Solve the two most-asked r/MuleSoft engineering questions in one deep guide: Scatter-Gather vs Parallel For-Each internals (and error collection) + zero-redeploy dynamic DB credential rotation.</p>
+        <div class="card-meta">
+          <span>⏱️ 15 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core trending" data-slug="salesforce-mulesoft-certification-roadmap-2026-exam-guide" href="blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html">
+        <div class="card-badges">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <span class="trend-pill">🔥 Nov 2026</span>
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
+          <span class="diff-pill diff-beginner">Beginner</span>
+        </div>
+        <h3>2026 Salesforce Certified MuleSoft Developer &amp; Platform Architect Exam Guide: Changes, Retirements &amp; Study Plan</h3>
+        <p>Navigate 2026 MuleSoft certifications hosted on Trailhead: renamed Salesforce Certified MuleSoft Developer exam specs, retired Catalyst &amp; Hyperautomation certs, Platform Architect maintenance, and a 30-day study map.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
       </div>
     </section>
 
     <section aria-labelledby="flagship-track">
       <div class="track-header">
-        <h2 id="flagship-track">🔥 Flagship Track: 2026 MuleSoft AI, Agents, MCP &amp; Governance (8 Guides)</h2>
-        <p class="track-sub">Deep-dive end-to-end builds targeting Mule 4.9 LTS, Flex Gateway 1.8+, and Salesforce Agentforce</p>
+        <h2 id="flagship-track">🤖 Flagship Track: AI, Agent Fabric, MCP, A2A &amp; Governance (8 Guides)</h2>
+        <p class="track-sub">Production builds for Agent Registry/Broker, Streamable HTTP MCP, A2A Agent Cards, Agentforce Topic Center, MAC RAG &amp; FinOps</p>
       </div>
       <div class="card-grid">
-      <a class="post-card" data-cat="fabric" href="blog/mulesoft-agent-fabric-end-to-end-guide.html">
+      <a class="post-card" data-cat="fabric" data-slug="mulesoft-agent-fabric-end-to-end-guide" href="blog/mulesoft-agent-fabric-end-to-end-guide.html">
         <div class="card-badges">
-          <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance</h3>
@@ -110,9 +237,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="mcp" href="blog/mulesoft-mcp-connector-server-client-setup.html">
+      <a class="post-card" data-cat="mcp" data-slug="mulesoft-mcp-connector-server-client-setup" href="blog/mulesoft-mcp-connector-server-client-setup.html">
         <div class="card-badges">
-          <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4</h3>
@@ -122,9 +252,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="mcp" href="blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">
+      <a class="post-card" data-cat="mcp" data-slug="mulesoft-mcp-bridge-openapi-to-agent-tools" href="blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">
         <div class="card-badges">
-          <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools</h3>
@@ -134,9 +267,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="fabric" href="blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">
+      <a class="post-card" data-cat="fabric" data-slug="mulesoft-a2a-protocol-multi-agent-orchestration" href="blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">
         <div class="card-badges">
-          <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration</h3>
@@ -146,9 +282,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="rag" href="blog/agentforce-mulesoft-topic-center-api-actions.html">
+      <a class="post-card" data-cat="rag" data-slug="agentforce-mulesoft-topic-center-api-actions" href="blog/agentforce-mulesoft-topic-center-api-actions.html">
         <div class="card-badges">
-          <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup</h3>
@@ -158,9 +297,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="rag" href="blog/mulesoft-ai-chain-einstein-inference-rag-setup.html">
+      <a class="post-card" data-cat="rag" data-slug="mulesoft-ai-chain-einstein-inference-rag-setup" href="blog/mulesoft-ai-chain-einstein-inference-rag-setup.html">
         <div class="card-badges">
-          <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft AI Chain (MAC), Einstein Trust Layer &amp; Inference Connector: Build Enterprise RAG in Mule 4</h3>
@@ -170,9 +312,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="gov" href="blog/flex-gateway-ai-policies-llm-guardrails.html">
+      <a class="post-card" data-cat="gov" data-slug="flex-gateway-ai-policies-llm-guardrails" href="blog/flex-gateway-ai-policies-llm-guardrails.html">
         <div class="card-badges">
-          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking &amp; Semantic Cache</h3>
@@ -182,9 +327,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="gov" href="blog/agent-evals-observability-finops-opentelemetry.html">
+      <a class="post-card" data-cat="gov" data-slug="agent-evals-observability-finops-opentelemetry" href="blog/agent-evals-observability-finops-opentelemetry.html">
         <div class="card-badges">
-          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Testing, Observability &amp; FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals &amp; Cost Guardrails</h3>
@@ -200,12 +348,15 @@
     <section aria-labelledby="core-track">
       <div class="track-header">
         <h2 id="core-track">📚 Core MuleSoft 4 Architecture &amp; Setup Playbooks (20 Guides)</h2>
-        <p class="track-sub">Production checklists, CloudHub 2.0 migrations, DataWeave tuning, Batch LMAX, MQ, Security &amp; Enterprise Connectors</p>
+        <p class="track-sub">CloudHub 1.0 → 2.0 (Oct 2026 TLS cutoff), DataWeave tuning, Batch LMAX, MQ, Bulk 2.0, OAuth JWT, SAP, Snowflake &amp; Java 17</p>
       </div>
       <div class="card-grid">
-      <a class="post-card" data-cat="core" href="cloudhub-1-to-2-migration-guide.html">
+      <a class="post-card" data-cat="core" data-slug="cloudhub-1-to-2-migration-guide" href="cloudhub-1-to-2-migration-guide.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist</h3>
@@ -215,9 +366,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="dataweave-performance-tuning-patterns.html">
+      <a class="post-card" data-cat="core" data-slug="dataweave-performance-tuning-patterns" href="dataweave-performance-tuning-patterns.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>DataWeave 2.0 Performance Tuning: Tail Recursion &amp; Memory Optimization</h3>
@@ -227,9 +381,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-batch-processing-interview-questions.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-batch-processing-interview-questions" href="mulesoft-batch-processing-interview-questions.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft Batch Processing Interview Questions &amp; Architecture (2026 Guide)</h3>
@@ -239,9 +396,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-anypoint-mq-dlq-fifo-interview.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-anypoint-mq-dlq-fifo-interview" href="mulesoft-anypoint-mq-dlq-fifo-interview.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Anypoint MQ &amp; DLQ Architecture: Interview Questions &amp; Best Practices</h3>
@@ -251,9 +411,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-salesforce-bulk-api-2-interview.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-salesforce-bulk-api-2-interview" href="mulesoft-salesforce-bulk-api-2-interview.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Salesforce Bulk API 2.0 in MuleSoft: Complete Interview &amp; Performance Guide</h3>
@@ -263,9 +426,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-oauth-jwt-bearer-token-interview.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-oauth-jwt-bearer-token-interview" href="mulesoft-oauth-jwt-bearer-token-interview.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation</h3>
@@ -275,9 +441,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-scatter-gather-interview-questions.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-scatter-gather-interview-questions" href="mulesoft-scatter-gather-interview-questions.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft Scatter-Gather Router: Interview Questions &amp; Error Recovery</h3>
@@ -287,9 +456,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core gov" href="mulesoft-opentelemetry-tracing-observability.html">
+      <a class="post-card" data-cat="gov core" data-slug="mulesoft-opentelemetry-tracing-observability" href="mulesoft-opentelemetry-tracing-observability.html">
         <div class="card-badges">
-          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>OpenTelemetry in MuleSoft: Direct Telemetry Export &amp; Distributed Tracing</h3>
@@ -299,9 +471,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-cicd-maven-pipeline-guide.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-cicd-maven-pipeline-guide" href="mulesoft-cicd-maven-pipeline-guide.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft CI/CD Pipeline Guide: Maven Plugin &amp; GitHub Actions (2026)</h3>
@@ -311,9 +486,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-terraform-provider-guide.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-terraform-provider-guide" href="mulesoft-terraform-provider-guide.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft Terraform Provider Guide: Infrastructure as Code (IaC)</h3>
@@ -323,9 +501,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-sap-s4hana-odata-interview.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-sap-s4hana-odata-interview" href="mulesoft-sap-s4hana-odata-interview.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>SAP S/4HANA OData vs JCo RFC Connector in MuleSoft: Architecture Guide</h3>
@@ -335,9 +516,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-snowflake-connector-patterns.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-snowflake-connector-patterns" href="mulesoft-snowflake-connector-patterns.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft Snowflake Connector: High-Volume Ingestion &amp; Staging Patterns</h3>
@@ -347,9 +531,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-partner-manager-b2b-edi-interview.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-partner-manager-b2b-edi-interview" href="mulesoft-partner-manager-b2b-edi-interview.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Anypoint Partner Manager &amp; B2B EDI X12/EDIFACT: Interview Guide</h3>
@@ -359,9 +546,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-reusable-error-handler-plugin.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-reusable-error-handler-plugin" href="mulesoft-reusable-error-handler-plugin.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>Reusable MuleSoft Global Error Handler Plugin: Enterprise Architecture</h3>
@@ -371,9 +561,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-secure-properties-encryption-guide.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-secure-properties-encryption-guide" href="mulesoft-secure-properties-encryption-guide.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook</h3>
@@ -383,9 +576,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-java-interview-mastery.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-java-interview-mastery" href="mulesoft-java-interview-mastery.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine &amp; Concurrency</h3>
@@ -395,9 +591,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core" href="mulesoft-scenario-based-interview-questions.html">
+      <a class="post-card" data-cat="core" data-slug="mulesoft-scenario-based-interview-questions" href="mulesoft-scenario-based-interview-questions.html">
         <div class="card-badges">
-          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Top 20 MuleSoft Scenario-Based Interview Questions &amp; Incident Solutions</h3>
@@ -407,9 +606,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core rag" href="mulesoft-agentforce-topic-center-actions.html">
+      <a class="post-card" data-cat="rag core" data-slug="mulesoft-agentforce-topic-center-actions" href="mulesoft-agentforce-topic-center-actions.html">
         <div class="card-badges">
-          <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          </div>
           <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>MuleSoft &amp; Salesforce Agentforce: Topic Center Actions (2026 Guide)</h3>
@@ -419,9 +621,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core mcp" href="mulesoft-mcp-connector-ai-agents.html">
+      <a class="post-card" data-cat="mcp core" data-slug="mulesoft-mcp-connector-ai-agents" href="mulesoft-mcp-connector-ai-agents.html">
         <div class="card-badges">
-          <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          </div>
           <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents</h3>
@@ -431,9 +636,12 @@
           <span>📅 Updated Nov 2026</span>
         </div>
       </a>
-      <a class="post-card" data-cat="core gov" href="mulesoft-model-proxy-semantic-cache.html">
+      <a class="post-card" data-cat="gov core" data-slug="mulesoft-model-proxy-semantic-cache" href="mulesoft-model-proxy-semantic-cache.html">
         <div class="card-badges">
-          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          </div>
           <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft Model Proxy: Semantic Caching &amp; LLM Token Cost Optimization</h3>
@@ -447,12 +655,12 @@
     </section>
 
     <div id="portal-empty-state" class="empty-state" hidden>
-      <p><strong>No guides match that filter or keyword.</strong> Clear your search box or select <em>All Guides (28)</em> above.</p>
+      <p><strong>No guides match that filter or keyword.</strong> Clear your search box or click <em>All Guides (36)</em> above.</p>
     </div>
 
     <aside class="linkedin-cta" aria-label="Request a blog topic on LinkedIn">
-      <p>💬 <strong>Want a full hands-on blog on another MuleSoft topic</strong> (like Anypoint Code Builder from zero, RTF on EKS, or DataWeave 2.6 labs)? Drop a comment on LinkedIn!</p>
-      <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Suggest a Topic on LinkedIn ↗</a>
+      <p>💬 <strong>Found these 36 guides helpful or want another deep-dive topic next?</strong> Drop a comment on LinkedIn — every guide is community-driven.</p>
+      <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment &amp; Request Topics on LinkedIn ↗</a>
     </aside>
   </main>
 </div>

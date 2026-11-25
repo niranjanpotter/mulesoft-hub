@@ -88,19 +88,21 @@
 }
   </script>
   <script defer src="assets/js/blog-portal.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="feed.xml">
 </head>
 <body>
+<div class="read-progress-bar" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="index.html">
       <span class="portal-brand-mark" aria-hidden="true">⚡</span>
       <span>MuleSoft Blog</span>
-      <span class="portal-brand-pill">2026 · 28 Guides</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="index.html">All Blogs</a>
@@ -131,10 +133,26 @@
         </header>
 
         <div class="post-body">
-          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          
+<!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="cloudhub-1-to-2-migration-guide" data-url="https://mulesoft.niranjanpotter.dpdns.org/cloudhub-1-to-2-migration-guide.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fcloudhub-1-to-2-migration-guide.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=CloudHub+1.0+to+CloudHub+2.0+Migration+Guide%3A+Enterprise+10-Point+Checklist+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fcloudhub-1-to-2-migration-guide.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+<h2 id="overview">Overview &amp; Key Takeaways</h2>
           <p>Migrate Mule 4 apps cleanly from CloudHub 1.0 to CloudHub 2.0 Private Spaces with strict port 8081 bindings, ephemeral disk safety, Ingress TLS, and Maven 4.x config.</p>
 
           <!-- PORTAL:START:ANYPOINT_VIEW -->
+<!-- PORTAL:START:NOV_UPDATE -->
+<div class="nov-update-callout" role="note" aria-label="November 2026 Platform Update">
+  <p><strong>Oct–Nov 2026 Urgent Migration Deadline:</strong> On <strong>October 31, 2026</strong>, CloudHub 1.0 Dedicated Load Balancers (DLBs) permanently terminated inbound TLS 1.0/1.1 connections across all Mule runtimes. When migrating to CloudHub 2.0 Private Spaces, remember the 30-day DNS parallel cutover target, the 6-month limit for decommissioning legacy VPC/DLB entitlements, and choosing between <strong>Mule 4.9 LTS</strong> and <strong>Mule 4.13 Edge</strong> (Oct 2026).</p>
+</div>
+<!-- PORTAL:END:NOV_UPDATE -->
 <h2 id="anypoint-view">Real Anypoint View</h2>
 <figure>
   <div class="anypoint-frame">

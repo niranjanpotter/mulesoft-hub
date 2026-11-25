@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning &amp; AI Policies | MuleSoft Blog</title>
+  <meta name="description" content="Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning &amp; AI Policies">
+  <meta property="og:description" content="Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="../assets/css/blog-portal.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning & AI Policies", "description": "Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes & Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html", "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is MuleSoft Omni Gateway compared to Flex Gateway?", "acceptedAnswer": {"@type": "Answer", "text": "MuleSoft Omni Gateway is the evolved architecture of Envoy-based Anypoint Flex Gateway designed to unify governance across traditional APIs, AI Model Proxies, MCP servers, and A2A agent endpoints under one policy engine."}}, {"@type": "Question", "name": "What new capabilities shipped in Omni Gateway 1.14.4 and 1.14.5 (Oct-Nov 2026)?", "acceptedAnswer": {"@type": "Answer", "text": "Release 1.14.4 (Oct 2026) added access to `api.consumerUri` inside Custom PDK policies and hardened intermediate TLS CA validation. Release 1.14.5 (Nov 2026) added explicit `timeoutMilliseconds` (default 2000ms) and `maxRetries` (default 1) settings under `sharedStorage.redis`."}}, {"@type": "Question", "name": "Why write Custom Gateway Policies in Rust PDK instead of Mule 4 XML?", "acceptedAnswer": {"@type": "Answer", "text": "Rust compiles to native WebAssembly (`wasm32-wasip1`) executed directly inside Envoy C++ worker threads with sub-millisecond latency and minimal RAM — ideal for high-TPS header/JWT/signature enforcement at the edge."}}, {"@type": "Question", "name": "How does Redis sharedStorage fail safely during a cluster failover?", "acceptedAnswer": {"@type": "Answer", "text": "By explicitly tuning `timeoutMilliseconds` to 2000ms and `maxRetries` to 1, Omni Gateway avoids queuing thousands of stalled requests waiting on an unreachable Redis shard."}}, {"@type": "Question", "name": "Can Omni Gateway run in both Docker/Local Mode and Kubernetes Connected Mode?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Use Local Mode declarative YAML files for rapid laptop testing or GitOps, and Kubernetes Helm Connected Mode for centralized API Manager policy control and telemetry."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mulesoft.niranjanpotter.dpdns.org/"}, {"@type": "ListItem", "position": 2, "name": "Omni Gateway (v1.14.5) & PDK", "item": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html"}]}</script>
+  <script defer src="../assets/js/blog-portal.js"></script>
+</head>
+<body>
+<div class="read-progress-bar" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › Omni Gateway (v1.14.5) &amp; PDK</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Trending Sep–Nov 2026 · End-to-End Hands-On Guide</span>
+          <h1>MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning &amp; AI Policies</h1>
+          <p class="post-lede">Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.</p>
+          <div class="post-meta">
+            <span class="trend-pill">🔥 New Nov 2026</span>
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 17 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <div class="quick-answer-box" role="note" aria-label="Quick answer summary">
+            <span class="quick-answer-head">⚡ Quick Answer</span>
+            <p>MuleSoft Omni Gateway (the evolved Envoy-based runtime replacing Flex Gateway branding in late 2026) serves as a unified high-throughput gateway governing REST APIs, MCP Servers, and LLM Model Proxies. Late-2026 releases 1.14.4 (Oct 23) and 1.14.5 (Nov 18) introduced `api.consumerUri` in Custom PDK Policy contexts, intermediate CA trust hardening, and `sharedStorage.redis` (`timeoutMilliseconds` + `maxRetries`) tuning for resilient distributed rate limiting.</p>
+          </div>
+
+          <!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=MuleSoft+Omni+Gateway+%28Flex+Gateway+v1.14.5%29+Deep+Dive%3A+Custom+Rust+PDK+%28api.consumerUri%29%2C+Redis+Tuning+%26+AI+Policies+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+
+          <h2 id="overview">What It Is &amp; Why It Is Trending (Nov 2026)</h2>
+          <p>Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Omni Gateway v1.14.5 · Envoy Edge + Redis Shared Storage</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Connected Mode · K8s DaemonSet / Helm · Envoy Proxy</span>
+        <span class="anypoint-status-ok">● v1.14.5 CONNECTED · GREEN</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Gateway Release</span><span class="anypoint-kpi-val">1.14.5 (Nov 18, 2026)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Redis Shared Config</span><span class="anypoint-kpi-val">2000ms Timeout / 1 Retry</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Custom PDK Field</span><span class="anypoint-kpi-val">api.consumerUri Enabled</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Governed Surfaces</span><span class="anypoint-kpi-val">REST + MCP + LLM Proxy</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">v1.14.5 Redis Resilience Config (values.yaml)</div>
+          <div class="anypoint-pane-bd">sharedStorage:
+  redis:
+    address: rediss://omni-rate-redis.internal:6379
+    timeoutMilliseconds: 2000   # New v1.14.5 default
+    maxRetries: 1               # Prevents tail-latency spike</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Custom Rust PDK Context (v1.14.4+ api.consumerUri)</div>
+          <div class="anypoint-pane-bd">let consumer_uri = config.api.consumer_uri(); // New v1.14.4
+// Enforce tenant-specific routing &amp; custom HMAC audit
+headers.set(&quot;x-omni-consumer&quot;, consumer_uri);
+tls: untrusted intermediate certs blocked automatically</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Running MuleSoft Omni Gateway 1.14.5 with tuned Redis shared storage and Custom Rust PDK policies inspecting api.consumerUri.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
+
+          <h2 id="architecture">Architecture &amp; End-to-End Flow</h2>
+          <p>Explore each stage of the production runtime flow below — hit <strong>Play Flow Animation</strong> to watch an event step through the components, click any node to inspect its Studio Properties, and copy the validated Mule configuration XML.</p>
+
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🌐</span><span class="flow-node-title">Omni Envoy Ingress</span><span class="flow-node-type">HTTPS TLS (Port 443)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🦀</span><span class="flow-node-title">Custom Rust PDK</span><span class="flow-node-type">WASM Policy (api.consumerUri)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚡</span><span class="flow-node-title">Redis Rate / Cache</span><span class="flow-node-type">sharedStorage.redis (2000ms)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">AI &amp; Security Guard</span><span class="flow-node-type">JWT + Prompt Guard + PII</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📡</span><span class="flow-node-title">Upstream Dispatch</span><span class="flow-node-type">Mule / LLM / Service</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Omni Envoy Ingress (HTTPS TLS (Port 443))</h3>
+      <p class="insp-node-what">Terminates client TLS inside Envoy C++/WASM ingress, automatically rejecting compromised/deprecated intermediate certificate chains (v1.14.4 security patch).</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">image=mulesoft/flex-gateway:1.14.5 | mTLS Optional</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Runtime Engine</th><td>Envoy + WASM Filters</td></tr>
+<tr><th scope="row">Version</th><td>1.14.5 (Nov 2026)</td></tr>
+<tr><th scope="row">Cert Hardening</th><td>Revoked/Compromised CAs blocked</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code># Helm / Kubernetes Extension Configuration for Omni Gateway v1.14.5 Redis Tuning
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omni-gateway-shared-storage
+  namespace: gateway
+data:
+  shared-storage.yaml: |
+    sharedStorage:
+      redis:
+        address: &quot;rediss://redis-ratelimit.cache.svc.cluster.local:6379&quot;
+        timeoutMilliseconds: 2000
+        maxRetries: 1</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🌐", "label": "Omni Envoy Ingress", "type": "HTTPS TLS (Port 443)", "what": "Terminates client TLS inside Envoy C++/WASM ingress, automatically rejecting compromised/deprecated intermediate certificate chains (v1.14.4 security patch).", "config_values": "image=mulesoft/flex-gateway:1.14.5 | mTLS Optional", "studio_props": [["Runtime Engine", "Envoy + WASM Filters"], ["Version", "1.14.5 (Nov 2026)"], ["Cert Hardening", "Revoked/Compromised CAs blocked"]]}, {"icon": "🦀", "label": "Custom Rust PDK", "type": "WASM Policy (api.consumerUri)", "what": "Executes your custom compiled WebAssembly policy reading `api.consumerUri` directly from the API Context for dynamic tenant signature & routing checks.", "config_values": "pdk v1.4+ | access api.consumerUri cleanly", "studio_props": [["SDK", "Anypoint Custom PDK (Rust)"], ["Context Field", "api.consumerUri (v1.14.4+)"], ["Overhead", "< 0.4 ms WASM native"]]}, {"icon": "⚡", "label": "Redis Rate / Cache", "type": "sharedStorage.redis (2000ms)", "what": "Synchronizes distributed token quotas and sliding-window rate limits across gateway replicas using v1.14.5 `timeoutMilliseconds: 2000` and `maxRetries: 1`.", "config_values": "timeoutMilliseconds=2000 | maxRetries=1", "studio_props": [["Backend", "Redis Cluster TLS"], ["Timeout (v1.14.5)", "2000 ms (Previously hung longer)"], ["Max Retries", "1"]]}, {"icon": "🛡️", "label": "AI & Security Guard", "type": "JWT + Prompt Guard + PII", "what": "Enforces zero-trust JWT verification, Regex/External Prompt Guardrails, and PII redaction across REST, MCP `/mcp`, and OpenAI Model Proxy endpoints.", "config_values": "Order: Auth -> PII -> Guardrail -> Cache -> TokenLimit", "studio_props": [["Surfaces", "REST, MCP, LLM"], ["Fail Closed Rule", "Block unauthenticated egress"]]}, {"icon": "📡", "label": "Upstream Dispatch", "type": "Mule / LLM / Service", "what": "Forwards clean, policy-vetted requests to upstream CloudHub 2.0 services or LLM endpoints while streaming Prometheus/Anypoint metrics out-of-band.", "config_values": "Metrics -> Anypoint Monitoring + OTLP", "studio_props": [["Telemetry", "Non-blocking Stats Flush"], ["Latency Added", "< 2 ms total Gateway"]]}], "flow_xml": "# Helm / Kubernetes Extension Configuration for Omni Gateway v1.14.5 Redis Tuning\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: omni-gateway-shared-storage\n  namespace: gateway\ndata:\n  shared-storage.yaml: |\n    sharedStorage:\n      redis:\n        address: \"rediss://redis-ratelimit.cache.svc.cluster.local:6379\"\n        timeoutMilliseconds: 2000\n        maxRetries: 1"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-omni-gateway-flex-gateway-pdk-redis-guide">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Upgrade Omni/Flex Gateway images cleanly to 1.14.5</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Tune sharedStorage.redis timeoutMilliseconds=2000 &amp; maxRetries=1</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Update Custom PDK policies to read api.consumerUri natively</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Test Redis failover latency (&lt; 2s cap prevents tail-latency hangs)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Verify mTLS / intermediate cert checks against test endpoint</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" aria-selected="true" aria-controls="panel-studio-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" aria-selected="false" aria-controls="panel-platform-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" aria-selected="false" aria-controls="panel-test-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" aria-labelledby="btn-tab-studio-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>omni-gateway-pdk-header-policy</code> · <strong>Target Runtime:</strong> <code>MuleSoft Omni Gateway 1.14.5 · Anypoint Custom PDK (Rust)</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code># Scaffold, compile &amp; publish a Custom PDK Policy reading api.consumerUri (v1.14.4+)
+anypoint-cli-v4 pdk policy create --name consumer-audit-policy
+cargo build --target wasm32-wasip1 --release
+anypoint-cli-v4 pdk policy publish</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>sharedStorage.redis</code></td><td><code>timeoutMilliseconds: 2000, maxRetries: 1</code></td><td>Prevents sluggish Redis failovers from stalling Envoy worker threads</td></tr>
+<tr><td><code>PDK API Context</code></td><td><code>api.consumerUri</code></td><td>Available out-of-the-box since 1.14.4 for consumer validation</td></tr>
+<tr><td><code>eMudhra Cert Fix</code></td><td><code>Included automatically in 1.14.4+</code></td><td>Automatically rejects distrusted intermediate chains</td></tr>
+<tr><td><code>Unified Governance</code></td><td><code>Manage REST + MCP + Model Proxy in 1 cluster</code></td><td>Eliminates separate legacy proxies for AI traffic</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" aria-labelledby="btn-tab-platform-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Upgrade Helm release (`helm upgrade flex-gateway ... --version 1.14.5`) in Connected Mode across Dev -&gt; Prod.</li>
+        <li>Apply updated `sharedStorage.redis` timeout settings in your Kubernetes ConfigMap / Gateway CRD.</li>
+        <li>Publish Custom PDK policy asset to Anypoint Exchange and bind via API Manager &gt; Policies.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" aria-labelledby="btn-tab-test-mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>GET https://omni.corp.internal/orders -&gt; inspect injected x-omni-consumer and rate-limit headers</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -i -s &quot;http://localhost:8081/orders&quot; -H &quot;Authorization: Bearer $JWT&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>HTTP/1.1 200 OK
+x-omni-consumer: https://omni.corp.internal/orders
+x-ratelimit-remaining: 99
+
+{ &quot;gateway&quot;: &quot;omni-1.14.5&quot;, &quot;redisTuned&quot;: true }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>API calls hang 10+ seconds when Redis node restarts</code></td><td>Default old retry/timeout config waited too long on dead Redis socket</td><td>Upgrade to 1.14.5 and set timeoutMilliseconds: 2000, maxRetries: 1</td></tr>
+<tr><td><code>api.consumerUri missing inside custom WASM policy</code></td><td>Running Flex Gateway &lt; 1.14.4 or outdated PDK crates</td><td>Upgrade Gateway to 1.14.4+ and bump PDK SDK Cargo dependency</td></tr>
+<tr><td><code>Upstream TLS handshake rejected after cert update</code></td><td>Intermediate cert chain includes distrusted CA</td><td>Issue leaf certificate from trusted CA root cleanly</td></tr>
+<tr><td><code>Policy change in API Manager not reflected on pods</code></td><td>Disconnected control plane or expired registration cert</td><td>Check flex-gateway pod logs for Connected Mode sync status</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
+
+          <h2 id="flex-to-omni">Why Flex Gateway Evolved into Omni Gateway in 2026</h2>
+          <p>Classic Flex Gateway began as a fast Envoy-based microservice gateway for REST APIs. By late 2026, enterprises needed one edge proxy capable of governing traditional REST/gRPC APIs alongside <strong>Model Context Protocol (MCP) endpoints</strong>, <strong>Agent-to-Agent (A2A) services</strong>, and <strong>LLM Model Proxies</strong>. MuleSoft's <strong>Omni Gateway</strong> unification brings Token Rate Limits, Prompt Guardrails, Semantic Caching, Custom Rust PDK policies, and Redis clustering into one lightweight runtime.</p>
+          <h2 id="redis-tuning">Why v1.14.5 Redis Timeout &amp; Retry Tuning Matters in Production</h2>
+          <p>Distributed API and LLM token rate-limiting relies on shared Redis state across gateway pods. When a Redis primary fails over, overly generous socket timeouts silently stall every incoming Envoy worker request, turning a 5-second cache blip into a total API outage. Setting <code>timeoutMilliseconds: 2000</code> and <code>maxRetries: 1</code> in v1.14.5 keeps gateway latency predictable and triggers configured fail-open/fail-closed behavior cleanly.</p>
+
+          <h2 id="troubleshooting">Troubleshooting &amp; Production Edge Cases</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Symptom</th><th scope="col">Root Cause</th><th scope="col">Production Fix</th></tr></thead>
+              <tbody>
+              <tr><td><code>API calls hang 10+ seconds when Redis node restarts</code></td><td>Default old retry/timeout config waited too long on dead Redis socket</td><td>Upgrade to 1.14.5 and set timeoutMilliseconds: 2000, maxRetries: 1</td></tr>
+              <tr><td><code>api.consumerUri missing inside custom WASM policy</code></td><td>Running Flex Gateway &lt; 1.14.4 or outdated PDK crates</td><td>Upgrade Gateway to 1.14.4+ and bump PDK SDK Cargo dependency</td></tr>
+              <tr><td><code>Upstream TLS handshake rejected after cert update</code></td><td>Intermediate cert chain includes distrusted CA</td><td>Issue leaf certificate from trusted CA root cleanly</td></tr>
+              <tr><td><code>Policy change in API Manager not reflected on pods</code></td><td>Disconnected control plane or expired registration cert</td><td>Check flex-gateway pod logs for Connected Mode sync status</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production Readiness Checklist</h2>
+          <ul class="checklist">
+            <li>Upgrade Omni/Flex Gateway images cleanly to 1.14.5</li>
+            <li>Tune sharedStorage.redis timeoutMilliseconds=2000 &amp; maxRetries=1</li>
+            <li>Update Custom PDK policies to read api.consumerUri natively</li>
+            <li>Test Redis failover latency (&lt; 2s cap prevents tail-latency hangs)</li>
+            <li>Verify mTLS / intermediate cert checks against test endpoint</li>
+          </ul>
+
+          <h2 id="interview">Frequently Asked Questions &amp; Interview Q&amp;A</h2>
+          <details class="qa"><summary>What is MuleSoft Omni Gateway compared to Flex Gateway?</summary><div><p>MuleSoft Omni Gateway is the evolved architecture of Envoy-based Anypoint Flex Gateway designed to unify governance across traditional APIs, AI Model Proxies, MCP servers, and A2A agent endpoints under one policy engine.</p></div></details>
+          <details class="qa"><summary>What new capabilities shipped in Omni Gateway 1.14.4 and 1.14.5 (Oct-Nov 2026)?</summary><div><p>Release 1.14.4 (Oct 2026) added access to `api.consumerUri` inside Custom PDK policies and hardened intermediate TLS CA validation. Release 1.14.5 (Nov 2026) added explicit `timeoutMilliseconds` (default 2000ms) and `maxRetries` (default 1) settings under `sharedStorage.redis`.</p></div></details>
+          <details class="qa"><summary>Why write Custom Gateway Policies in Rust PDK instead of Mule 4 XML?</summary><div><p>Rust compiles to native WebAssembly (`wasm32-wasip1`) executed directly inside Envoy C++ worker threads with sub-millisecond latency and minimal RAM — ideal for high-TPS header/JWT/signature enforcement at the edge.</p></div></details>
+          <details class="qa"><summary>How does Redis sharedStorage fail safely during a cluster failover?</summary><div><p>By explicitly tuning `timeoutMilliseconds` to 2000ms and `maxRetries` to 1, Omni Gateway avoids queuing thousands of stalled requests waiting on an unreachable Redis shard.</p></div></details>
+          <details class="qa"><summary>Can Omni Gateway run in both Docker/Local Mode and Kubernetes Connected Mode?</summary><div><p>Yes. Use Local Mode declarative YAML files for rapid laptop testing or GitOps, and Kubernetes Helm Connected Mode for centralized API Manager policy control and telemetry.</p></div></details>
+
+          <h2 id="sources">Sources &amp; Official Documentation</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/gateway/" target="_blank" rel="noopener noreferrer">MuleSoft Omni / Flex Gateway Official Documentation &amp; Release Notes</a></li>
+            <li><a href="https://docs.mulesoft.com/pdk/" target="_blank" rel="noopener noreferrer">Anypoint Custom Policy Developer Kit (Rust PDK) Docs</a></li>
+            <li><a href="https://docs.mulesoft.com/gateway/latest/policies-shared-storage" target="_blank" rel="noopener noreferrer">Shared Storage Redis Tuning for Rate Limiting</a></li>
+          </ul>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="../blog/anypoint-studio-to-acb-migration-launch-json-guide.html"><span>← Previous Guide</span><strong>Studio to ACB Migration</strong></a>
+  <a class="next" href="../blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html"><span>Next Guide →</span><strong>RTF 3.x on Kubernetes (EKS/AKS)</strong></a>
+</nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">What It Is &amp; Why It Is Trending (Nov 2026)</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; End-to-End Flow</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#flex-to-omni">Why Flex Gateway Evolved into Omni Gateway in 2026</a></li>
+        <li><a href="#redis-tuning">Why v1.14.5 Redis Timeout &amp; Retry Tuning Matters in Production</a></li>
+        <li><a href="#troubleshooting">Troubleshooting &amp; Production Edge Cases</a></li>
+        <li><a href="#checklist">Production Readiness Checklist</a></li>
+        <li><a href="#interview">Frequently Asked Questions &amp; Interview Q&amp;A</a></li>
+        <li><a href="#sources">Sources &amp; Official Documentation</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

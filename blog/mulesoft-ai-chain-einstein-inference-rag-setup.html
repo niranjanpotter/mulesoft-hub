@@ -34,19 +34,21 @@
 }
 </script>
 <script defer src="../assets/js/blog-portal.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
 </head>
 <body>
+<div class="read-progress-bar" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="../index.html">
       <span class="portal-brand-mark" aria-hidden="true">⚡</span>
       <span>MuleSoft Blog</span>
-      <span class="portal-brand-pill">2026 · 28 Guides</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="../index.html">All Blogs</a>
@@ -77,7 +79,18 @@
         </header>
 
         <div class="post-body">
-          <h2 id="tldr">TL;DR</h2>
+          
+<!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="mulesoft-ai-chain-einstein-inference-rag-setup" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-ai-chain-einstein-inference-rag-setup.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=MuleSoft+AI+Chain+%28MAC%29%2C+Einstein+Trust+Layer+%26+Inference+Connector%3A+Build+Enterprise+RAG+in+Mule+4+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-ai-chain-einstein-inference-rag-setup.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+<h2 id="tldr">TL;DR</h2>
           <ul>
             <li><strong>Three purpose-built connectors in the MAC ecosystem (<code>mac-project.ai</code>):</strong> Use <strong>MuleSoft AI Chain Connector</strong> for document chunking, embeddings, and vector stores; <strong>Einstein AI Connector</strong> for regulated prompts routed through the Salesforce Einstein Trust Layer; and <strong>MuleSoft Inference Connector</strong> for slim, multi-provider chat, vision, and tool-calling (including Ollama/vLLM).</li>
             <li><strong>Keep RAG inside your integration tier:</strong> Mule 4 already owns authenticated access to S3, SharePoint, Jira, Confluence, and PostgreSQL — running ingestion and retrieval in Mule eliminates standing up a separate Python microservice just to glue embeddings together.</li>

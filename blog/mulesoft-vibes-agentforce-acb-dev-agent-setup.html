@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills &amp; MCP Dev Workflows | MuleSoft Blog</title>
+  <meta name="description" content="Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills &amp; MCP Dev Workflows">
+  <meta property="og:description" content="Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="../assets/css/blog-portal.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills & MCP Dev Workflows", "description": "Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html", "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is MuleSoft Vibes and how does it work inside Anypoint Code Builder?", "acceptedAnswer": {"@type": "Answer", "text": "MuleSoft Vibes (also referred to as Agentforce Vibes) is MuleSoft's Agentforce-powered Dev Agent built into Anypoint Code Builder. It uses MCP workspace access and reusable team Skills to plan, scaffold, transform, and test API specifications, Mule XML flows, and DataWeave 2.0 mappings."}}, {"@type": "Question", "name": "What prerequisites are required to enable MuleSoft Vibes?", "acceptedAnswer": {"@type": "Answer", "text": "You need Anypoint Code Builder installed in VS Code, an Anypoint Platform account linked to an Agentforce-enabled Salesforce organization via Access Management > Salesforce, and user permissions for Agentforce Developer tooling."}}, {"@type": "Question", "name": "Can MuleSoft Vibes generate MUnit 3 tests automatically?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. When prompted alongside an existing Mule flow or APIKit router, Vibes generates MUnit 3 test suites with mocked downstream HTTP/DB processors and DataWeave payload assertions aligned to your project's pom.xml version."}}, {"@type": "Question", "name": "Why should teams run Anypoint Code Builder in a separate VS Code Profile?", "acceptedAnswer": {"@type": "Answer", "text": "Third-party VS Code Java, Spring Boot, or conflicting YAML/XML language servers often collide with the MuleSoft Extension Pack's Java 17 language server and DataWeave LSP. A clean dedicated VS Code Profile prevents hangs and false XML errors."}}, {"@type": "Question", "name": "Does MuleSoft Vibes send my encrypted production secrets to an LLM?", "acceptedAnswer": {"@type": "Answer", "text": "Encrypted ciphertexts (![...]) in config-secure.yaml do not contain your runtime decryption key (-Dmule.key), and enterprise governance restricts indexing local secrets. Never place unencrypted credentials or production keys inside prompt context or Git files."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mulesoft.niranjanpotter.dpdns.org/"}, {"@type": "ListItem", "position": 2, "name": "MuleSoft Vibes (ACB Dev Agent)", "item": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html"}]}</script>
+  <script defer src="../assets/js/blog-portal.js"></script>
+</head>
+<body>
+<div class="read-progress-bar" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › MuleSoft Vibes (ACB Dev Agent)</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Trending Sep–Nov 2026 · End-to-End Hands-On Guide</span>
+          <h1>MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills &amp; MCP Dev Workflows</h1>
+          <p class="post-lede">Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.</p>
+          <div class="post-meta">
+            <span class="trend-pill">🔥 New Nov 2026</span>
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 16 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <div class="quick-answer-box" role="note" aria-label="Quick answer summary">
+            <span class="quick-answer-head">⚡ Quick Answer</span>
+            <p>MuleSoft Vibes (Agentforce Vibes) is MuleSoft&#x27;s agentic Dev Agent embedded inside Anypoint Code Builder (ACB) on VS Code. Built on Salesforce Agentforce rather than passive autocomplete, Vibes uses reusable prompt skills and Model Context Protocol (MCP) file tools to plan API specifications, scaffold Mule 4.9 / 4.13 XML flows, map DataWeave 2.0, and generate MUnit 3 suites. Enabling it requires linking an Agentforce-enabled Salesforce org under Access Management &gt; Salesforce.</p>
+          </div>
+
+          <!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="mulesoft-vibes-agentforce-acb-dev-agent-setup" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-vibes-agentforce-acb-dev-agent-setup.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=MuleSoft+Vibes+%28Agentforce+Vibes%29+in+Anypoint+Code+Builder%3A+Complete+Setup%2C+Skills+%26+MCP+Dev+Workflows+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-vibes-agentforce-acb-dev-agent-setup.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+
+          <h2 id="overview">What It Is &amp; Why It Is Trending (Nov 2026)</h2>
+          <p>Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Code Builder (VS Code) · MuleSoft Vibes Dev Agent</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Agentforce Org Linked · MCP Workspace Context Active</span>
+        <span class="anypoint-status-ok">● VIBES AGENT ONLINE</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Powered By</span><span class="anypoint-kpi-val">Agentforce Reasoning Engine</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Active Workspace Protocol</span><span class="anypoint-kpi-val">MCP (Local Files + Exchange)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Configured Skills</span><span class="anypoint-kpi-val">4 Reusable Org Skills</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Target Mule Runtime</span><span class="anypoint-kpi-val">4.9 LTS / 4.13 Edge (Java 17)</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Prompt -&gt; Multi-Step Agent Plan in ACB</div>
+          <div class="anypoint-pane-bd">Prompt: &quot;Scaffold OAS 3.1 + Mule flow syncing Orders -&gt; Snowflake COPY INTO&quot;
+  Step 1: Read workspace pom.xml &amp; existing global-config.xml via MCP
+  Step 2: Apply skill: @corp-oas31-naming -&gt; draft orders-sapi.yaml
+  Step 3: Scaffold Mule 4.9 XML + DataWeave + MUnit test suite</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Required Org Trust &amp; Extension Health</div>
+          <div class="anypoint-pane-bd">Salesforce Setup   : Agentforce Enabled + ACB Permission Set
+Anypoint Platform  : Access Management &gt; Salesforce Org Linked [GREEN]
+VS Code Profile    : Isolated ACB Profile (No Conflicting Java/XML exts)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — MuleSoft Vibes executing multi-step reasoning inside Anypoint Code Builder using org-linked Agentforce skills and local MCP file access.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
+
+          <h2 id="architecture">Architecture &amp; End-to-End Flow</h2>
+          <p>Explore each stage of the production runtime flow below — hit <strong>Play Flow Animation</strong> to watch an event step through the components, click any node to inspect its Studio Properties, and copy the validated Mule configuration XML.</p>
+
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🔗</span><span class="flow-node-title">Salesforce Org Link</span><span class="flow-node-type">Access Management Trust</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📚</span><span class="flow-node-title">MCP Workspace Read</span><span class="flow-node-type">Local Repo + Exchange Context</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🎯</span><span class="flow-node-title">Apply Org Skills</span><span class="flow-node-type">.agent-skills/ Prompts</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚙️</span><span class="flow-node-title">Generate XML &amp; DW</span><span class="flow-node-type">Agentic Multi-File Diff</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🧪</span><span class="flow-node-title">Local Run &amp; MUnit</span><span class="flow-node-type">mvn clean test + F5 Debug</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Salesforce Org Link (Access Management Trust)</h3>
+      <p class="insp-node-what">Connects your Anypoint Business Group with an Agentforce-enabled Salesforce organization and verifies user Einstein/Agentforce permissions.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">Access Management &gt; Salesforce -&gt; Connected Org Enabled</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Setup Step</th><td>SF Setup &lt;-&gt; Anypoint Access Mgmt</td></tr>
+<tr><th scope="row">License Need</th><td>Salesforce Agentforce Dev/Enterprise</td></tr>
+<tr><th scope="row">Auth</th><td>OAuth SSO Inside ACB</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;!-- Scaffolded via MuleSoft Vibes + @corp-standards Skill on Mule 4.9 LTS / Java 17 --&gt;
+  &lt;import file=&quot;corp-global-error-handler.xml&quot;/&gt;
+  &lt;http:listener-config name=&quot;Vibes_Orders_HTTP_Listener&quot;&gt;
+    &lt;http:listener-connection host=&quot;0.0.0.0&quot; port=&quot;8081&quot;/&gt;
+  &lt;/http:listener-config&gt;
+  &lt;flow name=&quot;vibes-sync-orders-flow&quot;&gt;
+    &lt;http:listener config-ref=&quot;Vibes_Orders_HTTP_Listener&quot; path=&quot;/api/v1/orders/sync&quot; allowedMethods=&quot;POST&quot;/&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;&lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  syncId: correlationId,
+  orderCount: sizeOf(payload.orders default []),
+  processedAt: now() &gt;&gt; &quot;UTC&quot;,
+  runtime: &quot;Mule-4.9-Java17&quot;
+}]]&gt;&lt;/ee:set-payload&gt;&lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+    &lt;logger level=&quot;INFO&quot; message=&quot;#[&#x27;Synced orders correlationId=&#x27; ++ correlationId]&quot;/&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🔗", "label": "Salesforce Org Link", "type": "Access Management Trust", "what": "Connects your Anypoint Business Group with an Agentforce-enabled Salesforce organization and verifies user Einstein/Agentforce permissions.", "config_values": "Access Management > Salesforce -> Connected Org Enabled", "studio_props": [["Setup Step", "SF Setup <-> Anypoint Access Mgmt"], ["License Need", "Salesforce Agentforce Dev/Enterprise"], ["Auth", "OAuth SSO Inside ACB"]]}, {"icon": "📚", "label": "MCP Workspace Read", "type": "Local Repo + Exchange Context", "what": "Vibes uses MCP tools to inspect your local pom.xml, properties files, Exchange Parent POMs, and OpenAPI schemas before proposing edits.", "config_values": "mcp://acb-workspace -> pom.xml + src/main/mule", "studio_props": [["Protocol", "Model Context Protocol (MCP)"], ["Indexed Paths", "src/main/mule, resources, pom.xml"], ["Secret Safety", "Respects .gitignore / encrypted files"]]}, {"icon": "🎯", "label": "Apply Org Skills", "type": ".agent-skills/ Prompts", "what": "Loads reusable team engineering rules called Skills (naming conventions, mandatory RFC-7807 Global Error Handler import, MUnit 80% coverage assertions).", "config_values": "skill=corp-api-standards.md | errorPlugin=required", "studio_props": [["Skill Scope", "Team / Workspace Rules"], ["Enforced Checks", "Java 17 + Port 8081 + OSv2"]]}, {"icon": "⚙️", "label": "Generate XML & DW", "type": "Agentic Multi-File Diff", "what": "Generates reviewable diffs for OpenAPI 3.1 contracts, Mule 4.9/4.13 XML flows, DataWeave 2.0 scripts, and MUnit 3 mocks — waiting for developer approval.", "config_values": "Approve diff hunk-by-hunk before disk write", "studio_props": [["Target XML", "src/main/mule/*.xml"], ["DataWeave", "src/main/resources/dwl/*.dwl"], ["Tests", "src/test/munit/*.xml"]]}, {"icon": "🧪", "label": "Local Run & MUnit", "type": "mvn clean test + F5 Debug", "what": "Runs local MUnit 3 tests and launches the Mule runtime via .vscode/launch.json on Java 17 to verify end-to-end compilation with zero errors.", "config_values": "mvn clean test (verify 0 dependency / XML errors)", "studio_props": [["Verification", "mvn test + Local Debug Port 6666"], ["Ready Status", "0 Build / Schema Errors"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <!-- Scaffolded via MuleSoft Vibes + @corp-standards Skill on Mule 4.9 LTS / Java 17 -->\n  <import file=\"corp-global-error-handler.xml\"/>\n  <http:listener-config name=\"Vibes_Orders_HTTP_Listener\">\n    <http:listener-connection host=\"0.0.0.0\" port=\"8081\"/>\n  <\/http:listener-config>\n  <flow name=\"vibes-sync-orders-flow\">\n    <http:listener config-ref=\"Vibes_Orders_HTTP_Listener\" path=\"/api/v1/orders/sync\" allowedMethods=\"POST\"/>\n    <ee:transform>\n      <ee:message><ee:set-payload><![CDATA[%dw 2.0\noutput application/json\n---\n{\n  syncId: correlationId,\n  orderCount: sizeOf(payload.orders default []),\n  processedAt: now() >> \"UTC\",\n  runtime: \"Mule-4.9-Java17\"\n}]]><\/ee:set-payload><\/ee:message>\n    <\/ee:transform>\n    <logger level=\"INFO\" message=\"#['Synced orders correlationId=' ++ correlationId]\"/>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-vibes-agentforce-acb-dev-agent-setup">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Enable Agentforce &amp; assign ACB Developer Permissions in Salesforce</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Link Salesforce Org under Anypoint Access Management &gt; Salesforce</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Install Anypoint Code Builder Extension Pack in dedicated VS Code Profile</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Define reusable Vibes Skills for OAS 3.1, Error Handler &amp; DW rules</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Verify AI-generated flows locally with mvn clean test before PR</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-vibes-agentforce-acb-dev-agent-setup" aria-selected="true" aria-controls="panel-studio-mulesoft-vibes-agentforce-acb-dev-agent-setup" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-vibes-agentforce-acb-dev-agent-setup" aria-selected="false" aria-controls="panel-platform-mulesoft-vibes-agentforce-acb-dev-agent-setup" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-vibes-agentforce-acb-dev-agent-setup" aria-selected="false" aria-controls="panel-test-mulesoft-vibes-agentforce-acb-dev-agent-setup" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-vibes-agentforce-acb-dev-agent-setup" aria-labelledby="btn-tab-studio-mulesoft-vibes-agentforce-acb-dev-agent-setup">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>vibes-agentforce-orders-sapi</code> · <strong>Target Runtime:</strong> <code>Anypoint Code Builder (VS Code) · Mule 4.9 LTS / 4.13 Edge · JDK 17</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;!-- Ensure Vibes runs against clean Java 17 + Mule 4.9 LTS properties in pom.xml --&gt;
+&lt;properties&gt;
+  &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+  &lt;app.runtime&gt;4.9.3&lt;/app.runtime&gt;
+  &lt;mule.maven.plugin.version&gt;4.2.0&lt;/mule.maven.plugin.version&gt;
+  &lt;munit.version&gt;3.2.0&lt;/munit.version&gt;
+&lt;/properties&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>VS Code Profile</code></td><td><code>Dedicated &#x27;MuleSoft ACB&#x27; Profile</code></td><td>Prevents RedHat Java / third-party YAML extensions from breaking ACB</td></tr>
+<tr><td><code>Org Authentication</code></td><td><code>Command Palette -&gt; MuleSoft: Login to Anypoint</code></td><td>Use same user mapped to Agentforce-enabled Salesforce org</td></tr>
+<tr><td><code>Vibes Skill Rule</code></td><td><code>Always mandate port 8081 &amp; Global Error Handler import</code></td><td>Stops Vibes from scaffolding generic inline try/catch boilerplate</td></tr>
+<tr><td><code>Security Guardrail</code></td><td><code>Review every generated HTTP/DB property</code></td><td>Confirm AES secure:: prefixes are kept on all secrets</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-vibes-agentforce-acb-dev-agent-setup" aria-labelledby="btn-tab-platform-mulesoft-vibes-agentforce-acb-dev-agent-setup" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>In Salesforce Setup, turn on Agentforce and assign the MuleSoft Anypoint Code Builder / Agentforce User permission set.</li>
+        <li>In Anypoint Platform &gt; Access Management &gt; Salesforce, toggle your linked Salesforce organization to Enabled.</li>
+        <li>Open Anypoint Code Builder desktop VS Code Extension, create an isolated VS Code Profile (`Profiles: Create Profile -&gt; MuleSoft ACB`), install the official Anypoint Extension Pack, and sign in.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-vibes-agentforce-acb-dev-agent-setup" aria-labelledby="btn-tab-test-mulesoft-vibes-agentforce-acb-dev-agent-setup" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>Test scaffolded flow -&gt; POST http://localhost:8081/api/v1/orders/sync</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;http://localhost:8081/api/v1/orders/sync&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;orders&quot;:[{&quot;id&quot;:&quot;O-101&quot;},{&quot;id&quot;:&quot;O-102&quot;}]}&#x27; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;syncId&quot;: &quot;vibes-91a04f&quot;,
+  &quot;orderCount&quot;: 2,
+  &quot;processedAt&quot;: &quot;2026-11-25T07:20:00Z&quot;,
+  &quot;runtime&quot;: &quot;Mule-4.9-Java17&quot;
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>Vibes panel disabled or &#x27;Org lacks entitlement&#x27;</code></td><td>Anypoint account not linked to an Agentforce-enabled Salesforce org</td><td>Complete Access Management &gt; Salesforce trust link + permission set</td></tr>
+<tr><td><code>Generated XML fails on CloudHub 2.0</code></td><td>Prompt didn&#x27;t specify Mule 4.9 / CH2 port 8081 constraint</td><td>Encode CloudHub 2.0 + Java 17 rules inside a reusable Vibes Skill file</td></tr>
+<tr><td><code>ACB hangs indexing workspace forever</code></td><td>Conflicting personal Java/Spring/Copilot extensions in default VS Code profile</td><td>Move ACB into an isolated clean VS Code Profile</td></tr>
+<tr><td><code>Vibes invents outdated connector version</code></td><td>Local ~/.m2 lacked corporate Parent POM context</td><td>Open project containing locked Parent POM so MCP workspace scan sees exact versions</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
+
+          <h2 id="vibes-vs-copilot">How MuleSoft Vibes differs from generic coding assistants</h2>
+          <p>Generic code autocomplete predicts tokens line-by-line without understanding MuleSoft's XML schemas, DataWeave types, or Anypoint Exchange dependencies. <strong>MuleSoft Vibes (Agentforce Vibes)</strong> acts as a goal-oriented <em>Dev Agent</em> inside Anypoint Code Builder: it uses Agentforce reasoning to break a prompt into multi-file steps, reads your workspace via <strong>Model Context Protocol (MCP)</strong>, fetches approved company fragments from Exchange, edits XML + DataWeave together, and verifies compilation against Maven.</p><div class="table-wrap"><table><thead><tr><th scope="col">Capability</th><th scope="col">Generic Autocomplete</th><th scope="col">MuleSoft Vibes (Agentforce)</th></tr></thead><tbody><tr><td><strong>Context source</strong></td><td>Open editor tabs only</td><td>Workspace MCP + Anypoint Exchange assets + OAS/RAML specs</td></tr><tr><td><strong>Multi-file planning</strong></td><td>Manual copy across files</td><td>Scaffolds OAS 3.1 + Mule XML + DataWeave + MUnit 3 in one plan</td></tr><tr><td><strong>Enterprise guardrails</strong></td><td>Unaware of company standards</td><td>Enforces reusable org <strong>Skills</strong> (error plugin, naming, port 8081)</td></tr></tbody></table></div>
+          <h2 id="reusable-skills">Authoring reusable Vibes Skills for enterprise teams</h2>
+          <p>Treat Vibes Skills like executable architecture guardrails in Git. Keep a short markdown instruction file specifying: 1) Always target <code>Mule 4.9 LTS</code> and <code>Java 17</code>; 2) Always import <code>corp-global-error-handler.xml</code>; 3) Always configure <code>HTTP_Listener_config</code> on port <code>8081</code> for CloudHub 2.0; 4) Generate parameterized <code>munit-tools:mock-when</code> tests asserting at least 80% coverage.</p>
+          <h2 id="safe-review-workflow">Safe PR review checklist for AI-scaffolded Mule flows</h2>
+          <p>Never merge generated Mule XML blindly. Always verify: zero hardcoded tokens inside YAML/XML (must use <code>${secure::...}</code>), bounded timeouts on every <code>http:request</code>, streaming flags preserved on large DataWeave transforms, and <code>mvn clean test</code> green inside CI/CD.</p>
+
+          <h2 id="troubleshooting">Troubleshooting &amp; Production Edge Cases</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Symptom</th><th scope="col">Root Cause</th><th scope="col">Production Fix</th></tr></thead>
+              <tbody>
+              <tr><td><code>Vibes panel disabled or &#x27;Org lacks entitlement&#x27;</code></td><td>Anypoint account not linked to an Agentforce-enabled Salesforce org</td><td>Complete Access Management &gt; Salesforce trust link + permission set</td></tr>
+              <tr><td><code>Generated XML fails on CloudHub 2.0</code></td><td>Prompt didn&#x27;t specify Mule 4.9 / CH2 port 8081 constraint</td><td>Encode CloudHub 2.0 + Java 17 rules inside a reusable Vibes Skill file</td></tr>
+              <tr><td><code>ACB hangs indexing workspace forever</code></td><td>Conflicting personal Java/Spring/Copilot extensions in default VS Code profile</td><td>Move ACB into an isolated clean VS Code Profile</td></tr>
+              <tr><td><code>Vibes invents outdated connector version</code></td><td>Local ~/.m2 lacked corporate Parent POM context</td><td>Open project containing locked Parent POM so MCP workspace scan sees exact versions</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production Readiness Checklist</h2>
+          <ul class="checklist">
+            <li>Enable Agentforce &amp; assign ACB Developer Permissions in Salesforce</li>
+            <li>Link Salesforce Org under Anypoint Access Management &gt; Salesforce</li>
+            <li>Install Anypoint Code Builder Extension Pack in dedicated VS Code Profile</li>
+            <li>Define reusable Vibes Skills for OAS 3.1, Error Handler &amp; DW rules</li>
+            <li>Verify AI-generated flows locally with mvn clean test before PR</li>
+          </ul>
+
+          <h2 id="interview">Frequently Asked Questions &amp; Interview Q&amp;A</h2>
+          <details class="qa"><summary>What is MuleSoft Vibes and how does it work inside Anypoint Code Builder?</summary><div><p>MuleSoft Vibes (also referred to as Agentforce Vibes) is MuleSoft&#x27;s Agentforce-powered Dev Agent built into Anypoint Code Builder. It uses MCP workspace access and reusable team Skills to plan, scaffold, transform, and test API specifications, Mule XML flows, and DataWeave 2.0 mappings.</p></div></details>
+          <details class="qa"><summary>What prerequisites are required to enable MuleSoft Vibes?</summary><div><p>You need Anypoint Code Builder installed in VS Code, an Anypoint Platform account linked to an Agentforce-enabled Salesforce organization via Access Management &gt; Salesforce, and user permissions for Agentforce Developer tooling.</p></div></details>
+          <details class="qa"><summary>Can MuleSoft Vibes generate MUnit 3 tests automatically?</summary><div><p>Yes. When prompted alongside an existing Mule flow or APIKit router, Vibes generates MUnit 3 test suites with mocked downstream HTTP/DB processors and DataWeave payload assertions aligned to your project&#x27;s pom.xml version.</p></div></details>
+          <details class="qa"><summary>Why should teams run Anypoint Code Builder in a separate VS Code Profile?</summary><div><p>Third-party VS Code Java, Spring Boot, or conflicting YAML/XML language servers often collide with the MuleSoft Extension Pack&#x27;s Java 17 language server and DataWeave LSP. A clean dedicated VS Code Profile prevents hangs and false XML errors.</p></div></details>
+          <details class="qa"><summary>Does MuleSoft Vibes send my encrypted production secrets to an LLM?</summary><div><p>Encrypted ciphertexts (![...]) in config-secure.yaml do not contain your runtime decryption key (-Dmule.key), and enterprise governance restricts indexing local secrets. Never place unencrypted credentials or production keys inside prompt context or Git files.</p></div></details>
+
+          <h2 id="sources">Sources &amp; Official Documentation</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/anypoint-code-builder/" target="_blank" rel="noopener noreferrer">Anypoint Code Builder &amp; MuleSoft Vibes Documentation</a></li>
+            <li><a href="https://developer.salesforce.com/docs/ai/agentforce" target="_blank" rel="noopener noreferrer">Salesforce Agentforce Developer &amp; Skills Documentation</a></li>
+            <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP) Open Standard Specification</a></li>
+          </ul>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-vibes-agentforce-acb-dev-agent-setup" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="../index.html"><span>← Home</span><strong>All 36 MuleSoft Blogs</strong></a>
+  <a class="next" href="../blog/anypoint-studio-to-acb-migration-launch-json-guide.html"><span>Next Guide →</span><strong>Studio to ACB Migration</strong></a>
+</nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">What It Is &amp; Why It Is Trending (Nov 2026)</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; End-to-End Flow</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#vibes-vs-copilot">How MuleSoft Vibes differs from generic coding assistants</a></li>
+        <li><a href="#reusable-skills">Authoring reusable Vibes Skills for enterprise teams</a></li>
+        <li><a href="#safe-review-workflow">Safe PR review checklist for AI-scaffolded Mule flows</a></li>
+        <li><a href="#troubleshooting">Troubleshooting &amp; Production Edge Cases</a></li>
+        <li><a href="#checklist">Production Readiness Checklist</a></li>
+        <li><a href="#interview">Frequently Asked Questions &amp; Interview Q&amp;A</a></li>
+        <li><a href="#sources">Sources &amp; Official Documentation</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

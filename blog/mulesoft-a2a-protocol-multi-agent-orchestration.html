@@ -34,19 +34,21 @@
 }
 </script>
 <script defer src="../assets/js/blog-portal.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
 </head>
 <body>
+<div class="read-progress-bar" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="../index.html">
       <span class="portal-brand-mark" aria-hidden="true">⚡</span>
       <span>MuleSoft Blog</span>
-      <span class="portal-brand-pill">2026 · 28 Guides</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="../index.html">All Blogs</a>
@@ -77,7 +79,18 @@
         </header>
 
         <div class="post-body">
-          <h2 id="tldr">TL;DR</h2>
+          
+<!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="mulesoft-a2a-protocol-multi-agent-orchestration" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-a2a-protocol-multi-agent-orchestration.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=Agent-to-Agent+%28A2A%29+Protocol+in+MuleSoft%3A+Agent+Cards%2C+Delegation+%26+Multi-Cloud+Orchestration+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-a2a-protocol-multi-agent-orchestration.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+<h2 id="tldr">TL;DR</h2>
           <ul>
             <li><strong>MCP is vertical; A2A is horizontal:</strong> Model Context Protocol (MCP) connects an agent vertically to deterministic tools and data; <strong>Agent-to-Agent (A2A)</strong> connects autonomous, opaque peer agents horizontally so a coordinator can delegate open-ended goals without seeing a specialist's private prompts, memory, or internal tools.</li>
             <li><strong>Official Mule 4 A2A Connector:</strong> Add <code>com.mulesoft.connectors:mule4-a2a-connector:2.0.0</code> (<code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code>) with XML namespace <code>http://www.mulesoft.org/schema/mule/a2a</code> to expose any Mule 4 app as an A2A Server or orchestrate remote A2A peers as an A2A Client.</li>

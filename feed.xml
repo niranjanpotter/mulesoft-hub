@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MuleSoft Engineering Blog — 2026 Hands-On Architecture &amp; Setup Guides</title>
+    <link>https://mulesoft.niranjanpotter.dpdns.org/</link>
+    <atom:link href="https://mulesoft.niranjanpotter.dpdns.org/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>36 free end-to-end MuleSoft setup guides covering MuleSoft Vibes, ACB, Omni Gateway 1.14.5, RTF 3.x, Agent Fabric, MCP, A2A, Agentforce, RAG &amp; CloudHub 2.0.</description>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Nov 2026 07:30:00 +0000</lastBuildDate>
+    <item>
+      <title>MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills &amp; MCP Dev Workflows</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.</description>
+    </item>
+    <item>
+      <title>Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven &amp; Debug Playbook</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.</description>
+    </item>
+    <item>
+      <title>MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning &amp; AI Policies</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.</description>
+    </item>
+    <item>
+      <title>Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration &amp; Zero-Downtime Upgrades</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.</description>
+    </item>
+    <item>
+      <title>RAML to OpenAPI (OAS 3.1) Migration in MuleSoft: Modular $ref Structure, APIKit &amp; Exchange Governance</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Convert legacy RAML 1.0 specs to modular OpenAPI 3.0 / 3.1 contracts with clean external $ref files, APIKit scaffolding, Anypoint API Governance, and MCP Bridge readiness.</description>
+    </item>
+    <item>
+      <title>Salesforce Data Cloud (Data 360) Zero Copy vs. MuleSoft for Flow &amp; Composer: Enterprise Decision Guide</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Architect the modern Salesforce integration stack clearly: know when to use Data Cloud Zero Copy federation, MuleSoft API-Led / MuleSoft for Flow, or MuleSoft Composer (and understand Composer&#x27;s auto-deactivation rules).</description>
+    </item>
+    <item>
+      <title>Scatter-Gather vs. Parallel For-Each &amp; Zero-Redeploy Dynamic DB Password Rotation in Mule 4</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/scatter-gather-vs-parallel-foreach-dynamic-db-secrets.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/scatter-gather-vs-parallel-foreach-dynamic-db-secrets.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Solve the two most-asked r/MuleSoft engineering questions in one deep guide: Scatter-Gather vs Parallel For-Each internals (and error collection) + zero-redeploy dynamic DB credential rotation.</description>
+    </item>
+    <item>
+      <title>2026 Salesforce Certified MuleSoft Developer &amp; Platform Architect Exam Guide: Changes, Retirements &amp; Study Plan</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Navigate 2026 MuleSoft certifications hosted on Trailhead: renamed Salesforce Certified MuleSoft Developer exam specs, retired Catalyst &amp; Hyperautomation certs, Platform Architect maintenance, and a 30-day study map.</description>
+    </item>
+    <item>
+      <title>MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Set up MuleSoft&#x27;s cross-cloud AI control plane over Agentforce, AWS Bedrock, and Vertex AI using Exchange Agent Registry, scanners, .agent Broker scripts, and Model Wallet kill switches.</description>
+    </item>
+    <item>
+      <title>MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Build an enterprise MCP Server with mule-mcp-connector over Streamable HTTP (/mcp), expose schema-validated tools, wire an MCP Client flow, and test with MCP Inspector.</description>
+    </item>
+    <item>
+      <title>MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Project existing OpenAPI 3.0 &amp; RAML Process APIs in Anypoint Exchange into curated, OAuth-OBO governed MCP tools without writing a single new Mule flow.</description>
+    </item>
+    <item>
+      <title>Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Implement mule4-a2a-connector 2.0.0 in Mule 4.9 LTS to publish /.well-known/agent.json Agent Cards and coordinate stateful peer agent tasks.</description>
+    </item>
+    <item>
+      <title>Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Link Salesforce and Anypoint Platform, design Topic Center instructions in ACB, sync API Catalog External Services automatically, and inspect Atlas Reasoning traces.</description>
+    </item>
+    <item>
+      <title>MuleSoft AI Chain (MAC), Einstein Trust Layer &amp; Inference Connector: Build Enterprise RAG in Mule 4</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Compare mule4-aichain-connector, mule4-einstein-ai-connector, and mule4-inference-connector, then build a complete PostgreSQL pgvector + Einstein RAG pipeline in Mule 4.9.</description>
+    </item>
+    <item>
+      <title>Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking &amp; Semantic Cache</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/flex-gateway-ai-policies-llm-guardrails.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/flex-gateway-ai-policies-llm-guardrails.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Run Anypoint Flex Gateway as a centralized Enterprise Model Proxy in Docker and Kubernetes with PII masking, prompt defense, semantic caching, and SSE token limits.</description>
+    </item>
+    <item>
+      <title>Testing, Observability &amp; FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals &amp; Cost Guardrails</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Trace every Agentforce-Broker-MCP-LLM hop with W3C OpenTelemetry gen_ai.* attributes, run MUnit 3 deterministic + golden-dataset CI evals, and enforce kill-switch budgets.</description>
+    </item>
+    <item>
+      <title>CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/cloudhub-1-to-2-migration-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/cloudhub-1-to-2-migration-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Migrate Mule 4 apps cleanly from CloudHub 1.0 to CloudHub 2.0 Private Spaces with strict port 8081 bindings, ephemeral disk safety, Ingress TLS, and Maven 4.x config.</description>
+    </item>
+    <item>
+      <title>DataWeave 2.0 Performance Tuning: Tail Recursion &amp; Memory Optimization</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/dataweave-performance-tuning-patterns.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/dataweave-performance-tuning-patterns.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Eliminate JVM OutOfMemoryError and O(n^2) loops in DataWeave 2.0 using @TailRec, off-heap disk buffering, deferred streaming, and groupBy indexed joins.</description>
+    </item>
+    <item>
+      <title>MuleSoft Batch Processing Interview Questions &amp; Architecture (2026 Guide)</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-batch-processing-interview-questions.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-batch-processing-interview-questions.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Master Mule 4 Batch Jobs: LMAX Disruptor ring buffers, blockSize &amp; thread tuning, record-scoped variables, Bulk Aggregators, and watermark crash recovery.</description>
+    </item>
+    <item>
+      <title>Anypoint MQ &amp; DLQ Architecture: Interview Questions &amp; Best Practices</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-anypoint-mq-dlq-fifo-interview.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-anypoint-mq-dlq-fifo-interview.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Design resilient async messaging in Mule 4 using Anypoint MQ FIFO queues, manual ACK/NACK, Object Store v2 idempotency, and automated DLQ replay.</description>
+    </item>
+    <item>
+      <title>Salesforce Bulk API 2.0 in MuleSoft: Complete Interview &amp; Performance Guide</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-salesforce-bulk-api-2-interview.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-salesforce-bulk-api-2-interview.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Orchestrate high-volume Salesforce ingestions using Bulk API 2.0 jobs, CSV streaming, governor quota isolation (15,000 batches / 150M records), and failure reconciliation.</description>
+    </item>
+    <item>
+      <title>OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-oauth-jwt-bearer-token-interview.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-oauth-jwt-bearer-token-interview.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Replace fragile passwords and security tokens with RSA-256 OAuth 2.0 JWT Bearer authentication in MuleSoft, complete with OpenSSL setup and zero-downtime key rotation.</description>
+    </item>
+    <item>
+      <title>MuleSoft Scatter-Gather Router: Interview Questions &amp; Error Recovery</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scatter-gather-interview-questions.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scatter-gather-interview-questions.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Master parallel Scatter-Gather execution in Mule 4: reactive thread pool sizing, per-route Try scopes for partial failures, and flattening route outputs cleanly.</description>
+    </item>
+    <item>
+      <title>OpenTelemetry in MuleSoft: Direct Telemetry Export &amp; Distributed Tracing</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-opentelemetry-tracing-observability.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-opentelemetry-tracing-observability.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Configure native OpenTelemetry traceparent context propagation and OTLP gRPC export from Mule 4.9 / CloudHub 2.0 to Datadog, Grafana Tempo, and Splunk.</description>
+    </item>
+    <item>
+      <title>MuleSoft CI/CD Pipeline Guide: Maven Plugin &amp; GitHub Actions (2026)</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-cicd-maven-pipeline-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-cicd-maven-pipeline-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Automate Mule 4.9 builds, Parent POM governance, Connected App deployments, 80%+ MUnit coverage gates, and CloudHub 2.0 promotions in GitHub Actions.</description>
+    </item>
+    <item>
+      <title>MuleSoft Terraform Provider Guide: Infrastructure as Code (IaC)</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-terraform-provider-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-terraform-provider-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Manage Anypoint Business Groups, Environments, CloudHub 2.0 Private Spaces, and API Manager instances declaratively using Terraform.</description>
+    </item>
+    <item>
+      <title>SAP S/4HANA OData vs JCo RFC Connector in MuleSoft: Architecture Guide</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-sap-s4hana-odata-interview.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-sap-s4hana-odata-interview.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Choose cleanly between SAP S/4HANA OData v4 REST and SAP JCo BAPI/tRFC IDocs in Mule 4, including TID idempotency, CSRF handling, and canonical mapping.</description>
+    </item>
+    <item>
+      <title>MuleSoft Snowflake Connector: High-Volume Ingestion &amp; Staging Patterns</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-snowflake-connector-patterns.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-snowflake-connector-patterns.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Build fast Snowflake analytics pipelines in Mule 4 using RSA Key-Pair Auth, S3/Blob staging + COPY INTO (instead of slow JDBC row inserts), and streaming reads.</description>
+    </item>
+    <item>
+      <title>Anypoint Partner Manager &amp; B2B EDI X12/EDIFACT: Interview Guide</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-partner-manager-b2b-edi-interview.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-partner-manager-b2b-edi-interview.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Configure EDI X12 850/810/856 and EDIFACT flows over AS2/SFTP in Anypoint Partner Manager, including automated 997 Functional ACKs and certificate rotation.</description>
+    </item>
+    <item>
+      <title>Reusable MuleSoft Global Error Handler Plugin: Enterprise Architecture</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-reusable-error-handler-plugin.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-reusable-error-handler-plugin.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Eliminate copy-pasted APIKit &amp; HTTP error boilerplate across 50+ Mule microservices by building a shared Exchange Global Error Handler Plugin.</description>
+    </item>
+    <item>
+      <title>MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-secure-properties-encryption-guide.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-secure-properties-encryption-guide.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Encrypt database passwords, API secrets, and keystores per environment in Mule 4 using AES-256-GCM without committing plaintext secrets to Git.</description>
+    </item>
+    <item>
+      <title>Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine &amp; Concurrency</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-java-interview-mastery.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-java-interview-mastery.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Understand Mule 4.9&#x27;s Java 17 upgrade, non-blocking CPU_LITE/CPU_INTENSIVE/BLOCKING_IO thread pools, Java Module invocation, and G1GC memory tuning.</description>
+    </item>
+    <item>
+      <title>Top 20 MuleSoft Scenario-Based Interview Questions &amp; Incident Solutions</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scenario-based-interview-questions.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scenario-based-interview-questions.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Real-world production incident troubleshooting in Mule 4: timeouts, 502 Ingress errors, poison MQ loops, OAuth storms, and zero-loss backpressure.</description>
+    </item>
+    <item>
+      <title>MuleSoft &amp; Salesforce Agentforce: Topic Center Actions (2026 Guide)</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-agentforce-topic-center-actions.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-agentforce-topic-center-actions.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Quick-reference interview &amp; architecture brief on Salesforce Agentforce Topic Center metadata, Anypoint Exchange API Catalog sync, and flat schema best practices.</description>
+    </item>
+    <item>
+      <title>MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-mcp-connector-ai-agents.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-mcp-connector-ai-agents.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Quick-reference interview brief covering Streamable HTTP MCP servers, JSON Schema tool catalogs, and mutation safety guardrails in MuleSoft.</description>
+    </item>
+    <item>
+      <title>MuleSoft Model Proxy: Semantic Caching &amp; LLM Token Cost Optimization</title>
+      <link>https://mulesoft.niranjanpotter.dpdns.org/mulesoft-model-proxy-semantic-cache.html</link>
+      <guid isPermaLink="true">https://mulesoft.niranjanpotter.dpdns.org/mulesoft-model-proxy-semantic-cache.html</guid>
+      <pubDate>Wed, 25 Nov 2026 07:30:00 +0000</pubDate>
+      <description>Quick architecture guide on routing enterprise AI traffic through Anypoint Flex Gateway Model Proxy with semantic vector caching and token rate limits.</description>
+    </item>
+  </channel>
+</rss>

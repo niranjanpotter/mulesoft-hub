@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration &amp; Zero-Downtime Upgrades | MuleSoft Blog</title>
+  <meta name="description" content="Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration &amp; Zero-Downtime Upgrades">
+  <meta property="og:description" content="Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="../assets/css/blog-portal.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration & Zero-Downtime Upgrades", "description": "Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html", "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What does Anypoint Runtime Fabric 3.0.41102 (Nov 2026) introduce?", "acceptedAnswer": {"@type": "Answer", "text": "RTF 3.0.41102 updates bundled container components (rtf-agent:3.0.41102, rtf-core-actions:1.0.10500, rtf-cluster-ops:2.0) with security vulnerability fixes and supports declarative rolling restarts via `spec.lifecycle.restartGeneration` cleanly on EKS/AKS."}}, {"@type": "Question", "name": "How does `spec.lifecycle.restartGeneration` work on Runtime Fabric?", "acceptedAnswer": {"@type": "Answer", "text": "Incrementing the integer value under `spec.lifecycle.restartGeneration` on your MuleApplication manifest signals the Anypoint Controller to execute one declarative rolling restart of the application pods without downtime."}}, {"@type": "Question", "name": "What is the difference between CPU Reserved and CPU Limit in RTF deployment settings?", "acceptedAnswer": {"@type": "Answer", "text": "CPU Reserved guarantees minimum node compute capacity scheduled for the pod (which drives licensing/bin-packing), while CPU Limit allows the JVM to burst higher during initial application startup and traffic spikes."}}, {"@type": "Question", "name": "Why must replicas be set >= 2 with enforceDeployingReplicasAcrossNodes?", "acceptedAnswer": {"@type": "Answer", "text": "Running 2+ replicas spread across separate Kubernetes worker nodes guarantees high availability during node OS upgrades, spot instance drains, or rolling deployments."}}, {"@type": "Question", "name": "How do Kubernetes minor version upgrades affect Runtime Fabric?", "acceptedAnswer": {"@type": "Answer", "text": "RTF maintains certified Kubernetes version support windows (covering K8s 1.30 through 1.37 alignment). Always check the MuleSoft RTF support matrix and upgrade rtf-agent cleanly before bumping EKS/AKS control plane versions."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mulesoft.niranjanpotter.dpdns.org/"}, {"@type": "ListItem", "position": 2, "name": "RTF 3.x on Kubernetes (EKS/AKS)", "item": "https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html"}]}</script>
+  <script defer src="../assets/js/blog-portal.js"></script>
+</head>
+<body>
+<div class="read-progress-bar" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › RTF 3.x on Kubernetes (EKS/AKS)</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Trending Sep–Nov 2026 · End-to-End Hands-On Guide</span>
+          <h1>Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration &amp; Zero-Downtime Upgrades</h1>
+          <p class="post-lede">Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.</p>
+          <div class="post-meta">
+            <span class="trend-pill">🔥 New Nov 2026</span>
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 18 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <div class="quick-answer-box" role="note" aria-label="Quick answer summary">
+            <span class="quick-answer-head">⚡ Quick Answer</span>
+            <p>Anypoint Runtime Fabric (RTF) 3.x deploys Mule 4.9 LTS and 4.13 Edge workloads natively onto self-managed Kubernetes clusters (AWS EKS, Azure AKS, OpenShift, K8s 1.30-1.37). The November 19, 2026 release (v3.0.41102) bundles updated rtf-agent (3.0.41102), rtf-core-actions (1.0.10500), and rtf-cluster-ops (2.0), plus declarative rolling restarts via `spec.lifecycle.restartGeneration` so GitOps pipelines trigger zero-downtime pod recycles cleanly.</p>
+          </div>
+
+          <!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fanypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=Anypoint+Runtime+Fabric+%28RTF+3.x%29+on+Kubernetes+%28EKS%2FAKS%29%3A+Setup%2C+restartGeneration+%26+Zero-Downtime+Upgrades+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fanypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+
+          <h2 id="overview">What It Is &amp; Why It Is Trending (Nov 2026)</h2>
+          <p>Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Runtime Manager + Kubernetes · Runtime Fabric 3.0.41102</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">AWS EKS (Kubernetes 1.33) · rtf-agent:3.0.41102</span>
+        <span class="anypoint-status-ok">● ACTIVE · ALL NODES HEALTHY</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">RTF Agent Build</span><span class="anypoint-kpi-val">3.0.41102 (Nov 19, 2026)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Supported K8s</span><span class="anypoint-kpi-val">EKS / AKS / OpenShift (1.30-1.37)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Rolling Restart CRD</span><span class="anypoint-kpi-val">spec.lifecycle.restartGeneration</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">App Pod Sizing</span><span class="anypoint-kpi-val">2 Replicas · PodDisruptionBudget</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">RTF 3.x Component Pod Versions (Namespace: rtf)</div>
+          <div class="anypoint-pane-bd">mulesoft/rtf-agent:3.0.41102         [1/1 Running]
+mulesoft/rtf-core-actions:1.0.10500  [Completed / Ready]
+mulesoft/rtf-cluster-ops:2.0         [Scheduled Healthy]
+Ingress Controller: AWS ALB / NGINX Ingress</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Declarative Zero-Downtime Rolling Restart</div>
+          <div class="anypoint-pane-bd">kind: MuleApplication
+spec:
+  lifecycle:
+    restartGeneration: 4   # Bump 3 -&gt; 4 triggers 1 clean rolling restart
+  replicas: 2 | readinessProbe: /api/health (fast scale-out)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Inspecting RTF 3.0.41102 system pods on EKS and triggering declarative rolling restarts without manual kubectl pod deletes.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
+
+          <h2 id="architecture">Architecture &amp; End-to-End Flow</h2>
+          <p>Explore each stage of the production runtime flow below — hit <strong>Play Flow Animation</strong> to watch an event step through the components, click any node to inspect its Studio Properties, and copy the validated Mule configuration XML.</p>
+
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">☸️</span><span class="flow-node-title">EKS / AKS Cluster</span><span class="flow-node-type">K8s 1.30-1.37 Base</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔧</span><span class="flow-node-title">rtfctl / Helm Install</span><span class="flow-node-type">RTF 3.0.41102 Activation</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🌐</span><span class="flow-node-title">Ingress Template</span><span class="flow-node-type">TLS + Custom Domains</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🚀</span><span class="flow-node-title">Deploy Mule 4.9/4.13</span><span class="flow-node-type">runtimeFabricDeployment MMP</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔄</span><span class="flow-node-title">Declarative Restart</span><span class="flow-node-type">spec.lifecycle.restartGeneration</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. EKS / AKS Cluster (K8s 1.30-1.37 Base)</h3>
+      <p class="insp-node-what">Provides worker nodes with calibrated CNI networking, AWS ALB / NGINX Ingress controller, StorageClasses, and container registry pull credentials.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">K8s v1.33 | Metrics Server + Ingress Controller Live</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Cluster Target</th><td>EKS / AKS / OpenShift</td></tr>
+<tr><th scope="row">Min K8s</th><td>1.30+ (up to 1.36/1.37)</td></tr>
+<tr><th scope="row">CNI / Network</th><td>VPC CNI / Calico</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;!-- pom.xml Mule Maven Plugin targeting Anypoint Runtime Fabric (RTF 3.x) --&gt;
+&lt;plugin&gt;
+  &lt;groupId&gt;org.mule.tools.maven&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;4.2.0&lt;/version&gt;
+  &lt;extensions&gt;true&lt;/extensions&gt;
+  &lt;configuration&gt;
+    &lt;runtimeFabricDeployment&gt;
+      &lt;uri&gt;https://anypoint.mulesoft.com&lt;/uri&gt;
+      &lt;provider&gt;MC&lt;/provider&gt;
+      &lt;environment&gt;${env}&lt;/environment&gt;
+      &lt;target&gt;${rtf.cluster.name}&lt;/target&gt;
+      &lt;muleVersion&gt;4.9.3&lt;/muleVersion&gt;
+      &lt;deploymentSettings&gt;
+        &lt;enforceDeployingReplicasAcrossNodes&gt;true&lt;/enforceDeployingReplicasAcrossNodes&gt;
+        &lt;http&gt;&lt;inbound&gt;&lt;publicUrl&gt;https://api.corp.internal/orders&lt;/publicUrl&gt;&lt;/inbound&gt;&lt;/http&gt;
+        &lt;resources&gt;&lt;cpu&gt;&lt;reserved&gt;350m&lt;/reserved&gt;&lt;limit&gt;1000m&lt;/limit&gt;&lt;/cpu&gt;&lt;memory&gt;&lt;reserved&gt;900Mi&lt;/reserved&gt;&lt;/memory&gt;&lt;/resources&gt;
+      &lt;/deploymentSettings&gt;
+    &lt;/runtimeFabricDeployment&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "☸️", "label": "EKS / AKS Cluster", "type": "K8s 1.30-1.37 Base", "what": "Provides worker nodes with calibrated CNI networking, AWS ALB / NGINX Ingress controller, StorageClasses, and container registry pull credentials.", "config_values": "K8s v1.33 | Metrics Server + Ingress Controller Live", "studio_props": [["Cluster Target", "EKS / AKS / OpenShift"], ["Min K8s", "1.30+ (up to 1.36/1.37)"], ["CNI / Network", "VPC CNI / Calico"]]}, {"icon": "🔧", "label": "rtfctl / Helm Install", "type": "RTF 3.0.41102 Activation", "what": "Installs Anypoint Controller, rtf-agent:3.0.41102, and rtf-cluster-ops:2.0 into the `rtf` namespace using your Anypoint activation token.", "config_values": "rtfctl validate && rtfctl install <activation-data>", "studio_props": [["CLI Tool", "rtfctl v3.x / Helm Chart"], ["Namespace", "rtf"], ["Local Registry Option", "Mirror rtf-agent:3.0.41102"]]}, {"icon": "🌐", "label": "Ingress Template", "type": "TLS + Custom Domains", "what": "Defines Kubernetes Ingress resource templates (`pathRewrite` & TLS Secret) exposing deployed Mule app pods cleanly inside corporate networks.", "config_values": "kind: Ingress -> backend servicePort 8081", "studio_props": [["Ingress Class", "alb / nginx"], ["Pod Port", "8081 HTTP"], ["TLS", "Cert-Manager / ACM"]]}, {"icon": "🚀", "label": "Deploy Mule 4.9/4.13", "type": "runtimeFabricDeployment MMP", "what": "Pushes lightweight Mule JAR from CI/CD via Mule Maven Plugin targeting RTF; Anypoint pulls certified base Mule runtime image onto worker pods.", "config_values": "replicas=2 | cpuReserved=350m | cpuLimit=1000m", "studio_props": [["MMP Target", "<runtimeFabricDeployment>"], ["CPU Bursting", "Allowed up to cpuLimit"], ["Readiness", "Startup + Readiness Probes"]]}, {"icon": "🔄", "label": "Declarative Restart", "type": "spec.lifecycle.restartGeneration", "what": "Bumping `restartGeneration` in CRD/GitOps triggers a controlled Kubernetes rolling restart (replacing one replica at a time with 0 dropped requests).", "config_values": "spec.lifecycle.restartGeneration += 1", "studio_props": [["Mechanism", "Anypoint Controller Rolling Update"], ["Availability", "100% Zero-Downtime"]]}], "flow_xml": "<!-- pom.xml Mule Maven Plugin targeting Anypoint Runtime Fabric (RTF 3.x) -->\n<plugin>\n  <groupId>org.mule.tools.maven<\/groupId>\n  <artifactId>mule-maven-plugin<\/artifactId>\n  <version>4.2.0<\/version>\n  <extensions>true<\/extensions>\n  <configuration>\n    <runtimeFabricDeployment>\n      <uri>https://anypoint.mulesoft.com<\/uri>\n      <provider>MC<\/provider>\n      <environment>${env}<\/environment>\n      <target>${rtf.cluster.name}<\/target>\n      <muleVersion>4.9.3<\/muleVersion>\n      <deploymentSettings>\n        <enforceDeployingReplicasAcrossNodes>true<\/enforceDeployingReplicasAcrossNodes>\n        <http><inbound><publicUrl>https://api.corp.internal/orders<\/publicUrl><\/inbound><\/http>\n        <resources><cpu><reserved>350m<\/reserved><limit>1000m<\/limit><\/cpu><memory><reserved>900Mi<\/reserved><\/memory><\/resources>\n      <\/deploymentSettings>\n    <\/runtimeFabricDeployment>\n  <\/configuration>\n<\/plugin>"}</script>
+  <div class="setup-checklist-box" data-slug="anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Run rtfctl validate BEFORE installing on EKS/AKS/OpenShift</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Enable enforceDeployingReplicasAcrossNodes for HA across AZs</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Calibrate CPU reserved vs limit cleanly (allows safe JVM startup burst)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Use spec.lifecycle.restartGeneration for clean GitOps rolling restarts</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Keep RTF Agent updated cleanly (3.0.41102+) ahead of K8s upgrades</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" aria-selected="true" aria-controls="panel-studio-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" aria-selected="false" aria-controls="panel-platform-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" aria-selected="false" aria-controls="panel-test-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" aria-labelledby="btn-tab-studio-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>rtf3-kubernetes-order-api</code> · <strong>Target Runtime:</strong> <code>Anypoint Runtime Fabric 3.0.41102 · Kubernetes 1.30-1.37 · Mule 4.9 / 4.13</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code># Pre-flight validation + Helm/rtfctl activation on Kubernetes
+rtfctl validate
+rtfctl install --namespace rtf &quot;&lt;BASE64_ACTIVATION_DATA&gt;&quot;
+rtfctl status</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>CPU Reserved vs Limit</code></td><td><code>reserved: 350m / limit: 1000m</code></td><td>Low reserved saves cost; 1000m burst accelerates Mule app cold-start by 3x</td></tr>
+<tr><td><code>Private Registry Images</code></td><td><code>rtf-agent:3.0.41102, rtf-cluster-ops:2.0</code></td><td>Mirror exact bundled tags inside air-gapped registries cleanly</td></tr>
+<tr><td><code>Declarative Rolling Restart</code></td><td><code>spec.lifecycle.restartGeneration: &lt;N&gt;</code></td><td>Replaces brittle kubectl rollout tricks in GitOps pipelines</td></tr>
+<tr><td><code>App Port</code></td><td><code>8081 HTTP inside pod</code></td><td>K8s Ingress controller handles external HTTPS TLS termination</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" aria-labelledby="btn-tab-platform-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Runtime Manager &gt; Runtime Fabrics &gt; Create Runtime Fabric: Select EKS / AKS / Self-Managed Kubernetes to copy activation data.</li>
+        <li>Create Ingress Template resource in Kubernetes (`rtf` or app namespace) mapping corporate DNS + TLS certs.</li>
+        <li>Select Target Business Groups &amp; Environments in Anypoint UI, and configure Anypoint Monitoring Log Forwarder DaemonSet.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" aria-labelledby="btn-tab-test-anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>kubectl get pods -n &lt;env-ns&gt;  &amp;&amp;  GET https://api.corp.internal/orders/health</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>kubectl get pods -n prod-mule
+curl -s &quot;https://api.corp.internal/orders/health&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>NAME                            READY   STATUS    RESTARTS
+orders-api-7b9d4c-x2k9p         1/1     Running   0
+orders-api-7b9d4c-p8m2n         1/1     Running   0
+{ &quot;status&quot;: &quot;UP&quot;, &quot;cluster&quot;: &quot;eks-rtf-prod&quot; }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>App pod stuck in ImagePullBackOff on private EKS</code></td><td>Local ECR/ACR registry missing new runtime or rtf-agent:3.0.41102 tag</td><td>Mirror required RTF release image manifest into private registry first</td></tr>
+<tr><td><code>Pod starts painfully slow (4+ mins) or OOMKilled</code></td><td>CPU limit set too low (e.g. 200m) throttling JVM startup compilation</td><td>Set reserved=250m-350m and burst limit=1000m+ with &gt;=900Mi RAM</td></tr>
+<tr><td><code>502 Bad Gateway from EKS ALB Ingress</code></td><td>Ingress health check path returns 404 or targets port != 8081</td><td>Expose GET /health returning 200 OK on Mule Listener port 8081</td></tr>
+<tr><td><code>Duplicate/stuck readiness probes during rapid deploy</code></td><td>Old RTF agent &lt; 3.x edge bug under autoscaling churn</td><td>Upgrade Runtime Fabric agent to 3.0.41102+ cleanly</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
+
+          <h2 id="ch2-vs-rtf">CloudHub 2.0 vs. Runtime Fabric (RTF 3.x) — Choosing the Right Deployment Model</h2>
+          <p>Both CloudHub 2.0 and RTF 3.x run containerized Mule workloads on Kubernetes under identical Mule Maven Plugin deployment concepts, yet serve different infrastructure priorities:</p><div class="table-wrap"><table><thead><tr><th scope="col">Dimension</th><th scope="col">CloudHub 2.0 (MuleSoft-Managed)</th><th scope="col">Runtime Fabric 3.x (Customer K8s)</th></tr></thead><tbody><tr><td><strong>Control plane &amp; patching</strong></td><td>Managed by MuleSoft</td><td>Customer owns EKS/AKS cluster + Ingress; Anypoint manages Mule pods via rtf-agent</td></tr><tr><td><strong>Data residency / On-prem ERP</strong></td><td>Cloud Private Spaces via VPN/Transit GW</td><td>Deploy directly inside on-prem DC or strict regulated local VPCs</td></tr><tr><td><strong>CPU bursting &amp; sizing</strong></td><td>Fixed vCore tiers</td><td>Fine-grained Kubernetes mCPU reserved vs burst limit controls</td></tr></tbody></table></div>
+          <h2 id="gitops-restart">Zero-downtime secret rotation &amp; restarts with restartGeneration</h2>
+          <p>Prior to recent RTF controller improvements, restarting a Mule application to pick up rotated Kubernetes Secrets or refreshed external keystore volumes required imperative <code>kubectl rollout restart</code> scripts outside Anypoint. With declarative <code>spec.lifecycle.restartGeneration</code>, bumping the integer in ArgoCD/Flux triggers one clean rolling restart managed natively by the Anypoint Controller.</p>
+
+          <h2 id="troubleshooting">Troubleshooting &amp; Production Edge Cases</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Symptom</th><th scope="col">Root Cause</th><th scope="col">Production Fix</th></tr></thead>
+              <tbody>
+              <tr><td><code>App pod stuck in ImagePullBackOff on private EKS</code></td><td>Local ECR/ACR registry missing new runtime or rtf-agent:3.0.41102 tag</td><td>Mirror required RTF release image manifest into private registry first</td></tr>
+              <tr><td><code>Pod starts painfully slow (4+ mins) or OOMKilled</code></td><td>CPU limit set too low (e.g. 200m) throttling JVM startup compilation</td><td>Set reserved=250m-350m and burst limit=1000m+ with &gt;=900Mi RAM</td></tr>
+              <tr><td><code>502 Bad Gateway from EKS ALB Ingress</code></td><td>Ingress health check path returns 404 or targets port != 8081</td><td>Expose GET /health returning 200 OK on Mule Listener port 8081</td></tr>
+              <tr><td><code>Duplicate/stuck readiness probes during rapid deploy</code></td><td>Old RTF agent &lt; 3.x edge bug under autoscaling churn</td><td>Upgrade Runtime Fabric agent to 3.0.41102+ cleanly</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production Readiness Checklist</h2>
+          <ul class="checklist">
+            <li>Run rtfctl validate BEFORE installing on EKS/AKS/OpenShift</li>
+            <li>Enable enforceDeployingReplicasAcrossNodes for HA across AZs</li>
+            <li>Calibrate CPU reserved vs limit cleanly (allows safe JVM startup burst)</li>
+            <li>Use spec.lifecycle.restartGeneration for clean GitOps rolling restarts</li>
+            <li>Keep RTF Agent updated cleanly (3.0.41102+) ahead of K8s upgrades</li>
+          </ul>
+
+          <h2 id="interview">Frequently Asked Questions &amp; Interview Q&amp;A</h2>
+          <details class="qa"><summary>What does Anypoint Runtime Fabric 3.0.41102 (Nov 2026) introduce?</summary><div><p>RTF 3.0.41102 updates bundled container components (rtf-agent:3.0.41102, rtf-core-actions:1.0.10500, rtf-cluster-ops:2.0) with security vulnerability fixes and supports declarative rolling restarts via `spec.lifecycle.restartGeneration` cleanly on EKS/AKS.</p></div></details>
+          <details class="qa"><summary>How does `spec.lifecycle.restartGeneration` work on Runtime Fabric?</summary><div><p>Incrementing the integer value under `spec.lifecycle.restartGeneration` on your MuleApplication manifest signals the Anypoint Controller to execute one declarative rolling restart of the application pods without downtime.</p></div></details>
+          <details class="qa"><summary>What is the difference between CPU Reserved and CPU Limit in RTF deployment settings?</summary><div><p>CPU Reserved guarantees minimum node compute capacity scheduled for the pod (which drives licensing/bin-packing), while CPU Limit allows the JVM to burst higher during initial application startup and traffic spikes.</p></div></details>
+          <details class="qa"><summary>Why must replicas be set &gt;= 2 with enforceDeployingReplicasAcrossNodes?</summary><div><p>Running 2+ replicas spread across separate Kubernetes worker nodes guarantees high availability during node OS upgrades, spot instance drains, or rolling deployments.</p></div></details>
+          <details class="qa"><summary>How do Kubernetes minor version upgrades affect Runtime Fabric?</summary><div><p>RTF maintains certified Kubernetes version support windows (covering K8s 1.30 through 1.37 alignment). Always check the MuleSoft RTF support matrix and upgrade rtf-agent cleanly before bumping EKS/AKS control plane versions.</p></div></details>
+
+          <h2 id="sources">Sources &amp; Official Documentation</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/release-notes/runtime-fabric/runtime-fabric-agent-release-notes" target="_blank" rel="noopener noreferrer">Anypoint Runtime Fabric Agent 3.0.41102 Release Notes</a></li>
+            <li><a href="https://docs.mulesoft.com/runtime-fabric/" target="_blank" rel="noopener noreferrer">Anypoint Runtime Fabric on Self-Managed Kubernetes Documentation</a></li>
+            <li><a href="https://docs.mulesoft.com/mule-runtime/latest/mule-4-runtime-release-notes" target="_blank" rel="noopener noreferrer">Mule Runtime 4.9 LTS &amp; 4.13 Edge Release Notes</a></li>
+          </ul>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="../blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html"><span>← Previous Guide</span><strong>Omni Gateway (v1.14.5) &amp; PDK</strong></a>
+  <a class="next" href="../blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html"><span>Next Guide →</span><strong>RAML to OAS 3.1 Migration</strong></a>
+</nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">What It Is &amp; Why It Is Trending (Nov 2026)</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; End-to-End Flow</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#ch2-vs-rtf">CloudHub 2.0 vs. Runtime Fabric (RTF 3.x) — Choosing the Right Deployment Model</a></li>
+        <li><a href="#gitops-restart">Zero-downtime secret rotation &amp; restarts with restartGeneration</a></li>
+        <li><a href="#troubleshooting">Troubleshooting &amp; Production Edge Cases</a></li>
+        <li><a href="#checklist">Production Readiness Checklist</a></li>
+        <li><a href="#interview">Frequently Asked Questions &amp; Interview Q&amp;A</a></li>
+        <li><a href="#sources">Sources &amp; Official Documentation</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

@@ -34,19 +34,21 @@
 }
 </script>
 <script defer src="../assets/js/blog-portal.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
 </head>
 <body>
+<div class="read-progress-bar" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="../index.html">
       <span class="portal-brand-mark" aria-hidden="true">⚡</span>
       <span>MuleSoft Blog</span>
-      <span class="portal-brand-pill">2026 · 28 Guides</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="../index.html">All Blogs</a>
@@ -77,7 +79,18 @@
         </header>
 
         <div class="post-body">
-          <h2 id="tldr">TL;DR</h2>
+          
+<!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="mulesoft-agent-fabric-end-to-end-guide" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-agent-fabric-end-to-end-guide.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=MuleSoft+Agent+Fabric+End-to-End%3A+Agent+Registry%2C+Broker%2C+Scanners+%26+Governance+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-agent-fabric-end-to-end-guide.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+<h2 id="tldr">TL;DR</h2>
           <ul>
             <li><strong>Cross-cloud AI control plane:</strong> MuleSoft Agent Fabric governs heterogeneous agents across Salesforce Agentforce, AWS Bedrock Agents, Google Vertex AI Agent Builder, Microsoft Copilot Studio, and custom Model Context Protocol (MCP) or Agent-to-Agent (A2A) runtimes.</li>
             <li><strong>Automated Agent Scanners:</strong> Scheduled discovery jobs inspect cloud IAM/API planes (AWS, GCP, Salesforce orgs) to surface unmanaged "shadow agents" and onboard them into <strong>Agent Registry</strong> inside Anypoint Exchange.</li>
@@ -87,6 +100,11 @@
           </ul>
 
           <!-- PORTAL:START:ANYPOINT_VIEW -->
+<!-- PORTAL:START:NOV_UPDATE -->
+<div class="nov-update-callout" role="note" aria-label="November 2026 Platform Update">
+  <p><strong>Nov 2026 Release Update:</strong> MuleSoft Agent Fabric now supports deploying v2.0 Agent Networks directly onto <strong>Hyperforce</strong> with declarative YAML <strong>mTLS</strong> for Broker-to-upstream hops, unified private/public global search across Exchange Agent Registry, real-time runtime edge inspection via <strong>Agent Visualizer</strong>, and continuous drift + budget evaluations.</p>
+</div>
+<!-- PORTAL:END:NOV_UPDATE -->
 <h2 id="anypoint-view">Real Anypoint View</h2>
 <figure>
   <div class="anypoint-frame">
@@ -943,7 +961,7 @@ spec:
         </aside>
 
         <nav class="post-nav" aria-label="More articles">
-  <a class="prev" href="../index.html"><span>← Home</span><strong>All 28 MuleSoft Blogs</strong></a>
+  <a class="prev" href="../blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html"><span>← Previous Guide</span><strong>2026 MuleSoft Cert Roadmap</strong></a>
   <a class="next" href="../blog/mulesoft-mcp-connector-server-client-setup.html"><span>Next Guide →</span><strong>MCP Connector Setup</strong></a>
 </nav>
       </article>

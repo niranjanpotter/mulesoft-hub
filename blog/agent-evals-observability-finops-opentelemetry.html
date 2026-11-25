@@ -34,19 +34,21 @@
 }
 </script>
 <script defer src="../assets/js/blog-portal.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
 </head>
 <body>
+<div class="read-progress-bar" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="../index.html">
       <span class="portal-brand-mark" aria-hidden="true">⚡</span>
       <span>MuleSoft Blog</span>
-      <span class="portal-brand-pill">2026 · 28 Guides</span>
+      <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="../index.html">All Blogs</a>
@@ -77,7 +79,18 @@
         </header>
 
         <div class="post-body">
-          <h2 id="tldr">TL;DR</h2>
+          
+<!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="agent-evals-observability-finops-opentelemetry" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label">📤 Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fagent-evals-observability-finops-opentelemetry.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=Testing%2C+Observability+%26+FinOps+for+MuleSoft+AI+Agents%3A+OpenTelemetry%2C+MUnit+Evals+%26+Cost+Guardrails+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fagent-evals-observability-finops-opentelemetry.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+</div>
+<!-- PORTAL:END:SHARE -->
+<h2 id="tldr">TL;DR</h2>
           <ul>
             <li><strong>Classic assertions and HTTP status metrics fail on AI agents:</strong> Non-deterministic phrasing breaks exact <code>assertEquals</code> checks, while an HTTP <code>200 OK</code> in APM masks hallucinated SAP order IDs, wrong MCP tool calls, and 9-step reasoning loops burning $2.10 per request.</li>
             <li><strong>Pillar 1 — OpenTelemetry <code>gen_ai.*</code> Distributed Tracing:</strong> Export W3C <code>traceparent</code> spans from Mule 4.9 LTS and Anypoint Flex Gateway through an OTel Collector to Grafana Tempo, Datadog, or Splunk—correlating Agentforce → Agent Broker (A2A) → Mule MCP Server → LLM → Backend SAP on a single trace waterfall.</li>
