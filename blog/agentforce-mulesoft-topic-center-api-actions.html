@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup | MuleSoft Hub Blog</title>
+<meta name="description" content="Connect Salesforce Agentforce and the Atlas Reasoning Engine to SAP, ERP, and Snowflake via MuleSoft Topic Center, API Catalog, and External Services.">
+<meta name="author" content="Niranjan Potter">
+<link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup">
+<meta property="og:description" content="Connect Salesforce Agentforce and the Atlas Reasoning Engine to SAP, ERP, and Snowflake via MuleSoft Topic Center, API Catalog, and External Services.">
+<meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html">
+<meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+<meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog & External Actions Setup",
+  "description": "Connect Salesforce Agentforce and the Atlas Reasoning Engine to SAP, ERP, and Snowflake via MuleSoft Topic Center, API Catalog, and External Services.",
+  "author": { "@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171" },
+  "publisher": { "@type": "Organization", "name": "MuleSoft Hub", "url": "https://mulesoft.niranjanpotter.dpdns.org/" },
+  "datePublished": "2026-11-24",
+  "dateModified": "2026-11-24",
+  "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html"
+}
+</script>
+<script defer src="blog.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="blog-topbar">
+  <div class="blog-topbar-inner">
+    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
+    <nav class="blog-nav" aria-label="Main">
+      <a href="../index.html">Interview Hub</a>
+      <a href="index.html">All Articles</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="blog-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › Agentforce + MuleSoft Setup</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">AI &amp; Agents · Hands-on Guide</span>
+          <h1>Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup</h1>
+          <p class="post-lede">Expose SAP S/4HANA, ERP, and Snowflake operations directly to the Salesforce Atlas Reasoning Engine using MuleSoft Topic Center, Anypoint Exchange, and Salesforce API Catalog — with zero custom Apex callout boilerplate.</p>
+          <div class="post-meta">
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Nov 24, 2026</span>
+            <span>⏱️ 19 min read</span>
+            <span class="tag">Agentforce</span><span class="tag">Topic Center</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="tldr">TL;DR</h2>
+          <ul>
+            <li><strong>Eliminate Apex glue code:</strong> Connect Anypoint Platform and Salesforce at the tenant level so governed MuleSoft APIs synchronize natively into Salesforce <strong>API Catalog</strong> as <strong>External Services</strong> and Agentforce <strong>Topics &amp; Actions</strong>.</li>
+            <li><strong>Shift agent semantics left in ACB:</strong> Use <strong>MuleSoft Topic Center</strong> in Anypoint Code Builder (ACB) to author Topics, classification descriptions, scopes, natural-language action instructions, and API Governance checks right next to your OpenAPI 3.0 contract.</li>
+            <li><strong>Shape payloads for Atlas Reasoning Engine:</strong> Flatten deeply nested SAP BAPI/OData and Snowflake responses inside DataWeave 2.0 so the Atlas LLM selects slots accurately, minimizes prompt token burn, and avoids hallucinating field paths.</li>
+            <li><strong>Enforce zero-trust OAuth 2.0 end-to-end:</strong> Bind API Manager policies on CloudHub 2.0 to Salesforce <strong>Named Credentials</strong> + <strong>External Credentials</strong> (<code>client_credentials</code> or JWT Bearer) with human-in-the-loop confirmation instructions before any mutating <code>POST</code>/<code>PATCH</code> call.</li>
+            <li><strong>Verify in Agent Builder Plan Tracer:</strong> Inspect every step of the Atlas loop — Topic classification, slot extraction, grounding, MuleSoft HTTP invocation, and final answer synthesis — before activating the agent on Experience Cloud or Slack.</li>
+          </ul>
+
+          <h2 id="what-and-why">What it is and why it matters</h2>
+          <p>Before native Agentforce-to-MuleSoft catalog synchronization, exposing an enterprise ERP or data warehouse capability to a Salesforce copilot meant hand-rolling an <code>@InvocableMethod</code> Apex wrapper, writing <code>HttpRequest</code> serialization classes, maintaining duplicate credential secrets, and pasting brittle prompt instructions inside Salesforce org metadata. Every time an API field changed in SAP S/4HANA or Snowflake, Apex classes drifted out of sync and broke silently at runtime.</p>
+          <p>The joint <strong>MuleSoft Topic Center + Salesforce API Catalog</strong> architecture replaces bespoke callout wrappers with a declarative, contract-first pipeline across five phases:</p>
+          <ol>
+            <li><strong>Bi-directional Tenant Trust:</strong> Links your Salesforce org and selected Anypoint Platform Business Groups over a platform-managed trust relationship.</li>
+            <li><strong>Topic Center in Anypoint Code Builder:</strong> Enriches standard OpenAPI 3.0 specifications with agentic metadata — <em>Topics</em>, <em>Classification Descriptions</em>, <em>Scope</em>, <em>Agent Actions</em>, and <em>Instructions</em> — validated by Anypoint API Governance rulesets.</li>
+            <li><strong>Managed Runtime &amp; Exchange Publication:</strong> Deploys the Mule 4 application to CloudHub 2.0 behind API Manager OAuth 2.0 policies and publishes the Topic-enabled asset to Anypoint Exchange.</li>
+            <li><strong>Salesforce API Catalog Sync:</strong> Discovers managed Exchange APIs inside Salesforce Setup and auto-generates <strong>External Credentials</strong>, <strong>Named Credentials</strong>, and <strong>External Services</strong> action bindings.</li>
+            <li><strong>Agentforce Studio (Agent Builder):</strong> Attaches synchronized MuleSoft Topics and Actions to Service or Employee Agents so the <strong>Atlas Reasoning Engine</strong> plans and executes cross-system workflows autonomously.</li>
+          </ol>
+
+          <h3>Why flat Experience API schemas beat raw ERP payloads for Atlas</h3>
+          <p>Raw SAP S/4HANA <code>A_SalesOrder</code> OData payloads routinely return 180+ fields across nested <code>to_Item</code>, <code>to_Partner</code>, and <code>to_ScheduleLine</code> navigation arrays, using cryptic four-character ABAP codes (<code>LFSTK</code>, <code>GBSTK</code>, <code>WERKS</code>). Feeding raw System API payloads directly to an LLM degrades reasoning in three ways:</p>
+          <ul>
+            <li><strong>Slot confusion:</strong> Ambiguous field names (<code>VBELN</code> vs <code>BSTNK</code>) cause the Atlas planner to pass a customer PO number where a 10-digit SAP Sales Order ID is expected.</li>
+            <li><strong>Context window bloat &amp; latency:</strong> Returning 60 KB of nested item schedules consumes thousands of input tokens per reasoning turn, pushing multi-turn latency past the interactive threshold.</li>
+            <li><strong>Schema compilation limits:</strong> Salesforce External Services rejects deeply recursive or unconstrained polymorphic (<code>anyOf</code> without discriminator) schemas.</li>
+          </ul>
+          <p>Placing a MuleSoft Experience/Agent API in front of SAP and Snowflake lets DataWeave 2.0 project a clean, flat, domain-labeled JSON contract (<code>salesOrderNumber</code>, <code>deliveryStatus</code>, <code>estimatedDeliveryDate</code>, <code>warehouseStockAvailable</code>) tailored specifically for deterministic agent reasoning.</p>
+
+          <h2 id="architecture">Architecture</h2>
+          <p>The diagram below separates the <strong>Design &amp; Control-Plane Sync</strong> (steps 1–4) from the <strong>Runtime Atlas Execution Loop</strong> (steps A–F) across Salesforce and Anypoint Platform.</p>
+          <figure>
+            <div class="diagram" role="img" aria-label="End-to-end architecture connecting Anypoint Code Builder Topic Center, Anypoint Exchange, Salesforce API Catalog, Named Credentials, Agentforce Atlas Reasoning Engine, CloudHub 2.0, SAP S/4HANA, and Snowflake">CONTROL PLANE (DESIGN &amp; CATALOG SYNC)
+=========================================================================================
+[Anypoint Code Builder (ACB)]
+  |-- OpenAPI 3.0.3 Spec + Topic Center Metadata (Topic, Scope, Instructions, Actions)
+  |-- API Governance Ruleset Check (Agentforce Readiness)
+  v
+[Anypoint Exchange] &lt;--- Consumer Endpoint &amp; Policy Binding --- [API Manager]
+  |
+  |  (1) Bi-directional Tenant Trust (Access Mgmt &gt; Salesforce &lt;-&gt; SF Anypoint Setup)
+  |  (2) API Catalog Sync (Business Group Scoped)
+  v
+[Salesforce Setup: API Catalog]
+  |-- Auto-creates --&gt; [External Credential + Named Credential (OAuth 2.0 Client Creds)]
+  |-- Auto-creates --&gt; [External Services Invocable Actions]
+  |-- Exposes Topic -&gt; [Agentforce Studio (Agent Builder) Asset Library]
+
+DATA PLANE (RUNTIME EXECUTION)
+=========================================================================================
+[Customer / Employee]
+  |  (A) Utterance: "Where is order SO-00904128 and can we expedite it to overnight?"
+  v
+[Agentforce: Atlas Reasoning Engine]
+  |-- (B) Classifies Topic: ERP_Order_And_Inventory_Management
+  |-- (C) Selects Action 1: getOrderFulfillmentStatus(salesOrderId="00904128")
+  |       &amp; enforces Instruction: "Require explicit user confirmation before expediting"
+  v
+[Salesforce External Services + Named Credential]
+  |  (D) HTTPS + Bearer JWT (OAuth 2.0 from Anypoint Connected App / Okta IdP)
+  v
+[CloudHub 2.0: Mule 4.9 Agent Experience API (API Manager OAuth 2.0 Policy)]
+  |-- Scatter-Gather / Orchestration + DataWeave 2.0 Flattening
+  |-----&gt; (E1) [SAP S/4HANA OData v4: A_SalesOrder / A_OutbDeliveryHeader]
+  +-----&gt; (E2) [Snowflake SQL REST API: LIVE_WAREHOUSE_INVENTORY]
+  |
+  +-- (F) Concise Flat JSON (280 bytes) --&gt; [Atlas Grounded Response to User]</div>
+            <figcaption>Figure 1: Control-plane metadata synchronization from ACB Topic Center to Salesforce API Catalog, paired with zero-Apex runtime invocation from the Atlas Reasoning Engine through CloudHub 2.0.</figcaption>
+          </figure>
+
+          <h2 id="prerequisites">Prerequisites</h2>
+          <div class="callout prereq">
+            <span class="callout-title">You need</span>
+            <ul>
+              <li><strong>Salesforce Org:</strong> Enterprise, Performance, or Unlimited Edition (or Agentforce Developer Org) with <em>Salesforce Foundations</em>, <em>Einstein Generative AI</em>, <em>Agentforce Agents</em>, and <em>API Catalog</em> enabled.</li>
+              <li><strong>Salesforce Permissions:</strong> System Administrator plus <code>Customize Application</code>, <code>Manage Named Credentials</code>, <code>Manage External Services</code>, and <code>Configure Agentforce Agents</code> permission sets.</li>
+              <li><strong>Anypoint Platform Access:</strong> <em>Organization Administrator</em> (one-time tenant link in Access Management), <em>Exchange Contributor</em>, and <em>API Manager Environment Administrator</em> on the target Business Group.</li>
+              <li><strong>IDE &amp; Tooling:</strong> Anypoint Code Builder (ACB Desktop in VS Code or Cloud IDE, late-2025+ release with <strong>Topic Center</strong> enabled), JDK 17, Maven 3.9+, and Mule Runtime <code>4.9.0</code>.</li>
+              <li><strong>OAuth 2.0 Identity Provider:</strong> An Anypoint Connected App (<code>client_credentials</code> grant with API access scope) or enterprise OIDC provider (Okta, Microsoft Entra ID, Salesforce External Client App) configured in API Manager.</li>
+            </ul>
+          </div>
+
+          <h2 id="setup">Step-by-step setup</h2>
+          <ol class="steps">
+            <li>
+              <strong>Phase 1: Establish Tenant Trust between Salesforce and Anypoint Platform</strong>
+              <p>Start by creating the platform-level trust handshake so Salesforce API Catalog can read governed APIs from specific Anypoint Business Groups without sharing personal user passwords.</p>
+              <p>In <strong>Salesforce Setup</strong>, search for <em>Anypoint Platform Setup</em> in Quick Find. Copy your Salesforce Org Tenant Key (or click <strong>Connect to Anypoint Platform</strong> depending on your org region — US vs EU Control Plane). Next, sign in to <strong>Anypoint Platform → Access Management → Salesforce</strong> as an Organization Administrator:</p>
+              <ul>
+                <li>Verify your linked Salesforce Org ID (<code>00D...</code>) appears in the connected orgs table and toggle its status to <strong>Enabled</strong>.</li>
+                <li>Click <strong>Manage Access / Business Groups</strong> and select <em>only</em> the curated Business Groups (for example, <code>Enterprise-Agent-APIs</code>) and environments (<code>Sandbox</code>, <code>Production</code>) that should surface in Salesforce API Catalog. Avoid exposing raw internal System API Business Groups.</li>
+              </ul>
+            </li>
+
+            <li>
+              <strong>Phase 2: Author API Contract &amp; Agentic Metadata in ACB Topic Center</strong>
+              <p>Open <strong>Anypoint Code Builder</strong> and create a new API Specification project (<code>erp-order-fulfillment-agent-api</code>) using OpenAPI 3.0.3. Every operation exposed to Agentforce <strong>must</strong> define a unique <code>operationId</code>, clear <code>summary</code> and <code>description</code> strings, explicit parameter constraints, and flat request/response schemas.</p>
+              <p>Next, open the <strong>Topic Center</strong> panel in ACB (<code>MuleSoft: Open Topic Center</code> from the Command Palette). Topic Center reads your OpenAPI operations and generates (or lets you refine) structured agentic metadata:</p>
+              <ul>
+                <li><strong>Topic Label &amp; Name:</strong> <code>ERP_Order_And_Inventory_Management</code> — groups cohesive actions so Atlas loads only relevant tool definitions per turn.</li>
+                <li><strong>Classification Description:</strong> Explains in 1–3 sentences <em>when</em> Atlas should route an utterance into this Topic (e.g., checking ERP fulfillment state, carrier tracking, warehouse stock in Snowflake, or expediting unshipped orders).</li>
+                <li><strong>Scope:</strong> Defines the agent's boundary and persona permissions within this Topic.</li>
+                <li><strong>Agent Instructions &amp; Action Mapping:</strong> Maps each OpenAPI <code>operationId</code> to an Agent Action and attaches guardrails (for instance, requiring explicit customer confirmation of the surcharge before invoking <code>expediteSalesOrderShipment</code>).</li>
+              </ul>
+              <p>Before publishing, run <strong>Anypoint API Governance</strong> validation inside ACB with the <em>Agentforce Readiness / Topic Governance</em> ruleset to verify there are no missing <code>operationId</code>s, unbounded string inputs, or undocumented HTTP error codes.</p>
+              <span class="code-label">.anypoint/governance-check.sh</span>
+              <pre><code>anypoint-cli-v4 governance:api:validate \
+  --specification src/main/resources/api/erp-order-fulfillment-api.yaml \
+  --rulesets exchange_modules/org.mule.governance/agentforce-topic-readiness/1.1.0/ruleset.yaml</code></pre>
+            </li>
+
+            <li>
+              <strong>Phase 3: Implement in Mule 4.9, Register in API Manager &amp; Publish to Exchange</strong>
+              <p>Scaffold the Mule 4.9 implementation from your governed OpenAPI spec in ACB (<code>MuleSoft: Implement this Local API</code>). Implement orchestration flows that call SAP S/4HANA and Snowflake, flatten the payload via DataWeave, and deploy the application to <strong>CloudHub 2.0</strong>.</p>
+              <p>Crucially, Salesforce API Catalog only activates invocable actions for Exchange assets backed by managed endpoint metadata:</p>
+              <ul>
+                <li>In <strong>API Manager</strong>, create an API instance (<code>Mule Gateway</code> / Flex Gateway) pointing to your Exchange asset, record the <strong>API Instance ID</strong> (<code>19482751</code>), and apply an <strong>OAuth 2.0 Access Token Enforcement</strong> policy (or Client ID Enforcement on dedicated mTLS ingress).</li>
+                <li>Set the <strong>Consumer Endpoint URL</strong> (<code>https://erp-order-agent-api.us-e2.cloudhub.io/api/v1</code>) on the API Manager instance so Exchange exports the exact target host during Salesforce catalog sync.</li>
+                <li>Publish the Topic-enabled specification + Topic metadata bundle to <strong>Anypoint Exchange</strong> in your enabled Business Group.</li>
+              </ul>
+            </li>
+
+            <li>
+              <strong>Phase 4: Synchronize Salesforce API Catalog, Named Credentials &amp; External Services</strong>
+              <p>Switch back to <strong>Salesforce Setup → API Catalog</strong>, select the <strong>MuleSoft</strong> tab, and click <strong>Sync Catalog</strong> (sync runs asynchronously and typically completes within 1–2 minutes). Locate <code>ERP Order Fulfillment Agent API</code> in the catalog list:</p>
+              <ul>
+                <li>Verify the <strong>Agent Topic Available</strong> badge is shown alongside the three OpenAPI operations.</li>
+                <li>Click <strong>Activate Actions</strong>. Salesforce prompts you to bind or generate an <strong>External Credential</strong> and <strong>Named Credential</strong> (<code>Mule_ERP_Fulfillment_NC</code>) for the CloudHub 2.0 Consumer Endpoint URL, then compiles the OpenAPI contract into <strong>External Services</strong> invocable actions.</li>
+                <li>Navigate to <strong>Setup → Named Credentials → External Credentials</strong>, open <code>Mule_ERP_Fulfillment_EC</code>, configure the OAuth 2.0 <code>client_credentials</code> token URL and client secret, and grant your Agentforce Service User's <strong>Permission Set</strong> access under <em>External Credential Principal Access</em>.</li>
+              </ul>
+              <div class="callout warn">
+                <span class="callout-title">Don't skip Principal Access mapping</span>
+                <p>Even when using a machine-to-machine <code>client_credentials</code> flow, Salesforce requires the running user (for autonomous Service Agents, the <code>EinsteinServiceAgent User</code> profile/permission set) to be mapped to the Named Credential's External Credential Principal — otherwise External Services throws an <code>INSUFFICIENT_ACCESS_OR_READONLY</code> callout exception at runtime.</p>
+              </div>
+            </li>
+
+            <li>
+              <strong>Phase 5: Wire Topic &amp; Actions in Agentforce Studio (Agent Builder)</strong>
+              <p>Go to <strong>Salesforce Setup → Agents</strong>, select your target agent (for example, <code>B2B Order Support Agent</code>), and click <strong>Open in Builder</strong> (deactivate the agent first if currently active):</p>
+              <ul>
+                <li>In the <strong>Topics</strong> sidebar, click <strong>New → Add from Asset Library / API Catalog</strong> and select the synchronized MuleSoft Topic <code>ERP Order and Inventory Management</code>.</li>
+                <li>Inspect the imported <strong>Classification Description</strong>, <strong>Scope</strong>, and <strong>Instructions</strong> authored in ACB Topic Center — no manual copy-pasting required.</li>
+                <li>Open the <strong>This Topic's Actions</strong> tab and verify all three <code>ExternalService</code> actions (<code>getOrderFulfillmentStatus</code>, <code>checkWarehouseStockSnowflake</code>, <code>expediteSalesOrderShipment</code>) are attached with input/output parameter descriptions intact.</li>
+                <li>Click <strong>Activate</strong> once Reasoning Trace testing passes.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h2 id="code">Full working example</h2>
+          <p>Below are the complete production artifacts for an enterprise B2B Order Fulfillment Agent API bridging Agentforce to SAP S/4HANA and Snowflake.</p>
+
+          <h3>1. Agent-optimized OpenAPI 3.0.3 contract</h3>
+          <p>Notice how every property uses explicit domain names, bounded patterns, and unambiguous descriptions so the Atlas LLM extracts slot values reliably.</p>
+          <span class="code-label">src/main/resources/api/erp-order-fulfillment-api.yaml</span>
+          <pre><code>openapi: 3.0.3
+info:
+  title: ERP Order Fulfillment Agent API
+  version: 1.2.0
+  description: &gt;
+    Agent-optimized Experience API exposing real-time SAP S/4HANA sales order
+    fulfillment status, Snowflake warehouse stock availability, and expedited
+    shipping upgrades to Salesforce Agentforce.
+servers:
+  - url: https://erp-order-agent-api.us-e2.cloudhub.io/api/v1
+    description: CloudHub 2.0 Production Consumer Endpoint
+security:
+  - oauth2ClientCredentials:
+      - erp:orders:read
+      - erp:orders:write
+paths:
+  /orders/{salesOrderNumber}/status:
+    get:
+      operationId: getOrderFulfillmentStatus
+      summary: Retrieve live SAP S/4HANA fulfillment and carrier status for a sales order
+      description: &gt;
+        Fetches current fulfillment stage, carrier tracking, shipping tier, and
+        estimated delivery date for an 8-to-10 digit numeric SAP Sales Order number.
+        Strip any leading 'SO-' prefix before calling this action.
+      parameters:
+        - name: salesOrderNumber
+          in: path
+          required: true
+          description: Numeric SAP Sales Order ID (8 to 10 digits, e.g. 00904128). Not a customer PO number.
+          schema:
+            type: string
+            pattern: '^[0-9]{8,10}$'
+      responses:
+        '200':
+          description: Flattened sales order fulfillment summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderStatusResponse'
+        '404':
+          description: Sales order not found in SAP S/4HANA
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentErrorResponse'
+
+  /inventory/{sku}/availability:
+    get:
+      operationId: checkWarehouseStockSnowflake
+      summary: Check real-time available-to-promise stock across regional warehouses
+      description: &gt;
+        Queries Snowflake LIVE_WAREHOUSE_INVENTORY for available-to-promise (ATP)
+        units by product SKU and optional region code (US-EAST, US-WEST, EU-CENTRAL).
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          description: Alphanumeric product SKU (e.g. IND-VALVE-400X)
+          schema:
+            type: string
+        - name: region
+          in: query
+          required: false
+          description: Optional warehouse region filter (US-EAST, US-WEST, EU-CENTRAL)
+          schema:
+            type: string
+            enum: [US-EAST, US-WEST, EU-CENTRAL]
+      responses:
+        '200':
+          description: Available-to-promise warehouse inventory summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryAvailabilityResponse'
+
+  /orders/{salesOrderNumber}/expedite:
+    post:
+      operationId: expediteSalesOrderShipment
+      summary: Upgrade an unshipped SAP sales order to Priority Overnight shipping
+      description: &gt;
+        Mutating action that upgrades shipping condition in SAP S/4HANA to Priority
+        Overnight. ONLY invoke after verifying deliveryStatus is NOT 'SHIPPED' or
+        'DELIVERED' AND after the user explicitly confirms the expedite fee.
+      parameters:
+        - name: salesOrderNumber
+          in: path
+          required: true
+          description: Numeric SAP Sales Order ID (8 to 10 digits)
+          schema:
+            type: string
+            pattern: '^[0-9]{8,10}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpediteOrderRequest'
+      responses:
+        '200':
+          description: Shipping tier upgraded in SAP S/4HANA
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpediteOrderResponse'
+
+components:
+  securitySchemes:
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://anypoint.mulesoft.com/accounts/api/v2/oauth2/token
+          scopes:
+            erp:orders:read: Read ERP order and warehouse status
+            erp:orders:write: Modify shipping tier on unshipped ERP orders
+  schemas:
+    OrderStatusResponse:
+      type: object
+      required: [salesOrderNumber, deliveryStatus, shippingTier, expediteEligible]
+      properties:
+        salesOrderNumber:
+          type: string
+        customerPoNumber:
+          type: string
+        deliveryStatus:
+          type: string
+          enum: [ORDER_RECEIVED, PICKING_IN_WAREHOUSE, PACKED, SHIPPED, DELIVERED, ON_CREDIT_HOLD]
+        shippingTier:
+          type: string
+        carrierName:
+          type: string
+        trackingNumber:
+          type: string
+        estimatedDeliveryDate:
+          type: string
+          format: date
+        expediteEligible:
+          type: boolean
+        expediteFeeUsd:
+          type: number
+        primarySku:
+          type: string
+    InventoryAvailabilityResponse:
+      type: object
+      required: [sku, totalAvailableUnits, closestWarehouse]
+      properties:
+        sku:
+          type: string
+        totalAvailableUnits:
+          type: integer
+        closestWarehouse:
+          type: string
+        cutoffTimeUtc:
+          type: string
+    ExpediteOrderRequest:
+      type: object
+      required: [targetTier, customerConfirmedFee, reason]
+      properties:
+        targetTier:
+          type: string
+          enum: [PRIORITY_OVERNIGHT, TWO_DAY_AIR]
+        customerConfirmedFee:
+          type: boolean
+          description: Must be true after explicit user confirmation in conversation
+        reason:
+          type: string
+        idempotencyKey:
+          type: string
+    ExpediteOrderResponse:
+      type: object
+      required: [salesOrderNumber, updatedShippingTier, revisedDeliveryDate, sapDocumentReference]
+      properties:
+        salesOrderNumber:
+          type: string
+        updatedShippingTier:
+          type: string
+        chargedFeeUsd:
+          type: number
+        revisedDeliveryDate:
+          type: string
+          format: date
+        sapDocumentReference:
+          type: string
+    AgentErrorResponse:
+      type: object
+      required: [errorCode, agentGuidance]
+      properties:
+        errorCode:
+          type: string
+        agentGuidance:
+          type: string</code></pre>
+
+          <h3>2. ACB Topic Center semantic metadata</h3>
+          <p>In ACB Topic Center, this descriptor binds your OpenAPI operations to an Agentforce Topic with classification criteria, scope, and deterministic pre-execution instructions.</p>
+          <span class="code-label">src/main/resources/topic-center/erp-order-topic.yaml</span>
+          <pre><code>schemaVersion: "1.0"
+topic:
+  apiName: ERP_Order_And_Inventory_Management
+  label: ERP Order and Inventory Management
+  classificationDescription: &gt;
+    Use this topic when a customer or account rep asks about real-time B2B sales
+    order fulfillment status in SAP, carrier tracking, warehouse stock availability
+    by SKU, or upgrading/expediting shipping speed on an existing order.
+  scope: &gt;
+    Your job is solely to inspect live order fulfillment status, verify warehouse
+    inventory availability, and process approved shipping tier upgrades for valid
+    SAP Sales Orders. Never modify order line quantities, pricing, or billing addresses.
+  instructions:
+    - &gt;
+      Always normalize Sales Order IDs by stripping prefixes like 'SO-' or '#' so
+      only the 8-to-10 digit numeric string (padded with leading zeros if 7 digits,
+      e.g. '00904128') is passed to getOrderFulfillmentStatus.
+    - &gt;
+      If the user provides a Customer PO Number (e.g. 'PO-ACME-99') instead of a
+      numeric SAP Sales Order ID, ask the user for the SAP Sales Order ID or look
+      it up via Salesforce Order records first.
+    - &gt;
+      Before calling expediteSalesOrderShipment, you MUST first call
+      getOrderFulfillmentStatus in the same session to verify expediteEligible is
+      true. If deliveryStatus is SHIPPED, DELIVERED, or ON_CREDIT_HOLD, explain
+      why the order cannot be expedited and do not invoke the expedite action.
+    - &gt;
+      CRITICAL MUTATION GUARDRAIL: Never call expediteSalesOrderShipment until you
+      explicitly state the exact expediteFeeUsd to the user and receive an unambiguous
+      affirmative reply in a subsequent turn.
+  actions:
+    - operationId: getOrderFulfillmentStatus
+      actionLabel: Get ERP Order Fulfillment Status
+      requireUserConfirmation: false
+    - operationId: checkWarehouseStockSnowflake
+      actionLabel: Check Warehouse Stock in Snowflake
+      requireUserConfirmation: false
+    - operationId: expediteSalesOrderShipment
+      actionLabel: Expedite ERP Sales Order Shipment
+      requireUserConfirmation: true</code></pre>
+
+          <h3>3. Mule 4.9 implementation &amp; DataWeave payload flattening</h3>
+          <p>The Mule 4.9 flow enforces API Manager autodiscovery, queries SAP S/4HANA OData v4, enforces idempotency with Object Store v2 on <code>POST /expedite</code>, and returns actionable <code>agentGuidance</code> strings when downstream errors occur so Atlas recovers gracefully instead of showing a stack trace.</p>
+          <span class="code-label">src/main/mule/erp-order-fulfillment-impl.xml</span>
+          <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+      xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:os="http://www.mulesoft.org/schema/mule/os"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+        http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd"&gt;
+
+  &lt;api-gateway:autodiscovery apiId="${api.autodiscovery.id}" flowRef="erp-agent-api-main" /&gt;
+
+  &lt;http:listener-config name="HTTP_Listener_8081"&gt;
+    &lt;http:listener-connection host="0.0.0.0" port="8081" readTimeout="15000" /&gt;
+  &lt;/http:listener-config&gt;
+
+  &lt;http:request-config name="SAP_S4HANA_OData_Config" basePath="/sap/opu/odata4/sap/api_salesorder/srvd_a2x/sap/salesorder/0001"&gt;
+    &lt;http:request-connection protocol="HTTPS" host="${sap.host}" port="443" responseTimeout="8000" /&gt;
+  &lt;/http:request-config&gt;
+
+  &lt;os:object-store name="Expedite_Idempotency_Store" persistent="true" entryTtl="24" entryTtlUnit="HOURS" /&gt;
+
+  &lt;flow name="erp-agent-api-main"&gt;
+    &lt;http:listener config-ref="HTTP_Listener_8081" path="/api/v1/*" /&gt;
+    &lt;apikit:router config-ref="erp-order-fulfillment-api-config" /&gt;
+    &lt;error-handler&gt;
+      &lt;on-error-propagate type="APIKIT:NOT_FOUND, SAP:ORDER_NOT_FOUND"&gt;
+        &lt;ee:transform&gt;
+          &lt;ee:variables&gt;&lt;ee:set-variable variableName="httpStatus"&gt;404&lt;/ee:set-variable&gt;&lt;/ee:variables&gt;
+          &lt;ee:message&gt;
+            &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  errorCode: "SAP_ORDER_NOT_FOUND",
+  agentGuidance: "No SAP Sales Order matched this ID. Ask the user to verify the 8-to-10 digit Sales Order number rather than the Customer PO number."
+}]]&gt;&lt;/ee:set-payload&gt;
+          &lt;/ee:message&gt;
+        &lt;/ee:transform&gt;
+      &lt;/on-error-propagate&gt;
+    &lt;/error-handler&gt;
+  &lt;/flow&gt;
+
+  &lt;flow name="get:\orders\(salesOrderNumber)\status:erp-order-fulfillment-api-config"&gt;
+    &lt;set-variable variableName="salesOrderId" value="#[attributes.uriParams.salesOrderNumber]" /&gt;
+    &lt;http:request method="GET" config-ref="SAP_S4HANA_OData_Config"
+                  path="/SalesOrder('#[vars.salesOrderId]')?$expand=_Item($expand=_ScheduleLine)"&gt;
+      &lt;http:headers&gt;&lt;![CDATA[#[{
+        "Authorization": "Bearer " ++ p('secure::sap.oauth.token'),
+        "Accept": "application/json",
+        "x-correlation-id": correlationId
+      }]]]&gt;&lt;/http:headers&gt;
+    &lt;/http:request&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload resource="dw/flatten-sap-order-status.dwl" /&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+
+  &lt;flow name="post:\orders\(salesOrderNumber)\expedite:application\json:erp-order-fulfillment-api-config"&gt;
+    &lt;set-variable variableName="idemKey"
+                  value="#[payload.idempotencyKey default (attributes.uriParams.salesOrderNumber ++ '-' ++ payload.targetTier)]" /&gt;
+    &lt;os:contains key="#[vars.idemKey]" objectStore="Expedite_Idempotency_Store" target="alreadyProcessed" /&gt;
+    &lt;choice&gt;
+      &lt;when expression="#[vars.alreadyProcessed]"&gt;
+        &lt;os:retrieve key="#[vars.idemKey]" objectStore="Expedite_Idempotency_Store" /&gt;
+      &lt;/when&gt;
+      &lt;otherwise&gt;
+        &lt;http:request method="PATCH" config-ref="SAP_S4HANA_OData_Config"
+                      path="/SalesOrder('#[attributes.uriParams.salesOrderNumber]')"&gt;
+          &lt;http:body&gt;&lt;![CDATA[#[%dw 2.0
+output application/json
+---
+{
+  ShippingCondition: if (payload.targetTier == "PRIORITY_OVERNIGHT") "01" else "02",
+  YY1_ExpediteReason_SDH: payload.reason
+}]]]&gt;&lt;/http:body&gt;
+        &lt;/http:request&gt;
+        &lt;ee:transform&gt;
+          &lt;ee:message&gt;
+            &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  salesOrderNumber: attributes.uriParams.salesOrderNumber,
+  updatedShippingTier: "PRIORITY_OVERNIGHT",
+  chargedFeeUsd: 45.00,
+  revisedDeliveryDate: ((now() &gt;&gt; "America/New_York") + |P1D|) as String {format: "yyyy-MM-dd"},
+  sapDocumentReference: "SAP-CHG-" ++ attributes.uriParams.salesOrderNumber
+}]]&gt;&lt;/ee:set-payload&gt;
+          &lt;/ee:message&gt;
+        &lt;/ee:transform&gt;
+        &lt;os:store key="#[vars.idemKey]" objectStore="Expedite_Idempotency_Store" /&gt;
+      &lt;/otherwise&gt;
+    &lt;/choice&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+
+          <p>Here is the externalized DataWeave 2.0 script that translates cryptic SAP ABAP delivery/credit codes (<code>OverallSDProcessStatus</code>, <code>TotalCreditCheckStatus</code>, <code>ShippingCondition</code>) into clean domain enums and strips internal cost/margin fields before the payload ever reaches the LLM:</p>
+          <span class="code-label">src/main/resources/dw/flatten-sap-order-status.dwl</span>
+          <pre><code>%dw 2.0
+output application/json skipNullOn="everywhere"
+
+fun mapDeliveryStatus(creditCode: String | Null, deliveryCode: String | Null) =
+  if (creditCode == "B" or creditCode == "C") "ON_CREDIT_HOLD"
+  else deliveryCode match {
+    case "A" -&gt; "ORDER_RECEIVED"
+    case "B" -&gt; "PICKING_IN_WAREHOUSE"
+    case "C" -&gt; "SHIPPED"
+    case "D" -&gt; "DELIVERED"
+    else     -&gt; "PACKED"
+  }
+
+var status = mapDeliveryStatus(payload.TotalCreditCheckStatus, payload.OverallDeliveryStatus)
+var firstItem = payload."_Item"[0] default {}
+---
+{
+  salesOrderNumber: payload.SalesOrder,
+  customerPoNumber: payload.PurchaseOrderByCustomer,
+  deliveryStatus: status,
+  shippingTier: if (payload.ShippingCondition == "01") "PRIORITY_OVERNIGHT" else "STANDARD_GROUND",
+  carrierName: payload.YY1_CarrierName_SDH,
+  trackingNumber: payload.YY1_TrackingNum_SDH,
+  estimatedDeliveryDate: firstItem."_ScheduleLine"[0].ConfirmedDeliveryDate,
+  expediteEligible: (status == "ORDER_RECEIVED" or status == "PICKING_IN_WAREHOUSE")
+                    and payload.ShippingCondition != "01",
+  expediteFeeUsd: 45.00,
+  primarySku: firstItem.Material
+}</code></pre>
+
+          <h3>4. Salesforce Named Credential metadata (SFDX source-tracked)</h3>
+          <p>When API Catalog sync generates <code>Mule_ERP_Fulfillment_NC</code>, retrieve it into Git with Salesforce CLI (<code>sf project retrieve start -m NamedCredential,ExternalCredential</code>) so environment promotion across Sandboxes stays automated:</p>
+          <span class="code-label">force-app/main/default/namedCredentials/Mule_ERP_Fulfillment_NC.namedCredential-meta.xml</span>
+          <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;NamedCredential xmlns="http://soap.sforce.com/2006/04/metadata"&gt;
+  &lt;allowMergeFieldsInBody&gt;false&lt;/allowMergeFieldsInBody&gt;
+  &lt;allowMergeFieldsInHeader&gt;false&lt;/allowMergeFieldsInHeader&gt;
+  &lt;calloutStatus&gt;Enabled&lt;/calloutStatus&gt;
+  &lt;generateAuthorizationHeader&gt;true&lt;/generateAuthorizationHeader&gt;
+  &lt;label&gt;Mule ERP Fulfillment Agent API&lt;/label&gt;
+  &lt;namedCredentialParameters&gt;
+    &lt;parameterName&gt;Url&lt;/parameterName&gt;
+    &lt;parameterType&gt;Url&lt;/parameterType&gt;
+    &lt;parameterValue&gt;https://erp-order-agent-api.us-e2.cloudhub.io/api/v1&lt;/parameterValue&gt;
+  &lt;/namedCredentialParameters&gt;
+  &lt;namedCredentialParameters&gt;
+    &lt;externalCredential&gt;Mule_ERP_Fulfillment_EC&lt;/externalCredential&gt;
+    &lt;parameterName&gt;ExternalCredential&lt;/parameterName&gt;
+    &lt;parameterType&gt;Authentication&lt;/parameterType&gt;
+  &lt;/namedCredentialParameters&gt;
+  &lt;namedCredentialType&gt;SecuredEndpoint&lt;/namedCredentialType&gt;
+&lt;/NamedCredential&gt;</code></pre>
+
+          <h2 id="test">Test it</h2>
+          <h3>Step 1: Verify the OAuth-protected CloudHub 2.0 endpoint via curl</h3>
+          <p>Before testing inside Agentforce Builder, confirm your Anypoint Connected App token and Mule 4 DataWeave flattening work directly against CloudHub 2.0:</p>
+          <span class="code-label">terminal — OAuth token + GET order status</span>
+          <pre><code>TOKEN=$(curl -s -X POST https://anypoint.mulesoft.com/accounts/api/v2/oauth2/token \
+  -H "Content-Type: application/json" \
+  -d '{
+    "client_id": "'"$ANYPOINT_CLIENT_ID"'",
+    "client_secret": "'"$ANYPOINT_CLIENT_SECRET"'",
+    "grant_type": "client_credentials"
+  }' | jq -r '.access_token')
+
+curl -s https://erp-order-agent-api.us-e2.cloudhub.io/api/v1/orders/00904128/status \
+  -H "Authorization: Bearer $TOKEN" | jq .</code></pre>
+
+          <span class="code-label">200 OK — Flattened Agent API response (264 bytes)</span>
+          <pre><code>{
+  "salesOrderNumber": "00904128",
+  "customerPoNumber": "PO-ACME-7741",
+  "deliveryStatus": "PICKING_IN_WAREHOUSE",
+  "shippingTier": "STANDARD_GROUND",
+  "estimatedDeliveryDate": "2026-11-30",
+  "expediteEligible": true,
+  "expediteFeeUsd": 45.0,
+  "primarySku": "IND-VALVE-400X"
+}</code></pre>
+
+          <h3>Step 2: Multi-turn utterance test in Agentforce Builder Reasoning Trace</h3>
+          <p>Open <strong>Agent Builder → Conversation Preview</strong> with the <strong>Plan Tracer</strong> panel expanded and send a realistic multi-intent prompt:</p>
+          <span class="code-label">Agent Builder — Turn 1 Utterance &amp; Atlas Reasoning Trace</span>
+          <pre><code>USER UTTERANCE:
+"Where is order SO-00904128 right now, and can you switch it to Priority Overnight?"
+
+ATLAS REASONING TRACE (TURN 1):
+1. [Topic Classification] -&gt; Selected: ERP_Order_And_Inventory_Management (confidence: 0.98)
+2. [Instruction Applied]  -&gt; Strip 'SO-' prefix -&gt; salesOrderNumber = "00904128"
+3. [Action Invoked]       -&gt; ExternalService.getOrderFulfillmentStatus({"salesOrderNumber": "00904128"})
+   &lt;-- 200 OK (182 ms via Mule_ERP_Fulfillment_NC):
+       {"deliveryStatus":"PICKING_IN_WAREHOUSE","shippingTier":"STANDARD_GROUND",
+        "estimatedDeliveryDate":"2026-11-30","expediteEligible":true,"expediteFeeUsd":45.0}
+4. [Guardrail Evaluated]  -&gt; expediteEligible == true, BUT user has not yet confirmed the $45.00 fee.
+                             Halting before expediteSalesOrderShipment.
+5. [Grounded Response]    -&gt; "Order 00904128 (PO-ACME-7741) is currently being picked in the warehouse
+                             on Standard Ground with estimated delivery on Nov 30, 2026. It is eligible
+                             for Priority Overnight upgrade for a $45.00 fee. Would you like me to go
+                             ahead and apply that upgrade?"
+
+USER UTTERANCE (TURN 2):
+"Yes, confirmed — please upgrade it to overnight for urgent line maintenance."
+
+ATLAS REASONING TRACE (TURN 2):
+1. [Topic Retained]       -&gt; ERP_Order_And_Inventory_Management
+2. [Action Invoked]       -&gt; ExternalService.expediteSalesOrderShipment({
+                               "salesOrderNumber": "00904128",
+                               "targetTier": "PRIORITY_OVERNIGHT",
+                               "customerConfirmedFee": true,
+                               "reason": "Urgent line maintenance"
+                             })
+   &lt;-- 200 OK (246 ms):
+       {"salesOrderNumber":"00904128","updatedShippingTier":"PRIORITY_OVERNIGHT",
+        "chargedFeeUsd":45.0,"revisedDeliveryDate":"2026-11-25","sapDocumentReference":"SAP-CHG-00904128"}
+3. [Grounded Response]    -&gt; "Done! Order 00904128 has been upgraded to Priority Overnight ($45.00 fee,
+                             SAP ref SAP-CHG-00904128) with a revised delivery date of Nov 25, 2026."</code></pre>
+
+          <h2 id="deploy">Deploy to production</h2>
+          <p>Enterprise teams promote Agentforce + MuleSoft integrations across <code>Dev → UAT → Prod</code> without manually re-editing Topics in Agent Builder:</p>
+          <ul>
+            <li><strong>Promote the Mule 4 artifact &amp; API Manager instance:</strong> Deploy the immutable JAR to CloudHub 2.0 (<code>mvn deploy -DmuleDeploy</code>) in at least 2 replicas (<code>0.2 vCore</code> or higher) with <strong>Zero-Downtime Rolling Updates</strong> enabled, and promote the API Manager configuration from <code>UAT</code> to <code>Production</code>.</li>
+            <li><strong>Keep Exchange asset coordinates stable:</strong> Publish patch/minor versions (<code>1.2.1</code>) under the same <code>groupId:assetId</code> in Anypoint Exchange and re-sync Salesforce API Catalog only when the OpenAPI schema or Topic instructions change.</li>
+            <li><strong>Swap Named Credential URLs per Salesforce org:</strong> Deploy <code>GenAiPlugin</code> (Topic), <code>GenAiFunction</code> (Action), and <code>ExternalServiceRegistration</code> metadata via SFDX (<code>sf project deploy start</code>), while binding environment-specific CloudHub 2.0 URLs and OAuth client secrets inside each org's <code>NamedCredential</code> / <code>ExternalCredential</code>.</li>
+            <li><strong>Enforce tight downstream timeouts:</strong> Agentforce synchronous External Service actions expect responses well within interactive chat budgets. Set HTTP request timeouts on SAP/Snowflake connectors to <code>6–8 seconds</code> with fallback <code>agentGuidance</code> messages if an ERP batch lock occurs.</li>
+          </ul>
+
+          <h2 id="security">Security &amp; governance</h2>
+          <ul>
+            <li><strong>Least-privilege Business Group scoping:</strong> In Anypoint *Access Management → Salesforce*, never enable the root Organization if it contains raw System or Process APIs. Create a dedicated <code>Agent-Experience-APIs</code> Business Group containing only vetted, agent-safe contracts.</li>
+            <li><strong>User context &amp; row-level authorization:</strong> Machine-to-machine <code>client_credentials</code> authenticates Salesforce as a trusted caller, not the end user. For customer-facing Experience Cloud agents, pass the verified Contact/Account identifier or use <strong>OAuth 2.0 JWT Bearer / Named Principal per-user token exchange</strong> and assert ownership in MuleSoft (<code>order.soldToAccountId == callerAccountId</code>) so prompt injection cannot trick the agent into reading another customer's order (<code>IDOR</code> prevention).</li>
+            <li><strong>PII stripping at the MuleSoft boundary:</strong> Never return full credit card numbers, tax IDs, internal wholesale margins, or employee SSNs in Agent API schemas — DataWeave <code>skipNullOn</code> + explicit field allowlisting keeps sensitive fields out of both the Einstein Trust Layer audit log and LLM context.</li>
+            <li><strong>Defense-in-depth on mutating actions:</strong> Pair natural-language confirmation instructions (<code>requireUserConfirmation: true</code> in Agentforce) with hard schema validation in API Manager (JSON Threat Protection, Rate Limiting SLA tiers, and Object Store idempotency keys) so duplicate retries never double-charge customers in SAP.</li>
+          </ul>
+
+          <h2 id="troubleshooting">Troubleshooting</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Symptom</th>
+                  <th scope="col">Cause</th>
+                  <th scope="col">Fix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>API appears in Anypoint Exchange, but <strong>Salesforce API Catalog → MuleSoft</strong> stays empty after sync.</td>
+                  <td>Either the Business Group isn't shared in <em>Access Management → Salesforce</em>, or the Exchange asset has no active <strong>API Manager</strong> instance with a Consumer Endpoint URL.</td>
+                  <td>Enable the specific Business Group under <em>Access Management → Salesforce</em>, set a valid HTTPS Consumer Endpoint URL in API Manager, and click <strong>Sync Catalog</strong> again.</td>
+                </tr>
+                <tr>
+                  <td>Clicking <strong>Activate Actions</strong> in API Catalog fails with External Service schema compilation error.</td>
+                  <td>OpenAPI spec contains recursive <code>$ref</code> loops, untyped <code>object</code> payloads (<code>additionalProperties: true</code> with no properties), or unsupported <code>anyOf</code> polymorphism.</td>
+                  <td>Refactor the Agent Experience API spec to flat, explicitly typed JSON objects and run the ACB <em>Agentforce Readiness</em> API Governance ruleset before republishing.</td>
+                </tr>
+                <tr>
+                  <td>Agent Builder Plan Tracer shows <code>401 Unauthorized</code> or <code>CalloutException: Unable to fetch OAuth token</code>.</td>
+                  <td><code>EinsteinServiceAgent User</code> lacks External Credential Principal Access, or the Connected App lacks the required API Manager scope.</td>
+                  <td>Assign a Permission Set granting <strong>External Credential Principal Access</strong> for <code>Mule_ERP_Fulfillment_EC</code> to the Agent User and verify token issuance via <code>curl</code>.</td>
+                </tr>
+                <tr>
+                  <td>Atlas Reasoning Engine invokes <code>getOrderFulfillmentStatus</code> with <code>"SO-00904128"</code> and receives <code>400 Bad Request</code>.</td>
+                  <td>Path parameter regex <code>^[0-9]{8,10}$</code> rejected the <code>"SO-"</code> prefix because parameter description/instructions didn't specify normalization.</td>
+                  <td>Add explicit normalization guidance in both the OpenAPI parameter <code>description</code> and Topic Center <code>instructions</code>, and strip <code>"SO-"</code> defensively in DataWeave (<code>replace /^SO-/ with ""</code>).</td>
+                </tr>
+                <tr>
+                  <td>Atlas calls <code>expediteSalesOrderShipment</code> immediately on Turn 1 without asking user approval.</td>
+                  <td>Confirmation rule was phrased vaguely ("ask if needed") and <code>requireUserConfirmation</code> was left disabled on the Agent Action.</td>
+                  <td>Enable <strong>Require user confirmation</strong> on the mutating action in Topic Center / Agent Builder and state a strict precondition (<code>MUST state exact expediteFeeUsd and wait for next turn</code>).</td>
+                </tr>
+                <tr>
+                  <td>Agent responds <code>"Something went wrong"</code> during peak SAP batch windows even though CloudHub eventually returns <code>200</code>.</td>
+                  <td>Downstream SAP OData lock exceeded the synchronous callout window, causing External Services to abort before CloudHub finished.</td>
+                  <td>Lower downstream HTTP <code>responseTimeout</code> to <code>8000 ms</code>, cache hot order headers briefly, or offload long-running ERP writes to an async Anypoint MQ pattern returning <code>202 Accepted</code> + tracking ticket.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production checklist</h2>
+          <ul class="checklist">
+            <li>Anypoint Platform ↔ Salesforce tenant trust restricted to dedicated <code>Agent-Experience-APIs</code> Business Group (no raw System APIs exposed).</li>
+            <li>Every OpenAPI operation has a unique <code>operationId</code>, flat typed schemas (&lt; 15 fields), and passes the ACB Agentforce API Governance ruleset.</li>
+            <li>Topic Center metadata defines unambiguous <code>classificationDescription</code>, bounded <code>scope</code>, and explicit confirmation guardrails on every mutating action.</li>
+            <li>API Manager instance enforces OAuth 2.0 Token Enforcement, Rate Limiting, and JSON Threat Protection ahead of the Mule 4 runtime.</li>
+            <li>Salesforce <code>ExternalCredential</code> uses OAuth 2.0 (<code>client_credentials</code> or JWT Bearer) and <code>EinsteinServiceAgent User</code> holds Principal Access permission.</li>
+            <li>Mule 4 implementation enforces tenant/customer ownership checks (<code>IDOR</code> protection) and Object Store idempotency on <code>POST</code>/<code>PATCH</code> flows.</li>
+            <li>DataWeave transforms strip PII, internal cost fields, and stack traces, returning structured <code>agentGuidance</code> on <code>4xx</code>/<code>5xx</code> errors.</li>
+            <li>Multi-turn adversarial and edge-case utterances verified in Agentforce Builder Plan Tracer / Testing Center before channel activation.</li>
+          </ul>
+
+          <h2 id="interview">Interview questions</h2>
+          <details class="qa">
+            <summary>1. Why should architects expose an Agent Experience API via MuleSoft Topic Center instead of pointing Salesforce External Services directly at SAP S/4HANA or Snowflake APIs?</summary>
+            <div>
+              <p>Pointing External Services directly at a backend ERP leaks brittle, deeply nested schemas (hundreds of cryptic ABAP/SQL columns) into the Atlas Reasoning Engine, inflating token usage, confusing slot extraction, and frequently violating External Services OpenAPI compiler limits. An Agent Experience API authored with Topic Center lets MuleSoft orchestrate multiple backends (SAP + Snowflake) in a single network hop, flatten and mask sensitive fields with DataWeave, enforce centralized API Manager rate/OAuth policies, and embed reusable Topic &amp; Action instructions directly in Anypoint Exchange.</p>
+            </div>
+          </details>
+          <details class="qa">
+            <summary>2. How does the Atlas Reasoning Engine decide which MuleSoft action to invoke during a conversation turn?</summary>
+            <div>
+              <p>Atlas uses a two-stage hierarchical selection loop. First, it evaluates the user's utterance and conversation history against the <strong>Classification Description</strong> of every Topic assigned to the agent to narrow the active toolset to one Topic (for example, <code>ERP_Order_And_Inventory_Management</code>). Second, inside that Topic's <strong>Scope</strong> and <strong>Instructions</strong>, Atlas inspects the <code>description</code> and JSON input schema of each attached Action (derived from your OpenAPI <code>operationId</code>, <code>description</code>, and parameter descriptions) to build a grounded execution plan.</p>
+            </div>
+          </details>
+          <details class="qa">
+            <summary>3. What is required in Anypoint Platform for an API specification to appear with activatable actions inside Salesforce API Catalog?</summary>
+            <div>
+              <p>Four conditions must hold: (1) the bi-directional tenant connection must be enabled in both Salesforce <em>Anypoint Platform Setup</em> and Anypoint <em>Access Management → Salesforce</em>; (2) the target Anypoint Business Group must be explicitly shared with that Salesforce org; (3) the OpenAPI 3.0 asset (optionally enriched via Topic Center) must be published to Anypoint Exchange in that Business Group; and (4) the asset must be associated with an active <strong>API Manager</strong> instance that defines a valid HTTPS <strong>Consumer Endpoint URL</strong>.</p>
+            </div>
+          </details>
+          <details class="qa">
+            <summary>4. How do you prevent Broken Object-Level Authorization (BOLA / IDOR) when Agentforce calls MuleSoft over a machine-to-machine OAuth 2.0 Client Credentials Named Credential?</summary>
+            <div>
+              <p>Because <code>client_credentials</code> authenticates the Salesforce org rather than the individual Experience Cloud customer, relying solely on user-supplied prompt text (<code>"check order 00904128"</code>) allows a user to probe another customer's order ID. Prevent this by binding the verified session <code>ContactId</code> / <code>AccountId</code> from Agentforce context variables (not editable by prompt text) or using per-user JWT Bearer token propagation, and asserting inside the Mule 4 flow that <code>sapOrder.SoldToParty == verifiedAccountErpId</code> before returning any data.</p>
+            </div>
+          </details>
+          <details class="qa">
+            <summary>5. How should a MuleSoft API format <code>4xx</code> and <code>5xx</code> error payloads when the caller is an autonomous AI agent rather than a traditional web UI?</summary>
+            <div>
+              <p>Traditional stack traces or numeric ERP codes (<code>SAP-BAPI-E-042</code>) cause LLMs either to retry futilely with the same inputs or give generic apologies. An agent-ready MuleSoft API maps downstream faults to deterministic HTTP status codes (<code>400</code>, <code>404</code>, <code>409</code>, <code>503</code>) paired with a concise JSON object containing <code>errorCode</code> and a natural-language <code>agentGuidance</code> field (for example, <code>"Order is on credit hold; advise the customer to contact Accounts Receivable rather than retrying expedite"</code>), giving the Atlas Reasoning Engine clear next-step instructions.</p>
+            </div>
+          </details>
+
+          <h2 id="sources">Sources &amp; further reading</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/anypoint-code-builder/af-create-agent-topics-and-actions" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Topic Center in Anypoint Code Builder: Create Agent Topics and Actions</a></li>
+            <li><a href="https://docs.mulesoft.com/access-management/salesforce-integration" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Access Management: Connecting Anypoint Platform to Salesforce</a></li>
+            <li><a href="https://help.salesforce.com/s/articleView?id=platform.api_catalog.htm&amp;type=5" target="_blank" rel="noopener noreferrer">Salesforce Help — API Catalog: Discover and Activate MuleSoft APIs as Agentforce Actions</a></li>
+            <li><a href="https://help.salesforce.com/s/articleView?id=ai.copilot_topics.htm&amp;type=5" target="_blank" rel="noopener noreferrer">Salesforce Help — Agentforce Studio: Agent Topics, Instructions, and the Atlas Reasoning Engine</a></li>
+            <li><a href="https://docs.mulesoft.com/api-governance/" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Anypoint API Governance Rulesets for Agentic Readiness</a></li>
+          </ul>
+        </div>
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+          <a class="prev" href="mulesoft-a2a-protocol-multi-agent-orchestration.html"><span>← Previous</span><strong>A2A Protocol &amp; Multi-Agent Orchestration</strong></a>
+          <a class="next" href="mulesoft-ai-chain-einstein-inference-rag-setup.html"><span>Next →</span><strong>MuleSoft AI Chain, Einstein &amp; Inference RAG Setup</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#what-and-why">What it is and why it matters</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup">Step-by-step setup</a></li>
+        <li><a href="#code">Full working example</a></li>
+        <li><a href="#test">Test it</a></li>
+        <li><a href="#deploy">Deploy to production</a></li>
+        <li><a href="#security">Security &amp; governance</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#checklist">Production checklist</a></li>
+        <li><a href="#interview">Interview questions</a></li>
+        <li><a href="#sources">Sources &amp; further reading</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+<footer class="blog-footer">
+  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

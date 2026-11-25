@@ -19,3 +19,12 @@ https://mulesoft.niranjanpotter.dpdns.org/mulesoft-sap-s4hana-odata-interview.ht
 https://mulesoft.niranjanpotter.dpdns.org/mulesoft-reusable-error-handler-plugin.html
 https://mulesoft.niranjanpotter.dpdns.org/mulesoft-secure-properties-encryption-guide.html
 https://mulesoft.niranjanpotter.dpdns.org/mulesoft-java-interview-mastery.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/
+https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/flex-gateway-ai-policies-llm-guardrails.html
+https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html

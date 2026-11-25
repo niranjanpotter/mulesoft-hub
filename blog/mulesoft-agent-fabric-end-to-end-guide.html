@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance | MuleSoft Hub Blog</title>
+<meta name="description" content="Master MuleSoft Agent Fabric: discover shadow agents, catalog MCP/A2A assets in Exchange, author .agent Broker scripts, and enforce runtime governance.">
+<meta name="author" content="Niranjan Potter">
+<link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance">
+<meta property="og:description" content="Master MuleSoft Agent Fabric: discover shadow agents, catalog MCP/A2A assets in Exchange, author .agent Broker scripts, and enforce runtime governance.">
+<meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html">
+<meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+<meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners & Governance",
+  "description": "Master MuleSoft Agent Fabric: discover shadow agents, catalog MCP/A2A assets in Exchange, author .agent Broker scripts, and enforce runtime governance.",
+  "author": { "@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171" },
+  "publisher": { "@type": "Organization", "name": "MuleSoft Hub", "url": "https://mulesoft.niranjanpotter.dpdns.org/" },
+  "datePublished": "2026-11-24",
+  "dateModified": "2026-11-24",
+  "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html"
+}
+</script>
+<script defer src="blog.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="blog-topbar">
+  <div class="blog-topbar-inner">
+    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
+    <nav class="blog-nav" aria-label="Main">
+      <a href="../index.html">Interview Hub</a>
+      <a href="index.html">All Articles</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="blog-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › Agent Fabric End-to-End</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">AI &amp; Agents · Hands-on Guide</span>
+          <h1>MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance</h1>
+          <p class="post-lede">Enterprise teams are deploying autonomous agents across Salesforce Agentforce, AWS Bedrock, Google Vertex AI, and Microsoft Copilot Studio faster than platform teams can secure them. Here is how to build a unified cross-cloud AI control plane using MuleSoft Agent Fabric.</p>
+          <div class="post-meta">
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Nov 24, 2026</span>
+            <span>⏱️ 18 min read</span>
+            <span class="tag">Agent Fabric</span><span class="tag">Multi-Agent Governance</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="tldr">TL;DR</h2>
+          <ul>
+            <li><strong>Cross-cloud AI control plane:</strong> MuleSoft Agent Fabric governs heterogeneous agents across Salesforce Agentforce, AWS Bedrock Agents, Google Vertex AI Agent Builder, Microsoft Copilot Studio, and custom Model Context Protocol (MCP) or Agent-to-Agent (A2A) runtimes.</li>
+            <li><strong>Automated Agent Scanners:</strong> Scheduled discovery jobs inspect cloud IAM/API planes (AWS, GCP, Salesforce orgs) to surface unmanaged "shadow agents" and onboard them into <strong>Agent Registry</strong> inside Anypoint Exchange.</li>
+            <li><strong>Protocol translation without rewrites:</strong> The <strong>MCP Bridge</strong> turns OpenAPI/REST APIs into MCP tools, while the <strong>A2A Bridge</strong> normalizes task delegation, Agent Cards, and streaming status updates across vendor ecosystems.</li>
+            <li><strong>Deterministic + probabilistic orchestration:</strong> <strong>Agent Broker</strong> executes declarative <code>.agent</code> scripts authored in Anypoint Code Builder (ACB), blending strict deterministic rules and human-in-the-loop (HITL) approvals with LLM intent routing.</li>
+            <li><strong>Runtime FinOps &amp; Kill Switch:</strong> Anypoint Flex Gateway enforces PII redaction, prompt-injection shields, OAuth 2.0 token exchange, <strong>Model Wallet</strong> token budgets, continuous <strong>Agent Evals</strong>, and a sub-second <strong>Agent Kill Switch</strong>.</li>
+          </ul>
+
+          <h2 id="what-and-why">What it is and why it matters</h2>
+          <p>In 2016, enterprise architects fought <em>API sprawl</em>—dozens of undocumented point-to-point microservices bypassing central gateways. In 2026, enterprises face a far riskier variant: <strong>agent sprawl</strong>. Customer support runs Salesforce Agentforce, supply chain runs AWS Bedrock Agents over ERP warehouses, data science deploys Vertex AI reasoning agents, and workplace productivity relies on Microsoft Copilot Studio. Without a unifying fabric, agents call raw APIs with over-privileged static keys, leak PII into external LLM context windows, trigger infinite agent-to-agent retry loops, and rack up five-figure token bills overnight.</p>
+          <p><strong>MuleSoft Agent Fabric</strong> extends Anypoint Platform from API-led connectivity into agent-led orchestration. Rather than forcing every department onto a single agent framework, Agent Fabric sits between callers, orchestrator agents, specialist subagents, tools, and foundation models.</p>
+
+          <h3>The five architectural pillars</h3>
+          <ol>
+            <li><strong>Agent Registry (Anypoint Exchange):</strong> First-class Exchange asset types (<code>agent</code>, <code>mcp-server</code>, <code>a2a-service</code>, <code>llm-proxy</code>) storing versioned Agent Cards, tool JSON Schemas, trust tiers, SLA metadata, and ownership tags.</li>
+            <li><strong>Automated Agent Scanners:</strong> Out-of-the-box discovery connectors that poll AWS Bedrock (<code>ListAgents</code> / <code>ListAgentAliases</code>), GCP Vertex AI Reasoning Engines, and Salesforce Metadata/Tooling APIs to detect unregistered agents and flag governance drift.</li>
+            <li><strong>MCP Bridge &amp; A2A Bridge:</strong> Protocol adapters managed on CloudHub 2.0 or Runtime Fabric that expose existing System/Process APIs as Streamable HTTP MCP servers and mediate Google/Linux Foundation A2A JSON-RPC task lifecycles (<code>tasks/send</code>, <code>tasks/sendSubscribe</code>).</li>
+            <li><strong>Agent Broker &amp; Agent Script (<code>.agent</code>):</strong> An orchestration runtime programmed via <code>.agent</code> files in Anypoint Code Builder. It combines hard preconditions (deterministic state machines, RBAC checks, dollar thresholds, human approval gates) with LLM-driven task planning.</li>
+            <li><strong>Governance, Agent Evals &amp; FinOps Controls:</strong> Flex Gateway AI policies enforce token-rate quotas tied to <strong>Model Wallet</strong> cost centers, run asynchronous <strong>Agent Evals</strong> (hallucination, groundedness, tool-selection accuracy), and expose an emergency <strong>Agent Kill Switch</strong> to quarantine misbehaving agents immediately.</li>
+          </ol>
+
+          <h3>Comparison: Point-to-point DIY vs. MuleSoft Agent Fabric</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Capability</th>
+                  <th scope="col">Ad-Hoc DIY Frameworks (LangGraph / Custom Glue)</th>
+                  <th scope="col">Single-Vendor Native Ecosystem</th>
+                  <th scope="col">MuleSoft Agent Fabric</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Cross-cloud discovery</strong></td>
+                  <td>Manual spreadsheets &amp; Git repo hunting</td>
+                  <td>Visible only inside one cloud tenant</td>
+                  <td>Automated Scanners across AWS, GCP, Salesforce &amp; Kubernetes into Exchange</td>
+                </tr>
+                <tr>
+                  <td><strong>Tool reuse</strong></td>
+                  <td>Custom Python/TS wrappers per API</td>
+                  <td>Proprietary connectors per vendor</td>
+                  <td>Zero-code MCP Bridge over governed Anypoint OpenAPI specs</td>
+                </tr>
+                <tr>
+                  <td><strong>Routing determinism</strong></td>
+                  <td>Pure prompt instructions (prone to drift)</td>
+                  <td>Mixed prompt + proprietary topic rules</td>
+                  <td>Declarative <code>.agent</code> scripts mixing strict deterministic guards + LLM reasoning</td>
+                </tr>
+                <tr>
+                  <td><strong>Token FinOps &amp; budgets</strong></td>
+                  <td>Post-mortem cloud billing alerts</td>
+                  <td>Per-provider quota limits only</td>
+                  <td>Unified Model Wallet chargeback + real-time Flex Gateway circuit breaking</td>
+                </tr>
+                <tr>
+                  <td><strong>Emergency containment</strong></td>
+                  <td>Redeploy container or revoke IAM keys</td>
+                  <td>Disable agent manually in vendor console</td>
+                  <td>One-click / API-driven Agent Kill Switch at Flex Gateway ingress &amp; egress</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="architecture">Architecture</h2>
+          <p>The reference topology below illustrates how an enterprise Order Resolution request enters through Flex Gateway, executes deterministic and probabilistic routing inside the Agent Broker, delegates sub-tasks over A2A to AWS Bedrock and Salesforce Agentforce, invokes governed Mule 4 MCP tools, and logs telemetry into Anypoint Monitoring and Model Wallet.</p>
+          <figure>
+            <div class="diagram" role="img" aria-label="Layered architecture diagram of MuleSoft Agent Fabric showing Scanners, Agent Registry in Exchange, Flex Gateway AI Guardrails, Agent Broker running .agent script, MCP Bridge, A2A Bridge, external cloud agents, and FinOps Model Wallet.">+---------------------------------------------------------------------------------------------------+
+|                         CONSUMERS &amp; ENTERPRISE CHANNELS                                           |
+|   [Salesforce Experience Cloud]    [Slack / MS Teams Bot]    [Copilot Studio Front-Door Agent]    |
++-------------------------------------------------+-------------------------------------------------+
+                                                  | HTTPS (OAuth 2.0 JWT + TraceContext)
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|               ANYPOINT FLEX GATEWAY (AI Ingress / Egress Enforcement &amp; Kill Switch)               |
+|  [Prompt Injection Shield] -&gt; [PII Tokenizer] -&gt; [Model Wallet Quota] -&gt; [Kill Switch Check]      |
++-------------------------------------------------+-------------------------------------------------+
+                                                  |
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|                     MULESOFT AGENT BROKER (CloudHub 2.0 / Mule 4.9 LTS)                           |
+|  Executes: order-dispute-orchestrator.agent                                                       |
+|   1. Deterministic Pre-Check: Verify customer tier &amp; dispute amount (&lt;= $2,500 auto-eligible)     |
+|   2. LLM Planner (via governed LLM Proxy): Decompose intent into logistics + CRM refund tasks     |
+|   3. HITL Checkpoint: Pause &amp; emit Slack approval event if refund &gt; $2,500                        |
++-------------------+-----------------------------------+-------------------------------------------+
+                    |                                   |
+        MCP (Streamable HTTP)                           | A2A JSON-RPC 2.0 (tasks/sendSubscribe)
+                    v                                   v
++---------------------------------------+   +-------------------------------------------------------+
+|          MULESOFT MCP BRIDGE          |   |                  MULESOFT A2A BRIDGE                  |
+|  Wraps System/Process OpenAPI Specs:  |   |  Normalizes Agent Cards, OAuth OBO &amp; Task State:      |
+|  - sap-order-sapi (lookup-order)      |   |  +-----------------------+ +-----------------------+  |
+|  - wms-ship-sapi  (check-shipment)    |   |  | AWS Bedrock Agent     | | Salesforce Agentforce |  |
++-------------------+-------------------+   |  | (Carrier Claim Eval)  | | (Case &amp; Credit Memo)  |  |
+                    |                       |  +-----------------------+ +-----------------------+  |
+                    v                       +---------------------------+---------------------------+
++---------------------------------------+                               |
+|   CORE SYSTEMS (SAP S/4HANA, WMS)     |                               |
++---------------------------------------+                               |
+                                                                        v
++---------------------------------------------------------------------------------------------------+
+|                 CONTROL PLANE: AGENT REGISTRY, SCANNERS &amp; AGENT EVALS                             |
+|  [Automated Scanners: AWS / GCP / SFDC] ==&gt; [Anypoint Exchange Agent Registry]                    |
+|  [Agent Evals Runner: Groundedness &amp; Tool Accuracy] ==&gt; [Model Wallet FinOps &amp; Audit Trail]       |
++---------------------------------------------------------------------------------------------------+</div>
+            <figcaption>Figure 1: MuleSoft Agent Fabric reference architecture spanning ingress governance, Agent Broker orchestration, MCP/A2A protocol bridges, and control-plane scanners.</figcaption>
+          </figure>
+
+          <h2 id="prerequisites">Prerequisites</h2>
+          <div class="callout prereq">
+            <span class="callout-title">You need</span>
+            <ul>
+              <li><strong>Java &amp; Runtime:</strong> Eclipse Temurin <strong>JDK 17</strong> (<code>17.0.11+</code>) and <strong>Mule Runtime 4.9.0 LTS</strong> (or newer 4.9.x patch).</li>
+              <li><strong>IDE &amp; Build Tool:</strong> <strong>Anypoint Code Builder (ACB)</strong> Desktop or Cloud IDE with the <em>MuleSoft Agent Fabric &amp; Agent Script Extension Pack</em> (v1.4+), plus <strong>Apache Maven 3.9.6+</strong>.</li>
+              <li><strong>Anypoint Platform Entitlements:</strong> Anypoint Agent Fabric SKU enabled on your Business Group, with roles: <code>Exchange Contributors</code>, <code>Agent Registry Administrator</code>, <code>Flex Gateway Administrator</code>, and <code>Runtime Manager Admin</code>.</li>
+              <li><strong>CLI &amp; Gateway Tools:</strong> <code>anypoint-cli-v4</code> (v4.4.0+ with <code>agent-fabric</code> plugin) and <strong>Anypoint Flex Gateway 1.9+</strong> running in Connected Mode.</li>
+              <li><strong>Cloud Scanner Read Credentials:</strong> AWS IAM role with <code>bedrock:ListAgents</code>, <code>bedrock:GetAgent</code>, <code>bedrock:ListAgentAliases</code>; GCP service account with <code>aiplatform.reasoningEngines.list</code>; Salesforce Connected App with <code>View Setup and Configuration</code> and <code>ApiEnabled</code>.</li>
+            </ul>
+          </div>
+
+          <h2 id="setup">Step-by-step setup</h2>
+          <ol class="steps">
+            <li>
+              <strong>Configure Automated Agent Scanners in Anypoint Control Plane</strong>
+              <p>Sign in to Anypoint Platform and navigate to <strong>Agent Fabric &gt; Discovery Scanners &gt; Create Scanner</strong>. Select <strong>AWS Bedrock &amp; Salesforce Multi-Target Scanner</strong>, bind your Connected App / IAM Role ARN, and schedule discovery every 6 hours. Unregistered external agents land in the <em>Quarantined Discovery Queue</em> until promoted to Exchange.</p>
+              <span class="code-label">scanner-registration.sh</span>
+              <pre><code>anypoint-cli-v4 agent-fabric scanner create \
+  --name "prod-aws-sfdc-agent-scanner" \
+  --environment "Production" \
+  --sources "aws-bedrock:us-east-1,salesforce-agentforce:na224" \
+  --aws-role-arn "arn:aws:iam::123456789012:role/MuleAgentScannerReadOnly" \
+  --schedule-cron "0 */6 * * *" \
+  --auto-quarantine-unverified true</code></pre>
+            </li>
+
+            <li>
+              <strong>Promote and catalog discovered agents &amp; MCP servers in Agent Registry</strong>
+              <p>Go to <strong>Anypoint Exchange &gt; Agent Registry</strong> (or use the CLI) to publish canonical metadata, trust tiers, and A2A Agent Cards so the Agent Broker can resolve endpoints dynamically by capability rather than hardcoded URLs.</p>
+              <span class="code-label">catalog-agent-asset.sh</span>
+              <pre><code>anypoint-cli-v4 exchange asset upload \
+  --organizationId "8f91c2d0-4b2a-4e11-9a1b-001122334455" \
+  --groupId "8f91c2d0-4b2a-4e11-9a1b-001122334455" \
+  --assetId "carrier-claim-bedrock-agent" \
+  --version "1.1.0" \
+  --classifier "agent" \
+  --mainFile "agent-card.json" \
+  --properties '{"trustTier":"verified","finopsCostCenter":"CC-LOGISTICS-04","protocol":"a2a-1.0"}'</code></pre>
+            </li>
+
+            <li>
+              <strong>Expose legacy REST System APIs through the MCP Bridge</strong>
+              <p>Navigate to <strong>Agent Fabric &gt; Bridges &gt; Create MCP Bridge</strong>, pick <code>sap-order-sapi</code> (OpenAPI 3.0.3) from Exchange, select only safe operations (<code>GET /orders/{orderId}</code> and <code>GET /orders/{orderId}/shipments</code>), and publish the managed MCP endpoint at <code>/mcp</code>.</p>
+              <span class="code-label">mcp-bridge-binding.yaml</span>
+              <pre><code>apiVersion: agentfabric.mulesoft.com/v1alpha1
+kind: McpBridge
+metadata:
+  name: sap-order-mcp-bridge
+  environment: Production
+spec:
+  exchangeAssetRef:
+    groupId: "8f91c2d0-4b2a-4e11-9a1b-001122334455"
+    assetId: "sap-order-sapi"
+    version: "2.4.0"
+  transport: streamable-http
+  endpointPath: /mcp
+  exposedOperations:
+    - operationId: getOrderById
+      toolName: lookup_sap_order
+      readOnlyHint: true
+    - operationId: getShipmentTracking
+      toolName: check_carrier_telemetry
+      readOnlyHint: true</code></pre>
+            </li>
+
+            <li>
+              <strong>Scaffold an Agent Broker project in Anypoint Code Builder</strong>
+              <p>Open ACB, press <code>Ctrl+Shift+P</code> (<code>Cmd+Shift+P</code> on macOS), and run <strong>MuleSoft: Create Agent Broker Project</strong>. Name the project <code>order-dispute-broker</code> on Mule 4.9 LTS and add the Agent Broker &amp; AI Gateway dependencies to <code>pom.xml</code>.</p>
+              <span class="code-label">pom.xml (dependencies excerpt)</span>
+              <pre><code>&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;com.mulesoft.agentfabric&lt;/groupId&gt;
+    &lt;artifactId&gt;mule-agent-broker-module&lt;/artifactId&gt;
+    &lt;version&gt;1.2.0&lt;/version&gt;
+    &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+    &lt;artifactId&gt;mule-mcp-connector&lt;/artifactId&gt;
+    &lt;version&gt;1.2.0&lt;/version&gt;
+    &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+    &lt;artifactId&gt;mule-a2a-connector&lt;/artifactId&gt;
+    &lt;version&gt;1.1.0&lt;/version&gt;
+    &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+            </li>
+
+            <li>
+              <strong>Externalize Model Wallet, Registry, and Broker runtime properties</strong>
+              <p>Create <code>src/main/resources/config/prod.yaml</code> so LLM gateway routing, token budgets, and registry asset coordinates are environment-driven and never hardcoded inside flows or <code>.agent</code> scripts.</p>
+              <span class="code-label">src/main/resources/config/prod.yaml</span>
+              <pre><code>agent:
+  broker:
+    httpPort: "8081"
+    maxReasoningSteps: 6
+    stepTimeoutMs: 12000
+    autoApproveLimitUsd: 2500.00
+  llmProxy:
+    url: "https://ai-gw.internal.enterprise.com/v1/chat/completions"
+    model: "anthropic.claude-3-7-sonnet"
+    walletId: "mw-order-ops-prod"
+  registry:
+    orgId: "8f91c2d0-4b2a-4e11-9a1b-001122334455"
+    sapMcpServerUri: "https://sap-order-mcp.us-e2.cloudhub.io/mcp"
+    bedrockClaimAgentUri: "https://a2a-bridge.us-e2.cloudhub.io/agents/carrier-claim"
+    agentforceCaseAgentUri: "https://a2a-bridge.us-e2.cloudhub.io/agents/sfdc-case-credit"</code></pre>
+            </li>
+
+            <li>
+              <strong>Bind Flex Gateway AI Governance &amp; Model Wallet policies</strong>
+              <p>In <strong>API Manager &gt; Flex Gateway &gt; Policies</strong>, attach PII Tokenization, Prompt Guardrail, OAuth 2.0 JWT Validation, and Model Wallet Token Quota to the Agent Broker ingress and LLM egress routes.</p>
+            </li>
+
+            <li>
+              <strong>Configure Automated Agent Evals in CI/CD</strong>
+              <p>Add a golden evaluation dataset (<code>src/test/resources/evals/dispute-golden-set.jsonl</code>) testing tool-selection precision, policy refusal on prompt injection, and deterministic HITL escalation above $2,500 before promoting builds to Production.</p>
+            </li>
+          </ol>
+
+          <h2 id="code">Full working example</h2>
+          <p>Below are the four core production artifacts that power the Order Dispute Agent Broker: the Exchange Agent Card metadata JSON, the declarative <code>.agent</code> script in ACB, the Mule 4 XML hosting the Broker endpoint, and the Flex Gateway declarative policy YAML.</p>
+
+          <h3>1. Exchange Agent Registry asset metadata (Agent Card)</h3>
+          <span class="code-label">agent-card.json</span>
+          <pre><code>{
+  "schemaVersion": "1.0",
+  "name": "carrier-claim-bedrock-agent",
+  "displayName": "Carrier Claim Evaluation Specialist (AWS Bedrock)",
+  "description": "Evaluates freight damage telemetry, IoT shock logs, and carrier SLA terms to calculate eligible claim recovery.",
+  "version": "1.1.0",
+  "protocol": "a2a/1.0",
+  "endpoint": {
+    "url": "https://a2a-bridge.us-e2.cloudhub.io/agents/carrier-claim",
+    "authentication": {
+      "type": "oauth2-token-exchange",
+      "scopes": ["a2a:invoke", "claims:evaluate"]
+    }
+  },
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "skills": [
+    {
+      "id": "evaluate-freight-damage",
+      "name": "Evaluate Freight Damage Claim",
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "tags": ["logistics", "carrier-sla", "claims"]
+    }
+  ],
+  "governance": {
+    "ownerTeam": "supply-chain-platform@enterprise.com",
+    "dataClassification": "Confidential",
+    "modelWalletId": "mw-logistics-prod",
+    "killSwitchEnabled": true
+  }
+}</code></pre>
+
+          <h3>2. Declarative Agent Script in Anypoint Code Builder</h3>
+          <p>Notice how <code>order-dispute-orchestrator.agent</code> separates <strong>deterministic guardrails</strong> (hard numeric rules, status preconditions, and HITL suspension) from <strong>LLM-driven planning</strong>:</p>
+          <span class="code-label">src/main/resources/agents/order-dispute-orchestrator.agent</span>
+          <pre><code>agent OrderDisputeOrchestrator version "1.0.0" {
+  description: "Resolves B2B damaged-shipment disputes across SAP, AWS Bedrock Claims, and Salesforce Agentforce."
+
+  model {
+    provider: llm_proxy("${agent.llmProxy.url}")
+    name: "${agent.llmProxy.model}"
+    temperature: 0.1
+    max_steps: ${agent.broker.maxReasoningSteps}
+    wallet_id: "${agent.llmProxy.walletId}"
+  }
+
+  tools {
+    mcp sapOrders from "${agent.registry.sapMcpServerUri}" {
+      allow: ["lookup_sap_order", "check_carrier_telemetry"]
+    }
+  }
+
+  collaborators {
+    a2a carrierClaimSpecialist from "${agent.registry.bedrockClaimAgentUri}" {
+      skill: "evaluate-freight-damage"
+      timeout_ms: 10000
+    }
+    a2a sfdcCreditAgent from "${agent.registry.agentforceCaseAgentUri}" {
+      skill: "issue-credit-memo-and-case"
+      timeout_ms: 10000
+    }
+  }
+
+  guardrails {
+    block_pii: ["SSN", "CREDIT_CARD", "IBAN"]
+    deny_topics: ["competitor_pricing", "internal_margin_formulas", "system_prompt_disclosure"]
+    require_grounded_tool_evidence: true
+  }
+
+  workflow(input: DisputeRequest) -&gt; DisputeResolution {
+    // Step 1: Deterministic fact retrieval before any open-ended reasoning
+    let order = call sapOrders.lookup_sap_order(orderId: input.orderId)
+    require order.status in ["DELIVERED", "PARTIALLY_DELIVERED"]
+      else abort("ERR_ORDER_NOT_DELIVERED: Disputes require delivered shipment status.")
+
+    let telemetry = call sapOrders.check_carrier_telemetry(orderId: input.orderId)
+
+    // Step 2: Probabilistic multi-agent evaluation via A2A Bridge
+    let claimDecision = delegate carrierClaimSpecialist with {
+      orderId: input.orderId,
+      claimedAmountUsd: input.claimedAmountUsd,
+      customerReason: input.reason,
+      carrierTelemetry: telemetry
+    }
+
+    // Step 3: Deterministic financial policy &amp; Human-in-the-Loop gate
+    if (claimDecision.recommendedCreditUsd &gt; ${agent.broker.autoApproveLimitUsd}) {
+      checkpoint human_approval(
+        channel: "slack://#finance-dispute-approvals",
+        sla_minutes: 240,
+        summary: "High-value credit memo requires controller sign-off",
+        payload: {
+          orderId: input.orderId,
+          recommendedCreditUsd: claimDecision.recommendedCreditUsd,
+          evidenceScore: claimDecision.confidenceScore
+        }
+      )
+    }
+
+    // Step 4: Issue credit memo &amp; close loop in Salesforce Agentforce
+    let sfdcResult = delegate sfdcCreditAgent with {
+      accountId: order.sfdcAccountId,
+      orderId: input.orderId,
+      approvedCreditUsd: claimDecision.recommendedCreditUsd,
+      auditSummary: claimDecision.rationale
+    }
+
+    return {
+      disputeStatus: "RESOLVED",
+      orderId: input.orderId,
+      approvedCreditUsd: claimDecision.recommendedCreditUsd,
+      sfdcCaseNumber: sfdcResult.caseNumber,
+      creditMemoId: sfdcResult.creditMemoId
+    }
+  }
+}</code></pre>
+
+          <h3>3. Mule 4 Agent Broker execution flow</h3>
+          <span class="code-label">src/main/mule/order-dispute-broker.xml</span>
+          <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:agent-broker="http://www.mulesoft.org/schema/mule/agent-broker"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/agent-broker http://www.mulesoft.org/schema/mule/agent-broker/current/mule-agent-broker.xsd"&gt;
+
+  &lt;configuration-properties file="config/prod.yaml"/&gt;
+
+  &lt;http:listener-config name="Broker_HTTP_Listener"&gt;
+    &lt;http:listener-connection host="0.0.0.0" port="${agent.broker.httpPort}"/&gt;
+  &lt;/http:listener-config&gt;
+
+  &lt;agent-broker:config name="Order_Dispute_Broker_Config"
+                       scriptPath="agents/order-dispute-orchestrator.agent"
+                       organizationId="${agent.registry.orgId}"
+                       enableAuditTelemetry="true"/&gt;
+
+  &lt;flow name="post-order-dispute-agent-flow"&gt;
+    &lt;http:listener config-ref="Broker_HTTP_Listener" path="/api/v1/agent/disputes" allowedMethods="POST"/&gt;
+
+    &lt;agent-broker:execute config-ref="Order_Dispute_Broker_Config"
+                          correlationId="#[correlationId]"
+                          callerPrincipal="#[attributes.headers['x-authenticated-sub'] default 'anonymous']"&gt;
+      &lt;agent-broker:input&gt;#[payload]&lt;/agent-broker:input&gt;
+    &lt;/agent-broker:execute&gt;
+
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  correlationId: correlationId,
+  executionState: payload.state,
+  resolution: payload.output,
+  metrics: {
+    stepsExecuted: payload.telemetry.stepsExecuted,
+    promptTokens: payload.telemetry.promptTokens,
+    completionTokens: payload.telemetry.completionTokens,
+    walletChargedUsd: payload.telemetry.estimatedCostUsd
+  }
+}]]&gt;&lt;/ee:set-payload&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+
+    &lt;error-handler&gt;
+      &lt;on-error-propagate type="AGENT-BROKER:GUARDRAIL_VIOLATION, AGENT-BROKER:PRECONDITION_FAILED"&gt;
+        &lt;ee:transform&gt;
+          &lt;ee:message&gt;
+            &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  errorCode: error.errorType.identifier,
+  message: error.description,
+  correlationId: correlationId
+}]]&gt;&lt;/ee:set-payload&gt;
+          &lt;/ee:message&gt;
+          &lt;ee:variables&gt;
+            &lt;ee:set-variable variableName="httpStatus"&gt;422&lt;/ee:set-variable&gt;
+          &lt;/ee:variables&gt;
+        &lt;/ee:transform&gt;
+      &lt;/on-error-propagate&gt;
+    &lt;/error-handler&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+
+          <h3>4. Flex Gateway AI Governance &amp; Kill Switch policy binding</h3>
+          <span class="code-label">flex-gateway-ai-policy.yaml</span>
+          <pre><code>apiVersion: gateway.mulesoft.com/v1alpha1
+kind: PolicyBinding
+metadata:
+  name: order-dispute-broker-ai-governance
+  namespace: gateway-system
+spec:
+  targetRef:
+    kind: ApiInstance
+    name: order-dispute-agent-broker-prod
+  policies:
+    - policyRef:
+        name: ai-prompt-guardrail
+        version: "1.3.0"
+      config:
+        blockJailbreakPatterns: true
+        redactPiiEntities: ["US_SSN", "CREDIT_CARD", "EMAIL_ADDRESS", "IBAN_CODE"]
+        maxInputCharacters: 8000
+    - policyRef:
+        name: ai-model-wallet-quota
+        version: "1.1.0"
+      config:
+        walletId: "mw-order-ops-prod"
+        dailyBudgetUsd: 350.00
+        perRequestMaxTokens: 6000
+        onBudgetExceeded: "REJECT_HTTP_429"
+    - policyRef:
+        name: agent-kill-switch
+        version: "1.0.0"
+      config:
+        agentAssetId: "order-dispute-orchestrator"
+        stateStore: "anypoint-control-plane-realtime"
+        fallbackHttpStatus: 503
+        fallbackMessage: "Agent temporarily quarantined by platform governance."</code></pre>
+
+          <h2 id="test">Test it</h2>
+          <p>Start the Broker locally in ACB or invoke the Flex Gateway ingress endpoint with a valid OAuth 2.0 bearer token. Below we test an auto-approvable claim ($1,420.00, under the $2,500 threshold) and inspect the deterministic + multi-agent telemetry response.</p>
+
+          <h3>Invoke the Agent Broker endpoint</h3>
+          <span class="code-label">curl request</span>
+          <pre><code>curl -sS -X POST "https://api.enterprise.com/agent/v1/disputes" \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -H "X-Correlation-Id: disp-20261124-9941" \
+  -d '{
+    "orderId": "SO-8849201",
+    "claimedAmountUsd": 1420.00,
+    "reason": "Pallet 3 arrived with crushed cold-chain packaging; shock sensor tripped in Memphis hub."
+  }' | jq .</code></pre>
+
+          <span class="code-label">200 OK JSON response</span>
+          <pre><code>{
+  "correlationId": "disp-20261124-9941",
+  "executionState": "COMPLETED",
+  "resolution": {
+    "disputeStatus": "RESOLVED",
+    "orderId": "SO-8849201",
+    "approvedCreditUsd": 1420.00,
+    "sfdcCaseNumber": "00491822",
+    "creditMemoId": "CM-2026-77310"
+  },
+  "metrics": {
+    "stepsExecuted": 4,
+    "promptTokens": 1842,
+    "completionTokens": 316,
+    "walletChargedUsd": 0.0103
+  }
+}</code></pre>
+
+          <h3>Test the emergency Agent Kill Switch</h3>
+          <p>Verify that your SRE runbook can halt the agent within one second without redeploying the Mule application:</p>
+          <span class="code-label">trigger-kill-switch.sh</span>
+          <pre><code>anypoint-cli-v4 agent-fabric kill-switch trip \
+  --asset-id "order-dispute-orchestrator" \
+  --environment "Production" \
+  --reason "Drill: verifying 503 circuit quarantine on anomalous credit issuance"</code></pre>
+          <p>Re-running the exact same <code>curl</code> command immediately returns <code>HTTP 503 Service Unavailable</code> from Flex Gateway with zero LLM tokens consumed.</p>
+
+          <h2 id="deploy">Deploy to production</h2>
+          <p>Agent Broker workloads spend most wall-clock time awaiting non-blocking HTTP/2 streams from LLM proxies, MCP servers, and A2A collaborators, making them ideal for reactive I/O sizing on <strong>CloudHub 2.0</strong> or <strong>Anypoint Runtime Fabric (RTF)</strong>.</p>
+          <ul>
+            <li><strong>Replica sizing &amp; HA:</strong> Deploy a minimum of <strong>2 replicas</strong> across distinct availability zones using <code>0.5 vCore</code> / <code>2 GiB</code> memory per replica for up to ~80 concurrent active agent sessions. Enable horizontal autoscaling at 70% CPU or event-loop saturation.</li>
+            <li><strong>Persistent Object Store v2 for HITL checkpoints:</strong> When a <code>checkpoint human_approval(...)</code> statement suspends execution for hours, the Agent Broker serializes continuation state. Enable <strong>Object Store v2</strong> (CloudHub 2.0) or externalized Redis persistence (RTF) with encrypted state payloads so rolling restarts never orphan pending approvals.</li>
+            <li><strong>Zero-secret deployments:</strong> Store OAuth client secrets and signing keys via <code>secure::</code> properties or Anypoint Secret Manager, injected at deploy time via Maven plugin flags.</li>
+            <li><strong>Liveness &amp; readiness probes:</strong> Expose <code>/health/live</code> and <code>/health/ready</code> verifying connectivity to Exchange Registry cache and Flex Gateway egress LLM proxy before shifting traffic.</li>
+          </ul>
+          <span class="code-label">cloudhub2-deploy.sh</span>
+          <pre><code>mvn clean package deploy -DmuleDeploy \
+  -Dch2.target="MC-us-east-2-prod" \
+  -Dch2.replicas=2 \
+  -Dch2.vCores=0.5 \
+  -Dch2.javaVersion="17" \
+  -Dch2.runtimeVersion="4.9.0" \
+  -Dsecure.key="${MULE_SECURE_KEY}"</code></pre>
+
+          <h2 id="security">Security &amp; governance</h2>
+          <div class="callout warn">
+            <span class="callout-title">Never pass ambient superuser credentials to agents</span>
+            <p>A compromised prompt must never allow an agent to query or mutate records belonging to another customer tenant. Always propagate caller identity end-to-end using OAuth 2.0 On-Behalf-Of (RFC 8693) token exchange.</p>
+          </div>
+          <ul>
+            <li><strong>OAuth 2.0 Token Exchange (RFC 8693):</strong> Flex Gateway validates the caller's JWT and exchanges it for narrowly scoped downstream tokens (<code>sap:orders:read</code>, <code>a2a:claims:evaluate</code>) carrying the original user/account claims.</li>
+            <li><strong>Mutual TLS (mTLS) on east-west bridges:</strong> Enforce strict mTLS between Agent Broker, MCP Bridge, and A2A Bridge inside your CloudHub 2.0 Private Space or RTF service mesh.</li>
+            <li><strong>Reversible PII tokenization:</strong> Configure Flex Gateway's AI PII Guardrail to replace sensitive strings (emails, IBANs, phone numbers) with deterministic vault tokens (<code>[PII_EMAIL_1]</code>) before sending prompts to external LLMs, detokenizing only when writing back to authorized systems of record.</li>
+            <li><strong>Bounded loop &amp; cycle detection:</strong> Every A2A hop increments an <code>x-agent-hop-count</code> header and appends its agent ID to <code>x-agent-call-chain</code>. Flex Gateway rejects any chain exceeding 5 hops or containing a cycle (<code>A -&gt; B -&gt; A</code>).</li>
+            <li><strong>Continuous Agent Evals:</strong> Sample 5–10% of production traces asynchronously into Agent Fabric Evals to score groundedness against MCP tool outputs; auto-trip the Kill Switch if groundedness drops below <code>0.92</code> over a 15-minute window.</li>
+          </ul>
+
+          <h2 id="troubleshooting">Troubleshooting</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Symptom</th>
+                  <th scope="col">Cause</th>
+                  <th scope="col">Fix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Scanner marks AWS Bedrock agent as <code>UNVERIFIED_QUARANTINED</code></td>
+                  <td>Discovered agent lacks mandatory Exchange governance tags (<code>ownerTeam</code>, <code>finopsCostCenter</code>)</td>
+                  <td>Assign an owner and Model Wallet ID in <strong>Agent Fabric &gt; Discovery Queue</strong> and publish a verified Agent Card version.</td>
+                </tr>
+                <tr>
+                  <td><code>AGENT-BROKER:MAX_STEPS_EXCEEDED</code> during execution</td>
+                  <td>LLM repeatedly retries a failing tool or ambiguous skill prompt until hitting <code>max_steps</code></td>
+                  <td>Inspect trace spans in Anypoint Monitoring, tighten tool JSON Schema descriptions, and handle deterministic validations before invoking the LLM planner.</td>
+                </tr>
+                <tr>
+                  <td><code>HTTP 429 Model Wallet Budget Exhausted</code> from Flex Gateway</td>
+                  <td>Daily USD ceiling or per-request token cap in <code>ai-model-wallet-quota</code> was reached</td>
+                  <td>Check token spike by agent skill in FinOps Dashboard; optimize context payload size via DataWeave projection before raising wallet budget.</td>
+                </tr>
+                <tr>
+                  <td>A2A collaborator returns <code>403 insufficient_scope</code></td>
+                  <td>RFC 8693 token exchange policy omitted the downstream skill scope required by the A2A Bridge</td>
+                  <td>Update the Connected App / IdP token-exchange mapping to issue <code>a2a:invoke</code> and skill-specific scopes.</td>
+                </tr>
+                <tr>
+                  <td>HITL Slack approval click fails with <code>CHECKPOINT_NOT_FOUND</code></td>
+                  <td>CloudHub 2.0 app deployed with ephemeral in-memory store and restarted while awaiting approval</td>
+                  <td>Enable persistent <strong>Object Store v2</strong> in Runtime Manager deployment settings and set checkpoint TTL &gt;= <code>sla_minutes + 60</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>AGENT-BROKER:LOOP_DETECTED</code> on cross-agent delegation</td>
+                  <td>Subagent attempted to delegate a sub-task back to an upstream orchestrator in the same call chain</td>
+                  <td>Refactor collaborator hierarchy into a strict DAG; specialist agents should expose leaf skills rather than calling parent brokers.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production checklist</h2>
+          <ul class="checklist">
+            <li>Automated Agent Scanners scheduled across all production AWS, GCP, and Salesforce orgs with quarantine alerts routed to SecOps.</li>
+            <li>Every orchestrator, specialist agent, MCP server, and LLM proxy cataloged in Anypoint Exchange with semantic versions and owner teams.</li>
+            <li>High-impact financial or destructive mutations gated by deterministic preconditions and HITL checkpoints inside <code>.agent</code> scripts.</li>
+            <li>Persistent Object Store v2 (or RTF Redis) enabled for durable HITL checkpoint serialization across rolling deployments.</li>
+            <li>Flex Gateway enforcing PII tokenization, prompt-injection shields, and RFC 8693 OAuth token exchange on both ingress and egress.</li>
+            <li>Model Wallet daily budgets, per-request token limits, and 80% spend anomaly alerts bound to every agent environment.</li>
+            <li><code>x-agent-hop-count</code> and cycle-detection policies active on A2A Bridge to eliminate runaway multi-agent recursion.</li>
+            <li>Golden Agent Evals suite gated in CI/CD (minimum 95% tool-selection accuracy, 0% prompt-injection leak rate).</li>
+            <li>Agent Kill Switch runbook tested in staging with verified sub-second <code>HTTP 503</code> containment.</li>
+          </ul>
+
+          <h2 id="interview">Interview questions</h2>
+          <details class="qa">
+            <summary>1. Why shouldn't an enterprise rely solely on an LLM prompt inside LangGraph or Agentforce to enforce financial approval limits?</summary>
+            <div>
+              <p>LLM reasoning is probabilistic and susceptible to indirect prompt injection—for example, malicious text embedded inside a customer dispute comment attempting to override instructions. In MuleSoft Agent Fabric, <code>.agent</code> scripts enforce preconditions (<code>require order.status ...</code>) and financial thresholds (<code>if recommendedCreditUsd &gt; 2500</code>) deterministically in the Mule runtime outside the LLM's control, guaranteeing compliance regardless of model output.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>2. How do MCP Bridge and A2A Bridge differ in MuleSoft Agent Fabric, and when do you use each?</summary>
+            <div>
+              <p><strong>MCP Bridge</strong> governs <em>agent-to-tool</em> interactions: it wraps deterministic APIs (OpenAPI/REST, SOAP, database/ERP System APIs) as stateless or session-scoped tools with strict JSON Schema inputs. <strong>A2A Bridge</strong> governs <em>agent-to-agent</em> collaboration: it connects autonomous peers (such as AWS Bedrock Agents and Salesforce Agentforce) that advertise skills via Agent Cards, maintain multi-turn task lifecycles (<code>SUBMITTED</code>, <code>WORKING</code>, <code>INPUT_REQUIRED</code>, <code>COMPLETED</code>), and negotiate modalities asynchronously.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>3. How do Automated Agent Scanners prevent "shadow AI" without blocking developer velocity?</summary>
+            <div>
+              <p>Scanners continuously inspect cloud control planes (AWS Bedrock APIs, Vertex AI Reasoning Engines, Salesforce org metadata) using read-only roles and compare live deployments against Anypoint Exchange's Agent Registry. Unregistered agents are automatically cataloged in a <em>Quarantined</em> state—giving architects immediate visibility—while Flex Gateway policies only allow production Agent Brokers to route traffic to assets promoted to <code>trustTier: verified</code>.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>4. How do you prevent confused-deputy privilege escalation when an Agent Broker calls downstream MCP servers and A2A agents?</summary>
+            <div>
+              <p>Never configure the Agent Broker with a static service-account token that has broad ERP/CRM write privileges. Instead, validate the end-user JWT at Flex Gateway and perform OAuth 2.0 On-Behalf-Of (RFC 8693) token exchange on every MCP and A2A hop, preserving the caller's principal (<code>sub</code>), tenant ID, and narrowed scopes while stripping unneeded permissions.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>5. Walk through how Model Wallet and the Agent Kill Switch protect an enterprise during a runaway multi-agent incident.</summary>
+            <div>
+              <p>First, hop-count and cycle-detection headers on the A2A Bridge cap call depth so two misconfigured agents cannot ping-pong indefinitely. Second, Flex Gateway meters prompt and completion tokens in real time against the agent's assigned <strong>Model Wallet</strong>, returning <code>HTTP 429</code> if per-request or daily USD thresholds are breached. Third, if Agent Evals detect hallucination drift or SecOps spots anomalous mutations, tripping the <strong>Agent Kill Switch</strong> pushes a real-time policy state to Flex Gateway replicas, returning <code>HTTP 503</code> in under a second without waiting for container redeployment.</p>
+            </div>
+          </details>
+
+          <h2 id="sources">Sources &amp; further reading</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Anypoint Platform, Agent Fabric, Flex Gateway &amp; CloudHub 2.0</a></li>
+            <li><a href="https://developer.salesforce.com/" target="_blank" rel="noopener noreferrer">Salesforce Developers — Agentforce, Agent Script &amp; Multi-Agent Interoperability</a></li>
+            <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP) Official Specification — Architecture &amp; Transports</a></li>
+            <li><a href="https://docs.mulesoft.com/anypoint-code-builder/" target="_blank" rel="noopener noreferrer">Anypoint Code Builder Documentation — Designing, Testing &amp; Deploying Integrations and Agents</a></li>
+            <li><a href="https://docs.mulesoft.com/gateway/latest/" target="_blank" rel="noopener noreferrer">Anypoint Flex Gateway Documentation — Declarative Policy Bindings &amp; Runtime Governance</a></li>
+          </ul>
+        </div>
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+          <a class="prev" href="index.html"><span>← All Articles</span><strong>MuleSoft Blog Home</strong></a>
+          <a class="next" href="mulesoft-mcp-connector-server-client-setup.html"><span>Next →</span><strong>MuleSoft MCP Connector: Server &amp; Client Setup</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#what-and-why">What it is and why it matters</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup">Step-by-step setup</a></li>
+        <li><a href="#code">Full working example</a></li>
+        <li><a href="#test">Test it</a></li>
+        <li><a href="#deploy">Deploy to production</a></li>
+        <li><a href="#security">Security &amp; governance</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#checklist">Production checklist</a></li>
+        <li><a href="#interview">Interview questions</a></li>
+        <li><a href="#sources">Sources &amp; further reading</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+<footer class="blog-footer">
+  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration | MuleSoft Hub Blog</title>
+<meta name="description" content="Build multi-agent workflows with the MuleSoft A2A Connector 2.0.0: Agent Cards, task lifecycle states, and cross-cloud delegation across Agentforce and Bedrock.">
+<meta name="author" content="Niranjan Potter">
+<link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration">
+<meta property="og:description" content="Build multi-agent workflows with the MuleSoft A2A Connector 2.0.0: Agent Cards, task lifecycle states, and cross-cloud delegation across Agentforce and Bedrock.">
+<meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">
+<meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+<meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation & Multi-Cloud Orchestration",
+  "description": "Build multi-agent workflows with the MuleSoft A2A Connector 2.0.0: Agent Cards, task lifecycle states, and cross-cloud delegation across Agentforce and Bedrock.",
+  "author": { "@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171" },
+  "publisher": { "@type": "Organization", "name": "MuleSoft Hub", "url": "https://mulesoft.niranjanpotter.dpdns.org/" },
+  "datePublished": "2026-11-24",
+  "dateModified": "2026-11-24",
+  "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html"
+}
+</script>
+<script defer src="blog.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="blog-topbar">
+  <div class="blog-topbar-inner">
+    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
+    <nav class="blog-nav" aria-label="Main">
+      <a href="../index.html">Interview Hub</a>
+      <a href="index.html">All Articles</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="blog-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › A2A Protocol in MuleSoft</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">AI &amp; Agents · Hands-on Guide</span>
+          <h1>Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration</h1>
+          <p class="post-lede">Implement horizontal peer-to-peer agent delegation across Salesforce Agentforce, AWS Bedrock, Google Vertex AI, and MuleSoft using the official Mule 4 A2A Connector (<code>mule4-a2a-connector:2.0.0</code>), standardized Agent Cards, and stateful JSON-RPC task lifecycles.</p>
+          <div class="post-meta">
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Nov 24, 2026</span>
+            <span>⏱️ 19 min read</span>
+            <span class="tag">A2A Protocol</span><span class="tag">Multi-Agent</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="tldr">TL;DR</h2>
+          <ul>
+            <li><strong>MCP is vertical; A2A is horizontal:</strong> Model Context Protocol (MCP) connects an agent vertically to deterministic tools and data; <strong>Agent-to-Agent (A2A)</strong> connects autonomous, opaque peer agents horizontally so a coordinator can delegate open-ended goals without seeing a specialist's private prompts, memory, or internal tools.</li>
+            <li><strong>Official Mule 4 A2A Connector:</strong> Add <code>com.mulesoft.connectors:mule4-a2a-connector:2.0.0</code> (<code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code>) with XML namespace <code>http://www.mulesoft.org/schema/mule/a2a</code> to expose any Mule 4 app as an A2A Server or orchestrate remote A2A peers as an A2A Client.</li>
+            <li><strong>CloudHub-safe Agent Cards:</strong> Always reference your Agent Card via <code>file="${app.home}/agent-card.json"</code> (placed in <code>src/main/resources/agent-card.json</code>)—hardcoding workstation paths breaks immediately inside CloudHub 2.0 Linux containers.</li>
+            <li><strong>Rich asynchronous task state machine:</strong> Unlike synchronous REST calls, A2A models long-running, multi-turn work across <code>submitted</code>, <code>working</code>, <code>input-required</code>, <code>completed</code>, <code>failed</code>, and <code>canceled</code> states, returning typed <code>artifacts</code> correlated by <code>sessionId</code> and <code>taskId</code>.</li>
+            <li><strong>MuleSoft as the Enterprise Agent Control Plane:</strong> Placing Anypoint Flex Gateway and MuleSoft A2A coordinators between Agentforce, Bedrock, Vertex AI, and LangGraph enforces unified OAuth 2.0 identity, budget circuit breakers, and cross-cloud audit trails.</li>
+          </ul>
+
+          <h2 id="what-and-why">What it is and why it matters</h2>
+          <p>No single enterprise runs on one AI vendor. Your CRM customer-service copilot lives in <strong>Salesforce Agentforce</strong>, your fraud-detection reasoning agent runs on <strong>AWS Bedrock</strong>, your supply-chain carrier optimizer runs on <strong>Google Vertex AI</strong>, and your back-office ERP dispute specialist runs in <strong>MuleSoft</strong> or Python <strong>LangGraph</strong>. Without an open wire protocol, connecting two agents forces engineers to write brittle custom REST wrappers that flatten multi-turn conversations, lose streaming progress, and leak internal prompt structures.</p>
+          <p>The <strong>Agent-to-Agent (A2A) Protocol</strong> establishes an open HTTP + JSON-RPC 2.0 + Server-Sent Events (SSE) standard for opaque peer collaboration. Every compliant agent publishes a machine-readable discovery manifest at <code>GET /.well-known/agent.json</code> (its <strong>Agent Card</strong>) advertising its skills, input/output modalities, streaming support, and OAuth schemes—while keeping its internal chain-of-thought, RAG vector stores, and downstream MCP tools completely encapsulated.</p>
+
+          <h3>MCP vs. A2A: Complementary Layers, Not Competitors</h3>
+          <p>Architects are frequently asked in design reviews: <em>"If we already standardized on MCP, why do we need A2A?"</em> Because they operate at fundamentally different layers of the agentic stack:</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Architectural Axis</th>
+                  <th scope="col">MCP (Agent-to-Tool / Data — Vertical)</th>
+                  <th scope="col">A2A (Agent-to-Agent — Horizontal)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Target abstraction</strong></td>
+                  <td>Deterministic functions, APIs, database queries, and static resources with fixed JSON Schema inputs.</td>
+                  <td>Autonomous peer specialist agents capable of planning, reasoning, and asking clarifying questions.</td>
+                </tr>
+                <tr>
+                  <td><strong>Opacity &amp; state</strong></td>
+                  <td>White-box signature: caller picks exact tool arguments; calls are typically short-lived and stateless.</td>
+                  <td>Black-box execution: caller delegates a natural-language/structured goal; specialist owns private state and tools.</td>
+                </tr>
+                <tr>
+                  <td><strong>Interaction lifecycle</strong></td>
+                  <td>Single request/response (<code>tools/call</code> &rarr; <code>result</code>).</td>
+                  <td>Stateful task machine (<code>submitted</code> &rarr; <code>working</code> &rarr; <code>input-required</code> &rarr; <code>completed</code>) + async webhooks.</td>
+                </tr>
+                <tr>
+                  <td><strong>Discovery mechanism</strong></td>
+                  <td><code>tools/list</code>, <code>resources/list</code>, <code>prompts/list</code> over MCP session.</td>
+                  <td><code>GET /.well-known/agent.json</code> (Agent Card) + Enterprise Agent Registry / Anypoint Exchange.</td>
+                </tr>
+                <tr>
+                  <td><strong>How they work together</strong></td>
+                  <td>A Dispute Specialist Agent uses <strong>MCP</strong> internally to query SAP invoices and Stripe chargebacks.</td>
+                  <td>An Agentforce Triage Agent uses <strong>A2A</strong> to delegate the entire dispute case to that Dispute Specialist Agent.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Understanding the A2A Task State Machine</h3>
+          <p>Every A2A delegation revolves around a uniquely addressable <strong>Task</strong> (<code>taskId</code>) grouped within an optional conversation thread (<code>sessionId</code>):</p>
+          <ul>
+            <li><code>submitted</code>: Task accepted and persisted by the specialist agent, queued for execution.</li>
+            <li><code>working</code>: Specialist is actively reasoning, invoking internal MCP tools, or awaiting downstream ERP systems.</li>
+            <li><code>input-required</code>: Specialist lacks critical context (e.g., missing damage photo receipt ID or customer confirmation on a partial refund) and yields control back to the caller to supply another turn under the same <code>taskId</code>.</li>
+            <li><code>completed</code>: Goal achieved; final structured JSON or markdown deliverables are attached in the <code>artifacts</code> array.</li>
+            <li><code>failed</code> / <code>canceled</code>: Terminal states reached on unrecoverable domain errors or explicit caller cancellation (<code>tasks/cancel</code>).</li>
+          </ul>
+
+          <h2 id="architecture">Architecture</h2>
+          <p>In the reference multi-cloud topology below, a customer contacts an <strong>Agentforce Concierge</strong> about a damaged high-value shipment and duplicate billing charge. Agentforce delegates the case over A2A to a <strong>MuleSoft A2A Triage Coordinator</strong>, which fans out specialized sub-tasks to an <strong>Order Dispute Specialist Agent</strong> (MuleSoft A2A Server) and a <strong>Fraud Risk Agent</strong> (AWS Bedrock), while the Dispute Specialist uses MCP internally to inspect SAP and Stripe.</p>
+          <figure>
+            <div class="diagram" role="img" aria-label="Multi-cloud A2A and MCP architecture diagram showing Salesforce Agentforce delegating via A2A to a MuleSoft Coordinator, which delegates horizontally over A2A to an AWS Bedrock Fraud Agent, a Vertex AI Logistics Agent, and a MuleSoft Order Dispute Specialist A2A Server, which in turn calls SAP and Stripe vertically via MCP">+------------------------------------------------------------------------------------+
+| Customer Channel (Web / Slack) --&gt; Salesforce Agentforce Concierge                 |
++-----------------------------------------+------------------------------------------+
+                                          | A2A JSON-RPC (tasks/send · sessionId)
+                                          v
++------------------------------------------------------------------------------------+
+| MuleSoft A2A Coordinator App (enterprise-triage-coordinator) + Flex Gateway        |
+|  - Discovers peer capabilities via GET /.well-known/agent.json                     |
+|  - Propagates OAuth 2.0 JWT + X-Correlation-Id + Delegation Hop Budget             |
++----------------+----------------------------------+--------------------------------+
+                 | A2A (Horizontal)                 | A2A (Horizontal)
+                 v                                  v
++------------------------------------+   +-------------------------------------------+
+| AWS Bedrock Fraud Scoring Agent    |   | MuleSoft A2A Specialist Server            |
+| - /.well-known/agent.json          |   | (order-dispute-a2a-agent · Connector 2.0) |
+| - Private velocity &amp; risk models   |   |  &lt;a2a:server-config&gt;                      |
++------------------------------------+   |  &lt;a2a:agent-card file="${app.home}/..."/&gt; |
+                                         |  States: submitted -&gt; working -&gt;          |
+                                         |          input-required -&gt; completed      |
+                                         +----------+---------------------+----------+
+                                                    | MCP (Vertical)      | MCP (Vertical)
+                                                    v                     v
+                                         +-------------------+ +---------------------+
+                                         | SAP S/4HANA Tools | | Stripe Billing Tools|
+                                         +-------------------+ +---------------------+</div>
+            <figcaption>Figure 1: Horizontal A2A peer delegation across Agentforce, AWS Bedrock, and MuleSoft combined with vertical MCP tool execution inside the specialist boundary.</figcaption>
+          </figure>
+
+          <h2 id="prerequisites">Prerequisites</h2>
+          <div class="callout prereq">
+            <span class="callout-title">You need</span>
+            <ul>
+              <li><strong>Java 17</strong> and <strong>Mule Runtime 4.9.0+</strong> (Anypoint Code Builder or Anypoint Studio 7.21+).</li>
+              <li><strong>Anypoint Enterprise Maven Repository</strong> credentials configured in <code>~/.m2/settings.xml</code> to resolve <code>com.mulesoft.connectors:mule4-a2a-connector:2.0.0</code>.</li>
+              <li><strong>OAuth 2.0 Identity Provider</strong> issuing Bearer JWTs for agent-to-agent client authentication and user context delegation.</li>
+              <li><strong>Object Store v2</strong> enabled (for CloudHub 2.0 deployments) to persist stateful <code>taskId</code> and <code>sessionId</code> transitions across worker replicas.</li>
+            </ul>
+          </div>
+
+          <h2 id="setup">Step-by-step setup</h2>
+          <ol class="steps">
+            <li>
+              <strong>Add the official MuleSoft A2A Connector 2.0.0 to <code>pom.xml</code></strong>
+              <p>Declare <code>mule4-a2a-connector</code> version <code>2.0.0</code> alongside the HTTP and ObjectStore connectors so your Mule app can host A2A endpoints and persist multi-turn task state.</p>
+              <span class="code-label">pom.xml</span>
+              <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule4-a2a-connector&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.mule.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-http-connector&lt;/artifactId&gt;
+  &lt;version&gt;1.10.3&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.mule.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-objectstore-connector&lt;/artifactId&gt;
+  &lt;version&gt;1.2.2&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+            </li>
+
+            <li>
+              <strong>Author <code>src/main/resources/agent-card.json</code></strong>
+              <p>Place your Agent Card inside <code>src/main/resources/agent-card.json</code>. The A2A Connector automatically serves this JSON document at <code>GET /.well-known/agent.json</code> so remote orchestrators can inspect your agent's capabilities, authentication requirements, and domain skills dynamically.</p>
+              <span class="code-label">src/main/resources/agent-card.json</span>
+              <pre><code>{
+  "name": "Acme Order Dispute &amp; Chargeback Specialist",
+  "description": "Autonomous back-office specialist agent that investigates B2B/B2C order disputes, verifies SAP shipment proof-of-delivery against Stripe captures, and issues policy-compliant credit memos up to $1,500 USD.",
+  "url": "https://dispute-agent.acme-corp.com/",
+  "provider": {
+    "organization": "Acme Corp Integration Platform",
+    "url": "https://acme-corp.com"
+  },
+  "version": "2.1.0",
+  "documentationUrl": "https://anypoint.mulesoft.com/exchange/acme/order-dispute-a2a-agent/",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": ["OAuth2", "Bearer"],
+    "credentials": "Requires OAuth 2.0 Bearer JWT with audience api://acme-dispute-a2a and scope a2a:disputes:delegate"
+  },
+  "defaultInputModes": ["text/plain", "application/json"],
+  "defaultOutputModes": ["application/json", "text/markdown"],
+  "skills": [
+    {
+      "id": "investigate_billing_or_damage_dispute",
+      "name": "Investigate Order Dispute &amp; Issue Credit",
+      "description": "Reconciles order invoice, carrier proof-of-delivery, and payment capture to adjudicate duplicate-charge or damaged-transit claims.",
+      "tags": ["orders", "disputes", "refunds", "chargebacks", "sap", "stripe"],
+      "inputModes": ["text/plain", "application/json"],
+      "outputModes": ["application/json"],
+      "examples": [
+        "Customer sarah.connor@acme-corp.com reports ORD-849201 arrived with shattered display and was billed twice on Nov 21.",
+        "Adjudicate dispute for ORD-772104 with damage receipt EVD-99812."
+      ]
+    }
+  ]
+}</code></pre>
+            </li>
+
+            <li>
+              <strong>Configure <code>&lt;a2a:server-config&gt;</code> using <code>${app.home}/agent-card.json</code></strong>
+              <p>Bind the A2A Server configuration to your shared <code>HTTP_Listener_config</code> and point <code>&lt;a2a:agent-card&gt;</code> to <code>${app.home}/agent-card.json</code>.</p>
+              <div class="callout warn">
+                <span class="callout-title">Critical CloudHub 2.0 Deployment Rule: Always use <code>${app.home}</code></span>
+                <p>Never use a workstation path like <code>D:/projects/src/main/resources/agent-card.json</code> or bare relative <code>src/main/resources/agent-card.json</code>. During <code>mvn package</code>, Maven copies everything under <code>src/main/resources/</code> to the root of your deployable JAR, which CloudHub 2.0 and Runtime Fabric unpack into <code>/opt/mule/apps/&lt;app-name&gt;/</code>—resolved at runtime exclusively via <code>${app.home}/agent-card.json</code>.</p>
+              </div>
+              <span class="code-label">Mule XML — A2A Server Configuration</span>
+              <pre><code>&lt;a2a:server-config name="A2A_Server_config"&gt;
+  &lt;a2a:connection listenerConfig="HTTP_Listener_config" agentPath="/"/&gt;
+  &lt;a2a:agent-card file="${app.home}/agent-card.json"/&gt;
+&lt;/a2a:server-config&gt;</code></pre>
+            </li>
+
+            <li>
+              <strong>Implement stateful task listeners and multi-turn <code>input-required</code> handling</strong>
+              <p>Inside your specialist Mule flow, inspect the incoming A2A message parts. If an order number or damage evidence reference is missing for claims over $250, return task state <code>input-required</code> with a prompt explaining exactly what the coordinator must ask the customer; otherwise execute the investigation and emit a typed JSON <code>artifact</code> with state <code>completed</code>.</p>
+            </li>
+          </ol>
+
+          <h2 id="code">Full working example</h2>
+          <p>Here are both halves of a complete production A2A implementation in Mule 4: first, the <strong>Order Dispute Specialist A2A Server</strong>; second, the <strong>Multi-Cloud Triage A2A Coordinator Client</strong> that delegates tasks across MuleSoft and AWS Bedrock agents.</p>
+
+          <h3>1. A2A Specialist Server (<code>order-dispute-a2a-agent.xml</code>)</h3>
+          <span class="code-label">src/main/mule/order-dispute-a2a-agent.xml</span>
+          <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:a2a="http://www.mulesoft.org/schema/mule/a2a"
+      xmlns:os="http://www.mulesoft.org/schema/mule/os"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/a2a http://www.mulesoft.org/schema/mule/a2a/current/mule-a2a.xsd
+        http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd"&gt;
+
+  &lt;http:listener-config name="HTTP_Listener_config"&gt;
+    &lt;http:listener-connection host="0.0.0.0" port="${https.port}"/&gt;
+  &lt;/http:listener-config&gt;
+
+  &lt;a2a:server-config name="A2A_Server_config"&gt;
+    &lt;a2a:connection listenerConfig="HTTP_Listener_config" agentPath="/"/&gt;
+    &lt;a2a:agent-card file="${app.home}/agent-card.json"/&gt;
+  &lt;/a2a:server-config&gt;
+
+  &lt;os:object-store name="Dispute_Task_Store"
+                   persistent="true"
+                   entryTtl="24"
+                   entryTtlUnit="HOURS"
+                   maxEntries="10000"/&gt;
+
+  &lt;flow name="a2a-dispute-task-handler-flow"&gt;
+    &lt;a2a:task-listener config-ref="A2A_Server_config"/&gt;
+
+    &lt;ee:transform doc:name="Extract Task Context &amp; Entities"&gt;
+      &lt;ee:variables&gt;
+        &lt;ee:set-variable variableName="taskCtx"&gt;&lt;![CDATA[%dw 2.0
+output application/java
+var rawText = (payload.message.parts filter ($.type == "text") map $.text) joinBy " "
+var dataPart = (payload.message.parts filter ($.type == "data"))[0].data default {}
+var matchedOrd = (rawText scan /ORD-[0-9]{6}/)[0][0] default dataPart.orderNumber
+var matchedEvd = (rawText scan /EVD-[0-9]{5}/)[0][0] default dataPart.evidenceReceiptId
+---
+{
+  taskId: payload.id,
+  sessionId: payload.sessionId default uuid(),
+  orderNumber: matchedOrd,
+  evidenceReceiptId: matchedEvd,
+  claimType: dataPart.claimType default (if (lower(rawText) contains "damaged") "DAMAGED" else "DUPLICATE_CHARGE")
+}]]&gt;&lt;/ee:set-variable&gt;
+      &lt;/ee:variables&gt;
+    &lt;/ee:transform&gt;
+
+    &lt;os:retrieve key="#[vars.taskCtx.taskId]" objectStore="Dispute_Task_Store" target="priorState"&gt;
+      &lt;os:default-value&gt;&lt;![CDATA[#[{}]]]&gt;&lt;/os:default-value&gt;
+    &lt;/os:retrieve&gt;
+
+    &lt;ee:transform doc:name="Merge Multi-Turn Task State"&gt;
+      &lt;ee:variables&gt;
+        &lt;ee:set-variable variableName="mergedCtx"&gt;&lt;![CDATA[%dw 2.0
+output application/java
+---
+{
+  taskId: vars.taskCtx.taskId,
+  sessionId: vars.taskCtx.sessionId,
+  orderNumber: vars.taskCtx.orderNumber default vars.priorState.orderNumber,
+  evidenceReceiptId: vars.taskCtx.evidenceReceiptId default vars.priorState.evidenceReceiptId,
+  claimType: vars.taskCtx.claimType default vars.priorState.claimType
+}]]&gt;&lt;/ee:set-variable&gt;
+      &lt;/ee:variables&gt;
+    &lt;/ee:transform&gt;
+
+    &lt;choice doc:name="Check Required Investigation Inputs"&gt;
+      &lt;when expression="#[isEmpty(vars.mergedCtx.orderNumber) or (vars.mergedCtx.claimType == 'DAMAGED' and isEmpty(vars.mergedCtx.evidenceReceiptId))]"&gt;
+        &lt;os:store key="#[vars.mergedCtx.taskId]" objectStore="Dispute_Task_Store"&gt;
+          &lt;os:value&gt;&lt;![CDATA[#[vars.mergedCtx]]]&gt;&lt;/os:value&gt;
+        &lt;/os:store&gt;
+        &lt;ee:transform doc:name="Build input-required A2A Response"&gt;
+          &lt;ee:message&gt;
+            &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  id: vars.mergedCtx.taskId,
+  sessionId: vars.mergedCtx.sessionId,
+  status: {
+    state: "input-required",
+    timestamp: now() as String {format: "yyyy-MM-dd'T'HH:mm:ss'Z'"},
+    message: {
+      role: "agent",
+      parts: [
+        {
+          "type": "text",
+          text: if (isEmpty(vars.mergedCtx.orderNumber))
+            "Please provide the 6-digit order number formatted as ORD-XXXXXX."
+          else
+            "For damaged-transit claims on " ++ vars.mergedCtx.orderNumber ++ ", please provide the photo evidence receipt ID (EVD-XXXXX)."
+        }
+      ]
+    }
+  }
+}]]&gt;&lt;/ee:set-payload&gt;
+          &lt;/ee:message&gt;
+        &lt;/ee:transform&gt;
+      &lt;/when&gt;
+
+      &lt;otherwise&gt;
+        &lt;!-- Internal SAP Invoice + Stripe Chargeback Reconciliation Subflow --&gt;
+        &lt;flow-ref name="reconcile-sap-and-stripe-subflow"/&gt;
+        &lt;os:store key="#[vars.mergedCtx.taskId]" objectStore="Dispute_Task_Store"&gt;
+          &lt;os:value&gt;&lt;![CDATA[#[vars.mergedCtx ++ {resolved: true}]]]&gt;&lt;/os:value&gt;
+        &lt;/os:store&gt;
+        &lt;ee:transform doc:name="Build completed A2A Response with Artifacts"&gt;
+          &lt;ee:message&gt;
+            &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  id: vars.mergedCtx.taskId,
+  sessionId: vars.mergedCtx.sessionId,
+  status: {
+    state: "completed",
+    timestamp: now() as String {format: "yyyy-MM-dd'T'HH:mm:ss'Z'"},
+    message: {
+      role: "agent",
+      parts: [
+        {
+          "type": "text",
+          text: "Dispute approved for " ++ vars.mergedCtx.orderNumber ++ ". Duplicate capture verified and credit memo CM-2026-8841 issued for $249.00 USD."
+        }
+      ]
+    }
+  },
+  artifacts: [
+    {
+      name: "dispute-resolution-decision",
+      description: "Audited SAP + Stripe adjudication record",
+      index: 0,
+      lastChunk: true,
+      parts: [
+        {
+          "type": "data",
+          data: {
+            orderNumber: vars.mergedCtx.orderNumber,
+            evidenceReceiptId: vars.mergedCtx.evidenceReceiptId,
+            decision: "APPROVED_FULL_CREDIT",
+            creditMemoId: "CM-2026-8841",
+            refundAmountUsd: 249.00,
+            stripeRefundId: "re_3Q9xLm2eZvKYlo2C1102"
+          }
+        }
+      ]
+    }
+  ]
+}]]&gt;&lt;/ee:set-payload&gt;
+          &lt;/ee:message&gt;
+        &lt;/ee:transform&gt;
+      &lt;/otherwise&gt;
+    &lt;/choice&gt;
+  &lt;/flow&gt;
+
+  &lt;sub-flow name="reconcile-sap-and-stripe-subflow"&gt;
+    &lt;logger level="INFO" message="#['Reconciling SAP delivery &amp; Stripe ledger for taskId=' ++ vars.mergedCtx.taskId ++ ' order=' ++ vars.mergedCtx.orderNumber]"/&gt;
+  &lt;/sub-flow&gt;
+&lt;/mule&gt;</code></pre>
+
+          <h3>2. A2A Coordinator Client (<code>enterprise-triage-coordinator.xml</code>)</h3>
+          <p>This coordinator flow uses <code>&lt;a2a:client-config&gt;</code> to delegate fraud scoring to an AWS Bedrock A2A peer in parallel with delegating dispute resolution to our MuleSoft Specialist Server, enforcing a hop-count header so cyclic agent delegations can never loop infinitely:</p>
+          <span class="code-label">src/main/mule/enterprise-triage-coordinator.xml</span>
+          <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:a2a="http://www.mulesoft.org/schema/mule/a2a"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/a2a http://www.mulesoft.org/schema/mule/a2a/current/mule-a2a.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd"&gt;
+
+  &lt;a2a:client-config name="Dispute_Specialist_A2A_Client"&gt;
+    &lt;a2a:client-connection agentUrl="https://dispute-agent.acme-corp.com/"&gt;
+      &lt;a2a:bearer-authentication token="#[vars.delegatedDisputeJwt]"/&gt;
+    &lt;/a2a:client-connection&gt;
+  &lt;/a2a:client-config&gt;
+
+  &lt;a2a:client-config name="Bedrock_Fraud_A2A_Client"&gt;
+    &lt;a2a:client-connection agentUrl="https://fraud-agent.bedrock.acme-corp.com/"&gt;
+      &lt;a2a:bearer-authentication token="#[vars.delegatedFraudJwt]"/&gt;
+    &lt;/a2a:client-connection&gt;
+  &lt;/a2a:client-config&gt;
+
+  &lt;flow name="orchestrate-customer-dispute-flow"&gt;
+    &lt;ee:transform doc:name="Enforce Hop Budget &amp; Init Correlation"&gt;
+      &lt;ee:variables&gt;
+        &lt;ee:set-variable variableName="hopCount"&gt;&lt;![CDATA[%dw 2.0
+output application/java
+var currentHop = (attributes.headers['x-a2a-hop-count'] default "0") as Number
+---
+if (currentHop &gt;= 4)
+  dw::Runtime::fail("MAX_A2A_DELEGATION_HOPS_EXCEEDED")
+else
+  currentHop + 1]]&gt;&lt;/ee:set-variable&gt;
+        &lt;ee:set-variable variableName="sessionId"&gt;&lt;![CDATA[#[payload.sessionId default uuid()]]]&gt;&lt;/ee:set-variable&gt;
+      &lt;/ee:variables&gt;
+    &lt;/ee:transform&gt;
+
+    &lt;scatter-gather doc:name="Parallel Multi-Cloud Peer Delegation"&gt;
+      &lt;route&gt;
+        &lt;a2a:send-task config-ref="Bedrock_Fraud_A2A_Client" doc:name="Delegate Fraud Check (AWS Bedrock)"&gt;
+          &lt;a2a:task-payload&gt;&lt;![CDATA[#[output application/json --- {
+            id: "fraud-" ++ vars.sessionId,
+            sessionId: vars.sessionId,
+            message: {
+              role: "user",
+              parts: [{ "type": "data", data: { customerEmail: payload.customerEmail, orderNumber: payload.orderNumber } }]
+            }
+          }]]]&gt;&lt;/a2a:task-payload&gt;
+        &lt;/a2a:send-task&gt;
+      &lt;/route&gt;
+
+      &lt;route&gt;
+        &lt;a2a:send-task config-ref="Dispute_Specialist_A2A_Client" doc:name="Delegate Order Dispute (MuleSoft)"&gt;
+          &lt;a2a:task-payload&gt;&lt;![CDATA[#[output application/json --- {
+            id: payload.taskId default ("disp-" ++ vars.sessionId),
+            sessionId: vars.sessionId,
+            message: {
+              role: "user",
+              parts: [
+                { "type": "text", text: payload.customerPrompt },
+                { "type": "data", data: { orderNumber: payload.orderNumber, evidenceReceiptId: payload.evidenceReceiptId, claimType: payload.claimType } }
+              ]
+            }
+          }]]]&gt;&lt;/a2a:task-payload&gt;
+        &lt;/a2a:send-task&gt;
+      &lt;/route&gt;
+    &lt;/scatter-gather&gt;
+
+    &lt;ee:transform doc:name="Synthesize Coordinator Outcome"&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+var fraudTask   = payload."0".payload
+var disputeTask = payload."1".payload
+---
+{
+  sessionId: vars.sessionId,
+  hopDepth: vars.hopCount,
+  fraudRiskState: fraudTask.status.state,
+  disputeTaskId: disputeTask.id,
+  disputeState: disputeTask.status.state,
+  requiresCustomerFollowUp: disputeTask.status.state == "input-required",
+  agentReply: disputeTask.status.message.parts[0].text default "",
+  artifacts: disputeTask.artifacts default []
+}]]&gt;&lt;/ee:set-payload&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+
+          <h2 id="test">Test it</h2>
+          <p>Start the specialist Mule application locally (<code>mvn clean package &amp;&amp; mule -M-Dmule.env=local</code>) or against your CloudHub ingress URL and verify all three core A2A wire interactions using <code>curl</code>.</p>
+
+          <h3>1. Discover the Specialist Agent Card</h3>
+          <span class="code-label">bash — GET /.well-known/agent.json</span>
+          <pre><code>curl -sS "https://dispute-agent.acme-corp.com/.well-known/agent.json" | jq '{name, version, capabilities, skills: [.skills[].id]}'</code></pre>
+
+          <span class="code-label">json — Discovery response</span>
+          <pre><code>{
+  "name": "Acme Order Dispute &amp; Chargeback Specialist",
+  "version": "2.1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  "skills": [
+    "investigate_billing_or_damage_dispute"
+  ]
+}</code></pre>
+
+          <h3>2. Send Turn 1 via <code>tasks/send</code> (Triggers <code>input-required</code>)</h3>
+          <p>Submit a damaged-item claim without an <code>EVD-XXXXX</code> photo receipt ID to observe stateful multi-turn negotiation:</p>
+          <span class="code-label">bash — POST / (JSON-RPC tasks/send — Turn 1)</span>
+          <pre><code>curl -sS -X POST "https://dispute-agent.acme-corp.com/" \
+  -H "Authorization: Bearer $A2A_DELEGATION_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "rpc-101",
+    "method": "tasks/send",
+    "params": {
+      "id": "task-dispute-9041",
+      "sessionId": "sess-agentforce-77c2",
+      "message": {
+        "role": "user",
+        "parts": [
+          {
+            "type": "text",
+            "text": "Customer reports ORD-849201 arrived damaged in transit and was charged twice."
+          }
+        ]
+      }
+    }
+  }' | jq .</code></pre>
+
+          <span class="code-label">json — Turn 1 response (state: input-required)</span>
+          <pre><code>{
+  "jsonrpc": "2.0",
+  "id": "rpc-101",
+  "result": {
+    "id": "task-dispute-9041",
+    "sessionId": "sess-agentforce-77c2",
+    "status": {
+      "state": "input-required",
+      "timestamp": "2026-11-24T17:12:04Z",
+      "message": {
+        "role": "agent",
+        "parts": [
+          {
+            "type": "text",
+            "text": "For damaged-transit claims on ORD-849201, please provide the photo evidence receipt ID (EVD-XXXXX)."
+          }
+        ]
+      }
+    }
+  }
+}</code></pre>
+
+          <h3>3. Supply Missing Context on Same <code>taskId</code> &amp; Poll via <code>tasks/get</code></h3>
+          <p>Notice that in Turn 2 we pass <em>only</em> the evidence receipt ID on <code>task-dispute-9041</code>—our Object Store state recalls <code>ORD-849201</code> from Turn 1 automatically and completes the task with a structured credit-memo artifact:</p>
+          <span class="code-label">bash — POST / (JSON-RPC tasks/send — Turn 2 + tasks/get)</span>
+          <pre><code>curl -sS -X POST "https://dispute-agent.acme-corp.com/" \
+  -H "Authorization: Bearer $A2A_DELEGATION_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "rpc-102",
+    "method": "tasks/send",
+    "params": {
+      "id": "task-dispute-9041",
+      "sessionId": "sess-agentforce-77c2",
+      "message": {
+        "role": "user",
+        "parts": [
+          { "type": "text", "text": "Customer uploaded photo receipt EVD-99812." }
+        ]
+      }
+    }
+  }' | jq .
+
+# Query persisted task status and artifacts at any time via tasks/get
+curl -sS -X POST "https://dispute-agent.acme-corp.com/" \
+  -H "Authorization: Bearer $A2A_DELEGATION_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "rpc-103",
+    "method": "tasks/get",
+    "params": {
+      "id": "task-dispute-9041",
+      "historyLength": 2
+    }
+  }' | jq .</code></pre>
+
+          <span class="code-label">json — Completed task response with artifact</span>
+          <pre><code>{
+  "jsonrpc": "2.0",
+  "id": "rpc-102",
+  "result": {
+    "id": "task-dispute-9041",
+    "sessionId": "sess-agentforce-77c2",
+    "status": {
+      "state": "completed",
+      "timestamp": "2026-11-24T17:12:19Z",
+      "message": {
+        "role": "agent",
+        "parts": [
+          {
+            "type": "text",
+            "text": "Dispute approved for ORD-849201. Duplicate capture verified and credit memo CM-2026-8841 issued for $249.00 USD."
+          }
+        ]
+      }
+    },
+    "artifacts": [
+      {
+        "name": "dispute-resolution-decision",
+        "description": "Audited SAP + Stripe adjudication record",
+        "index": 0,
+        "lastChunk": true,
+        "parts": [
+          {
+            "type": "data",
+            "data": {
+              "orderNumber": "ORD-849201",
+              "evidenceReceiptId": "EVD-99812",
+              "decision": "APPROVED_FULL_CREDIT",
+              "creditMemoId": "CM-2026-8841",
+              "refundAmountUsd": 249.00,
+              "stripeRefundId": "re_3Q9xLm2eZvKYlo2C1102"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+          <h2 id="deploy">Deploy to production</h2>
+          <ul>
+            <li><strong>Verify <code>${app.home}/agent-card.json</code> packaging in CI:</strong> Add a post-package assertion (<code>jar tf target/*.jar | grep '^agent-card.json$'</code>) so broken resource paths never reach CloudHub 2.0.</li>
+            <li><strong>Externalize environment URLs inside the Agent Card:</strong> The <code>url</code> property in <code>agent-card.json</code> tells A2A clients where to send subsequent <code>tasks/send</code> calls—ensure Dev, Stage, and Prod ingress hostnames are templated via Maven resource filtering or served behind your environment's canonical Flex Gateway domain.</li>
+            <li><strong>Use persistent Object Store v2 across multi-replica deployments:</strong> In CloudHub 2.0 with 2+ replicas, an <code>input-required</code> Turn 2 request will routinely land on a different worker pod than Turn 1. Backing <code>taskId</code> state with persistent Object Store v2 (or Redis) avoids split-brain task-not-found errors.</li>
+            <li><strong>Configure SSE streaming (<code>tasks/sendSubscribe</code>) buffering off:</strong> When <code>"streaming": true</code> is enabled in your Agent Card, set <code>X-Accel-Buffering: no</code> and disable response buffering on ingress proxies so <code>TaskStatusUpdateEvent</code> and <code>TaskArtifactUpdateEvent</code> chunks stream in real time to Agentforce or web UIs.</li>
+          </ul>
+
+          <h2 id="security">Security &amp; governance</h2>
+          <ul>
+            <li><strong>Enforce Hop-Count &amp; Cost Circuit Breakers:</strong> Multi-agent graphs can accidentally form cycles (Agent A delegates to Agent B, which delegates to Agent C, which consults Agent A). Require an <code>X-A2A-Hop-Count</code> header (failing hard at depth &ge; 4) and propagate a deadline timestamp (<code>X-A2A-Deadline-Epoch-Ms</code>) across all A2A peers.</li>
+            <li><strong>Cryptographic Agent Identity + Human OBO Claims:</strong> Authenticate the calling peer agent via mTLS or OAuth client assertion while carrying the originating human user's identity inside RFC 8693 chained <code>act</code> claims. An HR Payroll Specialist Agent should reject A2A delegations initiated from an external Customer Support Concierge even if both run inside the same enterprise.</li>
+            <li><strong>Catalog Every Agent Card in Anypoint Exchange:</strong> Register internal and third-party A2A Agent Cards as governed assets in Anypoint Exchange (via MuleSoft Agent Fabric / Topic Center) so architects maintain a live topology map of agent skills, owners, SLAs, and data classifications.</li>
+            <li><strong>Treat Peer Agent Text Outputs as Untrusted Input:</strong> A compromised or prompt-injected external vendor agent can embed adversarial instructions inside its narrative <code>status.message</code>. Prefer structured JSON <code>data</code> parts validated against strict schemas when passing outputs between coordinator steps.</li>
+          </ul>
+
+          <h2 id="troubleshooting">Troubleshooting</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Symptom</th>
+                  <th scope="col">Cause</th>
+                  <th scope="col">Fix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CloudHub 2.0 deployment crashes at startup with <code>FileNotFoundException: .../agent-card.json</code></td>
+                  <td><code>&lt;a2a:agent-card&gt;</code> used a local OS path or <code>src/main/resources/agent-card.json</code> instead of runtime app home.</td>
+                  <td>Place the file in <code>src/main/resources/agent-card.json</code> and set <code>file="${app.home}/agent-card.json"</code> inside <code>&lt;a2a:server-config&gt;</code>.</td>
+                </tr>
+                <tr>
+                  <td>Remote coordinator discovers <code>/.well-known/agent.json</code> fine, then fails on <code>tasks/send</code> with connection refused or <code>404</code></td>
+                  <td>The <code>"url"</code> field inside <code>agent-card.json</code> still points to <code>http://localhost:8081/</code> instead of the public ingress URL.</td>
+                  <td>Update <code>"url"</code> in <code>agent-card.json</code> via Maven environment filtering to match your external HTTPS Flex Gateway route + <code>agentPath</code>.</td>
+                </tr>
+                <tr>
+                  <td>Turn 2 of an <code>input-required</code> task loses Turn 1 entities intermittently in production</td>
+                  <td>In-memory Mule map or non-persistent Object Store was used across 2+ CloudHub 2.0 replicas without sticky sessions.</td>
+                  <td>Enable persistent Object Store v2 (<code>persistent="true"</code>) or Redis keyed by <code>taskId</code> so any replica can resume the conversation.</td>
+                </tr>
+                <tr>
+                  <td>Maven build fails resolving <code>com.mulesoft.connectors:mule4-a2a-connector:2.0.0</code></td>
+                  <td>Missing <code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code> or unauthenticated MuleSoft Enterprise Nexus repository in <code>settings.xml</code>.</td>
+                  <td>Add <code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code> to the dependency and verify Connected App repository credentials for <code>https://maven.anypoint.mulesoft.com/api/v3/maven</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>tasks/sendSubscribe</code> SSE stream delivers all updates in one burst only after task completion</td>
+                  <td>Reverse proxy / ingress load balancer buffers chunked HTTP responses by default.</td>
+                  <td>Configure ingress proxy <code>proxy_buffering off</code>, emit <code>Content-Type: text/event-stream</code>, and extend idle read timeouts beyond task SLA.</td>
+                </tr>
+                <tr>
+                  <td>Runaway latency and token spend between Coordinator and Specialist agents</td>
+                  <td>Bidirectional skill overlap causes Coordinator and Specialist to re-delegate sub-questions back and forth.</td>
+                  <td>Enforce <code>X-A2A-Hop-Count &lt;= 4</code> at Flex Gateway, remove circular client routes, and sharpen Agent Card skill descriptions with explicit scope boundaries.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production checklist</h2>
+          <ul class="checklist">
+            <li><code>mule4-a2a-connector:2.0.0</code> configured with <code>&lt;a2a:agent-card file="${app.home}/agent-card.json"/&gt;</code> and verified inside packaged JAR root.</li>
+            <li><code>GET /.well-known/agent.json</code> advertises accurate environment HTTPS <code>url</code>, <code>capabilities</code>, OAuth schemes, and unambiguous <code>skills</code> examples.</li>
+            <li>Multi-turn task context (<code>taskId</code>, <code>sessionId</code>, state history) stored in persistent Object Store v2 or Redis with explicit TTL cleanup.</li>
+            <li>Every A2A endpoint protected by Anypoint Flex Gateway enforcing OAuth 2.0 audience-restricted JWTs, per-caller rate limits, and chained <code>act</code> audit logging.</li>
+            <li>Delegation loop guards (<code>X-A2A-Hop-Count</code> max depth and per-request deadline propagation) enforced on all outbound <code>&lt;a2a:send-task&gt;</code> calls.</li>
+            <li>Structured deliverables emitted inside typed JSON <code>artifacts</code> rather than unstructured prose alone so upstream coordinators parse outcomes deterministically.</li>
+            <li>Long-running ERP or human-approval tasks (&gt; 30 seconds) return immediate <code>working</code> state and stream SSE updates or push webhook notifications instead of holding blocking sockets.</li>
+            <li>All internal and external A2A Agent Cards registered and versioned in Anypoint Exchange for cross-team discovery and governance.</li>
+          </ul>
+
+          <h2 id="interview">Interview questions</h2>
+          <details class="qa">
+            <summary>1. How do you explain the difference between MCP and A2A to a CIO or Enterprise Architecture board?</summary>
+            <div>
+              <p><strong>MCP (Model Context Protocol)</strong> is how a single agent uses <em>tools and data</em>—like giving a mechanic a wrench and a diagnostic scanner with exact button inputs. <strong>A2A (Agent-to-Agent Protocol)</strong> is how independent <em>specialist agents collaborate as peers</em>—like a service advisor handing a complex transmission rebuild ticket to a master transmission specialist. With A2A, the coordinator states the goal and context without needing visibility into the specialist's private prompts, reasoning model, or internal MCP tools—enabling clean interoperability across Salesforce Agentforce, AWS Bedrock, Vertex AI, and MuleSoft.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>2. Why does referencing <code>agent-card.json</code> without <code>${app.home}</code> work locally in Anypoint Studio/ACB on Windows or macOS but fail in CloudHub 2.0?</summary>
+            <div>
+              <p>On a developer laptop, relative paths sometimes resolve accidentally against the IDE's working directory, and absolute paths like <code>C:\workspace\...</code> exist on the local disk. Inside CloudHub 2.0 or Runtime Fabric Kubernetes containers, the JVM working directory is not your project root—Mule unpacks your packaged JAR under <code>/opt/mule/apps/&lt;app-name&gt;/</code>, where <code>src/main/resources/</code> files sit at the root of <code>${app.home}</code>. Using <code>file="${app.home}/agent-card.json"</code> guarantees portable resolution across local Studio, CI MUnit runs, RTF, and CloudHub 2.0.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>3. Walk through how A2A handles a multi-turn human-in-the-loop clarification mid-delegation.</summary>
+            <div>
+              <p>When Coordinator Agent A sends <code>tasks/send</code> (<code>id: "task-9041"</code>, <code>sessionId: "sess-77"</code>) to Specialist Agent B, and Agent B discovers a required business input is missing (such as a photo receipt ID or user approval for a restocking fee), Agent B persists its partial context and responds with <code>status.state = "input-required"</code> plus a prompt message. Coordinator A surfaces that question to the human user, collects the answer, and invokes <code>tasks/send</code> again with the <strong>exact same <code>taskId</code></strong>. Agent B loads prior state from Object Store, completes execution, and transitions the task to <code>completed</code> with final <code>artifacts</code>.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>4. How do you prevent infinite delegation loops and runaway LLM costs in a decentralized multi-agent mesh?</summary>
+            <div>
+              <p>Combine four controls at the MuleSoft orchestration and Flex Gateway layers: (1) inject and increment an immutable <code>X-A2A-Hop-Count</code> header on every outbound delegation, rejecting requests exceeding a strict ceiling (typically 3–4 hops); (2) track visited agent IDs in a call-chain list to immediately block cyclic graphs (<code>A &rarr; B &rarr; A</code>); (3) propagate a decreasing deadline budget header so downstream agents abort before upstream timeouts; and (4) apply per-client SLA rate and token/request quotas in API Manager.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>5. When designing an A2A Specialist response, when should data go into <code>status.message</code> versus <code>artifacts</code>?</summary>
+            <div>
+              <p>Use <code>status.message</code> for conversational status updates, progress notes, error explanations, and <code>input-required</code> clarifying questions intended to guide dialogue. Place the durable, verifiable outputs of the task—such as an approved credit-memo JSON record, a generated PDF claim summary, or a risk-score vector—inside <code>artifacts</code> with typed <code>data</code> or file parts. Separating conversational wrapper text from structured <code>artifacts</code> lets upstream Mule flows and deterministic systems consume the output reliably without brittle regex parsing.</p>
+            </div>
+          </details>
+
+          <h2 id="sources">Sources &amp; further reading</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/a2a-connector/latest/" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Mule 4 Agent-to-Agent (A2A) Connector 2.0 Reference</a></li>
+            <li><a href="https://a2a-protocol.org/latest/specification/" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) Protocol Official Specification — Agent Cards, Tasks &amp; JSON-RPC Binding</a></li>
+            <li><a href="https://docs.mulesoft.com/cloudhub-2/latest/" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — CloudHub 2.0 Application Packaging &amp; Runtime Properties (<code>${app.home}</code>)</a></li>
+            <li><a href="https://docs.mulesoft.com/object-store-connector/latest/" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Object Store v2 Connector for Stateful Multi-Replica Flows</a></li>
+            <li><a href="https://www.salesforce.com/agentforce/" target="_blank" rel="noopener noreferrer">Salesforce &amp; MuleSoft Architecture — Multi-Agent Interoperability with Agentforce &amp; Agent Fabric</a></li>
+          </ul>
+        </div>
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+          <a class="prev" href="mulesoft-mcp-bridge-openapi-to-agent-tools.html"><span>← Previous</span><strong>MuleSoft MCP Bridge: OpenAPI to Agent Tools</strong></a>
+          <a class="next" href="agentforce-mulesoft-topic-center-api-actions.html"><span>Next →</span><strong>Agentforce + MuleSoft Topic Center &amp; API Catalog</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#what-and-why">What it is and why it matters</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup">Step-by-step setup</a></li>
+        <li><a href="#code">Full working example</a></li>
+        <li><a href="#test">Test it</a></li>
+        <li><a href="#deploy">Deploy to production</a></li>
+        <li><a href="#security">Security &amp; governance</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#checklist">Production checklist</a></li>
+        <li><a href="#interview">Interview questions</a></li>
+        <li><a href="#sources">Sources &amp; further reading</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+<footer class="blog-footer">
+  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

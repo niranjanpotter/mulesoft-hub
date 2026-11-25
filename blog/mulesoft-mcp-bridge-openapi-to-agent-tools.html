@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools | MuleSoft Hub Blog</title>
+<meta name="description" content="Turn existing OpenAPI 3.0 and Anypoint Exchange APIs into governed MCP Server tools with MuleSoft MCP Bridge, Flex Gateway, and OAuth 2.0 token propagation.">
+<meta name="author" content="Niranjan Potter">
+<link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools">
+<meta property="og:description" content="Turn existing OpenAPI 3.0 and Anypoint Exchange APIs into governed MCP Server tools with MuleSoft MCP Bridge, Flex Gateway, and OAuth 2.0 token propagation.">
+<meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">
+<meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+<meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools",
+  "description": "Turn existing OpenAPI 3.0 and Anypoint Exchange APIs into governed MCP Server tools with MuleSoft MCP Bridge, Flex Gateway, and OAuth 2.0 token propagation.",
+  "author": { "@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171" },
+  "publisher": { "@type": "Organization", "name": "MuleSoft Hub", "url": "https://mulesoft.niranjanpotter.dpdns.org/" },
+  "datePublished": "2026-11-24",
+  "dateModified": "2026-11-24",
+  "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html"
+}
+</script>
+<script defer src="blog.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="blog-topbar">
+  <div class="blog-topbar-inner">
+    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
+    <nav class="blog-nav" aria-label="Main">
+      <a href="../index.html">Interview Hub</a>
+      <a href="index.html">All Articles</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="blog-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › MCP Bridge (OpenAPI to MCP)</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">AI &amp; Agents · Hands-on Guide</span>
+          <h1>MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools</h1>
+          <p class="post-lede">Wrap existing REST, OpenAPI 3.0, and RAML Process &amp; Experience APIs from Anypoint Exchange into governed Model Context Protocol (MCP) Servers—with zero Mule backend rewrites, strict tool curation, and OAuth 2.0 On-Behalf-Of user identity propagation.</p>
+          <div class="post-meta">
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Nov 24, 2026</span>
+            <span>⏱️ 17 min read</span>
+            <span class="tag">MCP Bridge</span><span class="tag">OpenAPI &amp; Exchange</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="tldr">TL;DR</h2>
+          <ul>
+            <li><strong>Zero-rewrite MCP enablement:</strong> MuleSoft MCP Bridge (deployed via Anypoint Flex Gateway and API Manager) projects curated operations from existing Anypoint Exchange OpenAPI 3.0 and RAML contracts onto a standard Streamable HTTP <code>/mcp</code> endpoint—without touching your underlying Mule 4 XML flows.</li>
+            <li><strong>Bridge vs. Custom MCP Connector:</strong> Use <strong>MCP Bridge</strong> when an existing Process or Experience API already models business-level actions; build a custom Mule app with <code>mule-mcp-connector</code> only when a single agent tool must orchestrate multiple disparate backends, run stateful scatter-gather logic, or synthesize payloads in DataWeave before returning to the LLM.</li>
+            <li><strong>Never do naive 1:1 OpenAPI conversion:</strong> Dumping a 60-endpoint CRUD OpenAPI spec straight into an MCP server floods the model's context window, degrades tool-selection accuracy, causes parameter hallucinations on vague fields like <code>id</code> or <code>flag</code>, and exposes destructive <code>DELETE</code>/<code>PUT</code> verbs.</li>
+            <li><strong>Spec quality is prompt engineering:</strong> With MCP Bridge, your OpenAPI <code>operationId</code>, semantic <code>description</code>, and JSON Schema <code>enum</code>/<code>pattern</code> constraints become the exact prompt instructions the LLM sees during <code>tools/list</code>.</li>
+            <li><strong>Propagate user tokens, never god-mode credentials:</strong> Configure OAuth 2.0 On-Behalf-Of (RFC 8693 Token Exchange) or Bearer pass-through on the Bridge so the agent executes strictly within the calling human's scopes and tenant row-level permissions.</li>
+          </ul>
+
+          <h2 id="what-and-why">What it is and why it matters</h2>
+          <p>Enterprise MuleSoft teams typically sit on hundreds of battle-tested System, Process, and Experience APIs cataloged in <strong>Anypoint Exchange</strong>. When AI initiatives—whether Salesforce Agentforce, Claude Enterprise, GitHub Copilot, or internal LangGraph agents—need live enterprise actions, rebuilding every REST API as a bespoke MCP server application creates massive duplication, deployment sprawl, and governance drift.</p>
+          <p><strong>MuleSoft MCP Bridge</strong> solves this at the API gateway layer. By reading governed OpenAPI 3.0 (or Exchange-converted RAML) specifications directly from Anypoint Exchange, MCP Bridge dynamically translates MCP JSON-RPC 2.0 protocol frames (<code>initialize</code>, <code>tools/list</code>, and <code>tools/call</code>) into upstream REST HTTP calls, enforcing Anypoint API Manager policies (JWT validation, SLA rate-limiting, threat protection, and audit logging) along the way.</p>
+
+          <h3>MCP Bridge vs. Custom Mule MCP Connector App</h3>
+          <p>Choosing the wrong pattern either wastes weeks of Mule engineering time or forces an LLM to stitch together low-level chatty calls. Use this architectural decision matrix:</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Dimension</th>
+                  <th scope="col">MuleSoft MCP Bridge (Gateway / Exchange)</th>
+                  <th scope="col">Custom Mule App (<code>mule-mcp-connector</code>)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Backend code changes</strong></td>
+                  <td>Zero—wraps existing HTTP REST APIs (Mule, Java, .NET, Go) via OpenAPI contract.</td>
+                  <td>Requires authoring, testing, and deploying a dedicated Mule 4 application.</td>
+                </tr>
+                <tr>
+                  <td><strong>Ideal API layer</strong></td>
+                  <td>Coarse-grained <strong>Process</strong> and <strong>Experience APIs</strong> already shaped around business outcomes.</td>
+                  <td>Composite agent facade sitting above chatty System APIs, SOAP services, JMS queues, or mainframes.</td>
+                </tr>
+                <tr>
+                  <td><strong>Tool schema source</strong></td>
+                  <td>Derived automatically from OpenAPI <code>operationId</code>, <code>description</code>, path/query params, and <code>requestBody</code> schemas.</td>
+                  <td>Hand-crafted JSON Schema inside <code>&lt;mcp:tool-listener&gt;</code> config.</td>
+                </tr>
+                <tr>
+                  <td><strong>Payload shaping</strong></td>
+                  <td>Declarative header/claim injection and field masking at Flex Gateway.</td>
+                  <td>Full DataWeave 2.0 transformation, multi-system enrichment, and response summarization.</td>
+                </tr>
+                <tr>
+                  <td><strong>Operational footprint</strong></td>
+                  <td>Zero extra Mule vCores—runs as a policy/route on existing Flex Gateway replicas.</td>
+                  <td>Consumes dedicated CloudHub 2.0 vCores / RTF pods per MCP server app.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Why Naive 1:1 OpenAPI-to-MCP Conversion Fails in Production</h3>
+          <p>Pointing an auto-generator at a raw System API OpenAPI file works in a 5-minute demo and fails catastrophically under real user traffic for four engineering reasons:</p>
+          <ol>
+            <li><strong>Context window bloat &amp; routing confusion:</strong> A typical Order Management REST spec exposes 50+ endpoints (<code>GET /orders</code>, <code>GET /orders/{id}/lines</code>, <code>PATCH /orders/{id}/shipping-address</code>, <code>GET /orders/meta/statuses</code>). Injecting 50 tool schemas burns 12,000–20,000 input tokens on <em>every</em> turn and drops LLM tool-selection precision below 70%.</li>
+            <li><strong>Ambiguous parameter schemas trigger hallucinations:</strong> REST developers write query parameters like <code>?q=string&amp;type=1&amp;id=string</code>. Without explicit <code>pattern</code> regexes, <code>enum</code> values, and disambiguating property names (<code>customer_email</code> vs. <code>order_number</code>), the model guesses internal database UUIDs that it never possessed.</li>
+            <li><strong>Developer docs are not agent instructions:</strong> An OpenAPI summary that says <code>Returns 200 OrderResponse</code> tells an LLM nothing about <em>when</em> to pick this tool over two similar endpoints, what business preconditions apply, or whether results are paginated.</li>
+            <li><strong>Destructive verbs without blast-radius controls:</strong> Exposing <code>DELETE /orders/{orderId}</code> or bulk <code>PUT</code> endpoints directly to an autonomous loop invites prompt-injection data loss unless write tools are explicitly allowlisted, annotated with <code>destructiveHint: true</code>, and gated behind elevated OAuth scopes.</li>
+          </ol>
+
+          <h2 id="architecture">Architecture</h2>
+          <p>In a production Anypoint topology, MCP Bridge sits on <strong>Anypoint Flex Gateway</strong> in front of your Process and Experience APIs. Anypoint Exchange acts as the single source of truth for the enriched OpenAPI 3.0 contract, while API Manager governs tool curation, rate limits, and OAuth 2.0 On-Behalf-Of (OBO) token validation.</p>
+          <figure>
+            <div class="diagram" role="img" aria-label="Architecture diagram showing AI Agent Host sending Streamable HTTP JSON-RPC requests to Anypoint Flex Gateway running MuleSoft MCP Bridge, governed by Exchange OpenAPI 3.0 and OAuth 2.0 OBO IdP, routing curated REST calls to Customer Order Process API and downstream SAP and Salesforce System APIs">+-----------------------------------------------------------------------------------+
+| AI Host / Agent Runtime (Agentforce / Claude Desktop / Cursor / LangGraph)        |
+|   1. POST /mcp  {"method": "tools/list"}                                          |
+|   2. POST /mcp  {"method": "tools/call", "params": {"name": "lookup_customer_..."} }|
+|      Authorization: Bearer &lt;OBO_User_Scoped_JWT&gt;                                  |
++-----------------------------------------+-----------------------------------------+
+                                          | HTTPS (TLS 1.3 · Streamable HTTP MCP)
+                                          v
++-----------------------------------------------------------------------------------+
+| Anypoint Flex Gateway + MuleSoft MCP Bridge                                       |
+|                                                                                   |
+|  +---------------------------+  +-----------------------+  +-------------------+  |
+|  | OAuth 2.0 JWT Policy      |  | MCP Bridge Engine     |  | Tool Curation     |  |
+|  | - Verify aud, iss, exp    |  | - JSON-RPC &lt;-&gt; REST   |  | - Allow: 3 tools  |  |
+|  | - Enforce tool scopes     |  | - Schema validation   |  | - Block: DELETE   |  |
+|  | - Propagate sub &amp; org_id  |  | - Error normalization |  | - Mask PII fields |  |
+|  +---------------------------+  +-----------+-----------+  +-------------------+  |
+|                                             | Contract synced from Exchange       |
++---------------------------------------------+-------------------------------------+
+                                              | HTTPS REST + X-User-Sub / Bearer JWT
+                                              v
++-----------------------------------------------------------------------------------+
+| Existing Mule 4 App: customer-order-papi (Zero MCP Connector Code Needed)         |
+|  - GET  /v1/customers/{customerEmail}/orders   &lt;-- lookup_customer_orders         |
+|  - GET  /v1/orders/{orderNumber}/tracking      &lt;-- get_shipment_tracking          |
+|  - POST /v1/orders/{orderNumber}/returns       &lt;-- create_return_authorization    |
+|  - DELETE /v1/admin/orders/{orderNumber}       [X] Blocked from MCP Bridge        |
++----------------------+-------------------------------------+----------------------+
+                       |                                     |
+                       v                                     v
+        +-----------------------------+       +-----------------------------+
+        | Salesforce CRM System API   |       | SAP S/4HANA Order System API|
+        +-----------------------------+       +-----------------------------+</div>
+            <figcaption>Figure 1: MuleSoft MCP Bridge projecting curated OpenAPI 3.0 operations from Anypoint Exchange as governed MCP tools over Streamable HTTP with end-to-end user identity propagation.</figcaption>
+          </figure>
+
+          <h2 id="prerequisites">Prerequisites</h2>
+          <div class="callout prereq">
+            <span class="callout-title">You need</span>
+            <ul>
+              <li><strong>Anypoint Platform account</strong> with Exchange Contributor, API Manager Environment Administrator, and Runtime Manager permissions.</li>
+              <li><strong>Anypoint Flex Gateway 1.8+</strong> (running in Connected Mode on Docker, Kubernetes Ingress, or Linux systemd) with MCP Bridge capability enabled.</li>
+              <li><strong>Anypoint CLI v4</strong> (<code>npm install -g anypoint-cli-v4</code>) for automated Exchange asset publishing and API instance promotion.</li>
+              <li><strong>OAuth 2.0 Identity Provider</strong> (Okta, Microsoft Entra ID, Salesforce Identity, or Keycloak) configured to issue JWTs with <code>orders:read</code> and <code>orders:returns:write</code> scopes.</li>
+              <li><strong>Existing Process or Experience REST API</strong> reachable from Flex Gateway (we use <code>customer-order-papi</code> on port <code>8081</code>), plus <code>curl</code> and <code>jq</code> for JSON-RPC verification.</li>
+            </ul>
+          </div>
+
+          <h2 id="setup">Step-by-step setup</h2>
+          <ol class="steps">
+            <li>
+              <strong>Audit and enrich your OpenAPI 3.0 contract for LLM consumption</strong>
+              <p>Before publishing to Exchange, refactor target endpoints so every exposed operation has a deterministic <code>snake_case</code> <code>operationId</code> (under 64 characters), an action-oriented <code>description</code> stating <em>when</em> and <em>when not</em> to call the tool, and tight JSON Schema constraints (<code>pattern</code>, <code>enum</code>, <code>maxLength</code>).</p>
+              <div class="callout tip">
+                <span class="callout-title">Architect Tip: Keep non-destructive spec overlays</span>
+                <p>If legacy consumers rely on old <code>operationId</code> values for client SDK codegen, use an OpenAPI 3.0 overlay build step in CI to generate an agent-curated spec variant or attach vendor extensions like <code>x-mcp-tool-name</code> and <code>x-mcp-expose: true</code>.</p>
+              </div>
+            </li>
+
+            <li>
+              <strong>Publish the enriched OpenAPI 3.0 asset to Anypoint Exchange</strong>
+              <p>Authenticate with Anypoint CLI v4 using a Connected App and upload <code>customer-order-papi.yaml</code> to Exchange. Tagging the asset with <code>mcp-ready</code> allows Anypoint API Governance rulesets to lint agent readiness automatically.</p>
+              <span class="code-label">bash — Publish OpenAPI 3.0 spec to Anypoint Exchange</span>
+              <pre><code>export ANYPOINT_CLIENT_ID="a1b2c3d4e5f64789a0b1c2d3e4f56789"
+export ANYPOINT_CLIENT_SECRET="$CONNECTED_APP_SECRET"
+export ORG_ID="8f4c2b10-91e4-4d3a-b812-77c90e123456"
+
+anypoint-cli-v4 exchange:asset:upload \
+  --organizationId "$ORG_ID" \
+  --groupId "$ORG_ID" \
+  --assetId "customer-order-papi" \
+  --version "1.2.0" \
+  --apiVersion "v1" \
+  --name "Customer Order Process API" \
+  --classifier "oas" \
+  --mainFile "customer-order-papi.yaml" \
+  --files '{"oas.zip": "./customer-order-papi.yaml"}' \
+  --tags "mcp-ready,process-api,orders"</code></pre>
+            </li>
+
+            <li>
+              <strong>Curate the MCP tool surface (Read-Only vs. Scope-Gated Write)</strong>
+              <p>Never expose an entire API blindly. In your MCP Bridge configuration, explicitly allowlist the three business operations an agent legitimately needs, annotate read tools with <code>readOnlyHint: true</code>, mark return creation with <code>idempotentHint: true</code> (backed by an idempotency key), and exclude administrative <code>DELETE</code> or bulk-export endpoints.</p>
+            </li>
+
+            <li>
+              <strong>Configure OAuth 2.0 On-Behalf-Of (OBO) user token propagation</strong>
+              <p>Bind an OAuth 2.0 JWT Validation policy ahead of the MCP Bridge filter. When a user chats with an AI host, the host exchanges the user's session token for an audience-restricted downstream JWT (RFC 8693 Token Exchange) carrying <code>aud: api://customer-order-mcp</code>, the user's <code>sub</code>, and narrowed scopes. Flex Gateway verifies the JWT signature against your IdP JWKS URI, checks per-tool scope requirements, and forwards the verified claims upstream.</p>
+              <span class="code-label">json — Decoded OBO JWT claims required by MCP Bridge</span>
+              <pre><code>{
+  "iss": "https://login.acme-corp.okta.com/oauth2/aus9x8y7z6",
+  "sub": "sarah.connor@acme-corp.com",
+  "aud": "api://customer-order-mcp",
+  "scp": ["orders:read", "orders:returns:write"],
+  "org_id": "TENANT_NA_WEST_04",
+  "act": {
+    "sub": "spn:agentforce-support-copilot"
+  },
+  "exp": 1795543200
+}</code></pre>
+            </li>
+
+            <li>
+              <strong>Enforce claim-based row-level filtering in the upstream Mule Process API</strong>
+              <p>Even with gateway validation, your Process API must verify that the authenticated human owns or is authorized to access the queried customer record, logging the <code>act.sub</code> actor claim so security teams can distinguish AI-assisted calls from direct UI traffic.</p>
+            </li>
+          </ol>
+
+          <h2 id="code">Full working example</h2>
+          <p>Below are the three complete artifacts that turn an existing Mule 4 Process API into a hardened, production-grade MCP Server: the agent-optimized OpenAPI 3.0.3 contract, the declarative Flex Gateway + MCP Bridge YAML configuration, and the upstream DataWeave 2.0 claims propagation transform.</p>
+
+          <h3>1. Agent-Ready OpenAPI 3.0 Specification</h3>
+          <span class="code-label">customer-order-papi.yaml</span>
+          <pre><code>openapi: 3.0.3
+info:
+  title: Customer Order Process API
+  version: 1.2.0
+  description: &gt;-
+    Enterprise Process API for querying B2B/B2C customer orders, real-time carrier
+    shipment tracking, and initiating return merchandise authorizations (RMAs).
+servers:
+  - url: https://api.acme-corp.internal/orders-papi/v1
+
+paths:
+  /customers/{customerEmail}/orders:
+    get:
+      operationId: lookup_customer_orders
+      summary: List recent orders for a verified customer email
+      description: &gt;-
+        Retrieves up to 10 recent orders placed by a customer identified by their exact
+        email address. Call this tool FIRST when a user asks about order status, missing
+        items, or invoice totals and has not provided an ORD-XXXXXX order number. Do NOT
+        guess email addresses; ask the user if unknown.
+      parameters:
+        - name: customerEmail
+          in: path
+          required: true
+          description: Verified customer email address (e.g. jane.doe@example.com).
+          schema:
+            type: string
+            format: email
+            maxLength: 120
+        - name: statusFilter
+          in: query
+          required: false
+          description: Optional filter to narrow orders by fulfillment lifecycle state.
+          schema:
+            type: string
+            enum: [PROCESSING, SHIPPED, DELIVERED, RETURN_REQUESTED, CANCELED]
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of orders to return (1 to 10, defaults to 5).
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 5
+      responses:
+        '200':
+          description: Matching customer order summaries sorted newest first.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [customerEmail, totalMatched, orders]
+                properties:
+                  customerEmail:
+                    type: string
+                  totalMatched:
+                    type: integer
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderSummary'
+
+  /orders/{orderNumber}/tracking:
+    get:
+      operationId: get_shipment_tracking
+      summary: Fetch live carrier tracking milestones and ETA for an order
+      description: &gt;-
+        Returns live carrier scan events, current transit hub, tracking URL, and estimated
+        delivery date for a single order number matching pattern ORD-[0-9]{6}. Only call
+        this tool when the order status is SHIPPED or DELIVERED.
+      parameters:
+        - name: orderNumber
+          in: path
+          required: true
+          description: Canonical 6-digit order identifier formatted as ORD-123456.
+          schema:
+            type: string
+            pattern: '^ORD-[0-9]{6}$'
+      responses:
+        '200':
+          description: Real-time shipment tracking telemetry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingDetail'
+
+  /orders/{orderNumber}/returns:
+    post:
+      operationId: create_return_authorization
+      summary: Create an RMA return label for an eligible delivered order
+      description: &gt;-
+        Initiates a Return Merchandise Authorization (RMA) for one SKU inside a DELIVERED
+        order within the 30-day return window. IMPORTANT: Confirm the exact orderNumber,
+        sku, quantity, and reasonCode with the user BEFORE invoking this write tool.
+      parameters:
+        - name: orderNumber
+          in: path
+          required: true
+          description: Canonical order identifier formatted as ORD-123456.
+          schema:
+            type: string
+            pattern: '^ORD-[0-9]{6}$'
+        - name: Idempotency-Key
+          in: header
+          required: true
+          description: Deterministic UUIDv4 or hash preventing duplicate RMA creation on retries.
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [sku, quantity, reasonCode]
+              properties:
+                sku:
+                  type: string
+                  pattern: '^SKU-[A-Z0-9]{4,12}$'
+                  description: Exact product SKU code from lookup_customer_orders line items.
+                quantity:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                  description: Number of units being returned.
+                reasonCode:
+                  type: string
+                  enum: [DAMAGED_IN_TRANSIT, WRONG_ITEM_SENT, DEFECTIVE, CHANGED_MIND]
+                  description: Standardized return reason classification.
+                customerNotes:
+                  type: string
+                  maxLength: 300
+                  description: Concise summary of defect or return details provided by customer.
+      responses:
+        '201':
+          description: Created RMA record and prepaid return label URL.
+
+  /admin/orders/{orderNumber}:
+    delete:
+      operationId: hard_delete_order_record
+      summary: Permanently purge an order record (Admin Compliance Only)
+      description: Hard-deletes an order from operational storage. Never expose to AI agents.
+      parameters:
+        - name: orderNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Order purged.
+
+components:
+  securitySchemes:
+    oauth2Jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    OrderSummary:
+      type: object
+      properties:
+        orderNumber: { type: string, example: "ORD-849201" }
+        placedAt: { type: string, format: date-time }
+        status: { type: string }
+        totalAmountUsd: { type: number }
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              sku: { type: string }
+              title: { type: string }
+              quantity: { type: integer }
+    TrackingDetail:
+      type: object
+      properties:
+        orderNumber: { type: string }
+        carrier: { type: string, example: "UPS" }
+        trackingNumber: { type: string }
+        estimatedDelivery: { type: string, format: date }
+        lastScanLocation: { type: string }</code></pre>
+
+          <h3>2. Declarative Flex Gateway &amp; MCP Bridge Policy Configuration</h3>
+          <p>This Kubernetes / Connected Mode declarative resource binds the Exchange contract to <code>/mcp</code>, enforces OAuth 2.0 JWT validation, curates the exact three permitted operations (blocking <code>hard_delete_order_record</code>), attaches MCP tool behavioral hints, and masks raw payment metadata before returning JSON-RPC tool results to the model.</p>
+          <span class="code-label">mcp-bridge-gateway.yaml</span>
+          <pre><code>apiVersion: gateway.mulesoft.com/v1alpha1
+kind: ApiInstance
+metadata:
+  name: customer-order-mcp-bridge
+  namespace: anypoint-ingress
+spec:
+  address: https://0.0.0.0:8443
+  services:
+    upstreamOrderPapi:
+      address: https://customer-order-papi.prod.svc.cluster.local:8081/api/v1
+      tls:
+        insecureSkipVerify: false
+  routes:
+    - config:
+        path: /mcp
+        methods: [POST, GET, DELETE]
+      destination: upstreamOrderPapi
+  policies:
+    - policyRef:
+        name: jwt-validation
+        namespace: anypoint-ingress
+      order: 1
+      config:
+        jwksUrl: https://login.acme-corp.okta.com/oauth2/aus9x8y7z6/v1/keys
+        jwksCachingTtlSeconds: 900
+        validateAudClaim: true
+        mandatoryAudClaims:
+          - "api://customer-order-mcp"
+        claimsToHeaders:
+          - claimName: sub
+            headerName: X-Authenticated-User
+          - claimName: org_id
+            headerName: X-Tenant-Org-Id
+          - claimName: act.sub
+            headerName: X-Agent-Actor-Id
+
+    - policyRef:
+        name: rate-limiting-sla
+        namespace: anypoint-ingress
+      order: 2
+      config:
+        keySelector: "#[attributes.headers['X-Authenticated-User']]"
+        limits:
+          - maximumRequests: 30
+            timePeriodInMilliseconds: 60000
+
+    - policyRef:
+        name: mcp-bridge
+        namespace: anypoint-ingress
+      order: 3
+      config:
+        serverInfo:
+          name: "acme-customer-order-mcp"
+          version: "1.2.0"
+        protocolVersion: "2025-06-18"
+        transport: streamable-http
+        exchangeContract:
+          orgId: "8f4c2b10-91e4-4d3a-b812-77c90e123456"
+          assetId: "customer-order-papi"
+          version: "1.2.0"
+        maxResponseBytes: 65536
+        redactJsonPaths:
+          - "$..billingCardLast4"
+          - "$..warehouseInternalCostUsd"
+        curatedTools:
+          - operationId: lookup_customer_orders
+            requiredScopes: ["orders:read"]
+            annotations:
+              title: "Lookup Customer Orders"
+              readOnlyHint: true
+              destructiveHint: false
+              idempotentHint: true
+              openWorldHint: false
+          - operationId: get_shipment_tracking
+            requiredScopes: ["orders:read"]
+            annotations:
+              title: "Get Order Shipment Tracking"
+              readOnlyHint: true
+              destructiveHint: false
+              idempotentHint: true
+              openWorldHint: false
+          - operationId: create_return_authorization
+            requiredScopes: ["orders:returns:write"]
+            injectHeaders:
+              X-Invocation-Channel: "MCP_BRIDGE"
+            annotations:
+              title: "Create Return Merchandise Authorization"
+              readOnlyHint: false
+              destructiveHint: false
+              idempotentHint: true
+              openWorldHint: false</code></pre>
+
+          <h3>3. Upstream DataWeave 2.0 Identity &amp; Audit Context</h3>
+          <p>Inside <code>customer-order-papi</code>, add a lightweight DataWeave variable transform at the start of your APIkit router flow to capture propagated user identity, tenant boundary, and agent actor metadata for row-level authorization and compliance logging:</p>
+          <span class="code-label">src/main/resources/dw/extract-governance-context.dwl</span>
+          <pre><code>%dw 2.0
+output application/java
+var callerEmail = lower(trim(attributes.headers['x-authenticated-user'] default ""))
+var tenantOrgId = attributes.headers['x-tenant-org-id'] default ""
+var agentActor  = attributes.headers['x-agent-actor-id'] default "direct-rest-client"
+var requestedEmail = lower(trim(attributes.uriParams.customerEmail default callerEmail))
+---
+if (isEmpty(callerEmail) or isEmpty(tenantOrgId))
+  dw::Runtime::fail("Missing verified gateway identity headers")
+else if (requestedEmail != callerEmail and !(attributes.headers['x-user-roles'] default "" contains "CSR_SUPERVISOR"))
+  dw::Runtime::fail("FORBIDDEN_CROSS_USER_LOOKUP: Caller cannot query another customer's orders")
+else
+  {
+    principalEmail: callerEmail,
+    tenantId: tenantOrgId,
+    invokedViaMcp: (attributes.headers['x-invocation-channel'] default "") == "MCP_BRIDGE",
+    agentActorId: agentActor,
+    correlationId: correlationId
+  }</code></pre>
+
+          <h2 id="test">Test it</h2>
+          <p>Once Flex Gateway syncs the <code>ApiInstance</code> policy, verify the MCP lifecycle end-to-end using <code>curl</code> against the Streamable HTTP <code>/mcp</code> endpoint.</p>
+
+          <h3>1. Discover Curated Tools via <code>tools/list</code></h3>
+          <p>Notice how <code>hard_delete_order_record</code> is completely absent from the returned catalog, while our three allowlisted operations carry clean JSON Schemas and MCP safety annotations:</p>
+          <span class="code-label">bash — Request MCP tool catalog</span>
+          <pre><code>curl -sS -X POST "https://mcp.acme-corp.com/orders/mcp" \
+  -H "Authorization: Bearer $OBO_USER_JWT" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "req-list-01",
+    "method": "tools/list",
+    "params": {}
+  }' | jq .</code></pre>
+
+          <span class="code-label">json — Curated tools/list response</span>
+          <pre><code>{
+  "jsonrpc": "2.0",
+  "id": "req-list-01",
+  "result": {
+    "tools": [
+      {
+        "name": "lookup_customer_orders",
+        "description": "Retrieves up to 10 recent orders placed by a customer identified by their exact email address. Call this tool FIRST when a user asks about order status...",
+        "inputSchema": {
+          "type": "object",
+          "required": ["customerEmail"],
+          "properties": {
+            "customerEmail": { "type": "string", "format": "email", "maxLength": 120 },
+            "statusFilter": {
+              "type": "string",
+              "enum": ["PROCESSING", "SHIPPED", "DELIVERED", "RETURN_REQUESTED", "CANCELED"]
+            },
+            "limit": { "type": "integer", "minimum": 1, "maximum": 10, "default": 5 }
+          },
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Lookup Customer Orders",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "get_shipment_tracking",
+        "description": "Returns live carrier scan events, current transit hub, tracking URL, and estimated delivery date...",
+        "inputSchema": {
+          "type": "object",
+          "required": ["orderNumber"],
+          "properties": {
+            "orderNumber": { "type": "string", "pattern": "^ORD-[0-9]{6}$" }
+          },
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get Order Shipment Tracking",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "create_return_authorization",
+        "description": "Initiates a Return Merchandise Authorization (RMA) for one SKU inside a DELIVERED order...",
+        "inputSchema": {
+          "type": "object",
+          "required": ["orderNumber", "Idempotency-Key", "sku", "quantity", "reasonCode"],
+          "properties": {
+            "orderNumber": { "type": "string", "pattern": "^ORD-[0-9]{6}$" },
+            "Idempotency-Key": { "type": "string", "minLength": 16, "maxLength": 64 },
+            "sku": { "type": "string", "pattern": "^SKU-[A-Z0-9]{4,12}$" },
+            "quantity": { "type": "integer", "minimum": 1, "maximum": 20 },
+            "reasonCode": {
+              "type": "string",
+              "enum": ["DAMAGED_IN_TRANSIT", "WRONG_ITEM_SENT", "DEFECTIVE", "CHANGED_MIND"]
+            },
+            "customerNotes": { "type": "string", "maxLength": 300 }
+          },
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Create Return Merchandise Authorization",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+          <h3>2. Invoke a Tool via <code>tools/call</code></h3>
+          <p>MCP Bridge validates the arguments against the compiled OpenAPI schema, maps <code>customerEmail</code> into the URL path and <code>statusFilter</code> into the query string, executes the upstream <code>GET</code> with propagated identity headers, strips redacted fields, and wraps the REST response inside an MCP <code>content</code> envelope:</p>
+          <span class="code-label">bash — Invoke lookup_customer_orders</span>
+          <pre><code>curl -sS -X POST "https://mcp.acme-corp.com/orders/mcp" \
+  -H "Authorization: Bearer $OBO_USER_JWT" \
+  -H "Content-Type: application/json" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "req-call-02",
+    "method": "tools/call",
+    "params": {
+      "name": "lookup_customer_orders",
+      "arguments": {
+        "customerEmail": "sarah.connor@acme-corp.com",
+        "statusFilter": "SHIPPED",
+        "limit": 2
+      }
+    }
+  }' | jq .</code></pre>
+
+          <span class="code-label">json — MCP tools/call response</span>
+          <pre><code>{
+  "jsonrpc": "2.0",
+  "id": "req-call-02",
+  "result": {
+    "isError": false,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"customerEmail\":\"sarah.connor@acme-corp.com\",\"totalMatched\":1,\"orders\":[{\"orderNumber\":\"ORD-849201\",\"placedAt\":\"2026-11-21T14:22:09Z\",\"status\":\"SHIPPED\",\"totalAmountUsd\":249.00,\"items\":[{\"sku\":\"SKU-MECHKB87\",\"title\":\"Tactile Mechanical Keyboard 87-Key\",\"quantity\":1}]}]}"
+      }
+    ]
+  }
+}</code></pre>
+
+          <h2 id="deploy">Deploy to production</h2>
+          <ul>
+            <li><strong>Pin immutable Exchange contract versions:</strong> Always bind your production MCP Bridge instance to an explicit semantic version (e.g., <code>1.2.0</code>) rather than floating <code>latest</code>. A sudden parameter rename in Exchange alters the MCP tool signature and can silently break pinned system prompts in downstream agents.</li>
+            <li><strong>Keep tool counts between 5 and 15 per MCP Bridge endpoint:</strong> Rather than creating one monolithic enterprise MCP Gateway exposing 120 tools across Finance, HR, and Supply Chain, deploy domain-scoped MCP Bridge endpoints (<code>/orders/mcp</code>, <code>/billing/mcp</code>, <code>/inventory/mcp</code>) aligned to bounded contexts.</li>
+            <li><strong>Tune HTTP timeouts and SSE keepalives on ingress load balancers:</strong> Streamable HTTP MCP sessions and upstream ERP calls can exceed default 30-second proxy timeouts. Set Flex Gateway upstream read timeouts to match your Process API SLA (typically 15–45 seconds) and configure AWS ALB / NGINX idle timeouts to at least 120 seconds.</li>
+            <li><strong>Protect upstream Mule APIs with mutual TLS (mTLS):</strong> Because the Process API trusts gateway-injected headers like <code>X-Authenticated-User</code> and <code>X-Tenant-Org-Id</code>, lock down direct network ingress to <code>customer-order-papi</code> using mTLS client certificates issued exclusively to Flex Gateway pods so callers cannot spoof identity headers by bypassing the Bridge.</li>
+          </ul>
+
+          <h2 id="security">Security &amp; governance</h2>
+          <div class="callout danger">
+            <span class="callout-title">Never wire Service Principal "God-Mode" credentials into MCP Bridge</span>
+            <p>The single most dangerous anti-pattern in enterprise AI integration is configuring the MCP Bridge to authenticate to upstream Mule APIs using a static OAuth Client Credentials service account while accepting unauthenticated or coarsely authenticated agent calls. A single indirect prompt injection inside an email or support ticket can then trick the agent into querying any customer's data across the entire company.</p>
+          </div>
+          <ul>
+            <li><strong>Enforce OAuth 2.0 On-Behalf-Of (RFC 8693) end-to-end:</strong> Require user-bound JWTs with explicit <code>aud</code> (audience) matching only that MCP Bridge instance, short 5–15 minute TTLs, and step-up scopes (<code>orders:returns:write</code>) for state-changing tools.</li>
+            <li><strong>Automate OpenAPI Agent-Readiness linting with Anypoint API Governance:</strong> Create a custom Spectral / OAS governance ruleset in Anypoint Platform that fails CI builds if any <code>mcp-ready</code> Exchange spec lacks <code>operationId</code>, has tool descriptions shorter than 40 characters, uses unconstrained <code>type: object</code> inputs without <code>properties</code>, or omits <code>maxLength</code> on string inputs.</li>
+            <li><strong>Cap response payload sizes and strip untrusted HTML:</strong> Configure <code>maxResponseBytes: 65536</code> on MCP Bridge so an upstream endpoint returning a 5 MB JSON array cannot exhaust the LLM context window or rack up runaway token bills. Sanitize user-authored free-text fields (like merchant reviews or ticket bodies) to reduce indirect prompt injection vectors.</li>
+            <li><strong>Honor MCP Tool Annotations in host UIs:</strong> Setting <code>readOnlyHint: false</code> and <code>destructiveHint: true</code> on write/cancel operations instructs compliant hosts (Claude Desktop, Cursor, Agentforce) to pause and render a human confirmation card before sending <code>tools/call</code>.</li>
+          </ul>
+
+          <h2 id="troubleshooting">Troubleshooting</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Symptom</th>
+                  <th scope="col">Cause</th>
+                  <th scope="col">Fix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>tools/list</code> returns ugly auto-generated names like <code>get_v1_customers_customerEmail_orders</code></td>
+                  <td>OpenAPI paths are missing explicit <code>operationId</code> fields, forcing MCP Bridge to synthesize names from HTTP method + URI segments.</td>
+                  <td>Add concise <code>snake_case</code> <code>operationId</code> values (&le; 64 chars, matching <code>^[a-zA-Z0-9_-]+$</code>) to every curated operation in your OAS 3.0 file and republish to Exchange.</td>
+                </tr>
+                <tr>
+                  <td>LLM repeatedly passes internal UUIDs or wrong formats into path parameters, causing HTTP <code>400</code>/<code>404</code></td>
+                  <td>Parameter schema only specifies <code>type: string</code> with no <code>pattern</code>, <code>format</code>, or instructional <code>description</code>.</td>
+                  <td>Add regex <code>pattern</code> (e.g., <code>^ORD-[0-9]{6}$</code>), example values, and explicit instructions in <code>description</code> telling the model which lookup tool provides that identifier first.</td>
+                </tr>
+                <tr>
+                  <td><code>tools/call</code> fails with JSON-RPC error <code>-32602 Invalid params: additionalProperties not allowed</code></td>
+                  <td>Path, query, and body parameters share colliding field names when flattened into the MCP tool's single <code>arguments</code> JSON object.</td>
+                  <td>Ensure path, query, header, and top-level <code>requestBody</code> property names are globally unique within each operation (e.g., avoid having both path <code>orderNumber</code> and body <code>orderNumber</code>).</td>
+                </tr>
+                <tr>
+                  <td>HTTP <code>403 Forbidden</code> with <code>insufficient_scope</code> on write tools despite valid login</td>
+                  <td>The AI host requested only <code>orders:read</code> during OAuth authorization or token exchange.</td>
+                  <td>Update the MCP Bridge <code>/.well-known/oauth-protected-resource</code> metadata scopes list and configure the AI host OAuth client to request <code>orders:returns:write</code> via incremental consent.</td>
+                </tr>
+                <tr>
+                  <td>Agent hangs or errors with <code>context_length_exceeded</code> right after calling a list endpoint</td>
+                  <td>Upstream REST API defaults to <code>pageSize=500</code> or returns deeply nested ERP audit arrays.</td>
+                  <td>Constrain <code>maximum: 10</code> and <code>default: 5</code> on pagination parameters in OAS, enforce <code>maxResponseBytes</code> on MCP Bridge, and redact verbose internal JSON paths.</td>
+                </tr>
+                <tr>
+                  <td>Upstream HTTP <code>422</code> business error causes the LLM to retry identically in an infinite loop</td>
+                  <td>Upstream API returns opaque <code>{"code": "ERR_904"}</code> without actionable natural-language remediation.</td>
+                  <td>Return RFC 9457 Problem Details (<code>title</code>, <code>detail</code>) from your Mule APIkit error handler so MCP Bridge surfaces a clear explanation inside <code>isError: true</code> tool content.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production checklist</h2>
+          <ul class="checklist">
+            <li>Every exposed operation has an explicit <code>snake_case</code> <code>operationId</code> (&le; 64 chars) and a rich <code>description</code> explaining when to call it, preconditions, and side effects.</li>
+            <li>Curated tool count per MCP Bridge endpoint is kept &le; 15 operations; all <code>DELETE</code> and administrative bulk endpoints are excluded from the allowlist.</li>
+            <li>All string, enum, and pagination inputs enforce JSON Schema <code>pattern</code>, <code>enum</code>, <code>maxLength</code>, and <code>maximum</code> bounds with <code>additionalProperties: false</code>.</li>
+            <li>OAuth 2.0 JWT validation verifies <code>iss</code>, <code>exp</code>, and dedicated MCP audience (<code>aud</code>), using On-Behalf-Of user tokens rather than static service-account credentials.</li>
+            <li>Write operations enforce <code>Idempotency-Key</code> headers and accurate MCP tool annotations (<code>readOnlyHint</code>, <code>destructiveHint</code>, <code>idempotentHint</code>).</li>
+            <li>Flex Gateway enforces per-user SLA rate limiting, response byte caps (<code>maxResponseBytes</code>), and JSONPath PII redaction before returning tool payloads.</li>
+            <li>Upstream Mule Process APIs validate mTLS from Flex Gateway and log <code>X-Authenticated-User</code> alongside <code>X-Agent-Actor-Id</code> for audit traceability.</li>
+            <li>Anypoint API Governance CI pipeline validates OpenAPI agent-readiness rules before any new Exchange version is promoted to Production.</li>
+          </ul>
+
+          <h2 id="interview">Interview questions</h2>
+          <details class="qa">
+            <summary>1. When would you recommend MuleSoft MCP Bridge over building a dedicated Mule 4 application with the Mule MCP Connector?</summary>
+            <div>
+              <p>Recommend <strong>MuleSoft MCP Bridge</strong> whenever you already have well-designed, coarse-grained Experience or Process APIs in Anypoint Exchange whose REST contracts map cleanly to business tasks. It requires zero Mule code changes, zero additional CloudHub vCores, and centralizes JWT security and tool curation on Flex Gateway. Choose a custom <strong>Mule MCP Connector</strong> app when a single agent tool must orchestrate multiple chatty System APIs, connect to non-REST protocols (SAP RFC, Database, JMS, Salesforce Pub/Sub), or execute heavy DataWeave summarization before returning a compact payload to the LLM.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>2. Why is exposing a System API's 50-endpoint OpenAPI spec directly through an MCP Bridge considered an architectural anti-pattern?</summary>
+            <div>
+              <p>System APIs expose fine-grained, table-level CRUD primitives (<code>GET /customers/{id}</code>, <code>GET /addresses/{id}</code>, <code>PATCH /orders/{id}/status</code>). Exposing 50+ tools inflates prompt token consumption on every turn, confuses LLM tool routing between overlapping endpoints, forces the model to perform multi-hop join logic in context (increasing latency and hallucination risk), and widens the prompt-injection attack surface. Agents should consume curated Process or Experience API operations that encapsulate complete business intents.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>3. How do you prevent the "Confused Deputy" privilege escalation problem when an AI agent calls APIs through MuleSoft MCP Bridge?</summary>
+            <div>
+              <p>Never configure the MCP Bridge to call downstream APIs using a static, high-privilege Client Credentials token shared across all users. Instead, implement <strong>OAuth 2.0 Token Exchange (RFC 8693 On-Behalf-Of)</strong>: the agent runtime exchanges the logged-in human's token for a short-lived JWT scoped specifically to <code>aud: api://customer-order-mcp</code> containing both <code>sub</code> (the human principal) and <code>act.sub</code> (the agent identity). Flex Gateway validates scopes per MCP tool, and the Process API enforces row-level authorization against <code>sub</code> and tenant claims.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>4. How does MCP Bridge handle upstream HTTP 4xx/5xx errors versus JSON-RPC protocol errors, and why does the distinction matter?</summary>
+            <div>
+              <p>JSON-RPC protocol errors (such as <code>-32601 Method not found</code> or <code>-32602 Invalid params</code> when schema validation fails at the Bridge) indicate structural protocol/invocation faults. Upstream business errors (such as HTTP <code>404 Order Not Found</code> or <code>422 Return Window Expired</code>) are translated by MCP Bridge into a valid JSON-RPC <code>result</code> carrying <code>"isError": true</code> and a structured text description. Returning business errors via <code>isError: true</code> allows the LLM to read the domain reason (e.g., "30-day return window expired on Oct 12") and explain it gracefully to the user instead of crashing the agent loop.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>5. What changes must you make to a standard OpenAPI 3.0 specification before publishing it to Anypoint Exchange for MCP Bridge consumption?</summary>
+            <div>
+              <p>Five high-impact upgrades: (1) assign clear <code>snake_case</code> <code>operationId</code>s that read like verb-noun commands; (2) rewrite <code>description</code> fields as LLM behavioral prompts detailing when to invoke the tool, required prerequisites, and side effects; (3) tighten parameter schemas with <code>enum</code>, <code>pattern</code>, <code>minLength</code>/<code>maxLength</code>, and <code>additionalProperties: false</code>; (4) eliminate naming collisions across path, query, and body fields within the same operation; and (5) bound list endpoints with small <code>default</code> and <code>maximum</code> page limits so responses stay well under context budgets.</p>
+            </div>
+          </details>
+
+          <h2 id="sources">Sources &amp; further reading</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/mcp-connector/latest/" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Model Context Protocol (MCP) &amp; Anypoint Integration</a></li>
+            <li><a href="https://docs.mulesoft.com/gateway/latest/flex-gateway-overview" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Anypoint Flex Gateway Declarative Configuration &amp; Policies</a></li>
+            <li><a href="https://docs.mulesoft.com/api-governance/latest/" target="_blank" rel="noopener noreferrer">MuleSoft Documentation — Anypoint API Governance &amp; Custom OpenAPI Rulesets</a></li>
+            <li><a href="https://modelcontextprotocol.io/specification/2025-06-18/server/tools" target="_blank" rel="noopener noreferrer">Model Context Protocol Specification — Server Tools &amp; Tool Annotations (2025-06-18)</a></li>
+            <li><a href="https://datatracker.ietf.org/doc/html/rfc8693" target="_blank" rel="noopener noreferrer">IETF RFC 8693 — OAuth 2.0 Token Exchange (On-Behalf-Of Delegation &amp; <code>act</code> Claim)</a></li>
+          </ul>
+        </div>
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+          <a class="prev" href="mulesoft-mcp-connector-server-client-setup.html"><span>← Previous</span><strong>MuleSoft MCP Connector: Server &amp; Client Setup</strong></a>
+          <a class="next" href="mulesoft-a2a-protocol-multi-agent-orchestration.html"><span>Next →</span><strong>A2A Protocol &amp; Multi-Agent Orchestration</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#what-and-why">What it is and why it matters</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup">Step-by-step setup</a></li>
+        <li><a href="#code">Full working example</a></li>
+        <li><a href="#test">Test it</a></li>
+        <li><a href="#deploy">Deploy to production</a></li>
+        <li><a href="#security">Security &amp; governance</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#checklist">Production checklist</a></li>
+        <li><a href="#interview">Interview questions</a></li>
+        <li><a href="#sources">Sources &amp; further reading</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+<footer class="blog-footer">
+  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

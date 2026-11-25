@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4 | MuleSoft Hub Blog</title>
+<meta name="description" content="Build a production MCP Server and Client in Mule 4.9 using mule-mcp-connector 1.2.0, Streamable HTTP transport, JSON Schema validation, and MCP Inspector.">
+<meta name="author" content="Niranjan Potter">
+<link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4">
+<meta property="og:description" content="Build a production MCP Server and Client in Mule 4.9 using mule-mcp-connector 1.2.0, Streamable HTTP transport, JSON Schema validation, and MCP Inspector.">
+<meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html">
+<meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+<meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "MuleSoft MCP Connector Hands-On: Build an MCP Server & Client in Mule 4",
+  "description": "Build a production MCP Server and Client in Mule 4.9 using mule-mcp-connector 1.2.0, Streamable HTTP transport, JSON Schema validation, and MCP Inspector.",
+  "author": { "@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171" },
+  "publisher": { "@type": "Organization", "name": "MuleSoft Hub", "url": "https://mulesoft.niranjanpotter.dpdns.org/" },
+  "datePublished": "2026-11-24",
+  "dateModified": "2026-11-24",
+  "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html"
+}
+</script>
+<script defer src="blog.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="blog-topbar">
+  <div class="blog-topbar-inner">
+    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
+    <nav class="blog-nav" aria-label="Main">
+      <a href="../index.html">Interview Hub</a>
+      <a href="index.html">All Articles</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="blog-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › MCP Connector Setup</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">AI &amp; Agents · Hands-on Guide</span>
+          <h1>MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4</h1>
+          <p class="post-lede">Learn how to expose governed Mule 4 integration flows as Model Context Protocol (MCP) tools over Streamable HTTP—and consume external MCP servers from Mule orchestrations—using <code>mule-mcp-connector</code> 1.2.0 on Mule 4.9 LTS.</p>
+          <div class="post-meta">
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Nov 24, 2026</span>
+            <span>⏱️ 20 min read</span>
+            <span class="tag">MCP Connector</span><span class="tag">Mule 4.9 Hands-On</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="tldr">TL;DR</h2>
+          <ul>
+            <li><strong>Official Mule 4 plugin:</strong> Add <code>com.mulesoft.connectors:mule-mcp-connector:1.2.0</code> (<code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code>) with namespace <code>xmlns:mcp="http://www.mulesoft.org/schema/mule/mcp"</code> to turn any Mule 4.9 application into a standards-compliant MCP server or client.</li>
+            <li><strong>Streamable HTTP first:</strong> Use <code>&lt;mcp:streamable-http-server-connection&gt;</code> bound to an existing HTTP Listener at <code>/mcp</code>. Unlike legacy dual-endpoint HTTP+SSE, Streamable HTTP works cleanly across stateless CloudHub 2.0 load balancers and Anypoint Flex Gateway without sticky-session fragility.</li>
+            <li><strong>Schema-first tool contracts:</strong> Each <code>&lt;mcp:tool-listener&gt;</code> validates incoming LLM arguments against an inline or externalized JSON Schema via <code>&lt;mcp:tool-input-schema&gt;</code>, mapping parsed fields into <code>#[payload.arguments]</code> before your DataWeave or System API logic runs.</li>
+            <li><strong>Read vs. write safety:</strong> Separate side-effect-free queries (<code>lookup-order-status</code>, <code>check-inventory-stock</code>) from state-mutating tools (<code>create-return-rma</code>) with explicit idempotency keys, business guardrails, and structured MCP error responses.</li>
+            <li><strong>Bidirectional Mule MCP:</strong> The same connector ships <code>&lt;mcp:client-config&gt;</code>, <code>&lt;mcp:list-tools&gt;</code>, and <code>&lt;mcp:call-tool&gt;</code> so Mule Process APIs and Agent Brokers can invoke third-party MCP servers natively.</li>
+          </ul>
+
+          <h2 id="what-and-why">What it is and why it matters</h2>
+          <p>Before the <strong>Model Context Protocol (MCP)</strong>, exposing an enterprise ERP or Order Management workflow to Claude, Cursor, Salesforce Agentforce, or custom LangGraph agents meant maintaining N×M bespoke tool wrappers, OpenAPI function-calling shims, and custom authentication glue. Worse, exposing raw System API OpenAPI specs directly to an LLM floods the model context window with dozens of low-level query parameters, internal status codes, and brittle pagination tokens.</p>
+          <p>The <strong>MuleSoft MCP Connector</strong> (<code>mule-mcp-connector</code>) embeds JSON-RPC 2.0 MCP protocol framing, capability negotiation (<code>initialize</code>), tool discovery (<code>tools/list</code>), JSON Schema input validation, and structured tool execution (<code>tools/call</code>) directly into the Mule 4 reactive engine. Instead of writing throwaway Python sidecars that bypass your enterprise integration layer, you build coarse-grained, business-intent tools right inside Mule 4—reusing DataWeave 2.0 transformations, NetSuite/SAP/Salesforce connectors, connection pooling, MUnit tests, and Flex Gateway policies.</p>
+
+          <h3>Why Streamable HTTP beats legacy SSE and stdio in enterprise deployments</h3>
+          <p>Early MCP specifications relied either on local <code>stdio</code> subprocess pipes or a split HTTP+SSE transport (where a long-lived <code>GET /sse</code> stream pushed an ephemeral session endpoint for <code>POST /message</code>). Split SSE breaks immediately behind multi-replica CloudHub 2.0 ingress controllers unless sticky sessions are pinned, and corporate proxies aggressively drop idle SSE sockets. MCP's modern <strong>Streamable HTTP</strong> transport consolidates client-to-server JSON-RPC requests and optional server-streamed responses onto a single <code>/mcp</code> endpoint with standard HTTP headers (<code>Mcp-Session-Id</code>), scaling horizontally across CloudHub 2.0 and Runtime Fabric replicas.</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Transport Mode</th>
+                  <th scope="col">Wire Mechanism</th>
+                  <th scope="col">CloudHub 2.0 &amp; Flex Gateway Fit</th>
+                  <th scope="col">Recommended Enterprise Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Streamable HTTP</strong> (Recommended)</td>
+                  <td>Single <code>POST /mcp</code> JSON-RPC 2.0 endpoint (supports chunked SSE upgrade when streaming)</td>
+                  <td>Native fit; stateless-friendly, works cleanly with L7 load balancers, OAuth 2.0, and WAFs</td>
+                  <td>All production Mule 4 MCP servers on CloudHub 2.0, RTF, and Hybrid</td>
+                </tr>
+                <tr>
+                  <td><strong>Legacy HTTP + SSE</strong> (Deprecated)</td>
+                  <td>Persistent <code>GET /sse</code> channel + separate <code>POST /messages?sessionId=...</code></td>
+                  <td>Fragile; fails without sticky session affinity across multi-worker deployments</td>
+                  <td>Legacy backwards compatibility only during client migration</td>
+                </tr>
+                <tr>
+                  <td><strong>stdio</strong></td>
+                  <td>OS standard input/output over local child process</td>
+                  <td>Not supported on cloud runtimes; zero network auth or central gateway visibility</td>
+                  <td>Local developer CLI tools only—never for shared enterprise APIs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="architecture">Architecture</h2>
+          <p>In the architecture below, AI hosts (Claude Desktop, Cursor, Salesforce Agentforce, or a Mule Orchestrator flow using <code>mcp:call-tool</code>) connect through Anypoint Flex Gateway to a Mule 4.9 MCP Server exposing three coarse-grained commerce tools over Streamable HTTP.</p>
+          <figure>
+            <div class="diagram" role="img" aria-label="Architecture diagram showing AI hosts and a Mule 4 MCP Client calling Anypoint Flex Gateway over Streamable HTTP /mcp into a Mule 4.9 MCP Server with three mcp:tool-listener flows backed by SAP, WMS, and Salesforce System APIs.">+-------------------------------------------------------------------------------------------------+
+|                                  MCP HOSTS &amp; ORCHESTRATORS                                      |
+|  [Claude Desktop / Cursor IDE]   [Salesforce Agentforce]   [Mule 4 Client Flow: mcp:call-tool]  |
++------------------------------------------------+------------------------------------------------+
+                                                 | HTTPS POST /mcp (JSON-RPC 2.0 + Bearer JWT)
+                                                 v
++-------------------------------------------------------------------------------------------------+
+|                      ANYPOINT FLEX GATEWAY / CLOUDHUB 2.0 INGRESS                               |
+|        [OAuth 2.0 JWT Validation] -&gt; [Rate Limiting SLA] -&gt; [PII Redaction &amp; Audit Log]         |
++------------------------------------------------+------------------------------------------------+
+                                                 |
+                                                 v
++-------------------------------------------------------------------------------------------------+
+|                 MULE 4.9 LTS APPLICATION: commerce-ops-mcp-server                               |
+|  &lt;http:listener-config name="HTTP_Listener_config" port="8081"/&gt;                                |
+|  &lt;mcp:config name="Commerce_MCP_Server"&gt;                                                        |
+|    &lt;mcp:streamable-http-server-connection listenerConfig="HTTP_Listener_config"                 |
+|                                           mcpEndpointPath="/mcp"/&gt;                              |
+|  &lt;/mcp:config&gt;                                                                                  |
+|                                                                                                 |
+|  +---------------------------+  +----------------------------+  +----------------------------+  |
+|  | &lt;mcp:tool-listener&gt;       |  | &lt;mcp:tool-listener&gt;        |  | &lt;mcp:tool-listener&gt;        |  |
+|  | name="lookup-order-status"|  | name="check-inventory-stock"| | name="create-return-rma"   |  |
+|  | [Read-Only | JSON Schema] |  | [Read-Only | JSON Schema]  |  | [Write + Idempotency Key]  |  |
+|  +-------------+-------------+  +--------------+-------------+  +--------------+-------------+  |
+|                |                               |                               |                |
+|                v                               v                               v                |
+|     [DataWeave 2.0 Projection]      [DataWeave 2.0 Projection]     [Eligibility Guardrail DW]   |
++----------------+-------------------------------+-------------------------------+----------------+
+                 |                               |                               |
+                 v                               v                               v
+      +--------------------+          +--------------------+          +--------------------+
+      | SAP Orders SAPI    |          | Warehouse WMS SAPI |          | RMA &amp; SFDC SAPI    |
+      +--------------------+          +--------------------+          +--------------------+</div>
+            <figcaption>Figure 1: Mule 4.9 MCP Server exposing read-only and write-guarded tools via Streamable HTTP alongside a Mule 4 MCP Client consumer.</figcaption>
+          </figure>
+
+          <h2 id="prerequisites">Prerequisites</h2>
+          <div class="callout prereq">
+            <span class="callout-title">You need</span>
+            <ul>
+              <li><strong>JDK &amp; Runtime:</strong> Eclipse Temurin <strong>JDK 17</strong> (<code>17.0.11+</code>) and <strong>Mule Runtime 4.9.0 LTS</strong> (required by <code>mule-mcp-connector</code> 1.2.x).</li>
+              <li><strong>IDE &amp; Maven:</strong> <strong>Anypoint Code Builder</strong> (Oct 2026+ release) or <strong>Anypoint Studio 7.20+</strong>, and <strong>Apache Maven 3.9.6+</strong> configured with Anypoint Enterprise Maven Repository credentials in <code>~/.m2/settings.xml</code>.</li>
+              <li><strong>Node.js (for MCP Inspector):</strong> <strong>Node.js 20 LTS+</strong> with <code>npx</code> to run <code>@modelcontextprotocol/inspector</code> locally.</li>
+              <li><strong>Anypoint Permissions:</strong> <code>Exchange Viewer</code> (to pull connector artifacts), <code>Runtime Manager Deploy Application</code>, and <code>API Manager Environment Admin</code>.</li>
+            </ul>
+          </div>
+
+          <h2 id="setup">Step-by-step setup</h2>
+          <ol class="steps">
+            <li>
+              <strong>Create a Mule 4.9 project in Anypoint Code Builder or Studio</strong>
+              <p>Generate a new Mule project named <code>commerce-ops-mcp-server</code> targeting Mule Runtime <code>4.9.0</code> and Java <code>17</code>. Ensure <code>mule-maven-plugin</code> is version <code>4.3.0+</code>.</p>
+            </li>
+
+            <li>
+              <strong>Add the MuleSoft MCP Connector 1.2.0 dependency to <code>pom.xml</code></strong>
+              <p>Include <code>mule-mcp-connector</code> with <code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code> alongside standard HTTP and Sockets connectors.</p>
+              <span class="code-label">pom.xml</span>
+              <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.enterprise.mule.ai&lt;/groupId&gt;
+  &lt;artifactId&gt;commerce-ops-mcp-server&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+  &lt;packaging&gt;mule-application&lt;/packaging&gt;
+
+  &lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;app.runtime&gt;4.9.0&lt;/app.runtime&gt;
+    &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;mule.maven.plugin.version&gt;4.3.1&lt;/mule.maven.plugin.version&gt;
+    &lt;mule.mcp.connector.version&gt;1.2.0&lt;/mule.mcp.connector.version&gt;
+  &lt;/properties&gt;
+
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+      &lt;artifactId&gt;mule-mcp-connector&lt;/artifactId&gt;
+      &lt;version&gt;${mule.mcp.connector.version}&lt;/version&gt;
+      &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.mule.connectors&lt;/groupId&gt;
+      &lt;artifactId&gt;mule-http-connector&lt;/artifactId&gt;
+      &lt;version&gt;1.10.3&lt;/version&gt;
+      &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.mule.connectors&lt;/groupId&gt;
+      &lt;artifactId&gt;mule-sockets-connector&lt;/artifactId&gt;
+      &lt;version&gt;1.2.5&lt;/version&gt;
+      &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.mule.tools.maven&lt;/groupId&gt;
+        &lt;artifactId&gt;mule-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;${mule.maven.plugin.version}&lt;/version&gt;
+        &lt;extensions&gt;true&lt;/extensions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+            </li>
+
+            <li>
+              <strong>Define externalized YAML configuration properties</strong>
+              <p>Create <code>src/main/resources/config/local.yaml</code> for listener ports, server metadata, downstream System API timeouts, and RMA safety caps.</p>
+              <span class="code-label">src/main/resources/config/local.yaml</span>
+              <pre><code>http:
+  host: "0.0.0.0"
+  port: "8081"
+
+mcp:
+  server:
+    name: "commerce-ops-mcp-server"
+    version: "1.0.0"
+    path: "/mcp"
+  client:
+    externalShippingMcpUrl: "https://carrier-rates-mcp.internal.enterprise.com/mcp"
+    requestTimeoutMs: "8000"
+
+sapi:
+  orders:
+    host: "orders-sapi.internal.enterprise.com"
+    port: "443"
+    responseTimeoutMs: "5000"
+  rma:
+    maxAutoRmaValueUsd: "1500.00"</code></pre>
+            </li>
+
+            <li>
+              <strong>Declare the MCP XML namespace and Streamable HTTP server config</strong>
+              <p>Bind <code>&lt;mcp:config&gt;</code> to your shared <code>HTTP_Listener_config</code> at <code>mcpEndpointPath="/mcp"</code> using the official MCP XSD schema location.</p>
+            </li>
+
+            <li>
+              <strong>Author strict JSON Schemas for each tool's input contract</strong>
+              <p>Write explicit <code>description</code>, <code>pattern</code>, <code>enum</code>, and <code>additionalProperties: false</code> constraints inside <code>&lt;mcp:tool-input-schema&gt;</code>. High-precision descriptions drastically reduce LLM argument hallucination and trigger automatic <code>MCP:INVALID_ARGUMENTS</code> rejection before hitting downstream ERP APIs.</p>
+            </li>
+
+            <li>
+              <strong>Shape lean, LLM-friendly responses with DataWeave 2.0</strong>
+              <p>Never dump a 400-field SAP BAPI response into <code>&lt;mcp:text-tool-response-content&gt;</code>. Project only the 6–10 business fields an agent needs so you conserve context tokens and avoid leaking internal cost/margin columns.</p>
+            </li>
+
+            <li>
+              <strong>Configure an MCP Client flow for outbound tool consumption</strong>
+              <p>Add <code>&lt;mcp:client-config&gt;</code> with <code>&lt;mcp:streamable-http-client-connection&gt;</code> so Mule orchestrations can dynamically list and invoke tools hosted on partner or internal MCP servers.</p>
+            </li>
+          </ol>
+
+          <h2 id="code">Full working example</h2>
+          <p>Here is the complete, copy-pasteable Mule 4 configuration implementing both the <strong>MCP Server</strong> (three enterprise tools with read/write safety and error handling) and an <strong>MCP Client</strong> orchestration flow.</p>
+
+          <h3>1. Complete MCP Server XML (3 tools + validation + error handling)</h3>
+          <span class="code-label">src/main/mule/mcp-commerce-server.xml</span>
+          <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:mcp="http://www.mulesoft.org/schema/mule/mcp"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/mcp http://www.mulesoft.org/schema/mule/mcp/current/mule-mcp.xsd"&gt;
+
+  &lt;configuration-properties file="config/local.yaml"/&gt;
+
+  &lt;http:listener-config name="HTTP_Listener_config"&gt;
+    &lt;http:listener-connection host="${http.host}" port="${http.port}"/&gt;
+  &lt;/http:listener-config&gt;
+
+  &lt;http:request-config name="Orders_SAPI_Request_Config"&gt;
+    &lt;http:request-connection protocol="HTTPS" host="${sapi.orders.host}" port="${sapi.orders.port}"/&gt;
+  &lt;/http:request-config&gt;
+
+  &lt;mcp:config name="Commerce_MCP_Server_Config"
+              serverName="${mcp.server.name}"
+              serverVersion="${mcp.server.version}"&gt;
+    &lt;mcp:streamable-http-server-connection listenerConfig="HTTP_Listener_config"
+                                           mcpEndpointPath="${mcp.server.path}"/&gt;
+  &lt;/mcp:config&gt;
+
+  &lt;!-- ===================================================================== --&gt;
+  &lt;!-- TOOL 1 (READ-ONLY): lookup-order-status                               --&gt;
+  &lt;!-- ===================================================================== --&gt;
+  &lt;flow name="mcp-tool-lookup-order-status"&gt;
+    &lt;mcp:tool-listener config-ref="Commerce_MCP_Server_Config" name="lookup-order-status"&gt;
+      &lt;mcp:description&gt;&lt;![CDATA[Read-only lookup of current B2B/B2C order fulfillment status, carrier tracking number, and estimated delivery date by orderId.]]&gt;&lt;/mcp:description&gt;
+      &lt;mcp:tool-input-schema&gt;&lt;![CDATA[{
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "required": ["orderId"],
+        "additionalProperties": false,
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "pattern": "^SO-[0-9]{7}$",
+            "description": "Sales order identifier formatted as SO- followed by 7 digits, e.g., SO-8849201."
+          }
+        }
+      }]]&gt;&lt;/mcp:tool-input-schema&gt;
+      &lt;mcp:responses&gt;
+        &lt;mcp:text-tool-response-content text="#[payload]"/&gt;
+      &lt;/mcp:responses&gt;
+    &lt;/mcp:tool-listener&gt;
+
+    &lt;set-variable variableName="orderId" value="#[payload.arguments.orderId]"/&gt;
+
+    &lt;http:request method="GET"
+                  config-ref="Orders_SAPI_Request_Config"
+                  path="/api/v1/orders/{orderId}"
+                  responseTimeout="${sapi.orders.responseTimeoutMs}"&gt;
+      &lt;http:uri-params&gt;#[{ orderId: vars.orderId }]&lt;/http:uri-params&gt;
+    &lt;/http:request&gt;
+
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+write({
+  orderId: payload.orderNumber,
+  fulfillmentStatus: payload.status,
+  carrier: payload.shipment.carrierCode default "UNASSIGNED",
+  trackingNumber: payload.shipment.trackingNumber,
+  estimatedDeliveryDate: payload.shipment.etaIsoDate,
+  totalOrderUsd: payload.financials.grossAmountUsd
+}, "application/json")]]&gt;&lt;/ee:set-payload&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+
+    &lt;error-handler ref="Global_MCP_Tool_Error_Handler"/&gt;
+  &lt;/flow&gt;
+
+  &lt;!-- ===================================================================== --&gt;
+  &lt;!-- TOOL 2 (READ-ONLY): check-inventory-stock                             --&gt;
+  &lt;!-- ===================================================================== --&gt;
+  &lt;flow name="mcp-tool-check-inventory-stock"&gt;
+    &lt;mcp:tool-listener config-ref="Commerce_MCP_Server_Config" name="check-inventory-stock"&gt;
+      &lt;mcp:description&gt;&lt;![CDATA[Read-only real-time available-to-promise (ATP) inventory check by SKU and regional distribution center.]]&gt;&lt;/mcp:description&gt;
+      &lt;mcp:tool-input-schema&gt;&lt;![CDATA[{
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "required": ["sku", "region"],
+        "additionalProperties": false,
+        "properties": {
+          "sku": {
+            "type": "string",
+            "pattern": "^SKU-[A-Z0-9-]{4,16}$",
+            "description": "Catalog SKU code, e.g., SKU-COLD-440."
+          },
+          "region": {
+            "type": "string",
+            "enum": ["US-EAST", "US-WEST", "EU-CENTRAL", "APAC-SG"],
+            "description": "Distribution warehouse region."
+          }
+        }
+      }]]&gt;&lt;/mcp:tool-input-schema&gt;
+      &lt;mcp:responses&gt;
+        &lt;mcp:text-tool-response-content text="#[payload]"/&gt;
+      &lt;/mcp:responses&gt;
+    &lt;/mcp:tool-listener&gt;
+
+    &lt;http:request method="GET"
+                  config-ref="Orders_SAPI_Request_Config"
+                  path="/api/v1/inventory/atp"
+                  responseTimeout="${sapi.orders.responseTimeoutMs}"&gt;
+      &lt;http:query-params&gt;#[{
+        sku: payload.arguments.sku,
+        region: payload.arguments.region
+      }]&lt;/http:query-params&gt;
+    &lt;/http:request&gt;
+
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+write({
+  sku: payload.sku,
+  region: payload.warehouseRegion,
+  availableToPromiseUnits: payload.atpQty,
+  reservedUnits: payload.reservedQty,
+  nextRestockDate: payload.nextReplenishmentDate
+}, "application/json")]]&gt;&lt;/ee:set-payload&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+
+    &lt;error-handler ref="Global_MCP_Tool_Error_Handler"/&gt;
+  &lt;/flow&gt;
+
+  &lt;!-- ===================================================================== --&gt;
+  &lt;!-- TOOL 3 (WRITE / STATE-MUTATING): create-return-rma                    --&gt;
+  &lt;!-- ===================================================================== --&gt;
+  &lt;flow name="mcp-tool-create-return-rma"&gt;
+    &lt;mcp:tool-listener config-ref="Commerce_MCP_Server_Config" name="create-return-rma"&gt;
+      &lt;mcp:description&gt;&lt;![CDATA[Write operation: creates a Return Merchandise Authorization (RMA) for a delivered order. Requires explicit customer confirmation, reason code, and idempotencyKey. Auto-creation capped at $1,500 USD.]]&gt;&lt;/mcp:description&gt;
+      &lt;mcp:tool-input-schema&gt;&lt;![CDATA[{
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "required": ["orderId", "sku", "quantity", "reasonCode", "estimatedValueUsd", "idempotencyKey"],
+        "additionalProperties": false,
+        "properties": {
+          "orderId": { "type": "string", "pattern": "^SO-[0-9]{7}$" },
+          "sku": { "type": "string", "pattern": "^SKU-[A-Z0-9-]{4,16}$" },
+          "quantity": { "type": "integer", "minimum": 1, "maximum": 50 },
+          "reasonCode": {
+            "type": "string",
+            "enum": ["DAMAGED_IN_TRANSIT", "WRONG_ITEM_SHIPPED", "DEFECTIVE_UNIT"]
+          },
+          "estimatedValueUsd": { "type": "number", "minimum": 0.01 },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 12,
+            "description": "Unique caller idempotency key preventing duplicate RMA creation on retry."
+          }
+        }
+      }]]&gt;&lt;/mcp:tool-input-schema&gt;
+      &lt;mcp:responses&gt;
+        &lt;mcp:text-tool-response-content text="#[payload]"/&gt;
+      &lt;/mcp:responses&gt;
+    &lt;/mcp:tool-listener&gt;
+
+    &lt;set-variable variableName="args" value="#[payload.arguments]"/&gt;
+
+    &lt;choice&gt;
+      &lt;when expression="#[vars.args.estimatedValueUsd &gt; (p('sapi.rma.maxAutoRmaValueUsd') as Number)]"&gt;
+        &lt;raise-error type="APP:RMA_LIMIT_EXCEEDED"
+                     description="RMA exceeds $1,500.00 autonomous agent threshold; escalate to human supervisor queue."/&gt;
+      &lt;/when&gt;
+    &lt;/choice&gt;
+
+    &lt;http:request method="POST"
+                  config-ref="Orders_SAPI_Request_Config"
+                  path="/api/v1/returns/rma"
+                  responseTimeout="${sapi.orders.responseTimeoutMs}"&gt;
+      &lt;http:body&gt;&lt;![CDATA[#[%dw 2.0
+output application/json
+---
+{
+  orderNumber: vars.args.orderId,
+  lineItemSku: vars.args.sku,
+  returnQuantity: vars.args.quantity,
+  reason: vars.args.reasonCode
+}]]]&gt;&lt;/http:body&gt;
+      &lt;http:headers&gt;#[{ "Idempotency-Key": vars.args.idempotencyKey }]&lt;/http:headers&gt;
+    &lt;/http:request&gt;
+
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+write({
+  rmaNumber: payload.rmaId,
+  status: payload.rmaStatus,
+  prepaidReturnLabelUrl: payload.returnLabelUrl,
+  restockingFeeUsd: 0.00
+}, "application/json")]]&gt;&lt;/ee:set-payload&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+
+    &lt;error-handler ref="Global_MCP_Tool_Error_Handler"/&gt;
+  &lt;/flow&gt;
+
+  &lt;!-- ===================================================================== --&gt;
+  &lt;!-- SHARED ERROR HANDLER FOR MCP TOOLS                                    --&gt;
+  &lt;!-- ===================================================================== --&gt;
+  &lt;error-handler name="Global_MCP_Tool_Error_Handler"&gt;
+    &lt;on-error-propagate type="MCP:INVALID_ARGUMENTS"&gt;
+      &lt;logger level="WARN" message="#['MCP schema validation rejected tool call: ' ++ (error.description default '')]"/&gt;
+    &lt;/on-error-propagate&gt;
+
+    &lt;on-error-continue type="HTTP:TIMEOUT, HTTP:CONNECTIVITY, APP:RMA_LIMIT_EXCEEDED"&gt;
+      &lt;ee:transform&gt;
+        &lt;ee:message&gt;
+          &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+write({
+  isError: true,
+  errorCode: error.errorType.namespace ++ ":" ++ error.errorType.identifier,
+  retryable: (error.errorType.identifier == "TIMEOUT"),
+  guidanceForAgent: error.description
+}, "application/json")]]&gt;&lt;/ee:set-payload&gt;
+        &lt;/ee:message&gt;
+      &lt;/ee:transform&gt;
+    &lt;/on-error-continue&gt;
+  &lt;/error-handler&gt;
+&lt;/mule&gt;</code></pre>
+
+          <h3>2. Mule 4 MCP Client flow (discovering &amp; calling an external MCP server)</h3>
+          <p>When a Mule 4 orchestration flow acts as an MCP client—for example, querying an external freight carrier MCP server—configure <code>&lt;mcp:client-config&gt;</code> and invoke <code>&lt;mcp:list-tools&gt;</code> or <code>&lt;mcp:call-tool&gt;</code>:</p>
+          <span class="code-label">src/main/mule/mcp-carrier-client.xml</span>
+          <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:mcp="http://www.mulesoft.org/schema/mule/mcp"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/mcp http://www.mulesoft.org/schema/mule/mcp/current/mule-mcp.xsd"&gt;
+
+  &lt;mcp:client-config name="External_Carrier_MCP_Client"&gt;
+    &lt;mcp:streamable-http-client-connection serverUrl="${mcp.client.externalShippingMcpUrl}"
+                                           requestTimeout="${mcp.client.requestTimeoutMs}"&gt;
+      &lt;mcp:default-headers&gt;
+        &lt;mcp:default-header key="Authorization" value="#['Bearer ' ++ p('secure::carrier.mcp.token')]"/&gt;
+      &lt;/mcp:default-headers&gt;
+    &lt;/mcp:streamable-http-client-connection&gt;
+  &lt;/mcp:client-config&gt;
+
+  &lt;flow name="orchestrate-carrier-quote-via-mcp-client"&gt;
+    &lt;http:listener config-ref="HTTP_Listener_config" path="/api/v1/shipping-quote" allowedMethods="POST"/&gt;
+
+    &lt;!-- Optional discovery: verify remote server capabilities --&gt;
+    &lt;mcp:list-tools config-ref="External_Carrier_MCP_Client" target="remoteTools"/&gt;
+
+    &lt;!-- Invoke remote MCP tool with strongly typed DataWeave arguments --&gt;
+    &lt;mcp:call-tool config-ref="External_Carrier_MCP_Client" toolName="calculate-coldchain-freight"&gt;
+      &lt;mcp:arguments&gt;&lt;![CDATA[#[%dw 2.0
+output application/java
+---
+{
+  originZip: payload.originZip,
+  destinationZip: payload.destinationZip,
+  palletCount: payload.pallets,
+  temperatureCelsius: 4
+}]]]&gt;&lt;/mcp:arguments&gt;
+    &lt;/mcp:call-tool&gt;
+
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  availableToolCount: sizeOf(vars.remoteTools),
+  isToolError: payload.isError default false,
+  quoteResult: read(payload.content[0].text, "application/json")
+}]]&gt;&lt;/ee:set-payload&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+
+          <h2 id="test">Test it</h2>
+          <p>Run the Mule application locally (<code>mvn clean package mule:run</code>) and verify all three protocol layers: interactive visual testing with MCP Inspector, raw JSON-RPC 2.0 wire verification via <code>curl</code>, and IDE host integration.</p>
+
+          <h3>1. Interactive testing with MCP Inspector</h3>
+          <p>Launch the official MCP Inspector, select <strong>Streamable HTTP</strong> transport in the left sidebar, enter <code>http://localhost:8081/mcp</code>, and click <strong>Connect</strong>:</p>
+          <span class="code-label">terminal</span>
+          <pre><code>npx @modelcontextprotocol/inspector</code></pre>
+
+          <h3>2. Raw JSON-RPC 2.0 handshake, discovery, and tool call via <code>curl</code></h3>
+          <p>First, send <code>initialize</code> and capture the <code>Mcp-Session-Id</code> response header:</p>
+          <span class="code-label">1-initialize.sh</span>
+          <pre><code>curl -i -sS -X POST "http://localhost:8081/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2025-03-26",
+      "capabilities": {},
+      "clientInfo": { "name": "curl-smoke-test", "version": "1.0.0" }
+    }
+  }'</code></pre>
+
+          <p>Next, list registered tools (<code>tools/list</code>) and invoke <code>lookup-order-status</code> (<code>tools/call</code>) passing the returned session header:</p>
+          <span class="code-label">2-list-and-call-tool.sh</span>
+          <pre><code># Discover tools
+curl -sS -X POST "http://localhost:8081/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: 9b2e4f10-8a7c-4d11-9312-77c04e19a001" \
+  -d '{ "jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {} }' | jq .
+
+# Call lookup-order-status
+curl -sS -X POST "http://localhost:8081/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: 9b2e4f10-8a7c-4d11-9312-77c04e19a001" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "lookup-order-status",
+      "arguments": {
+        "orderId": "SO-8849201"
+      }
+    }
+  }' | jq .</code></pre>
+
+          <span class="code-label">JSON-RPC 2.0 response</span>
+          <pre><code>{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"orderId\":\"SO-8849201\",\"fulfillmentStatus\":\"DELIVERED\",\"carrier\":\"FEDEX_COLD\",\"trackingNumber\":\"774920194821\",\"estimatedDeliveryDate\":\"2026-11-22\",\"totalOrderUsd\":1420.00}"
+      }
+    ],
+    "isError": false
+  }
+}</code></pre>
+
+          <h3>3. Connect Cursor or Claude Desktop</h3>
+          <span class="code-label">.cursor/mcp.json (or claude_desktop_config.json with streamableHttp)</span>
+          <pre><code>{
+  "mcpServers": {
+    "enterprise-commerce-ops": {
+      "type": "streamable-http",
+      "url": "https://commerce-ops-mcp.us-e2.cloudhub.io/mcp",
+      "headers": {
+        "Authorization": "Bearer ${ENTERPRISE_MCP_ACCESS_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+          <h2 id="deploy">Deploy to production</h2>
+          <ul>
+            <li><strong>CloudHub 2.0 Ingress &amp; HTTP timeouts:</strong> Set the CloudHub 2.0 Ingress response timeout to at least <code>60s</code> if any downstream ERP/WMS orchestration aggregates multiple System APIs, while keeping individual <code>http:request</code> timeouts strictly bounded (<code>5000ms</code>) so slow backends fail fast with actionable guidance to the LLM.</li>
+            <li><strong>Worker / Replica sizing:</strong> For 3–15 MCP tools handling 50 RPS of tool calls, deploy <strong>2 replicas × 0.2 vCore</strong> (or <code>0.5 vCore</code> when executing heavy DataWeave payload transformations) on Java 17 and Mule 4.9 LTS.</li>
+            <li><strong>Catalog in Anypoint Exchange Agent Registry:</strong> Publish the deployed <code>/mcp</code> endpoint as an <code>mcp-server</code> asset in Exchange so MuleSoft Agent Fabric Brokers and partner teams can discover its versioned tool schemas automatically.</li>
+            <li><strong>Dedicated health endpoint:</strong> Add a lightweight <code>GET /health</code> flow on the same <code>HTTP_Listener_config</code> returning <code>200 OK</code> for Kubernetes/RTF readiness probes (probes must not call <code>POST /mcp</code> without JSON-RPC framing).</li>
+          </ul>
+
+          <h2 id="security">Security &amp; governance</h2>
+          <div class="callout tip">
+            <span class="callout-title">Design coarse-grained business tools, not thin CRUD wrappers</span>
+            <p>Never expose generic SQL/SOQL pass-through or unrestricted <code>DELETE</code> endpoints as MCP tools. Bind every write tool to strict enum reason codes, numeric value caps, and mandatory caller idempotency keys.</p>
+          </div>
+          <ul>
+            <li><strong>OAuth 2.0 JWT + tool-level authorization:</strong> Enforce JWT validation on <code>/mcp</code> via Flex Gateway, and inspect <code>attributes.headers['authorization']</code> claims when routing sensitive write tools like <code>create-return-rma</code>.</li>
+            <li><strong>mTLS between Flex Gateway and Mule replicas:</strong> Terminate public TLS at Flex Gateway or CloudHub 2.0 Private Space ingress and enforce mTLS on upstream connections to the Mule container.</li>
+            <li><strong>Output sanitization against indirect prompt injection:</strong> Free-text fields stored in CRM/ERP databases (such as customer delivery notes) can contain adversarial prompt-injection strings. Strip control directives and cap free-text field lengths in DataWeave before returning <code>&lt;mcp:text-tool-response-content&gt;</code>.</li>
+            <li><strong>JSON-RPC method allowlisting:</strong> Restrict external callers at Flex Gateway if needed so untrusted clients can only invoke <code>initialize</code>, <code>notifications/initialized</code>, <code>ping</code>, <code>tools/list</code>, and <code>tools/call</code>.</li>
+          </ul>
+
+          <h2 id="troubleshooting">Troubleshooting</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Symptom</th>
+                  <th scope="col">Cause</th>
+                  <th scope="col">Fix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>HTTP 406 Not Acceptable</code> when testing <code>POST /mcp</code> with <code>curl</code></td>
+                  <td>Streamable HTTP spec requires client to advertise both JSON and SSE media types</td>
+                  <td>Include <code>Accept: application/json, text/event-stream</code> on every <code>POST /mcp</code> request.</td>
+                </tr>
+                <tr>
+                  <td>JSON-RPC error <code>-32602</code> / <code>MCP:INVALID_ARGUMENTS</code></td>
+                  <td>LLM passed wrong type (e.g., string <code>"2"</code> instead of integer <code>2</code>) or omitted a required field</td>
+                  <td>Clarify property format in <code>&lt;mcp:tool-input-schema&gt;</code> <code>description</code> and keep <code>additionalProperties: false</code>.</td>
+                </tr>
+                <tr>
+                  <td>Maven build fails resolving <code>mule-mcp-connector:1.2.0</code></td>
+                  <td>Missing <code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code> or unauthenticated Anypoint Exchange Maven repository</td>
+                  <td>Add <code>&lt;classifier&gt;mule-plugin&lt;/classifier&gt;</code> and verify Exchange credentials in <code>~/.m2/settings.xml</code>.</td>
+                </tr>
+                <tr>
+                  <td>Tool returns raw Java object reference instead of JSON text</td>
+                  <td><code>&lt;mcp:text-tool-response-content&gt;</code> received a LinkedHashMap instead of serialized String</td>
+                  <td>Serialize DataWeave output explicitly with <code>write(..., "application/json")</code> or <code>output text/plain</code>.</td>
+                </tr>
+                <tr>
+                  <td>Intermittent <code>Unknown or expired Mcp-Session-Id</code> on CloudHub 2.0</td>
+                  <td>Client cached an old session ID across an application rolling redeploy or idle timeout</td>
+                  <td>Configure the MCP client/SDK to re-run <code>initialize</code> automatically on HTTP <code>404</code> session expiration.</td>
+                </tr>
+                <tr>
+                  <td>LLM retries a timed-out write tool and creates duplicate RMAs</td>
+                  <td>Downstream SAPI lacked idempotency enforcement when the first call succeeded slowly</td>
+                  <td>Require <code>idempotencyKey</code> in the tool JSON Schema and forward it via <code>Idempotency-Key</code> header backed by Object Store v2.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production checklist</h2>
+          <ul class="checklist">
+            <li>Compiled on JDK 17 + Mule 4.9 LTS using <code>com.mulesoft.connectors:mule-mcp-connector:1.2.0</code> (<code>mule-plugin</code>).</li>
+            <li>Streamable HTTP configured on <code>/mcp</code> (legacy dual-endpoint SSE disabled unless explicitly required).</li>
+            <li>Every <code>&lt;mcp:tool-listener&gt;</code> includes rich domain descriptions, regex patterns, enums, and <code>additionalProperties: false</code>.</li>
+            <li>Read-only tools separated from write tools; all mutating tools enforce value thresholds and idempotency keys.</li>
+            <li>DataWeave projections trim downstream ERP/CRM payloads to minimal token-efficient business fields.</li>
+            <li>Domain errors return structured <code>isError: true</code> guidance via <code>on-error-continue</code> rather than opaque HTTP 500 stack traces.</li>
+            <li>Flex Gateway protects <code>/mcp</code> with OAuth 2.0 JWT validation, client SLA rate limits, and PII masking.</li>
+            <li>MUnit test suite covers schema rejection (<code>MCP:INVALID_ARGUMENTS</code>), RMA cap guardrail, and SAPI timeout handling.</li>
+            <li>MCP Server registered in Anypoint Exchange Agent Registry with owner team and SLA metadata.</li>
+          </ul>
+
+          <h2 id="interview">Interview questions</h2>
+          <details class="qa">
+            <summary>1. Why does MuleSoft recommend Streamable HTTP over the older HTTP+SSE MCP transport for CloudHub 2.0 and Runtime Fabric?</summary>
+            <div>
+              <p>Legacy HTTP+SSE required opening a persistent <code>GET /sse</code> connection on one Mule replica and sending subsequent <code>POST /message</code> calls to that exact same replica's in-memory session state—which breaks across stateless L7 load balancers without sticky session pinning and gets dropped by enterprise firewalls. Streamable HTTP unifies request/response and optional streaming onto a single <code>/mcp</code> endpoint with explicit <code>Mcp-Session-Id</code> headers, enabling clean horizontal scaling and standard API gateway policy enforcement.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>2. How should error handling inside an <code>&lt;mcp:tool-listener&gt;</code> flow differ from a traditional REST System API?</summary>
+            <div>
+              <p>In a REST API, returning <code>HTTP 422</code> or <code>HTTP 504</code> expects deterministic code to parse status codes. In MCP, unhandled transport 500s often crash or blind the agent run. Instead, let protocol/schema violations propagate as JSON-RPC <code>MCP:INVALID_ARGUMENTS</code> (<code>-32602</code>), while catching recoverable business rule rejections or upstream timeouts in <code>on-error-continue</code> and returning a structured payload with <code>isError: true</code>, <code>retryable</code> boolean, and plain-language <code>guidanceForAgent</code> so the LLM can self-correct or escalate gracefully.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>3. Why shouldn't you auto-expose every System API endpoint 1:1 as an MCP tool?</summary>
+            <div>
+              <p>LLMs degrade rapidly in tool-selection accuracy once exposed to 30+ fine-grained CRUD endpoints with overlapping names and complex join requirements, while each extra chained tool call adds 1–3 seconds of LLM reasoning latency and thousands of tokens. Best practice in Mule 4 is designing coarse-grained, task-oriented MCP tools (like Process APIs) that orchestrate multiple System API calls and DataWeave joins internally in milliseconds.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>4. How do you protect state-mutating MCP tools (like <code>create-return-rma</code>) from duplicate execution and over-privileged actions?</summary>
+            <div>
+              <p>Combine four controls: (1) require a caller-generated <code>idempotencyKey</code> in the JSON Schema backed by Object Store v2 deduplication, (2) enforce deterministic Mule <code>&lt;choice&gt;</code> guardrails (e.g., rejecting RMAs above $1,500 before calling the ERP), (3) propagate user-scoped OAuth 2.0 JWTs rather than static admin credentials, and (4) require human-in-the-loop confirmation in the upstream Agent Broker for irreversible writes.</p>
+            </div>
+          </details>
+
+          <details class="qa">
+            <summary>5. When would a Mule 4 application use <code>&lt;mcp:client-config&gt;</code> and <code>&lt;mcp:call-tool&gt;</code> instead of a standard HTTP Request connector?</summary>
+            <div>
+              <p>Use the MCP Client operations whenever Mule orchestrates capabilities exposed by internal or partner MCP servers—such as dynamic tool catalogs discovered at runtime via <code>&lt;mcp:list-tools&gt;</code>, SaaS vendor MCP endpoints, or domain MCP servers cataloged in Agent Fabric. The connector handles JSON-RPC 2.0 session initialization, <code>Mcp-Session-Id</code> lifecycle, protocol version negotiation, and content-block parsing automatically.</p>
+            </div>
+          </details>
+
+          <h2 id="sources">Sources &amp; further reading</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/mcp-connector/latest/" target="_blank" rel="noopener noreferrer">MuleSoft MCP Connector Documentation — Server, Client &amp; Streamable HTTP Reference</a></li>
+            <li><a href="https://modelcontextprotocol.io/specification/2025-03-26/basic/transports" target="_blank" rel="noopener noreferrer">Model Context Protocol Specification — Streamable HTTP Transport</a></li>
+            <li><a href="https://modelcontextprotocol.io/docs/tools/inspector" target="_blank" rel="noopener noreferrer">MCP Inspector Official Guide — Testing &amp; Debugging MCP Servers</a></li>
+            <li><a href="https://docs.mulesoft.com/mule-runtime/latest/" target="_blank" rel="noopener noreferrer">MuleSoft Mule Runtime 4.9 LTS Release Notes &amp; Java 17 Support</a></li>
+            <li><a href="https://developer.salesforce.com/" target="_blank" rel="noopener noreferrer">Salesforce Developers — Building Enterprise MCP Tools for Agentforce</a></li>
+          </ul>
+        </div>
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+          <a class="prev" href="mulesoft-agent-fabric-end-to-end-guide.html"><span>← Previous</span><strong>MuleSoft Agent Fabric End-to-End Guide</strong></a>
+          <a class="next" href="mulesoft-mcp-bridge-openapi-to-agent-tools.html"><span>Next →</span><strong>MuleSoft MCP Bridge: OpenAPI to Agent Tools</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#what-and-why">What it is and why it matters</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup">Step-by-step setup</a></li>
+        <li><a href="#code">Full working example</a></li>
+        <li><a href="#test">Test it</a></li>
+        <li><a href="#deploy">Deploy to production</a></li>
+        <li><a href="#security">Security &amp; governance</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#checklist">Production checklist</a></li>
+        <li><a href="#interview">Interview questions</a></li>
+        <li><a href="#sources">Sources &amp; further reading</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+<footer class="blog-footer">
+  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

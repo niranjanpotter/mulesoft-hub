@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>MuleSoft Engineering Blog (2026) — End-to-End AI, MCP, A2A &amp; Anypoint Setup Guides | MuleSoft Hub</title>
+<meta name="description" content="Hands-on MuleSoft 2026 engineering articles with end-to-end architecture, step-by-step Anypoint setup, full XML/Maven code, Flex Gateway AI policies &amp; RAG.">
+<meta name="author" content="Niranjan Potter">
+<link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MuleSoft Engineering Blog (2026) — End-to-End AI, MCP, A2A &amp; Anypoint Setup Guides">
+<meta property="og:description" content="Deep-dive hands-on MuleSoft guides: Agent Fabric, MCP Connector, MCP Bridge, A2A Protocol, Agentforce Topic Center, MAC Einstein RAG, Flex Gateway AI &amp; FinOps.">
+<meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/">
+<meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-hub.png">
+<meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "MuleSoft Hub Engineering Blog",
+  "url": "https://mulesoft.niranjanpotter.dpdns.org/blog/",
+  "description": "End-to-end hands-on MuleSoft architecture and setup guides covering Agent Fabric, MCP, A2A, Salesforce Agentforce, MuleSoft AI Chain, Flex Gateway AI policies, and OpenTelemetry.",
+  "author": {
+    "@type": "Person",
+    "name": "Niranjan Potter",
+    "url": "https://www.linkedin.com/in/niranjan-potter-551b49171"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MuleSoft Hub",
+    "url": "https://mulesoft.niranjanpotter.dpdns.org/"
+  }
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="blog-topbar">
+  <div class="blog-topbar-inner">
+    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Engineering Blog</span></a>
+    <nav class="blog-nav" aria-label="Main">
+      <a href="../index.html">← 308 Interview Q&amp;As &amp; Labs</a>
+      <a href="index.html" aria-current="page">All Articles</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">2026 Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="blog-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › Engineering Blog</nav>
+
+  <main id="main">
+    <section class="blog-hero">
+      <span class="post-kicker">2026 Hands-On Architecture &amp; Setup Series · 100% Free</span>
+      <h1>MuleSoft Engineering Blog — End-to-End Setup &amp; Deep Dives</h1>
+      <p>Every guide goes from first principles to production: architecture diagrams, exact Anypoint Platform &amp; Salesforce setup steps, copy-paste Maven <code>pom.xml</code> and Mule 4.9 XML configurations, <code>curl</code> / Inspector verification, security guardrails, troubleshooting tables, and senior architect interview Q&amp;As.</p>
+
+      <div class="blog-filter-bar" role="region" aria-label="Filter blog articles">
+        <label class="sr-only" for="blog-search">Search blog articles by topic, connector, or keyword</label>
+        <input id="blog-search" class="blog-search-input" type="search" placeholder="Search MCP, Agent Fabric, A2A, Agentforce, pgvector, Flex Gateway..." aria-label="Search blog articles by topic, connector, or keyword">
+        <div class="blog-filter-pills" role="group" aria-label="Filter by category">
+          <button type="button" class="filter-pill" data-cat="all" aria-pressed="true">All Guides (28)</button>
+          <button type="button" class="filter-pill" data-cat="fabric" aria-pressed="false">Agent Fabric &amp; A2A</button>
+          <button type="button" class="filter-pill" data-cat="mcp" aria-pressed="false">MCP Server &amp; Bridge</button>
+          <button type="button" class="filter-pill" data-cat="rag" aria-pressed="false">Agentforce &amp; RAG</button>
+          <button type="button" class="filter-pill" data-cat="gov" aria-pressed="false">AI Gateway &amp; FinOps</button>
+          <button type="button" class="filter-pill" data-cat="core" aria-pressed="false">Core Mule 4 Playbooks</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="track-ai">
+      <h2 id="track-ai" class="track-title">🔥 Flagship Track: 2026 MuleSoft AI, Agents, MCP &amp; Governance (End-to-End Hands-On)</h2>
+      <div class="card-grid" id="ai-articles-grid">
+
+        <a class="post-card" data-cat="fabric" href="mulesoft-agent-fabric-end-to-end-guide.html">
+          <div><span class="tag">Agent Fabric</span> <span class="tag">Control Plane</span></div>
+          <h3>1. MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance</h3>
+          <p>Set up MuleSoft's multi-cloud AI control plane across Agentforce, Bedrock, and Vertex AI: Anypoint Exchange Agent Registry, automated scanners, <code>.agent</code> Broker scripts in ACB, and Model Wallet kill switches.</p>
+          <div class="card-meta"><span>⏱️ 18 min read</span><span>🛠️ ACB + Exchange + CLI</span></div>
+        </a>
+
+        <a class="post-card" data-cat="mcp" href="mulesoft-mcp-connector-server-client-setup.html">
+          <div><span class="tag">MCP Connector</span> <span class="tag">Mule 4.9 XML</span></div>
+          <h3>2. MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4</h3>
+          <p>Step-by-step build with <code>mule-mcp-connector</code> over Streamable HTTP: expose validated enterprise tools via <code>&lt;mcp:tool-listener&gt;</code>, consume remote MCP tools as a client, and test with MCP Inspector &amp; JSON-RPC.</p>
+          <div class="card-meta"><span>⏱️ 20 min read</span><span>🛠️ Full pom.xml + Mule XML</span></div>
+        </a>
+
+        <a class="post-card" data-cat="mcp" href="mulesoft-mcp-bridge-openapi-to-agent-tools.html">
+          <div><span class="tag">MCP Bridge</span> <span class="tag">OpenAPI 3.0</span></div>
+          <h3>3. MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools</h3>
+          <p>Turn existing Experience and Process APIs into governed MCP tool servers without rewriting Mule code — including LLM-friendly schema curation, read/write safety splitting, and OAuth 2.0 On-Behalf-Of propagation.</p>
+          <div class="card-meta"><span>⏱️ 17 min read</span><span>🛠️ OpenAPI + Exchange</span></div>
+        </a>
+
+        <a class="post-card" data-cat="fabric" href="mulesoft-a2a-protocol-multi-agent-orchestration.html">
+          <div><span class="tag">A2A Protocol</span> <span class="tag">Multi-Agent</span></div>
+          <h3>4. Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration</h3>
+          <p>Implement <code>mule4-a2a-connector</code> to publish <code>/.well-known/agent.json</code> Agent Cards, manage stateful task lifecycles (<code>submitted</code> → <code>working</code> → <code>completed</code>), and coordinate specialist agents.</p>
+          <div class="card-meta"><span>⏱️ 19 min read</span><span>🛠️ A2A Server + Coordinator</span></div>
+        </a>
+
+        <a class="post-card" data-cat="rag" href="agentforce-mulesoft-topic-center-api-actions.html">
+          <div><span class="tag">Agentforce</span> <span class="tag">Topic Center</span></div>
+          <h3>5. Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup</h3>
+          <p>Walk through all 5 setup phases linking Salesforce Setup and Anypoint Access Management, authoring Topic Center instructions in ACB, syncing Salesforce API Catalog Named Credentials, and testing Atlas Reasoning traces.</p>
+          <div class="card-meta"><span>⏱️ 19 min read</span><span>🛠️ Salesforce + Anypoint</span></div>
+        </a>
+
+        <a class="post-card" data-cat="rag" href="mulesoft-ai-chain-einstein-inference-rag-setup.html">
+          <div><span class="tag">MuleSoft AI Chain</span> <span class="tag">Einstein &amp; RAG</span></div>
+          <h3>6. MuleSoft AI Chain (MAC), Einstein Trust Layer &amp; Inference Connector: Build Enterprise RAG in Mule 4</h3>
+          <p>Compare <code>mule4-aichain-connector</code>, <code>mule4-einstein-ai-connector</code>, and <code>mule4-inference-connector</code>, then build a complete PDF/runbook ingestion + <code>pgvector</code> RAG pipeline with grounded citations.</p>
+          <div class="card-meta"><span>⏱️ 21 min read</span><span>🛠️ MAC + pgvector + Einstein</span></div>
+        </a>
+
+        <a class="post-card" data-cat="gov" href="flex-gateway-ai-policies-llm-guardrails.html">
+          <div><span class="tag">Flex Gateway</span> <span class="tag">LLM Guardrails</span></div>
+          <h3>7. Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking &amp; Semantic Cache</h3>
+          <p>Deploy Flex Gateway in Docker and Kubernetes as an enterprise Model Proxy enforcing Regex Prompt Guard, Bedrock/Model Armor guardrails, PII redaction, semantic caching, and SSE-aware LLM token rate limits.</p>
+          <div class="card-meta"><span>⏱️ 18 min read</span><span>🛠️ flexctl + K8s CRDs</span></div>
+        </a>
+
+        <a class="post-card" data-cat="gov" href="agent-evals-observability-finops-opentelemetry.html">
+          <div><span class="tag">OpenTelemetry</span> <span class="tag">MUnit &amp; FinOps</span></div>
+          <h3>8. Testing, Observability &amp; FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals &amp; Cost Guardrails</h3>
+          <p>Propagate W3C <code>traceparent</code> and <code>gen_ai.*</code> spans end-to-end, build deterministic MUnit 3 mocks + golden-dataset CI evaluations, and enforce per-tenant token budgets and automated circuit-breaker kill switches.</p>
+          <div class="card-meta"><span>⏱️ 18 min read</span><span>🛠️ OTel + MUnit 3 + CI/CD</span></div>
+        </a>
+
+      </div>
+    </section>
+
+    <section aria-labelledby="track-core">
+      <h2 id="track-core" class="track-title">📚 Core MuleSoft Enterprise Architecture &amp; Production Playbooks (20 Guides)</h2>
+      <div class="card-grid" id="core-articles-grid">
+        <a class="post-card" data-cat="core" href="../mulesoft-scenario-based-interview-questions.html"><h3>Top 20 Scenario-Based MuleSoft Interview Q&amp;A</h3><p>Production troubleshooting scenarios for Senior Developers, Tech Leads, and Integration Architects.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-batch-processing-interview-questions.html"><h3>Mule 4 Batch Processing &amp; LMAX Disruptor Internals</h3><p>Persistent queues, block size tuning, memory footprint, and failure handling for multi-million record loads.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../cloudhub-1-to-2-migration-guide.html"><h3>CloudHub 1.0 to CloudHub 2.0 Migration Runbook</h3><p>Private Spaces, ingress controllers, shared vs dedicated load balancing, and zero-downtime cutover steps.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../dataweave-performance-tuning-patterns.html"><h3>DataWeave 2.0 Streaming &amp; Memory Tuning Patterns</h3><p>Deferred execution, indexed lookups vs nested filters, and handling large CSV/JSON/XML payloads safely.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-anypoint-mq-dlq-fifo-interview.html"><h3>Anypoint MQ: Manual ACK, FIFO Queues &amp; DLQ Reprocessing</h3><p>Idempotent consumers, Object Store v2 deduplication, circuit breakers, and poison-message recovery.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-salesforce-bulk-api-2-interview.html"><h3>Salesforce Bulk API 2.0 Architecture in Mule 4</h3><p>Ingest job states, CSV chunking, PK chunking queries, governor limit isolation, and failed-record reconciliation.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-oauth-jwt-bearer-token-interview.html"><h3>OAuth 2.0 &amp; JWT Bearer Token Flow in MuleSoft</h3><p>RSA keypair setup, Connected Apps, token caching in Object Store, and zero-downtime certificate rotation.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-scatter-gather-interview-questions.html"><h3>Scatter-Gather Concurrency, Timeouts &amp; Partial Failure Recovery</h3><p>Parallel route isolation, nested Try scopes, payload flattening, and thread-pool behavior.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-opentelemetry-tracing-observability.html"><h3>OpenTelemetry &amp; Distributed Tracing on Anypoint Platform</h3><p>Correlation IDs, W3C trace context propagation, Splunk/Datadog log forwarding, and SLA alerting.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-cicd-maven-pipeline-guide.html"><h3>Enterprise CI/CD with Mule Maven Plugin &amp; GitHub Actions</h3><p>Parent POM governance, Connected App secrets, automated MUnit coverage gates, and CloudHub 2.0 promotion.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-terraform-provider-guide.html"><h3>Infrastructure as Code with the MuleSoft Terraform Provider</h3><p>Automating Environments, Business Groups, Private Spaces, and API Manager instances declaratively.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-sap-s4hana-odata-interview.html"><h3>SAP S/4HANA Integration: OData v4 vs JCo BAPI &amp; IDocs</h3><p>Transactional RFC (tRFC) TID management, SAP Gateway pagination, and canonical order mapping.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-snowflake-connector-patterns.html"><h3>Snowflake Connector Patterns: Key-Pair Auth &amp; Bulk Loads</h3><p>Staging files to S3/Azure Blob, COPY INTO orchestration, warehouse sizing, and streaming result sets.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-partner-manager-b2b-edi-interview.html"><h3>Anypoint Partner Manager &amp; B2B EDI (X12 / EDIFACT / AS2)</h3><p>997 functional acknowledgments, partner onboarding, certificate lifecycle, and SLA tracking.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-reusable-error-handler-plugin.html"><h3>Building a Reusable Global Error Handler Plugin in Mule 4</h3><p>Standardizing HTTP error taxonomies, correlation tracing, and custom Mule XML SDK error modules.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-secure-properties-encryption-guide.html"><h3>Secure Configuration Properties with AES-256-GCM</h3><p>Encrypting secrets per environment, runtime key injection, and Anypoint Secrets Manager best practices.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-java-interview-mastery.html"><h3>Java 17 Mastery for Senior MuleSoft Engineers</h3><p>Mule 4.9 Java 17 migration, Java Module invocation, custom SDK connectors, and JVM GC tuning.</p><div class="card-meta"><span>Playbook</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-agentforce-topic-center-actions.html"><h3>Agentforce Topic Center Quick Q&amp;A Brief</h3><p>Rapid interview revision card on Salesforce Agentforce Topic Center and API actions.</p><div class="card-meta"><span>Quick Brief</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-mcp-connector-ai-agents.html"><h3>MCP Connector Quick Interview Q&amp;A Brief</h3><p>Rapid interview revision card on Model Context Protocol tool exposure and safety controls.</p><div class="card-meta"><span>Quick Brief</span></div></a>
+        <a class="post-card" data-cat="core" href="../mulesoft-model-proxy-semantic-cache.html"><h3>Model Proxy &amp; Semantic Cache Quick Interview Brief</h3><p>Rapid interview revision card on LLM gateway caching and token cost optimization.</p><div class="card-meta"><span>Quick Brief</span></div></a>
+      </div>
+    </section>
+
+    <aside class="linkedin-cta" aria-label="Request a MuleSoft blog topic on LinkedIn">
+      <p>💬 <strong>Want a deep-dive setup guide on another MuleSoft topic?</strong> Drop a comment on LinkedIn with the connector, architecture, or migration challenge you want covered next.</p>
+      <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Suggest a Topic on LinkedIn ↗</a>
+    </aside>
+  </main>
+</div>
+
+<footer class="blog-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Interview &amp; Architecture Hub</a> · Independent community engineering content.</p>
+</footer>
+
+<script>
+(function () {
+  var search = document.getElementById('blog-search');
+  var pills = Array.prototype.slice.call(document.querySelectorAll('.filter-pill'));
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
+  var activeCat = 'all';
+
+  function applyFilter() {
+    var q = (search && search.value ? search.value : '').toLowerCase().trim();
+    cards.forEach(function (card) {
+      var cat = card.getAttribute('data-cat') || '';
+      var matchCat = activeCat === 'all' || cat === activeCat;
+      var matchQ = !q || card.textContent.toLowerCase().indexOf(q) !== -1;
+      card.style.display = (matchCat && matchQ) ? '' : 'none';
+    });
+  }
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      activeCat = pill.getAttribute('data-cat') || 'all';
+      pills.forEach(function (p) { p.setAttribute('aria-pressed', p === pill ? 'true' : 'false'); });
+      applyFilter();
+    });
+  });
+
+  if (search) search.addEventListener('input', applyFilter);
+})();
+</script>
+</body>
+</html>
