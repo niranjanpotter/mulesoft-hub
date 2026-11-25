@@ -458,10 +458,38 @@
     });
   }
 
+  function initBackToTopAndReset() {
+    var resetBtn = document.getElementById('btn-reset-filters');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        var search = document.getElementById('blog-search');
+        var allPill = document.querySelector('.filter-pill[data-cat="all"]');
+        if (search) search.value = '';
+        if (allPill) allPill.click();
+        else if (search) search.dispatchEvent(new Event('input'));
+      });
+    }
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'back-to-top-btn';
+    btn.setAttribute('aria-label', 'Back to top');
+    btn.textContent = '↑';
+    document.body.appendChild(btn);
+    var sync = function () {
+      btn.classList.toggle('is-visible', (window.scrollY || document.documentElement.scrollTop || 0) > 420);
+    };
+    window.addEventListener('scroll', sync, { passive: true });
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    sync();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
     initSearchAndFilters();
     initSearchShortcut();
+    initBackToTopAndReset();
     addCopyButtons();
     initTabs();
     initFlowSimulators();
