@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents</title>
   <meta name="description" content="Master the Model Context Protocol (MCP) in MuleSoft. Expose enterprise APIs as MCP tools for Claude, Gemini, and GPT-4 agents.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-mcp-connector-ai-agents.html">
+  <meta property="og:type" content="article">
   <meta property="og:title" content="MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents">
   <meta property="og:description" content="Master the Model Context Protocol (MCP) in MuleSoft. Expose enterprise APIs as MCP tools for Claude, Gemini, and GPT-4 agents.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-mcp-connector-ai-agents.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,210 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › MCP Connector Brief</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>MuleSoft Model Context Protocol (MCP) Connector & Agent Architecture</h1>
+          <p class="post-lede">Enable foundation LLM models to dynamically discover and invoke enterprise tools over standardized Server-Sent Events (SSE) and stdio bridges.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+            <span class="diff-pill diff-beginner">Beginner</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 10 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Quick-reference interview brief covering Streamable HTTP MCP servers, JSON Schema tool catalogs, and mutation safety guardrails in MuleSoft.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Studio · MCP Quick Reference Overview</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">mule-mcp-connector 1.2.0 · /mcp</span>
+        <span class="anypoint-status-ok">● MCP PROTOCOL 2025-03</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Transport Standard</span><span class="anypoint-kpi-val">Streamable HTTP (/mcp)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Maven Artifact</span><span class="anypoint-kpi-val">mule-mcp-connector:1.2.0</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Client Discovery</span><span class="anypoint-kpi-val">tools/list JSON-RPC 2.0</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Full Tutorial</span><span class="anypoint-kpi-val">Flagship Guide #2 &amp; #3</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Core MCP Primitives in Mule</div>
+          <div class="anypoint-pane-bd">&lt;mcp:config&gt; -&gt; Bind Streamable HTTP to HTTP Listener
+&lt;mcp:tool-listener&gt; -&gt; Turn any Mule flow into an AI Tool
+&lt;mcp:call-tool&gt; -&gt; Consume external MCP servers in flows</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Safety Guardrails Summary</div>
+          <div class="anypoint-pane-bd">1. Separate Read Tools from Mutating Write Tools
+2. Validate arguments with strict JSON Schema
+3. Cap refund/write limits deterministically inside Mule</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Rapid reference overview of MuleSoft MCP Connector primitives before diving into Flagship Guides #2 (Server/Client) and #3 (MCP Bridge).</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">MCP Connector AI Agents</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">MuleSoft Model Context Protocol (MCP) Connector & Agent Architecture</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Enable foundation LLM models to dynamically discover and invoke enterprise tools over standardized Server-Sent Events (SSE) and stdio bridges.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🔌</span><span class="flow-node-title">MCP Server Endpoint</span><span class="flow-node-type">Streamable HTTP (/mcp)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🧪</span><span class="flow-node-title">JSON Schema Check</span><span class="flow-node-type">&lt;mcp:tool-input-schema&gt;</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">Write Safety Mode</span><span class="flow-node-type">ReadOnly vs Dollar Cap</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📤</span><span class="flow-node-title">MCP Tool Response</span><span class="flow-node-type">Text Content Frame</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📖</span><span class="flow-node-title">Deep-Dive Setup</span><span class="flow-node-type">See Guides #2 &amp; #3</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. MCP Server Endpoint (Streamable HTTP (/mcp))</h3>
+      <p class="insp-node-what">Exposes JSON-RPC 2.0 `initialize`, `tools/list`, and `tools/call` on a clean single `/mcp` endpoint compatible with modern CloudHub 2.0 Ingress.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">endpoint=/mcp | mule-mcp-connector 1.2.0</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Config</th><td>MCP_Server_Config</td></tr>
+<tr><th scope="row">Path</th><td>/mcp</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:mcp=&quot;http://www.mulesoft.org/schema/mule/mcp&quot;&gt;
+  &lt;http:listener-config name=&quot;HTTP_Listener_config&quot;&gt;
+    &lt;http:listener-connection host=&quot;0.0.0.0&quot; port=&quot;8081&quot;/&gt;
+  &lt;/http:listener-config&gt;
+  &lt;mcp:config name=&quot;MCP_Server_Config&quot; serverName=&quot;Mule MCP Server&quot; serverVersion=&quot;1.0.0&quot;&gt;
+    &lt;mcp:streamable-http-server-connection listenerConfig=&quot;HTTP_Listener_config&quot; mcpEndpointPath=&quot;/mcp&quot;/&gt;
+  &lt;/mcp:config&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🔌", "label": "MCP Server Endpoint", "type": "Streamable HTTP (/mcp)", "what": "Exposes JSON-RPC 2.0 `initialize`, `tools/list`, and `tools/call` on a clean single `/mcp` endpoint compatible with modern CloudHub 2.0 Ingress.", "config_values": "endpoint=/mcp | mule-mcp-connector 1.2.0", "studio_props": [["Config", "MCP_Server_Config"], ["Path", "/mcp"]]}, {"icon": "🧪", "label": "JSON Schema Check", "type": "<mcp:tool-input-schema>", "what": "Enforces typed arguments, regex formats, and required keys before running downstream SAP/Salesforce calls.", "config_values": "strict schema validation enabled", "studio_props": [["Validator", "JSON Schema Draft-07"]]}, {"icon": "🛡️", "label": "Write Safety Mode", "type": "ReadOnly vs Dollar Cap", "what": "Prevents LLM hallucinations from mutating production ERP data without authorization scopes or human approval thresholds.", "config_values": "Separate read vs write tool scopes", "studio_props": [["Guard", "Max Write Cap + Scope Check"]]}, {"icon": "📤", "label": "MCP Tool Response", "type": "Text Content Frame", "what": "Returns clean serialized JSON payloads wrapped in standard MCP response blocks.", "config_values": "<mcp:text-tool-response-content>", "studio_props": [["Response", "JSON String Envelope"]]}, {"icon": "📖", "label": "Deep-Dive Setup", "type": "See Guides #2 & #3", "what": "Open Flagship Guide #2 for full downloadable Server + Client XML, or Guide #3 for zero-code Exchange OAS projection via MCP Bridge.", "config_values": "blog/mulesoft-mcp-connector-server-client-setup.html", "studio_props": [["Full Setup", "Guides #2 & #3"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:mcp=\"http://www.mulesoft.org/schema/mule/mcp\">\n  <http:listener-config name=\"HTTP_Listener_config\">\n    <http:listener-connection host=\"0.0.0.0\" port=\"8081\"/>\n  <\/http:listener-config>\n  <mcp:config name=\"MCP_Server_Config\" serverName=\"Mule MCP Server\" serverVersion=\"1.0.0\">\n    <mcp:streamable-http-server-connection listenerConfig=\"HTTP_Listener_config\" mcpEndpointPath=\"/mcp\"/>\n  <\/mcp:config>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-mcp-connector-ai-agents">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Prefer Streamable HTTP /mcp over legacy deprecated SSE</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Write crystal-clear tool descriptions for LLM tool selection</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Enforce read-only hints &amp; OAuth OBO scopes</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Test with npx @modelcontextprotocol/inspector</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Follow Flagship Guide #2 for full multi-tool XML</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-mcp-connector-ai-agents" aria-selected="true" aria-controls="panel-studio-mulesoft-mcp-connector-ai-agents" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-mcp-connector-ai-agents" aria-selected="false" aria-controls="panel-platform-mulesoft-mcp-connector-ai-agents" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-mcp-connector-ai-agents" aria-selected="false" aria-controls="panel-test-mulesoft-mcp-connector-ai-agents" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-mcp-connector-ai-agents" aria-labelledby="btn-tab-studio-mulesoft-mcp-connector-ai-agents">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>mcp-quick-start-brief</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · JDK 17 · mule-mcp-connector 1.2.0</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-mcp-connector&lt;/artifactId&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>mcpEndpointPath</code></td><td><code>/mcp</code></td><td>Single endpoint handling initialization and tool execution</td></tr>
+<tr><td><code>Client Compatibility</code></td><td><code>Claude Desktop, Cursor, Agentforce, Mule</code></td><td>Works with any spec-compliant MCP runtime</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-mcp-connector-ai-agents" aria-labelledby="btn-tab-platform-mulesoft-mcp-connector-ai-agents" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Deploy to CloudHub 2.0 port 8081 with API Manager JWT enforcement.</li>
+        <li>See Flagship Guide #2 (`MuleSoft MCP Connector Hands-On`) for complete Inspector &amp; curl walkthrough.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-mcp-connector-ai-agents" aria-labelledby="btn-tab-test-mulesoft-mcp-connector-ai-agents" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST http://localhost:8081/mcp (method: tools/list)</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;http://localhost:8081/mcp&quot; -H &quot;Content-Type: application/json&quot; -H &quot;Accept: application/json, text/event-stream&quot; -d &#x27;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;tools/list&quot;}&#x27; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{ &quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 1, &quot;result&quot;: { &quot;tools&quot;: [...] } }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>406 Not Acceptable</code></td><td>Accept header missing text/event-stream</td><td>Include Accept: application/json, text/event-stream</td></tr>
+<tr><td><code>LLM calls write tool unexpectedly</code></td><td>No readOnlyHint or scope gate</td><td>Add strict annotations &amp; OAuth write scopes</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -159,21 +325,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-mcp-connector-ai-agents" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-agentforce-topic-center-actions.html"><span>← Previous Guide</span><strong>Agentforce Topic Brief</strong></a>
+  <a class="next" href="mulesoft-model-proxy-semantic-cache.html"><span>Next Guide →</span><strong>Model Proxy &amp; Semantic Cache</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-agentforce-topic-center-actions.html">Agentforce Topic Center Actions</a></li><li><a href="mulesoft-model-proxy-semantic-cache.html">Model Proxy & Semantic Caching</a></li><li><a href="mulesoft-oauth-jwt-bearer-token-interview.html">OAuth 2.0 JWT Bearer Token Flow</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

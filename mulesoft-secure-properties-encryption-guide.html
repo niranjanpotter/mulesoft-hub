@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook</title>
   <meta name="description" content="How to encrypt and decrypt sensitive application properties in Mule 4 using the Secure Properties Tool with AES-CBC, AES-GCM, and Blowfish algorithms.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-secure-properties-encryption-guide.html">
+  <meta property="og:type" content="article">
   <meta property="og:title" content="MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook">
   <meta property="og:description" content="How to encrypt and decrypt sensitive application properties in Mule 4 using the Secure Properties Tool with AES-CBC, AES-GCM, and Blowfish algorithms.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-secure-properties-encryption-guide.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,219 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › Secure Properties Encryption</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook</h1>
+          <p class="post-lede">Zero-plain-text governance: protecting database passwords, OAuth client secrets, and private keys in Git repositories and CI/CD pipelines.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-beginner">Beginner</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 11 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Encrypt database passwords, API secrets, and keystores per environment in Mule 4 using AES-256-GCM without committing plaintext secrets to Git.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Runtime Manager · Secure Config &amp; Properties Masking</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">AES-256-GCM · Encrypted Values Hidden in UI</span>
+        <span class="anypoint-status-ok">● AES-256-GCM ENFORCED</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Cipher Algorithm</span><span class="anypoint-kpi-val">AES / GCM (Mule 4 Recommended)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">YAML Syntax Prefix</span><span class="anypoint-kpi-val">![encryptedBase64...]</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Runtime Accessor</span><span class="anypoint-kpi-val">${secure::db.password}</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">UI Secret Masking</span><span class="anypoint-kpi-val">secure.properties=db.pass,key</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">config-prod-secure.yaml (Safe for Git Commit)</div>
+          <div class="anypoint-pane-bd">db:
+  username: &quot;mule_prod_app&quot;
+  password: &quot;![v2x9Q/Lk8mT...==]&quot;
+openai:
+  apiKey:   &quot;![9pL3zR+4wQ2...==]&quot;</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Runtime Manager Properties Protection</div>
+          <div class="anypoint-pane-bd">mule.env = prod
+mule.key = •••••••••••••••••••••••••••••••• (Hidden in UI!)
+Notice: Define `secure.properties=mule.key` inside
+        mule-artifact.json so ops viewers cannot read key!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Storing AES-256-GCM encrypted ![...] values in Git while shielding the master decryption key inside CloudHub Runtime Manager.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">Secure Properties Tool Guide</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Zero-plain-text governance: protecting database passwords, OAuth client secrets, and private keys in Git repositories and CI/CD pipelines.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🔑</span><span class="flow-node-title">32-Char Master Key</span><span class="flow-node-type">Per-Env Encryption Key</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">Encrypt with GCM</span><span class="flow-node-type">secure-properties-tool.jar</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📄</span><span class="flow-node-title">Global Secure Config</span><span class="flow-node-type">&lt;secure-properties:config&gt;</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔒</span><span class="flow-node-title">mule-artifact Mask</span><span class="flow-node-type">secureProperties Array</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">✅</span><span class="flow-node-title">Connector Injection</span><span class="flow-node-type">${secure::...} Resolve</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. 32-Char Master Key (Per-Env Encryption Key)</h3>
+      <p class="insp-node-what">Uses distinct 256-bit (32-char) master keys per environment (`dev`, `qa`, `prod`) so a Dev key can never decrypt Prod secrets.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">Pass -Dmule.key=... via CI/Runtime (NEVER in Git)</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Dev Key</th><td>Injected in Studio Run Config</td></tr>
+<tr><th scope="row">Prod Key</th><td>Managed in GitHub/CH2 Secrets</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:secure-properties=&quot;http://www.mulesoft.org/schema/mule/secure-properties&quot;
+      xmlns:db=&quot;http://www.mulesoft.org/schema/mule/db&quot;&gt;
+  &lt;secure-properties:config name=&quot;Secure_Properties_Config&quot;
+    file=&quot;config-${mule.env}-secure.yaml&quot; key=&quot;${mule.key}&quot;&gt;
+    &lt;secure-properties:encrypt algorithm=&quot;AES&quot; mode=&quot;GCM&quot;/&gt;
+  &lt;/secure-properties:config&gt;
 
-    <!-- Main Q&A Content -->
-    <main>
+  &lt;db:config name=&quot;Postgres_Config&quot;&gt;
+    &lt;db:generic-connection url=&quot;${db.url}&quot; user=&quot;${db.user}&quot; password=&quot;${secure::db.password}&quot;/&gt;
+  &lt;/db:config&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🔑", "label": "32-Char Master Key", "type": "Per-Env Encryption Key", "what": "Uses distinct 256-bit (32-char) master keys per environment (`dev`, `qa`, `prod`) so a Dev key can never decrypt Prod secrets.", "config_values": "Pass -Dmule.key=... via CI/Runtime (NEVER in Git)", "studio_props": [["Dev Key", "Injected in Studio Run Config"], ["Prod Key", "Managed in GitHub/CH2 Secrets"]]}, {"icon": "🛡️", "label": "Encrypt with GCM", "type": "secure-properties-tool.jar", "what": "Encrypts YAML secrets using authenticated AES-GCM mode (preferred over legacy Blowfish or AES-CBC) into `![...]` ciphertext blocks.", "config_values": "algorithm=AES | mode=GCM | secure-properties-tool", "studio_props": [["Tool", "secure-properties-tool.jar"], ["Cipher", "AES"], ["Block Mode", "GCM (Authenticated)"]]}, {"icon": "📄", "label": "Global Secure Config", "type": "<secure-properties:config>", "what": "Loads `config-${mule.env}-secure.yaml` at application startup, automatically decrypting `![...]` entries with `${mule.key}`.", "config_values": "file=config-${mule.env}-secure.yaml | key=${mule.key}", "studio_props": [["Display Name", "Secure Properties Config"], ["File Path", "config-${mule.env}-secure.yaml"], ["Encryption Alg", "AES"], ["Mode", "GCM"]]}, {"icon": "🔒", "label": "mule-artifact Mask", "type": "secureProperties Array", "what": "Lists `[ \"mule.key\", \"ca.secret\" ]` inside `mule-artifact.json` so CloudHub Runtime Manager permanently masks those values in UI & APIs.", "config_values": "mule-artifact.json -> secureProperties: [\"mule.key\"]", "studio_props": [["File", "mule-artifact.json"], ["Key Field", "secureProperties"], ["UI Result", "Hidden Dots (••••)"]]}, {"icon": "✅", "label": "Connector Injection", "type": "${secure::...} Resolve", "what": "Connectors and DataWeave resolve decrypted secrets cleanly at runtime using `${secure::db.password}` syntax without leaking keys to logs.", "config_values": "password=\"${secure::db.password}\" | Mule::p('secure::...')", "studio_props": [["XML Syntax", "${secure::property.name}"], ["DW Syntax", "Mule::p('secure::property.name')"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:secure-properties=\"http://www.mulesoft.org/schema/mule/secure-properties\"\n      xmlns:db=\"http://www.mulesoft.org/schema/mule/db\">\n  <secure-properties:config name=\"Secure_Properties_Config\"\n    file=\"config-${mule.env}-secure.yaml\" key=\"${mule.key}\">\n    <secure-properties:encrypt algorithm=\"AES\" mode=\"GCM\"/>\n  <\/secure-properties:config>\n\n  <db:config name=\"Postgres_Config\">\n    <db:generic-connection url=\"${db.url}\" user=\"${db.user}\" password=\"${secure::db.password}\"/>\n  <\/db:config>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-secure-properties-encryption-guide">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Add mule-secure-configuration-property-module to pom.xml</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Use AES + GCM (avoid legacy CBC/Blowfish where possible)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Always wrap encrypted strings inside ![...] quotes</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Add mule.key to mule-artifact.json secureProperties array</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Maintain separate master keys for Dev, Stage &amp; Prod</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-secure-properties-encryption-guide" aria-selected="true" aria-controls="panel-studio-mulesoft-secure-properties-encryption-guide" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-secure-properties-encryption-guide" aria-selected="false" aria-controls="panel-platform-mulesoft-secure-properties-encryption-guide" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-secure-properties-encryption-guide" aria-selected="false" aria-controls="panel-test-mulesoft-secure-properties-encryption-guide" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-secure-properties-encryption-guide" aria-labelledby="btn-tab-studio-mulesoft-secure-properties-encryption-guide">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>secure-properties-template</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · Secure Properties Module 1.2+</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.modules&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-secure-configuration-property-module&lt;/artifactId&gt;
+  &lt;version&gt;1.2.7&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>CLI Encrypt Whole YAML</code></td><td><code>java -cp secure-properties-tool.jar com.mulesoft.tools.SecurePropertiesTool file encrypt AES GCM &lt;32-char-key&gt; in.yaml out.yaml</code></td><td>Generates properly escaped ![...] ciphertext</td></tr>
+<tr><td><code>Studio Local Run VM Args</code></td><td><code>-Dmule.env=dev -Dmule.key=MyDev32CharMasterEncryptionKey!</code></td><td>Set in Run Configurations -&gt; Arguments -&gt; VM Arguments</td></tr>
+<tr><td><code>XML Reference Syntax</code></td><td><code>${secure::key.name}</code></td><td>Missing &#x27;secure::&#x27; returns literal encrypted string &#x27;![...]&#x27;</td></tr>
+<tr><td><code>Hide Key in Runtime UI</code></td><td><code>secureProperties: [&quot;mule.key&quot;]</code></td><td>Defined inside root mule-artifact.json</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-secure-properties-encryption-guide" aria-labelledby="btn-tab-platform-mulesoft-secure-properties-encryption-guide" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Confirm `mule-artifact.json` declares `&quot;secureProperties&quot;: [&quot;mule.key&quot;]` BEFORE deploying so CloudHub never exposes the key in plain text in Runtime Manager.</li>
+        <li>Pass `mule.key` via CI/CD secrets (`mvn mule:deploy -Dmule.key=${{ secrets.PROD_KEY }}`).</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-secure-properties-encryption-guide" aria-labelledby="btn-tab-test-mulesoft-secure-properties-encryption-guide" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>Verify decrypted connection via /api/health (confirms DB connection without exposing secret!)</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s &quot;http://localhost:8081/api/health&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{ &quot;status&quot;: &quot;UP&quot;, &quot;database&quot;: &quot;CONNECTED&quot;, &quot;secureProps&quot;: &quot;AES-256-GCM&quot; }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>Runtime passes literal &#x27;![...]&#x27; as DB password</code></td><td>Referenced ${db.password} instead of ${secure::db.password}</td><td>Prefix lookup strictly with secure:: (${secure::db.password})</td></tr>
+<tr><td><code>EncryptionException: Invalid AES key length</code></td><td>Key length isn&#x27;t exact 16/24/32 bytes or unsupported JCE</td><td>Use a strict 32-character ASCII key for AES-256</td></tr>
+<tr><td><code>Algorithm mismatch on startup</code></td><td>YAML encrypted with CBC while XML configured GCM</td><td>Match tool mode (AES GCM) and &lt;secure-properties:encrypt mode=&quot;GCM&quot;/&gt;</td></tr>
+<tr><td><code>Junior dev can read mule.key in Runtime Manager</code></td><td>Forgot mule-artifact.json secureProperties list</td><td>Add &quot;secureProperties&quot;: [&quot;mule.key&quot;] to mule-artifact.json</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
+
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -164,21 +339,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-secure-properties-encryption-guide" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-reusable-error-handler-plugin.html"><span>← Previous Guide</span><strong>Global Error Handler Plugin</strong></a>
+  <a class="next" href="mulesoft-java-interview-mastery.html"><span>Next Guide →</span><strong>Java 17 &amp; Reactive Internals</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-oauth-jwt-bearer-token-interview.html">OAuth 2.0 JWT Bearer Flow</a></li><li><a href="mulesoft-cicd-maven-pipeline-guide.html">Enterprise CI/CD Pipeline</a></li><li><a href="mulesoft-java-interview-mastery.html">Java Interview Mastery</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

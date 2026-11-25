@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist</title>
   <meta name="description" content="Step-by-step technical guide for migrating MuleSoft applications from CloudHub 1.0 to CloudHub 2.0 Private Spaces, Ingress routing, and Kubernetes containerization.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/cloudhub-1-to-2-migration-guide.html">
+  <meta property="og:type" content="article">
   <meta property="og:title" content="CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist">
   <meta property="og:description" content="Step-by-step technical guide for migrating MuleSoft applications from CloudHub 1.0 to CloudHub 2.0 Private Spaces, Ingress routing, and Kubernetes containerization.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/cloudhub-1-to-2-migration-guide.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,235 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › CloudHub 1.0 to 2.0 Migration</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>CloudHub 1.0 to CloudHub 2.0 Migration: Complete Architectural Checklist</h1>
+          <p class="post-lede">A 10-point technical refactoring guide covering ephemeral storage (/tmp), strict 8081 port bindings, Ingress TLS termination, and Maven 3.8+ deployment.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 14 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Migrate Mule 4 apps cleanly from CloudHub 1.0 to CloudHub 2.0 Private Spaces with strict port 8081 bindings, ephemeral disk safety, Ingress TLS, and Maven 4.x config.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Runtime Manager · CloudHub 2.0 Private Space Deployment</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">us-east-1-ps · Mule 4.9.3-java17</span>
+        <span class="anypoint-status-ok">● 2/2 REPLICAS RUNNING</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Deployment Target</span><span class="anypoint-kpi-val">Private Space (Kubernetes)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">vCore &amp; Replicas</span><span class="anypoint-kpi-val">0.2 vCore x 2 Replicas</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Ingress URL</span><span class="anypoint-kpi-val">https://api.corp.internal/orders</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Container HTTP Port</span><span class="anypoint-kpi-val">8081 (Ingress TLS Termination)</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Private Space Ingress &amp; Networking</div>
+          <div class="anypoint-pane-bd">Public / Private Endpoints:
+  https://api.corp.internal/orders-v2/  -&gt; pod:8081
+TLS Context: Managed at Ingress (No port 8082 in Mule XML)
+Outbound Firewall: Transit Gateway -&gt; SAP &amp; Postgres RDS</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Container Health &amp; Resource Spec</div>
+          <div class="anypoint-pane-bd">Replica 0: RUNNING | CPU 22% | Heap 310/512 MB
+Replica 1: RUNNING | CPU 19% | Heap 295/512 MB
+Object Store v2: ENABLED (Cross-Replica Shared)
+Readiness Probe: GET /api/health -&gt; 200 OK (4 ms)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — CloudHub 2.0 Runtime Manager showing 2 healthy Kubernetes replicas, Ingress TLS termination on container port 8081, and Private Space routing.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">CloudHub 1.0 vs 2.0 Migration</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">CloudHub 1.0 to CloudHub 2.0 Migration: Complete Architectural Checklist</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">A 10-point technical refactoring guide covering ephemeral storage (/tmp), strict 8081 port bindings, Ingress TLS termination, and Maven 3.8+ deployment.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🌐</span><span class="flow-node-title">Port 8081 Listener</span><span class="flow-node-type">HTTP Ingress Pod Port</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">💾</span><span class="flow-node-title">Stateless Check</span><span class="flow-node-type">Object Store v2</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚙️</span><span class="flow-node-title">Business Transform</span><span class="flow-node-type">DataWeave 2.0 Streaming</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📡</span><span class="flow-node-title">Private Space Route</span><span class="flow-node-type">HTTP / VPC Request</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🩺</span><span class="flow-node-title">Health &amp; Log Output</span><span class="flow-node-type">Anypoint Monitoring Log</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Port 8081 Listener (HTTP Ingress Pod Port)</h3>
+      <p class="insp-node-what">CloudHub 2.0 terminates TLS at the Private Space Ingress controller and forwards plaintext HTTP internally directly to container port 8081.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">host=0.0.0.0 | port=${http.port} (8081 only)</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>CH2 HTTP Listener</td></tr>
+<tr><th scope="row">Host</th><td>0.0.0.0</td></tr>
+<tr><th scope="row">Port</th><td>8081</td></tr>
+<tr><th scope="row">Base Path</th><td>/api/v1</td></tr>
+<tr><th scope="row">Readiness Path</th><td>/health</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;!-- pom.xml Mule Maven Plugin configuration targeting CloudHub 2.0 --&gt;
+&lt;plugin&gt;
+  &lt;groupId&gt;org.mule.tools.maven&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;4.2.0&lt;/version&gt;
+  &lt;extensions&gt;true&lt;/extensions&gt;
+  &lt;configuration&gt;
+    &lt;cloudhub2Deployment&gt;
+      &lt;uri&gt;https://anypoint.mulesoft.com&lt;/uri&gt;
+      &lt;provider&gt;MC&lt;/provider&gt;
+      &lt;environment&gt;${env}&lt;/environment&gt;
+      &lt;target&gt;${private.space.name}&lt;/target&gt;
+      &lt;muleVersion&gt;4.9.3&lt;/muleVersion&gt;
+      &lt;replicas&gt;2&lt;/replicas&gt;
+      &lt;vCores&gt;0.2&lt;/vCores&gt;
+      &lt;objectStoreV2&gt;true&lt;/objectStoreV2&gt;
+    &lt;/cloudhub2Deployment&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🌐", "label": "Port 8081 Listener", "type": "HTTP Ingress Pod Port", "what": "CloudHub 2.0 terminates TLS at the Private Space Ingress controller and forwards plaintext HTTP internally directly to container port 8081.", "config_values": "host=0.0.0.0 | port=${http.port} (8081 only)", "studio_props": [["Display Name", "CH2 HTTP Listener"], ["Host", "0.0.0.0"], ["Port", "8081"], ["Base Path", "/api/v1"], ["Readiness Path", "/health"]]}, {"icon": "💾", "label": "Stateless Check", "type": "Object Store v2", "what": "Replaces CloudHub 1.0 local disk state with shared Object Store v2 because CH 2.0 Kubernetes container filesystems reset on every scale or restart.", "config_values": "persistent=true | useObjectStoreV2=true", "studio_props": [["Display Name", "OSv2 State Store"], ["Local Disk Allowed", "ONLY /tmp transient"], ["Persistence", "Object Store v2"], ["TTL", "30 Days"]]}, {"icon": "⚙️", "label": "Business Transform", "type": "DataWeave 2.0 Streaming", "what": "Executes business mapping within container memory limits, honoring CH 2.0 fractional vCore JVM heap ceilings cleanly.", "config_values": "deferred=true | memoryBuffer=1.5MB spill to /tmp", "studio_props": [["Display Name", "Map Order Payload"], ["Memory Mode", "Off-heap spill /tmp"], ["Max Heap Ratio", "~50% pod RAM"]]}, {"icon": "📡", "label": "Private Space Route", "type": "HTTP / VPC Request", "what": "Calls downstream backend systems over Private Space Transit Gateway or VPN peering rather than CloudHub 1.0 Anypoint VPC internal-worker DNS.", "config_values": "DNS: internal-sap.corp.local (Private Space)", "studio_props": [["Display Name", "Call Private Backend"], ["Target Host", "erp.corp.internal"], ["DNS Resolution", "Private Space DNS"], ["Timeout", "10000 ms"]]}, {"icon": "🩺", "label": "Health & Log Output", "type": "Anypoint Monitoring Log", "what": "Streams structured JSON logs directly to Anypoint Monitoring (CH 2.0 uses Log Forwarders instead of legacy CH1 CloudHubAppender) and responds 200 OK.", "config_values": "stdout -> CH2 Log Forwarder | status=200", "studio_props": [["Display Name", "Structured Log & Reply"], ["Log Format", "JSON -> stdout"], ["Monitoring", "Zero custom log4j needed"], ["HTTP Status", "200 OK"]]}], "flow_xml": "<!-- pom.xml Mule Maven Plugin configuration targeting CloudHub 2.0 -->\n<plugin>\n  <groupId>org.mule.tools.maven<\/groupId>\n  <artifactId>mule-maven-plugin<\/artifactId>\n  <version>4.2.0<\/version>\n  <extensions>true<\/extensions>\n  <configuration>\n    <cloudhub2Deployment>\n      <uri>https://anypoint.mulesoft.com<\/uri>\n      <provider>MC<\/provider>\n      <environment>${env}<\/environment>\n      <target>${private.space.name}<\/target>\n      <muleVersion>4.9.3<\/muleVersion>\n      <replicas>2<\/replicas>\n      <vCores>0.2<\/vCores>\n      <objectStoreV2>true<\/objectStoreV2>\n    <\/cloudhub2Deployment>\n  <\/configuration>\n<\/plugin>"}</script>
+  <div class="setup-checklist-box" data-slug="cloudhub-1-to-2-migration-guide">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Audit XML for port 8082 or hardcoded local file paths</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Switch HTTP Listener strictly to port 8081</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Upgrade mule-maven-plugin to 4.x (&lt;cloudhub2Deployment&gt;)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Configure Private Space Ingress base path &amp; TLS cert</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Verify 2/2 replicas healthy &amp; curl Ingress endpoint</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-cloudhub-1-to-2-migration-guide" aria-selected="true" aria-controls="panel-studio-cloudhub-1-to-2-migration-guide" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-cloudhub-1-to-2-migration-guide" aria-selected="false" aria-controls="panel-platform-cloudhub-1-to-2-migration-guide" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-cloudhub-1-to-2-migration-guide" aria-selected="false" aria-controls="panel-test-cloudhub-1-to-2-migration-guide" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-cloudhub-1-to-2-migration-guide" aria-labelledby="btn-tab-studio-cloudhub-1-to-2-migration-guide">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>ch2-migrated-order-api</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · JDK 17 · Mule Maven Plugin 4.2.0</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;cloudhub2Deployment&gt;
+  &lt;uri&gt;https://anypoint.mulesoft.com&lt;/uri&gt;
+  &lt;provider&gt;MC&lt;/provider&gt;
+  &lt;environment&gt;Production&lt;/environment&gt;
+  &lt;target&gt;us-east-1-private-space&lt;/target&gt;
+  &lt;muleVersion&gt;4.9.3&lt;/muleVersion&gt;
+  &lt;replicas&gt;2&lt;/replicas&gt;
+  &lt;vCores&gt;0.2&lt;/vCores&gt;
+  &lt;releaseChannel&gt;LTS&lt;/releaseChannel&gt;
+  &lt;javaVersion&gt;17&lt;/javaVersion&gt;
+&lt;/cloudhub2Deployment&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>HTTP Listener Port</code></td><td><code>8081 (Remove 8082)</code></td><td>Ingress handles TLS; pods listen ONLY on HTTP 8081</td></tr>
+<tr><td><code>Internal Worker Calls</code></td><td><code>Remove mule-worker-internal-* DNS</code></td><td>Use CH2 service endpoint http://&lt;app-name&gt;:8081 or Private Space Ingress</td></tr>
+<tr><td><code>Temp Files</code></td><td><code>${mule.home}/../tmp or /tmp</code></td><td>Local files vanish on pod eviction; move durable state to OSv2/S3</td></tr>
+<tr><td><code>VM Queues</code></td><td><code>Check persistent=true limits</code></td><td>Replace long-lived VM queues across CH2 replicas with Anypoint MQ</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-cloudhub-1-to-2-migration-guide" aria-labelledby="btn-tab-platform-cloudhub-1-to-2-migration-guide" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Runtime Manager &gt; Private Spaces: Provision Private Space with CIDR block, Transit Gateway/VPN, and Upload TLS Domain Certificate.</li>
+        <li>Ingress Rules: Map custom domain api.company.com with path rewrite /orders -&gt; pod port 8081.</li>
+        <li>Disable CloudHub 1.0 Log4j CloudHubAppender if migrating appender customizations; configure CH 2.0 Log Forwarder instead.</li>
+        <li>Deploy via `mvn clean deploy -DmuleDeploy` and run blue/green DNS cutover from old DLB to CH 2.0 Ingress.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-cloudhub-1-to-2-migration-guide" aria-labelledby="btn-tab-test-cloudhub-1-to-2-migration-guide" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>GET https://api.corp.internal/orders/health  |  Compare response headers against Ingress path rewrite</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -i -s &quot;https://api.corp.internal/orders/health&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>HTTP/1.1 200 OK
+{ &quot;status&quot;: &quot;UP&quot;, &quot;runtime&quot;: &quot;CloudHub-2.0&quot;, &quot;muleVersion&quot;: &quot;4.9.3&quot;, &quot;java&quot;: &quot;17&quot; }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>502 Bad Gateway on CloudHub 2.0 Ingress</code></td><td>App HTTP Listener configured on 8082 or custom port instead of 8081</td><td>Change HTTP_Listener_config port to 8081 and host 0.0.0.0</td></tr>
+<tr><td><code>Inter-app call fails with UnknownHostException</code></td><td>Old CH1 mule-worker-internal-&lt;app&gt;.cloudhub.io hostname kept</td><td>Switch to CH2 internal service name or Private Space Ingress URL</td></tr>
+<tr><td><code>Local file missing after scale-up</code></td><td>File connector writing to container working dir</td><td>Use S3/SFTP for files or Object Store v2 for state</td></tr>
+<tr><td><code>Maven deploy rejects deployment config</code></td><td>Old &lt;cloudHubDeployment&gt; tag used from MMP 3.x</td><td>Update pom.xml to &lt;cloudhub2Deployment&gt; and MMP 4.x</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -176,21 +367,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="cloudhub-1-to-2-migration-guide" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="blog/agent-evals-observability-finops-opentelemetry.html"><span>← Previous Guide</span><strong>Agent Evals, OTel &amp; FinOps</strong></a>
+  <a class="next" href="dataweave-performance-tuning-patterns.html"><span>Next Guide →</span><strong>DataWeave Performance Tuning</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li><li><a href="mulesoft-terraform-provider-guide.html">Terraform Infrastructure as Code</a></li><li><a href="mulesoft-opentelemetry-tracing-observability.html">OpenTelemetry Observability</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

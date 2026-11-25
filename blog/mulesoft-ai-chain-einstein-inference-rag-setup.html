@@ -14,8 +14,12 @@
 <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html">
 <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
 <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="blog.css">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+<link rel="stylesheet" href="../assets/css/blog-portal.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,23 +33,33 @@
   "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html"
 }
 </script>
-<script defer src="blog.js"></script>
+<script defer src="../assets/js/blog-portal.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="blog-topbar">
-  <div class="blog-topbar-inner">
-    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
-    <nav class="blog-nav" aria-label="Main">
-      <a href="../index.html">Interview Hub</a>
-      <a href="index.html">All Articles</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
       <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
     </nav>
   </div>
 </header>
 
-<div class="blog-wrap">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › MAC, Einstein &amp; Inference RAG</nav>
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › MAC, Einstein &amp; Inference RAG</nav>
   <div class="post-layout">
     <main id="main">
       <article>
@@ -54,10 +68,11 @@
           <h1>MuleSoft AI Chain (MAC), Einstein Trust Layer &amp; Inference Connector: Build Enterprise RAG in Mule 4</h1>
           <p class="post-lede">Understand when to choose the MuleSoft AI Chain, Einstein AI, or Inference connector — then build a production-grade Mule 4.9 Retrieval-Augmented Generation (RAG) service backed by PostgreSQL pgvector and the Salesforce Einstein Trust Layer.</p>
           <div class="post-meta">
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
             <span>✍️ Niranjan Potter</span>
-            <span>📅 Nov 24, 2026</span>
+            <span>📅 Updated Nov 2026</span>
             <span>⏱️ 21 min read</span>
-            <span class="tag">MuleSoft AI Chain</span><span class="tag">Einstein &amp; RAG</span>
           </div>
         </header>
 
@@ -70,6 +85,50 @@
             <li><strong>Zero data retention &amp; PII masking:</strong> Route final synthesis through the <strong>Einstein AI Connector</strong> via a Salesforce Connected App (<code>client_credentials</code>) so customer PII is masked before leaving Salesforce and never retained by foundation model vendors.</li>
             <li><strong>Resilient multi-model failover:</strong> Wrap Einstein AI generation with a <strong>MuleSoft Inference Connector</strong> fallback to private Azure OpenAI or self-hosted vLLM and emit cited JSON responses with full token usage telemetry.</li>
           </ul>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Mule 4.9 RAG Runtime · pgvector + Einstein Trust Layer</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">MAC Ecosystem 1.2.x · PostgreSQL 16 pgvector</span>
+        <span class="anypoint-status-ok">● GROUNDED RAG READY</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">MAC Connector</span><span class="anypoint-kpi-val">mule4-aichain-connector 1.2.0</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Einstein Connector</span><span class="anypoint-kpi-val">mule4-einstein-ai-connector 1.2.1</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Vector Store Index</span><span class="anypoint-kpi-val">pgvector HNSW (1536 dims)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Trust Layer Privacy</span><span class="anypoint-kpi-val">PII Masked + 0-Retention</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Ingestion Pipeline (/rag/ingest)</div>
+          <div class="anypoint-pane-bd">1. Download PDF/MD runbooks -&gt; pre-delete stale doc chunks
+2. Text splitter: chunkSize=800 chars, overlap=120 chars
+3. Metadata filter tags: { dept, docId, version }
+4. Generate 1536-dim vectors -&gt; pgvector upsert</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Retrieval + Einstein Trust Layer (/rag/ask)</div>
+          <div class="anypoint-pane-bd">Query -&gt; Embed -&gt; HNSW Cosine Top-K (k=4, score &gt;= 0.78)
+  Primary Route: Einstein AI Connector (Trust Layer PII Mask)
+  Failover Route: Inference Connector (Azure/vLLM)
+Output: Cited answer + source docIds + tokenUsage</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — End-to-end Enterprise RAG flow showing metadata-filtered pgvector lookup paired with Einstein Trust Layer grounding and zero data retention.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
           <h2 id="what-and-why">What it is and why it matters</h2>
           <p>Enterprise integration teams building Retrieval-Augmented Generation (RAG) pipelines quickly hit an architectural fork: spin up a separate Python/LangChain stack (duplicating secrets, VPC peering, observability, and enterprise connectors), or execute AI orchestration natively inside <strong>Mule 4</strong> where S3, Salesforce, SAP, Snowflake, and RDBMS connectors already run under Anypoint governance.</p>
@@ -153,6 +212,92 @@ FLOW 2: GROUNDED QUERY &amp; TRUSTED GENERATION (POST /api/v1/rag/ask)
             <figcaption>Figure 1: Hybrid MAC architecture using MuleSoft AI Chain Connector for private VPC <code>pgvector</code> storage, Einstein AI Connector for Trust Layer-governed synthesis, and Inference Connector for multi-provider resilience.</figcaption>
           </figure>
 
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">💬</span><span class="flow-node-title">RAG Ask Listener</span><span class="flow-node-type">POST /api/v1/rag/ask</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📐</span><span class="flow-node-title">Embed &amp; Vector Query</span><span class="flow-node-type">MAC Embedding + pgvector</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">Prompt Grounding</span><span class="flow-node-type">Transform Message (DW 2.0)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">✨</span><span class="flow-node-title">Einstein / Inference</span><span class="flow-node-type">First-Successful Route</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📑</span><span class="flow-node-title">Cited JSON Output</span><span class="flow-node-type">DataWeave Citation Formatter</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. RAG Ask Listener (POST /api/v1/rag/ask)</h3>
+      <p class="insp-node-what">Accepts the user question plus mandatory tenant/department RBAC filter so retrieval never leaks documents across departments.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">path=/api/v1/rag/ask | body={question, department}</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>RAG Question Endpoint</td></tr>
+<tr><th scope="row">Path</th><td>/api/v1/rag/ask</td></tr>
+<tr><th scope="row">Method</th><td>POST</td></tr>
+<tr><th scope="row">Required Filter</th><td>payload.department</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:ms-einstein=&quot;http://www.mulesoft.org/schema/mule/ms-einstein-ai&quot;
+      xmlns:ms-inference=&quot;http://www.mulesoft.org/schema/mule/ms-inference&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;flow name=&quot;enterprise-rag-ask-flow&quot;&gt;
+    &lt;http:listener config-ref=&quot;HTTP_Listener_config&quot; path=&quot;/api/v1/rag/ask&quot; allowedMethods=&quot;POST&quot;/&gt;
+    &lt;flow-ref name=&quot;pgvector-top4-filtered-search&quot;/&gt;
+    &lt;first-successful&gt;
+      &lt;route&gt;
+        &lt;ms-einstein:chat-answer-prompt config-ref=&quot;Einstein_Trust_Config&quot;/&gt;
+      &lt;/route&gt;
+      &lt;route&gt;
+        &lt;ms-inference:chat-completion config-ref=&quot;Inference_Fallback_Config&quot;/&gt;
+      &lt;/route&gt;
+    &lt;/first-successful&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;&lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  answer: payload.response,
+  citations: vars.retrievedChunks map ((c) -&gt; { docId: c.doc_id, score: c.score }),
+  provider: &quot;einstein-trust-layer&quot;
+}]]&gt;&lt;/ee:set-payload&gt;&lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "💬", "label": "RAG Ask Listener", "type": "POST /api/v1/rag/ask", "what": "Accepts the user question plus mandatory tenant/department RBAC filter so retrieval never leaks documents across departments.", "config_values": "path=/api/v1/rag/ask | body={question, department}", "studio_props": [["Display Name", "RAG Question Endpoint"], ["Path", "/api/v1/rag/ask"], ["Method", "POST"], ["Required Filter", "payload.department"]]}, {"icon": "📐", "label": "Embed & Vector Query", "type": "MAC Embedding + pgvector", "what": "Embeds the user query into a 1536-dim vector and runs an HNSW cosine similarity search in PostgreSQL filtered by WHERE metadata->>'dept' = :dept.", "config_values": "topK=4 | minSimilarity=0.78 | index=HNSW cosine", "studio_props": [["Display Name", "pgvector Top-K Search"], ["Connector", "DB / MAC Vector Store"], ["Distance Op", "<=> (cosine)"], ["Max Chunks", "4"]]}, {"icon": "🛡️", "label": "Prompt Grounding", "type": "Transform Message (DW 2.0)", "what": "Constructs a strictly grounded system prompt embedding retrieved chunks [chunkId] and instructs the LLM to reply 'INSUFFICIENT_CONTEXT' if unverified.", "config_values": "citeFormat=[docId#chunk] | antiHallucination=strict", "studio_props": [["Display Name", "Build Grounded Prompt"], ["Context Separator", "\\n---\\n"], ["Citation Rule", "Must cite chunkId"], ["Max Prompt Chars", "12000"]]}, {"icon": "✨", "label": "Einstein / Inference", "type": "First-Successful Route", "what": "Primary route invokes Einstein AI Connector (masking PII and enforcing zero data retention); Failover route uses lightweight Inference Connector on 5xx.", "config_values": "Primary=einstein-ai:1.2.1 | Fallback=inference:1.2.0", "studio_props": [["Display Name", "LLM Trust Generation"], ["Primary", "einstein:chat-answer-prompt"], ["Fallback", "inference:chat-completion"], ["Model", "sfdc_ai__DefaultOpenAIGPT4Omni"]]}, {"icon": "📑", "label": "Cited JSON Output", "type": "DataWeave Citation Formatter", "what": "Combines the model completion, exact source docIds + similarity scores, toxicity flags, and prompt/completion token metrics into a clean API response.", "config_values": "returns answer + citations[] + tokenUsage", "studio_props": [["Display Name", "Format Cited Answer"], ["Include Sources", "true"], ["Token Telemetry", "payload.tokenUsage"], ["Mime Type", "application/json"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:ms-einstein=\"http://www.mulesoft.org/schema/mule/ms-einstein-ai\"\n      xmlns:ms-inference=\"http://www.mulesoft.org/schema/mule/ms-inference\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <flow name=\"enterprise-rag-ask-flow\">\n    <http:listener config-ref=\"HTTP_Listener_config\" path=\"/api/v1/rag/ask\" allowedMethods=\"POST\"/>\n    <flow-ref name=\"pgvector-top4-filtered-search\"/>\n    <first-successful>\n      <route>\n        <ms-einstein:chat-answer-prompt config-ref=\"Einstein_Trust_Config\"/>\n      <\/route>\n      <route>\n        <ms-inference:chat-completion config-ref=\"Inference_Fallback_Config\"/>\n      <\/route>\n    <\/first-successful>\n    <ee:transform>\n      <ee:message><ee:set-payload><![CDATA[%dw 2.0\noutput application/json\n---\n{\n  answer: payload.response,\n  citations: vars.retrievedChunks map ((c) -> { docId: c.doc_id, score: c.score }),\n  provider: \"einstein-trust-layer\"\n}]]><\/ee:set-payload><\/ee:message>\n    <\/ee:transform>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-ai-chain-einstein-inference-rag-setup">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Enable pgvector extension &amp; create HNSW + GIN indexes</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Add MAC, Einstein AI, and Inference connectors to pom.xml</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Encrypt LLM &amp; Connected App secrets with AES-256-GCM</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Run POST /rag/ingest to chunk and index runbooks</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Verify grounded citations via POST /rag/ask curl</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
           <h2 id="prerequisites">Prerequisites</h2>
           <div class="callout prereq">
             <span class="callout-title">You need</span>
@@ -163,6 +308,73 @@ FLOW 2: GROUNDED QUERY &amp; TRUSTED GENERATION (POST /api/v1/rag/ask)
               <li><strong>Embedding &amp; Fallback LLM Keys:</strong> OpenAI or Azure OpenAI API key for <code>text-embedding-3-small</code> (1536 dimensions) and optional private Azure OpenAI / vLLM endpoint for the Inference Connector fallback.</li>
             </ul>
           </div>
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-ai-chain-einstein-inference-rag-setup" aria-selected="true" aria-controls="panel-studio-mulesoft-ai-chain-einstein-inference-rag-setup" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-ai-chain-einstein-inference-rag-setup" aria-selected="false" aria-controls="panel-platform-mulesoft-ai-chain-einstein-inference-rag-setup" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-ai-chain-einstein-inference-rag-setup" aria-selected="false" aria-controls="panel-test-mulesoft-ai-chain-einstein-inference-rag-setup" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-ai-chain-einstein-inference-rag-setup" aria-labelledby="btn-tab-studio-mulesoft-ai-chain-einstein-inference-rag-setup">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>mulesoft-enterprise-rag-api</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · JDK 17 · PostgreSQL 16 + pgvector</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;io.github.mulesoft-ai-chain-project&lt;/groupId&gt;
+  &lt;artifactId&gt;mule4-aichain-connector&lt;/artifactId&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;io.github.mulesoft-ai-chain-project&lt;/groupId&gt;
+  &lt;artifactId&gt;mule4-einstein-ai-connector&lt;/artifactId&gt;
+  &lt;version&gt;1.2.1&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;io.github.mulesoft-ai-chain-project&lt;/groupId&gt;
+  &lt;artifactId&gt;mule4-inference-connector&lt;/artifactId&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>PostgreSQL DDL</code></td><td><code>CREATE EXTENSION IF NOT EXISTS vector;</code></td><td>Create vector(1536) column with vector_cosine_ops HNSW index</td></tr>
+<tr><td><code>Einstein Auth</code></td><td><code>Connected App Client Credentials</code></td><td>Routes through Salesforce Einstein Trust Layer (0-data-retention)</td></tr>
+<tr><td><code>Inference Connector</code></td><td><code>Base URL + Model Name (GPT/Claude/Ollama)</code></td><td>Use when you want ultra-low dependency footprint on vCores</td></tr>
+<tr><td><code>Idempotent Ingest</code></td><td><code>DELETE FROM rag_chunks WHERE doc_id=:id</code></td><td>Always clear prior document chunks before re-ingesting v2</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-ai-chain-einstein-inference-rag-setup" aria-labelledby="btn-tab-platform-mulesoft-ai-chain-einstein-inference-rag-setup" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Provision PostgreSQL 16 (AWS RDS / Neon / Supabase) with pgvector enabled inside your Private Space network perimeter.</li>
+        <li>In Salesforce Setup &gt; App Manager, create an OAuth Connected App with einstein_gpt_api and api scopes.</li>
+        <li>Encrypt clientSecret and OpenAI/Anthropic fallback keys in config-secure.yaml using secure-properties-tool.jar (AES-256-GCM).</li>
+        <li>Deploy to CloudHub 2.0 with &gt;= 0.5 vCore so PDF chunking doesn&#x27;t trigger container OOMKills.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-ai-chain-einstein-inference-rag-setup" aria-labelledby="btn-tab-test-mulesoft-ai-chain-einstein-inference-rag-setup" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST http://localhost:8081/api/v1/rag/ask | Body: {&quot;question&quot;:&quot;How do we size CloudHub 2.0 DLQs?&quot;,&quot;department&quot;:&quot;architecture&quot;}</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;http://localhost:8081/api/v1/rag/ask&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;question&quot;:&quot;How do we prevent Anypoint MQ poison loops?&quot;,&quot;department&quot;:&quot;architecture&quot;}&#x27;</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;answer&quot;: &quot;Configure a Dead Letter Queue (DLQ) with maxRedeliveryCount=5 and manual ACK/NACK...&quot;,
+  &quot;citations&quot;: [{ &quot;docId&quot;: &quot;mq-runbook-v2.md&quot;, &quot;score&quot;: 0.91 }],
+  &quot;provider&quot;: &quot;einstein-trust-layer&quot;
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>Stale answers after PDF re-upload</code></td><td>Inserted duplicate rows without deleting previous doc_id</td><td>Wrap DELETE by doc_id + UPSERT in one DB transaction</td></tr>
+<tr><td><code>Cross-department data leakage in RAG</code></td><td>Top-K vector query omitted WHERE metadata-&gt;&gt;&#x27;dept&#x27;</td><td>Enforce mandatory tenant/dept WHERE filter derived from JWT claims</td></tr>
+<tr><td><code>Container OOM on 0.1 vCore worker</code></td><td>Heavy langchain4j dependencies + large PDF buffering</td><td>Use 0.5+ vCore for ingestion or switch simple inference to Inference Connector</td></tr>
+<tr><td><code>Einstein 403 Invalid Scope</code></td><td>Connected App lacks einstein_gpt_api permission</td><td>Grant Einstein GPT Platform User permission set and re-issue token</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
           <h2 id="setup">Step-by-step setup</h2>
           <ol class="steps">
@@ -682,15 +894,26 @@ var parsedLlm = do {
           </ul>
         </div>
 
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-ai-chain-einstein-inference-rag-setup" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
         <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
           <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
           <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
         </aside>
 
         <nav class="post-nav" aria-label="More articles">
-          <a class="prev" href="agentforce-mulesoft-topic-center-api-actions.html"><span>← Previous</span><strong>Agentforce + MuleSoft Topic Center &amp; API Catalog</strong></a>
-          <a class="next" href="flex-gateway-ai-policies-llm-guardrails.html"><span>Next →</span><strong>Flex Gateway AI Policies &amp; LLM Guardrails</strong></a>
-        </nav>
+  <a class="prev" href="../blog/agentforce-mulesoft-topic-center-api-actions.html"><span>← Previous Guide</span><strong>Agentforce + MuleSoft Setup</strong></a>
+  <a class="next" href="../blog/flex-gateway-ai-policies-llm-guardrails.html"><span>Next Guide →</span><strong>Flex Gateway AI Policies</strong></a>
+</nav>
       </article>
     </main>
 
@@ -698,9 +921,12 @@ var parsedLlm = do {
       <p class="toc-title">On this page</p>
       <ol>
         <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
         <li><a href="#what-and-why">What it is and why it matters</a></li>
         <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
         <li><a href="#setup">Step-by-step setup</a></li>
         <li><a href="#code">Full working example</a></li>
         <li><a href="#test">Test it</a></li>
@@ -714,8 +940,9 @@ var parsedLlm = do {
     </aside>
   </div>
 </div>
-<footer class="blog-footer">
-  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
 </footer>
 </body>
 </html>

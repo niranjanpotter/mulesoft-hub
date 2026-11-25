@@ -14,8 +14,12 @@
 <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">
 <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
 <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="blog.css">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+<link rel="stylesheet" href="../assets/css/blog-portal.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,23 +33,33 @@
   "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html"
 }
 </script>
-<script defer src="blog.js"></script>
+<script defer src="../assets/js/blog-portal.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="blog-topbar">
-  <div class="blog-topbar-inner">
-    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
-    <nav class="blog-nav" aria-label="Main">
-      <a href="../index.html">Interview Hub</a>
-      <a href="index.html">All Articles</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
       <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
     </nav>
   </div>
 </header>
 
-<div class="blog-wrap">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › MCP Bridge (OpenAPI to MCP)</nav>
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › MCP Bridge (OpenAPI to MCP)</nav>
   <div class="post-layout">
     <main id="main">
       <article>
@@ -54,10 +68,11 @@
           <h1>MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools</h1>
           <p class="post-lede">Wrap existing REST, OpenAPI 3.0, and RAML Process &amp; Experience APIs from Anypoint Exchange into governed Model Context Protocol (MCP) Servers—with zero Mule backend rewrites, strict tool curation, and OAuth 2.0 On-Behalf-Of user identity propagation.</p>
           <div class="post-meta">
+            <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
             <span>✍️ Niranjan Potter</span>
-            <span>📅 Nov 24, 2026</span>
+            <span>📅 Updated Nov 2026</span>
             <span>⏱️ 17 min read</span>
-            <span class="tag">MCP Bridge</span><span class="tag">OpenAPI &amp; Exchange</span>
           </div>
         </header>
 
@@ -70,6 +85,50 @@
             <li><strong>Spec quality is prompt engineering:</strong> With MCP Bridge, your OpenAPI <code>operationId</code>, semantic <code>description</code>, and JSON Schema <code>enum</code>/<code>pattern</code> constraints become the exact prompt instructions the LLM sees during <code>tools/list</code>.</li>
             <li><strong>Propagate user tokens, never god-mode credentials:</strong> Configure OAuth 2.0 On-Behalf-Of (RFC 8693 Token Exchange) or Bearer pass-through on the Bridge so the agent executes strictly within the calling human's scopes and tenant row-level permissions.</li>
           </ul>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Exchange · OpenAPI-to-MCP Bridge Projection</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">API Manager · Flex Gateway 1.8+</span>
+        <span class="anypoint-status-ok">● 3 TOOLS PROJECTED</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Source OpenAPI Spec</span><span class="anypoint-kpi-val">customer-order-papi v2.3</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Exposed MCP Tools</span><span class="anypoint-kpi-val">3 of 14 Operations</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Safety Mode</span><span class="anypoint-kpi-val">Write-Protected (DELETE off)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Auth Binding</span><span class="anypoint-kpi-val">OAuth 2.0 OBO Forward</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">OpenAPI Operations -&gt; Curated MCP Map</div>
+          <div class="anypoint-pane-bd">GET  /customers/{id}/orders   -&gt; getCustomerOrders [READ_ONLY]
+GET  /orders/{orderId}        -&gt; getOrderTracking  [READ_ONLY]
+POST /orders/{id}/hold        -&gt; placeOrderHold    [REQUIRES_REASON]
+DEL  /orders/{id}             -&gt; [EXCLUDED FROM MCP]</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Generated MCP Schema &amp; Header Injection</div>
+          <div class="anypoint-pane-bd">x-mcp-annotations: { readOnlyHint: true, destructiveHint: false }
+upstream-headers:
+  X-Actor-Sub:   #[authentication.principal.sub]
+  X-Tenant-Id:   #[authentication.properties.claims.tenant]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Notice how MCP Bridge projects only 3 curated operations (excluding destructive DELETEs) with OAuth user identity forwarded upstream.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
           <h2 id="what-and-why">What it is and why it matters</h2>
           <p>Enterprise MuleSoft teams typically sit on hundreds of battle-tested System, Process, and Experience APIs cataloged in <strong>Anypoint Exchange</strong>. When AI initiatives—whether Salesforce Agentforce, Claude Enterprise, GitHub Copilot, or internal LangGraph agents—need live enterprise actions, rebuilding every REST API as a bespoke MCP server application creates massive duplication, deployment sprawl, and governance drift.</p>
@@ -164,6 +223,80 @@
             <figcaption>Figure 1: MuleSoft MCP Bridge projecting curated OpenAPI 3.0 operations from Anypoint Exchange as governed MCP tools over Streamable HTTP with end-to-end user identity propagation.</figcaption>
           </figure>
 
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">📜</span><span class="flow-node-title">OpenAPI Spec</span><span class="flow-node-type">Anypoint Exchange Asset</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🌉</span><span class="flow-node-title">MCP Bridge Ingress</span><span class="flow-node-type">Flex Gateway MCP Adapter</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔐</span><span class="flow-node-title">OAuth OBO Guard</span><span class="flow-node-type">JWT &amp; Scope Check</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🧭</span><span class="flow-node-title">REST Translation</span><span class="flow-node-type">DataWeave Header Map</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📋</span><span class="flow-node-title">MCP Tool Result</span><span class="flow-node-type">JSON Response Wrapper</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. OpenAPI Spec (Anypoint Exchange Asset)</h3>
+      <p class="insp-node-what">Provides annotated OpenAPI 3.0.3 definitions with semantic operationId, agent guidance descriptions, strict enums, and x-mcp-tool allowlist extensions.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">asset=customer-order-papi:2.3.0 | format=OAS 3.0.3</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>OAS 3.0 Contract</td></tr>
+<tr><th scope="row">Exchange Asset</th><td>customer-order-papi</td></tr>
+<tr><th scope="row">Version</th><td>2.3.0</td></tr>
+<tr><th scope="row">Tool Filter</th><td>includeTagged: mcp-safe</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code># declarative mcp-bridge-gateway.yaml (Flex Gateway + Exchange OAS projection)
+apiVersion: gateway.mulesoft.com/v1alpha1
+kind: ApiInstance
+metadata:
+  name: customer-order-mcp-bridge
+spec:
+  address: https://0.0.0.0:8081/mcp/orders
+  protocol: mcp-streamable-http
+  upstreamSpec:
+    exchangeAsset: orgId/customer-order-papi/2.3.0
+    targetUrl: https://order-papi.private.internal:8081
+  toolCuration:
+    maxTools: 8
+    allowOperations: [&quot;getCustomerOrders&quot;, &quot;getOrderTracking&quot;, &quot;placeOrderHold&quot;]
+    annotations:
+      getCustomerOrders: { readOnlyHint: true, destructiveHint: false }
+      placeOrderHold:    { readOnlyHint: false, destructiveHint: false }</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "📜", "label": "OpenAPI Spec", "type": "Anypoint Exchange Asset", "what": "Provides annotated OpenAPI 3.0.3 definitions with semantic operationId, agent guidance descriptions, strict enums, and x-mcp-tool allowlist extensions.", "config_values": "asset=customer-order-papi:2.3.0 | format=OAS 3.0.3", "studio_props": [["Display Name", "OAS 3.0 Contract"], ["Exchange Asset", "customer-order-papi"], ["Version", "2.3.0"], ["Tool Filter", "includeTagged: mcp-safe"]]}, {"icon": "🌉", "label": "MCP Bridge Ingress", "type": "Flex Gateway MCP Adapter", "what": "Translates incoming MCP JSON-RPC tools/list and tools/call frames directly from the Exchange OAS schema without deploying custom Mule XML code.", "config_values": "mcpEndpoint=/mcp/orders | mode=BRIDGE_PROJECTED", "studio_props": [["Display Name", "MCP Bridge Adapter"], ["Protocol", "Streamable HTTP"], ["Allowed Ops", "3 Allowlisted"], ["DELETE Policy", "Deny by default"]]}, {"icon": "🔐", "label": "OAuth OBO Guard", "type": "JWT & Scope Check", "what": "Validates the end user's scoped JWT token so the agent never holds god-mode service credentials; drops any write tool call lacking orders:write scope.", "config_values": "tokenMode=On-Behalf-Of | requiredScope=orders:read", "studio_props": [["Display Name", "OAuth OBO Validation"], ["JWKS URI", "${idp.jwks.url}"], ["Read Scope", "orders:read"], ["Write Scope", "orders:hold"]]}, {"icon": "🧭", "label": "REST Translation", "type": "DataWeave Header Map", "what": "Maps JSON-RPC arguments to REST path/query parameters and injects upstream X-Actor-Sub and X-Tenant-Id headers for backend auditability.", "config_values": "GET -> path params | inject X-Actor-Sub claim", "studio_props": [["Display Name", "Project to REST Call"], ["Backend URL", "https://order-papi.internal:8081"], ["Injected Claim", "sub -> X-Actor-Sub"], ["PII Filter", "Redact cardLast4/taxId"]]}, {"icon": "📋", "label": "MCP Tool Result", "type": "JSON Response Wrapper", "what": "Transforms the backend Process API JSON into clean MCP tool text output with actionable recovery guidance on HTTP 404/422.", "config_values": "wrap=text-content | errorHints=enabled", "studio_props": [["Display Name", "MCP Bridge Output"], ["Max Payload", "64 KB truncated"], ["4xx Handling", "isError=true + hint"], ["Latency SLA", "1200 ms"]]}], "flow_xml": "# declarative mcp-bridge-gateway.yaml (Flex Gateway + Exchange OAS projection)\napiVersion: gateway.mulesoft.com/v1alpha1\nkind: ApiInstance\nmetadata:\n  name: customer-order-mcp-bridge\nspec:\n  address: https://0.0.0.0:8081/mcp/orders\n  protocol: mcp-streamable-http\n  upstreamSpec:\n    exchangeAsset: orgId/customer-order-papi/2.3.0\n    targetUrl: https://order-papi.private.internal:8081\n  toolCuration:\n    maxTools: 8\n    allowOperations: [\"getCustomerOrders\", \"getOrderTracking\", \"placeOrderHold\"]\n    annotations:\n      getCustomerOrders: { readOnlyHint: true, destructiveHint: false }\n      placeOrderHold:    { readOnlyHint: false, destructiveHint: false }"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-mcp-bridge-openapi-to-agent-tools">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Clean OpenAPI 3.0 operationIds &amp; descriptions</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Run Anypoint API Governance agent-readiness ruleset</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Publish curated OAS 3.0 spec to Anypoint Exchange</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Bind MCP Bridge &amp; OAuth OBO policies in Flex Gateway</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Verify filtered tools/list count via curl</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
           <h2 id="prerequisites">Prerequisites</h2>
           <div class="callout prereq">
             <span class="callout-title">You need</span>
@@ -175,6 +308,70 @@
               <li><strong>Existing Process or Experience REST API</strong> reachable from Flex Gateway (we use <code>customer-order-papi</code> on port <code>8081</code>), plus <code>curl</code> and <code>jq</code> for JSON-RPC verification.</li>
             </ul>
           </div>
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-mcp-bridge-openapi-to-agent-tools" aria-selected="true" aria-controls="panel-studio-mulesoft-mcp-bridge-openapi-to-agent-tools" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-mcp-bridge-openapi-to-agent-tools" aria-selected="false" aria-controls="panel-platform-mulesoft-mcp-bridge-openapi-to-agent-tools" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-mcp-bridge-openapi-to-agent-tools" aria-selected="false" aria-controls="panel-test-mulesoft-mcp-bridge-openapi-to-agent-tools" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-mcp-bridge-openapi-to-agent-tools" aria-labelledby="btn-tab-studio-mulesoft-mcp-bridge-openapi-to-agent-tools">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>customer-order-mcp-bridge (Zero-Code Projection)</code> · <strong>Target Runtime:</strong> <code>Anypoint Exchange + Flex Gateway 1.8+ · Backends on Mule 4.9 LTS</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;!-- No Mule connector needed for zero-code Bridge projection; publish OAS via Anypoint CLI v4 --&gt;
+anypoint-cli-v4 exchange:asset:upload \
+  --name=&quot;Customer Order Process API&quot; \
+  --apiVersion=&quot;2.3.0&quot; \
+  --mainFile=&quot;customer-order-papi.yaml&quot; \
+  --classifier=&quot;oas&quot; \
+  --type=&quot;rest-api&quot; \
+  &quot;$ORG_ID/customer-order-papi/2.3.0&quot; </code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Design Center / ACB</code></td><td><code>customer-order-papi.yaml</code></td><td>Author OAS 3.0.3 with semantic descriptions &amp; enums</td></tr>
+<tr><td><code>Operation ID</code></td><td><code>getOrderTracking</code></td><td>Direct camelCase action names become MCP tool names</td></tr>
+<tr><td><code>Parameter Schema</code></td><td><code>pattern: &#x27;^ORD-[0-9]{4,8}$&#x27;</code></td><td>Prevents LLMs from passing order names instead of IDs</td></tr>
+<tr><td><code>Upstream Auth Header</code></td><td><code>X-Actor-Sub &lt;- jwt.sub</code></td><td>Passes caller identity instead of shared admin key</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-mcp-bridge-openapi-to-agent-tools" aria-labelledby="btn-tab-platform-mulesoft-mcp-bridge-openapi-to-agent-tools" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Anypoint API Governance: Enable the Agentic OpenAPI Ruleset verifying every endpoint has operationId, concise summary, and strict schema types.</li>
+        <li>Anypoint Exchange: Publish v2.3.0 of customer-order-papi.yaml and tag only safe endpoints with mcp-exposed.</li>
+        <li>API Manager &gt; Flex Gateway: Create an MCP Bridge endpoint referencing the Exchange asset and explicitly exclude DELETE/bulk write operations.</li>
+        <li>API Manager &gt; Policies: Apply JWT Validation (OIDC) and PII Response Redaction ahead of the backend Process API.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-mcp-bridge-openapi-to-agent-tools" aria-labelledby="btn-tab-test-mulesoft-mcp-bridge-openapi-to-agent-tools" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST https://flex-edge.internal/mcp/orders | Body: {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;tools/list&quot;}</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;https://localhost:8081/mcp/orders&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -H &quot;Authorization: Bearer $USER_JWT&quot; \
+  -d &#x27;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;tools/list&quot;}&#x27;</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;result&quot;: {
+    &quot;tools&quot;: [
+      { &quot;name&quot;: &quot;getCustomerOrders&quot;, &quot;annotations&quot;: { &quot;readOnlyHint&quot;: true } },
+      { &quot;name&quot;: &quot;getOrderTracking&quot;,  &quot;annotations&quot;: { &quot;readOnlyHint&quot;: true } },
+      { &quot;name&quot;: &quot;placeOrderHold&quot;,    &quot;annotations&quot;: { &quot;readOnlyHint&quot;: false } }
+    ]
+  }
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>LLM picks wrong tool among 40+ options</code></td><td>Exposed entire raw REST spec 1:1 without curation</td><td>Restrict allowOperations to 5-10 high-signal operations</td></tr>
+<tr><td><code>Agent omits required header parameter</code></td><td>Parameter defined as generic object or undocumented header</td><td>Move agent arguments into clean path/body fields; inject auth headers at Gateway</td></tr>
+<tr><td><code>403 Unauthorized write action</code></td><td>User JWT has orders:read but tried placeOrderHold</td><td>Return clear scope shortfall message rather than falling back to admin key</td></tr>
+<tr><td><code>Huge 2MB ERP payload truncates LLM context</code></td><td>Raw System API fields passed through unprojected</td><td>Add DataWeave response projection or Process API wrapper first</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
           <h2 id="setup">Step-by-step setup</h2>
           <ol class="steps">
@@ -803,15 +1000,26 @@ else
           </ul>
         </div>
 
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-mcp-bridge-openapi-to-agent-tools" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
         <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
           <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
           <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
         </aside>
 
         <nav class="post-nav" aria-label="More articles">
-          <a class="prev" href="mulesoft-mcp-connector-server-client-setup.html"><span>← Previous</span><strong>MuleSoft MCP Connector: Server &amp; Client Setup</strong></a>
-          <a class="next" href="mulesoft-a2a-protocol-multi-agent-orchestration.html"><span>Next →</span><strong>A2A Protocol &amp; Multi-Agent Orchestration</strong></a>
-        </nav>
+  <a class="prev" href="../blog/mulesoft-mcp-connector-server-client-setup.html"><span>← Previous Guide</span><strong>MCP Connector Setup</strong></a>
+  <a class="next" href="../blog/mulesoft-a2a-protocol-multi-agent-orchestration.html"><span>Next Guide →</span><strong>A2A Protocol in MuleSoft</strong></a>
+</nav>
       </article>
     </main>
 
@@ -819,9 +1027,12 @@ else
       <p class="toc-title">On this page</p>
       <ol>
         <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
         <li><a href="#what-and-why">What it is and why it matters</a></li>
         <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
         <li><a href="#setup">Step-by-step setup</a></li>
         <li><a href="#code">Full working example</a></li>
         <li><a href="#test">Test it</a></li>
@@ -835,8 +1046,9 @@ else
     </aside>
   </div>
 </div>
-<footer class="blog-footer">
-  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
 </footer>
 </body>
 </html>

@@ -14,8 +14,12 @@
 <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html">
 <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
 <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="blog.css">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+<link rel="stylesheet" href="../assets/css/blog-portal.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,23 +33,33 @@
   "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html"
 }
 </script>
-<script defer src="blog.js"></script>
+<script defer src="../assets/js/blog-portal.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="blog-topbar">
-  <div class="blog-topbar-inner">
-    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
-    <nav class="blog-nav" aria-label="Main">
-      <a href="../index.html">Interview Hub</a>
-      <a href="index.html">All Articles</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
       <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
     </nav>
   </div>
 </header>
 
-<div class="blog-wrap">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › Agent Fabric End-to-End</nav>
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › Agent Fabric End-to-End</nav>
   <div class="post-layout">
     <main id="main">
       <article>
@@ -54,10 +68,11 @@
           <h1>MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance</h1>
           <p class="post-lede">Enterprise teams are deploying autonomous agents across Salesforce Agentforce, AWS Bedrock, Google Vertex AI, and Microsoft Copilot Studio faster than platform teams can secure them. Here is how to build a unified cross-cloud AI control plane using MuleSoft Agent Fabric.</p>
           <div class="post-meta">
+            <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
             <span>✍️ Niranjan Potter</span>
-            <span>📅 Nov 24, 2026</span>
+            <span>📅 Updated Nov 2026</span>
             <span>⏱️ 18 min read</span>
-            <span class="tag">Agent Fabric</span><span class="tag">Multi-Agent Governance</span>
           </div>
         </header>
 
@@ -70,6 +85,53 @@
             <li><strong>Deterministic + probabilistic orchestration:</strong> <strong>Agent Broker</strong> executes declarative <code>.agent</code> scripts authored in Anypoint Code Builder (ACB), blending strict deterministic rules and human-in-the-loop (HITL) approvals with LLM intent routing.</li>
             <li><strong>Runtime FinOps &amp; Kill Switch:</strong> Anypoint Flex Gateway enforces PII redaction, prompt-injection shields, OAuth 2.0 token exchange, <strong>Model Wallet</strong> token budgets, continuous <strong>Agent Evals</strong>, and a sub-second <strong>Agent Kill Switch</strong>.</li>
           </ul>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Agent Fabric · Control Plane &amp; Registry</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Production · us-east-1</span>
+        <span class="anypoint-status-ok">● ACTIVE GOVERNANCE</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Registered Agents</span><span class="anypoint-kpi-val">14 Cross-Cloud</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Active MCP / A2A Bridges</span><span class="anypoint-kpi-val">9 Running</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Model Wallet Quota</span><span class="anypoint-kpi-val">42% ($420 / $1k)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Kill Switch State</span><span class="anypoint-kpi-val">ARMED (Healthy)</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Agent Registry · Exchange Assets</div>
+          <div class="anypoint-pane-bd">asset: order-dispute-broker (v1.4.0)
+  type: a2a-service | trust: VERIFIED
+  targets: Agentforce, Bedrock-Returns, Vertex-Fraud
+asset: erp-order-mcp-server (v2.1.0)
+  type: mcp-server | tools: 4 read, 1 write-gated
+scanner: aws-bedrock-us-east-1 -&gt; 0 unapproved</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Flex Gateway · Policy Pipeline &amp; Wallet</div>
+          <div class="anypoint-pane-bd">1. oauth-obo-jwt-validation      [ENFORCED]
+2. pii-masking-regex-guard       [0 leaks]
+3. agent-evals-groundedness      [96.4% pass]
+4. model-wallet-token-quota      [420k/1M tok]
+5. emergency-agent-kill-switch   [ACTIVE=false]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Inspect the Agent Registry asset inventory, automated cloud scanner status, Flex Gateway policy enforcement order, and Model Wallet quota health before routing live traffic.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
           <h2 id="what-and-why">What it is and why it matters</h2>
           <p>In 2016, enterprise architects fought <em>API sprawl</em>—dozens of undocumented point-to-point microservices bypassing central gateways. In 2026, enterprises face a far riskier variant: <strong>agent sprawl</strong>. Customer support runs Salesforce Agentforce, supply chain runs AWS Bedrock Agents over ERP warehouses, data science deploys Vertex AI reasoning agents, and workplace productivity relies on Microsoft Copilot Studio. Without a unifying fabric, agents call raw APIs with over-privileged static keys, leak PII into external LLM context windows, trigger infinite agent-to-agent retry loops, and rack up five-figure token bills overnight.</p>
@@ -175,6 +237,93 @@
             <figcaption>Figure 1: MuleSoft Agent Fabric reference architecture spanning ingress governance, Agent Broker orchestration, MCP/A2A protocol bridges, and control-plane scanners.</figcaption>
           </figure>
 
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🌐</span><span class="flow-node-title">HTTPS Ingress</span><span class="flow-node-type">Flex Gateway + HTTP Listener</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">Deterministic Guard</span><span class="flow-node-type">Validation &amp; .agent Rule</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🧠</span><span class="flow-node-title">Agent Broker</span><span class="flow-node-type">LLM Planner + Router</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔀</span><span class="flow-node-title">MCP + A2A Bridge</span><span class="flow-node-type">Parallel Agent Delegation</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">✅</span><span class="flow-node-title">Eval Log &amp; Reply</span><span class="flow-node-type">OTel + JSON Response</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. HTTPS Ingress (Flex Gateway + HTTP Listener)</h3>
+      <p class="insp-node-what">Receives consumer intent over TLS, validates OAuth 2.0 OBO JWT, and checks the Model Wallet budget + Kill Switch flag before entering the Broker.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">path=/api/v1/fabric/dispute | port=8081 | policy=oauth-obo + pii-guard</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>Fabric Broker Listener</td></tr>
+<tr><th scope="row">Connector Config</th><td>HTTPS_Fabric_Listener</td></tr>
+<tr><th scope="row">Path</th><td>/api/v1/fabric/dispute</td></tr>
+<tr><th scope="row">Allowed Methods</th><td>POST</td></tr>
+<tr><th scope="row">Response Timeout</th><td>30000 ms</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:os=&quot;http://www.mulesoft.org/schema/mule/os&quot;
+      xmlns:a2a=&quot;http://www.mulesoft.org/schema/mule/a2a&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;flow name=&quot;agent-fabric-dispute-broker-flow&quot;&gt;
+    &lt;http:listener config-ref=&quot;HTTP_Listener_config&quot; path=&quot;/api/v1/fabric/dispute&quot; allowedMethods=&quot;POST&quot;/&gt;
+    &lt;os:retrieve key=&quot;agent.dispute.killed&quot; objectStore=&quot;Fabric_Control_OS&quot; target=&quot;isKilled&quot;&gt;
+      &lt;os:default-value&gt;&lt;![CDATA[false]]&gt;&lt;/os:default-value&gt;
+    &lt;/os:retrieve&gt;
+    &lt;choice&gt;
+      &lt;when expression=&quot;#[vars.isKilled == &#x27;true&#x27;]&quot;&gt;
+        &lt;raise-error type=&quot;FABRIC:AGENT_QUARANTINED&quot; description=&quot;Emergency Agent Kill Switch is active&quot;/&gt;
+      &lt;/when&gt;
+    &lt;/choice&gt;
+    &lt;scatter-gather&gt;
+      &lt;route&gt;&lt;flow-ref name=&quot;mcp-sap-invoice-check&quot;/&gt;&lt;/route&gt;
+      &lt;route&gt;&lt;a2a:send-task config-ref=&quot;Bedrock_Returns_A2A&quot; target=&quot;returnsResult&quot;/&gt;&lt;/route&gt;
+    &lt;/scatter-gather&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;&lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{ resolutionId: correlationId, status: &quot;COMPLETED&quot;, returns: vars.returnsResult }]]&gt;&lt;/ee:set-payload&gt;&lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+    &lt;logger level=&quot;INFO&quot; message=&quot;#[&#x27;Fabric resolution complete correlationId=&#x27; ++ correlationId]&quot;/&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🌐", "label": "HTTPS Ingress", "type": "Flex Gateway + HTTP Listener", "what": "Receives consumer intent over TLS, validates OAuth 2.0 OBO JWT, and checks the Model Wallet budget + Kill Switch flag before entering the Broker.", "config_values": "path=/api/v1/fabric/dispute | port=8081 | policy=oauth-obo + pii-guard", "studio_props": [["Display Name", "Fabric Broker Listener"], ["Connector Config", "HTTPS_Fabric_Listener"], ["Path", "/api/v1/fabric/dispute"], ["Allowed Methods", "POST"], ["Response Timeout", "30000 ms"]]}, {"icon": "🛡️", "label": "Deterministic Guard", "type": "Validation & .agent Rule", "what": "Runs hard business preconditions from order-dispute-orchestrator.agent: verifies customer tier, checks Kill Switch in Object Store v2, and enforces the $2,500 auto-approval ceiling.", "config_values": "killSwitchKey=agent.dispute.killed | autoRefundLimit=2500", "studio_props": [["Display Name", "Check Policy & Tier"], ["Engine", "Agent Script (.agent)"], ["Auto Threshold", "<= $2500"], ["Circuit Key", "vars.tenantId ++ ':budget'"]]}, {"icon": "🧠", "label": "Agent Broker", "type": "LLM Planner + Router", "what": "Decomposes natural-language dispute requests into structured sub-tasks using the governed LLM proxy, emitting an audit correlation ID.", "config_values": "model=gpt-4o-governed | temperature=0.1 | maxHops=3", "studio_props": [["Display Name", "Dispute Agent Broker"], ["Script Ref", "order-dispute-orchestrator.agent"], ["Max Hops", "3"], ["HITL Gate", "refundAmount > 2500"]]}, {"icon": "🔀", "label": "MCP + A2A Bridge", "type": "Parallel Agent Delegation", "what": "Calls local SAP MCP tools for invoice verification while delegating fraud/logistics sub-tasks over A2A JSON-RPC to AWS Bedrock and Agentforce.", "config_values": "mcp=/mcp | a2a=tasks/send | auth=RFC-8693 Token Exchange", "studio_props": [["Display Name", "MCP & A2A Fan-Out"], ["Route 1", "a2a:send-task (Fraud)"], ["Route 2", "mcp:call-tool (SAP)"], ["Timeout", "15000 ms"]]}, {"icon": "✅", "label": "Eval Log & Reply", "type": "OTel + JSON Response", "what": "Records W3C traceparent, gen_ai.usage.* tokens, and groundedness eval telemetry to Anypoint Monitoring before returning a structured resolution response.", "config_values": "trace=W3C traceparent | evalSampleRate=100% | status=200", "studio_props": [["Display Name", "OTel Log & Respond"], ["MIME Type", "application/json"], ["Telemetry Export", "OTLP gRPC 4317"], ["Status Code", "200 / 202 HITL"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:os=\"http://www.mulesoft.org/schema/mule/os\"\n      xmlns:a2a=\"http://www.mulesoft.org/schema/mule/a2a\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <flow name=\"agent-fabric-dispute-broker-flow\">\n    <http:listener config-ref=\"HTTP_Listener_config\" path=\"/api/v1/fabric/dispute\" allowedMethods=\"POST\"/>\n    <os:retrieve key=\"agent.dispute.killed\" objectStore=\"Fabric_Control_OS\" target=\"isKilled\">\n      <os:default-value><![CDATA[false]]><\/os:default-value>\n    <\/os:retrieve>\n    <choice>\n      <when expression=\"#[vars.isKilled == 'true']\">\n        <raise-error type=\"FABRIC:AGENT_QUARANTINED\" description=\"Emergency Agent Kill Switch is active\"/>\n      <\/when>\n    <\/choice>\n    <scatter-gather>\n      <route><flow-ref name=\"mcp-sap-invoice-check\"/><\/route>\n      <route><a2a:send-task config-ref=\"Bedrock_Returns_A2A\" target=\"returnsResult\"/><\/route>\n    <\/scatter-gather>\n    <ee:transform>\n      <ee:message><ee:set-payload><![CDATA[%dw 2.0\noutput application/json\n---\n{ resolutionId: correlationId, status: \"COMPLETED\", returns: vars.returnsResult }]]><\/ee:set-payload><\/ee:message>\n    <\/ee:transform>\n    <logger level=\"INFO\" message=\"#['Fabric resolution complete correlationId=' ++ correlationId]\"/>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-agent-fabric-end-to-end-guide">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Open Anypoint Code Builder (Mule 4.9 LTS / Java 17)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Configure AWS Bedrock &amp; Vertex Agent Scanners</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Publish order-dispute-orchestrator.agent to Exchange</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Deploy Broker to CloudHub 2.0 + bind Flex Gateway policies</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Verify Kill Switch &amp; A2A call via curl</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
           <h2 id="prerequisites">Prerequisites</h2>
           <div class="callout prereq">
             <span class="callout-title">You need</span>
@@ -186,6 +335,70 @@
               <li><strong>Cloud Scanner Read Credentials:</strong> AWS IAM role with <code>bedrock:ListAgents</code>, <code>bedrock:GetAgent</code>, <code>bedrock:ListAgentAliases</code>; GCP service account with <code>aiplatform.reasoningEngines.list</code>; Salesforce Connected App with <code>View Setup and Configuration</code> and <code>ApiEnabled</code>.</li>
             </ul>
           </div>
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-agent-fabric-end-to-end-guide" aria-selected="true" aria-controls="panel-studio-mulesoft-agent-fabric-end-to-end-guide" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-agent-fabric-end-to-end-guide" aria-selected="false" aria-controls="panel-platform-mulesoft-agent-fabric-end-to-end-guide" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-agent-fabric-end-to-end-guide" aria-selected="false" aria-controls="panel-test-mulesoft-agent-fabric-end-to-end-guide" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-agent-fabric-end-to-end-guide" aria-labelledby="btn-tab-studio-mulesoft-agent-fabric-end-to-end-guide">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>agent-fabric-dispute-broker</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · JDK 17</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-mcp-connector&lt;/artifactId&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule4-a2a-connector&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Project / Artifact ID</code></td><td><code>agent-fabric-dispute-broker</code></td><td>Created in ACB / Studio 7.19+ targeting Mule 4.9 LTS</td></tr>
+<tr><td><code>Agent Script File</code></td><td><code>src/main/resources/order-dispute-orchestrator.agent</code></td><td>Defines deterministic rules &amp; HITL thresholds</td></tr>
+<tr><td><code>Control Object Store</code></td><td><code>Fabric_Control_OS (persistent=true)</code></td><td>Stores emergency kill-switch flag &amp; token counter</td></tr>
+<tr><td><code>OTel Export Property</code></td><td><code>anypoint.platform.otel.enabled=true</code></td><td>Correlates Broker -&gt; MCP -&gt; A2A hops</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-agent-fabric-end-to-end-guide" aria-labelledby="btn-tab-platform-mulesoft-agent-fabric-end-to-end-guide" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Access Management &gt; Connected Apps: Create an Organization Administrator Connected App with Exchange Contributor &amp; API Manager Admin scopes.</li>
+        <li>Anypoint Exchange &gt; Agent Registry: Run anypoint-cli-v4 exchange:asset:upload for agent-card.json and mcp-server metadata.</li>
+        <li>Agent Fabric &gt; Scanners: Schedule hourly discovery against AWS Bedrock, GCP Vertex AI, and Salesforce orgs to detect shadow agents.</li>
+        <li>API Manager &gt; Flex Gateway: Bind PII Masking, Model Wallet Token Quota, and Agent Kill Switch policies in order.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-agent-fabric-end-to-end-guide" aria-labelledby="btn-tab-test-mulesoft-agent-fabric-end-to-end-guide" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST https://dispute-broker.us-e1.cloudhub.io/api/v1/fabric/dispute | Headers: Authorization: Bearer $TOKEN, X-Cost-Center: CC-FIN-204</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;http://localhost:8081/api/v1/fabric/dispute&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -H &quot;Authorization: Bearer $OBO_JWT&quot; \
+  -d &#x27;{&quot;orderId&quot;:&quot;ORD-99210&quot;,&quot;claimAmount&quot;:420.00,&quot;reason&quot;:&quot;Damaged item&quot;}&#x27;</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;resolutionId&quot;: &quot;fabric-8812a9&quot;,
+  &quot;status&quot;: &quot;AUTO_APPROVED&quot;,
+  &quot;hops&quot;: [&quot;sap-mcp-lookup&quot;, &quot;bedrock-returns-a2a&quot;],
+  &quot;tokensUsed&quot;: 1140,
+  &quot;walletRemainingPct&quot;: 58.0
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>FABRIC:AGENT_QUARANTINED (503)</code></td><td>Kill Switch key set to true in Fabric_Control_OS</td><td>Audit recent traces in Monitoring, then PATCH killSwitch=false</td></tr>
+<tr><td><code>401 Invalid Audience on A2A hop</code></td><td>Static client token forwarded instead of RFC 8693 OBO token</td><td>Use OAuth Token Exchange policy targeting downstream Agent Card audience</td></tr>
+<tr><td><code>429 Token Wallet Exceeded</code></td><td>Tenant monthly token budget exhausted at Flex Gateway</td><td>Increase Model Wallet quota or route classify steps to smaller model</td></tr>
+<tr><td><code>Agent not in Exchange Registry</code></td><td>Asset published with REST type instead of agent/mcp-server</td><td>Re-publish with --type a2a-service or run Cloud Scanner sync</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
           <h2 id="setup">Step-by-step setup</h2>
           <ol class="steps">
@@ -713,15 +926,26 @@ spec:
           </ul>
         </div>
 
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-agent-fabric-end-to-end-guide" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
         <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
           <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
           <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
         </aside>
 
         <nav class="post-nav" aria-label="More articles">
-          <a class="prev" href="index.html"><span>← All Articles</span><strong>MuleSoft Blog Home</strong></a>
-          <a class="next" href="mulesoft-mcp-connector-server-client-setup.html"><span>Next →</span><strong>MuleSoft MCP Connector: Server &amp; Client Setup</strong></a>
-        </nav>
+  <a class="prev" href="../index.html"><span>← Home</span><strong>All 28 MuleSoft Blogs</strong></a>
+  <a class="next" href="../blog/mulesoft-mcp-connector-server-client-setup.html"><span>Next Guide →</span><strong>MCP Connector Setup</strong></a>
+</nav>
       </article>
     </main>
 
@@ -729,9 +953,12 @@ spec:
       <p class="toc-title">On this page</p>
       <ol>
         <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
         <li><a href="#what-and-why">What it is and why it matters</a></li>
         <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
         <li><a href="#setup">Step-by-step setup</a></li>
         <li><a href="#code">Full working example</a></li>
         <li><a href="#test">Test it</a></li>
@@ -745,8 +972,9 @@ spec:
     </aside>
   </div>
 </div>
-<footer class="blog-footer">
-  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
 </footer>
 </body>
 </html>

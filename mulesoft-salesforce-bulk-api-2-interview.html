@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Salesforce Bulk API 2.0 in MuleSoft: Complete Interview & Performance Guide</title>
   <meta name="description" content="Master Salesforce Bulk API 2.0 with MuleSoft. Handle governor limits, QueryLocator limits, PK chunking, and External ID upserts.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-salesforce-bulk-api-2-interview.html">
-  <meta property="og:title" content="Salesforce Bulk API 2.0 in MuleSoft: Complete Interview & Performance Guide">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Salesforce Bulk API 2.0 in MuleSoft: Complete Interview &amp; Performance Guide">
   <meta property="og:description" content="Master Salesforce Bulk API 2.0 with MuleSoft. Handle governor limits, QueryLocator limits, PK chunking, and External ID upserts.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-salesforce-bulk-api-2-interview.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,231 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › Salesforce Bulk API 2.0</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>MuleSoft Salesforce Bulk API 2.0 & Governor Limits Architecture</h1>
+          <p class="post-lede">Architecting high-throughput data syncs between enterprise ERP systems and Salesforce without hitting API daily consumption ceilings.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 14 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Orchestrate high-volume Salesforce ingestions using Bulk API 2.0 jobs, CSV streaming, governor quota isolation (15,000 batches / 150M records), and failure reconciliation.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Salesforce Connector · Bulk API 2.0 Ingest Lifecycle</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Salesforce API v60.0 · 150M Records/24h Pool</span>
+        <span class="anypoint-status-ok">● JOB COMPLETE (99.98% OK)</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Separate Quota Pool</span><span class="anypoint-kpi-val">150M Records / 24h (0 REST Hit)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Auto-Chunk Limit</span><span class="anypoint-kpi-val">150 MB Base64 (~100 MB Raw)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Avg Job Processing</span><span class="anypoint-kpi-val">42s for 125,000 Accounts</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Failed Row Recovery</span><span class="anypoint-kpi-val">GET failedResults -&gt; S3 / DLQ</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Bulk 2.0 State Machine</div>
+          <div class="anypoint-pane-bd">1. Create Job Ingest -&gt; Open (operation=upsert, extId=ERP_Id__c)
+2. Upload CSV         -&gt; Automatic server-side 10k chunking
+3. Close Job          -&gt; UploadComplete (Triggers Salesforce batch)
+4. Poll Job Status    -&gt; JobComplete -&gt; Fetch failedResults</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Quota Isolation vs REST/SOAP</div>
+          <div class="anypoint-pane-bd">Salesforce Daily API Calls (REST/SOAP) : UNTOUCHED (100%)
+Bulk API 2.0 Records Processed         : 125,000 / 150,000,000
+Result Retention Window                : 7 Days
+Failed Rows Saved                      : s3://reconcile/sf-fails.csv</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Tracking a Bulk API 2.0 ingest lifecycle with automatic CSV batching and dedicated 150M/24h quota isolation.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">Salesforce Bulk API 2.0</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">MuleSoft Salesforce Bulk API 2.0 & Governor Limits Architecture</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Architecting high-throughput data syncs between enterprise ERP systems and Salesforce without hitting API daily consumption ceilings.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">📄</span><span class="flow-node-title">CSV Stream Prep</span><span class="flow-node-type">DataWeave application/csv</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🚀</span><span class="flow-node-title">Create Bulk 2.0 Job</span><span class="flow-node-type">salesforce:create-job-bulk-api-v2</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⏳</span><span class="flow-node-title">Poll Until Done</span><span class="flow-node-type">Until Successful / Wait Loop</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔍</span><span class="flow-node-title">Fetch Failed Rows</span><span class="flow-node-type">retrieve-job-failed-results</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📥</span><span class="flow-node-title">Reconcile &amp; Alert</span><span class="flow-node-type">S3 Write + Slack Alert</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. CSV Stream Prep (DataWeave application/csv)</h3>
+      <p class="insp-node-what">Transforms ERP source records into RFC-4180 CSV (up to 100 MB raw per job) using Salesforce exact API field headers.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">output application/csv header=true, lineSeparator=&#x27;\n&#x27;</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>Format SF Bulk CSV</td></tr>
+<tr><th scope="row">MIME Type</th><td>application/csv</td></tr>
+<tr><th scope="row">External ID Header</th><td>ERP_External_Id__c</td></tr>
+<tr><th scope="row">Null Handling</th><td>#N/A for field clears</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:salesforce=&quot;http://www.mulesoft.org/schema/mule/salesforce&quot;&gt;
+  &lt;flow name=&quot;salesforce-bulk-v2-ingest-flow&quot;&gt;
+    &lt;salesforce:create-job-bulk-api-v2 config-ref=&quot;Salesforce_JWT_Config&quot;
+      objectType=&quot;Account&quot; operation=&quot;upsert&quot; externalIdFieldName=&quot;ERP_External_Id__c&quot; lineEnding=&quot;LF&quot;/&gt;
+    &lt;set-variable variableName=&quot;sfJobId&quot; value=&quot;#[payload.id]&quot;/&gt;
+    &lt;flow-ref name=&quot;poll-sf-bulk2-job-status-subflow&quot;/&gt;
+    &lt;choice&gt;
+      &lt;when expression=&quot;#[payload.numberRecordsFailed &amp;gt; 0]&quot;&gt;
+        &lt;salesforce:retrieve-job-failed-results-bulk-v2 config-ref=&quot;Salesforce_JWT_Config&quot; id=&quot;#[vars.sfJobId]&quot;/&gt;
+        &lt;logger level=&quot;WARN&quot; message=&quot;#[&#x27;Saved failed Bulk 2.0 rows for job &#x27; ++ vars.sfJobId]&quot;/&gt;
+      &lt;/when&gt;
+    &lt;/choice&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "📄", "label": "CSV Stream Prep", "type": "DataWeave application/csv", "what": "Transforms ERP source records into RFC-4180 CSV (up to 100 MB raw per job) using Salesforce exact API field headers.", "config_values": "output application/csv header=true, lineSeparator='\\n'", "studio_props": [["Display Name", "Format SF Bulk CSV"], ["MIME Type", "application/csv"], ["External ID Header", "ERP_External_Id__c"], ["Null Handling", "#N/A for field clears"]]}, {"icon": "🚀", "label": "Create Bulk 2.0 Job", "type": "salesforce:create-job-bulk-api-v2", "what": "Uploads the CSV stream and automatically transitions Salesforce Bulk API 2.0 from Open -> UploadComplete in one connector operation.", "config_values": "objectType=Account | operation=upsert | extId=ERP_External_Id__c", "studio_props": [["Display Name", "Create Bulk 2.0 Job"], ["Object Type", "Account"], ["Operation", "upsert"], ["Line Ending", "LF"]]}, {"icon": "⏳", "label": "Poll Until Done", "type": "Until Successful / Wait Loop", "what": "Polls <salesforce:get-job-state-bulk-api-v2> with exponential backoff until state is JobComplete or Failed without holding HTTP request threads.", "config_values": "pollInterval=15s | terminalStates=[JobComplete, Failed, Aborted]", "studio_props": [["Display Name", "Wait JobComplete"], ["Operation", "get-job-state-bulk-api-v2"], ["Max Poll Window", "30 Minutes"]]}, {"icon": "🔍", "label": "Fetch Failed Rows", "type": "retrieve-job-failed-results", "what": "Checks numberRecordsFailed > 0 and pulls the failedResults CSV stream containing sf__Error reason codes for every rejected row.", "config_values": "runs ONLY when numberRecordsFailed > 0", "studio_props": [["Display Name", "Pull Failed Rows"], ["Operation", "retrieve-job-failed-results-bulk-v2"], ["Retention", "7 Days in SF"]]}, {"icon": "📥", "label": "Reconcile & Alert", "type": "S3 Write + Slack Alert", "what": "Uploads failed CSV rows to S3 for ops replay (before Salesforce purges results after 7 days) and emits summary metrics.", "config_values": "s3://reconciliation/{jobId}/failed.csv", "studio_props": [["Display Name", "Archive Failed Rows"], ["Target", "S3 / Anypoint MQ"], ["Metrics Logged", "processed / failed count"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:salesforce=\"http://www.mulesoft.org/schema/mule/salesforce\">\n  <flow name=\"salesforce-bulk-v2-ingest-flow\">\n    <salesforce:create-job-bulk-api-v2 config-ref=\"Salesforce_JWT_Config\"\n      objectType=\"Account\" operation=\"upsert\" externalIdFieldName=\"ERP_External_Id__c\" lineEnding=\"LF\"/>\n    <set-variable variableName=\"sfJobId\" value=\"#[payload.id]\"/>\n    <flow-ref name=\"poll-sf-bulk2-job-status-subflow\"/>\n    <choice>\n      <when expression=\"#[payload.numberRecordsFailed &gt; 0]\">\n        <salesforce:retrieve-job-failed-results-bulk-v2 config-ref=\"Salesforce_JWT_Config\" id=\"#[vars.sfJobId]\"/>\n        <logger level=\"WARN\" message=\"#['Saved failed Bulk 2.0 rows for job ' ++ vars.sfJobId]\"/>\n      <\/when>\n    <\/choice>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-salesforce-bulk-api-2-interview">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Authenticate Salesforce via OAuth JWT Bearer (no password)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Set externalIdFieldName cleanly for idempotent upsert</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Configure LF line endings matching CSV DataWeave output</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Poll asynchronously until state == JobComplete</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Pull &amp; archive failedResults (Salesforce purges after 7 days)</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-salesforce-bulk-api-2-interview" aria-selected="true" aria-controls="panel-studio-mulesoft-salesforce-bulk-api-2-interview" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-salesforce-bulk-api-2-interview" aria-selected="false" aria-controls="panel-platform-mulesoft-salesforce-bulk-api-2-interview" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-salesforce-bulk-api-2-interview" aria-selected="false" aria-controls="panel-test-mulesoft-salesforce-bulk-api-2-interview" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-salesforce-bulk-api-2-interview" aria-labelledby="btn-tab-studio-mulesoft-salesforce-bulk-api-2-interview">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>salesforce-bulk2-account-sync</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · Salesforce Connector 10.21+</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-salesforce-connector&lt;/artifactId&gt;
+  &lt;version&gt;10.21.4&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Bulk 2.0 vs Bulk 1.0</code></td><td><code>No client-side 10k chunking loop</code></td><td>Salesforce server splits your 100 MB CSV stream automatically</td></tr>
+<tr><td><code>lineEnding</code></td><td><code>LF (Unix \n)</code></td><td>Must match DataWeave CSV lineSeparator=&quot;\n&quot; or ingest fails</td></tr>
+<tr><td><code>Clear Null Fields</code></td><td><code>Write literal &quot;#N/A&quot; in CSV</code></td><td>Empty CSV strings do not overwrite existing Salesforce values</td></tr>
+<tr><td><code>Result Retention</code></td><td><code>7 Days Max</code></td><td>Always extract failedResults immediately after JobComplete</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-salesforce-bulk-api-2-interview" aria-labelledby="btn-tab-platform-mulesoft-salesforce-bulk-api-2-interview" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Salesforce Setup &gt; Bulk Data Load Jobs: Inspect live batch throughput, active ingest count, and error logs.</li>
+        <li>Monitor Setup &gt; Company Information &gt; API Requests (24 Hours) to confirm zero REST API quota impact.</li>
+        <li>Split exports above ~100 MB raw (~150 MB base64 limit) into multiple sequential Bulk 2.0 jobs.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-salesforce-bulk-api-2-interview" aria-labelledby="btn-tab-test-mulesoft-salesforce-bulk-api-2-interview" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST http://localhost:8081/api/v1/sf/bulk-upsert (CSV body)</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;http://localhost:8081/api/v1/sf/bulk-upsert&quot; \
+  -H &quot;Content-Type: text/csv&quot; \
+  --data-binary $&#x27;ERP_External_Id__c,Name,Industry\nERP-101,Global Motors,Manufacturing&#x27;</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;sfJobId&quot;: &quot;750xx000004ABCDAAY&quot;,
+  &quot;state&quot;: &quot;JobComplete&quot;,
+  &quot;numberRecordsProcessed&quot;: 1,
+  &quot;numberRecordsFailed&quot;: 0
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>ClientInputError: LineEnding mismatch</code></td><td>Windows CRLF uploaded when job configured for LF</td><td>Set lineSeparator=&#x27;\n&#x27; in DataWeave CSV and lineEnding=&#x27;LF&#x27; on job</td></tr>
+<tr><td><code>UNABLE_TO_LOCK_ROW contention</code></td><td>Multiple parallel jobs updating Accounts sharing parent IDs</td><td>Sort CSV by ParentId before uploading or set concurrencyMode=Serial</td></tr>
+<tr><td><code>Bulk Job exceeds 150 MB base64</code></td><td>Single CSV &gt; ~100 MB raw uploaded at once</td><td>Partition source dataset cleanly into 80 MB CSV files</td></tr>
+<tr><td><code>Blank field failed to clear old SF value</code></td><td>Standard empty string &#x27;&#x27; ignored by Bulk 2.0 CSV</td><td>Emit literal string &#x27;#N/A&#x27; in DataWeave for explicit nulls</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -159,21 +346,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-salesforce-bulk-api-2-interview" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-anypoint-mq-dlq-fifo-interview.html"><span>← Previous Guide</span><strong>Anypoint MQ, DLQ &amp; FIFO</strong></a>
+  <a class="next" href="mulesoft-oauth-jwt-bearer-token-interview.html"><span>Next Guide →</span><strong>OAuth 2.0 JWT Bearer Flow</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-sap-s4hana-odata-interview.html">Salesforce & SAP Integration End-to-End</a></li><li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li><li><a href="mulesoft-oauth-jwt-bearer-token-interview.html">OAuth 2.0 JWT Bearer Token Flow</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

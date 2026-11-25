@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Anypoint Partner Manager & B2B EDI X12/EDIFACT: Interview Guide</title>
   <meta name="description" content="Master B2B integrations with Anypoint Partner Manager (APM), AS2 protocols, ANSI X12 (850, 855, 856, 810) parsing, and ESL schemas.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-partner-manager-b2b-edi-interview.html">
-  <meta property="og:title" content="Anypoint Partner Manager & B2B EDI X12/EDIFACT: Interview Guide">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Anypoint Partner Manager &amp; B2B EDI X12/EDIFACT: Interview Guide">
   <meta property="og:description" content="Master B2B integrations with Anypoint Partner Manager (APM), AS2 protocols, ANSI X12 (850, 855, 856, 810) parsing, and ESL schemas.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-partner-manager-b2b-edi-interview.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,234 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › Partner Manager &amp; B2B EDI</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>Anypoint Partner Manager (APM) & ANSI X12 / EDIFACT B2B Integration</h1>
+          <p class="post-lede">Centralized partner onboarding, digital AS2 certificates, Electronic Service Level (ESL) schemas, and automated 997 functional acknowledgments.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 14 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Configure EDI X12 850/810/856 and EDIFACT flows over AS2/SFTP in Anypoint Partner Manager, including automated 997 Functional ACKs and certificate rotation.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Partner Manager · B2B EDI Transaction Monitor</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">X12 4010 / AS2-MDN · 48 Trading Partners</span>
+        <span class="anypoint-status-ok">● 997 ACK SENT · SLA GREEN</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Active Partners</span><span class="anypoint-kpi-val">48 (AS2 + SFTP)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Inbound X12 850 Today</span><span class="anypoint-kpi-val">1,840 Orders (0 Failures)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">997 Functional ACK</span><span class="anypoint-kpi-val">Auto-Generated &lt; 800 ms</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">AS2 Signed MDN</span><span class="anypoint-kpi-val">SHA-256 Verified</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Trading Partner B2B Config (Walmart / Target)</div>
+          <div class="anypoint-pane-bd">Host Qualifier   : ZZ / MYCORP_PROD
+Partner Qualifier: 01 / PARTNER_ISA_091
+Transport        : AS2 HTTPS (Signed + Encrypted SHA-256)
+Message Flow     : X12 850 (PO) -&gt; dw/850-to-canonical.dwl -&gt; Order PAPI</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">End-to-End Document Audit Trail</div>
+          <div class="anypoint-pane-bd">ISA013 Control #: 000004912 -&gt; Status: ACCEPTED
+  1. AS2 Transport Decrypt &amp; Verify Signature  [PASS]
+  2. X12 4010 Schema Validation (SE01 count)   [PASS]
+  3. Auto 997 ACK queued to Partner AS2 URL    [SENT]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Partner Manager tracing an inbound X12 850 Purchase Order through AS2 decryption, schema validation, 997 ACK, and canonical Order mapping.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">Partner Manager & B2B EDI</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">Anypoint Partner Manager (APM) & ANSI X12 / EDIFACT B2B Integration</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Centralized partner onboarding, digital AS2 certificates, Electronic Service Level (ESL) schemas, and automated 997 functional acknowledgments.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🤝</span><span class="flow-node-title">AS2 / SFTP Endpoint</span><span class="flow-node-type">Partner Manager Ingress</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔍</span><span class="flow-node-title">EDI X12 Parser</span><span class="flow-node-type">x12:read (Schema Valid)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">✅</span><span class="flow-node-title">Auto 997 ACK</span><span class="flow-node-type">Functional Acknowledgment</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚙️</span><span class="flow-node-title">DW B2B -&gt; Canonical</span><span class="flow-node-type">DataWeave Transaction Map</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📦</span><span class="flow-node-title">Order PAPI Dispatch</span><span class="flow-node-type">Process API Post + Replay</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. AS2 / SFTP Endpoint (Partner Manager Ingress)</h3>
+      <p class="insp-node-what">Receives trading-partner EDI transmissions over AS2 (with TLS + S/MIME cert verification) or scheduled SFTP polling.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">protocol=AS2 | encryption=AES-256 | sign=SHA-256</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Channel</th><td>AS2 Inbound HTTPS</td></tr>
+<tr><th scope="row">Partner Cert</th><td>walmart-as2-2026.cer</td></tr>
+<tr><th scope="row">MDN Mode</th><td>Synchronous Signed MDN</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;flow name=&quot;b2b-x12-850-to-canonical-po-flow&quot;&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;&lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+var tx = payload.TransactionSets.v004010.&#x27;850&#x27;[0]
+---
+{
+  partnerId: payload.InterchangeHeader.ISA06,
+  isaControlNumber: payload.InterchangeHeader.ISA13,
+  purchaseOrderNumber: tx.Heading.&#x27;020_BEG&#x27;.BEG03,
+  orderDate: tx.Heading.&#x27;020_BEG&#x27;.BEG05 as String { format: &quot;yyyyMMdd&quot; },
+  lineItems: (tx.Detail.&#x27;010_PO1_Loop&#x27; default []) map ((item) -&gt; {
+    lineNumber: item.&#x27;010_PO1&#x27;.PO101,
+    quantity: item.&#x27;010_PO1&#x27;.PO102,
+    unitPrice: item.&#x27;010_PO1&#x27;.PO104,
+    sku: item.&#x27;010_PO1&#x27;.PO107
+  })
+}]]&gt;&lt;/ee:set-payload&gt;&lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🤝", "label": "AS2 / SFTP Endpoint", "type": "Partner Manager Ingress", "what": "Receives trading-partner EDI transmissions over AS2 (with TLS + S/MIME cert verification) or scheduled SFTP polling.", "config_values": "protocol=AS2 | encryption=AES-256 | sign=SHA-256", "studio_props": [["Channel", "AS2 Inbound HTTPS"], ["Partner Cert", "walmart-as2-2026.cer"], ["MDN Mode", "Synchronous Signed MDN"]]}, {"icon": "🔍", "label": "EDI X12 Parser", "type": "x12:read (Schema Valid)", "what": "Validates ISA/GS/ST control numbers, segment counts (SE01), and Trading Partner ISA qualifier pairs before accepting business data.", "config_values": "schema=4010/850.esl | validateControlNumbers=true", "studio_props": [["Display Name", "Parse X12 850"], ["Standard", "ANSI X12 4010"], ["Validate ISA/GS", "Unique Check On"]]}, {"icon": "✅", "label": "Auto 997 ACK", "type": "Functional Acknowledgment", "what": "Immediately constructs an X12 997 (AK1/AK9) confirming Accepted or Rejected segments and transmits back over the partner's configured return channel.", "config_values": "autoGenerate997=true | AK9=A (Accepted)", "studio_props": [["Document Type", "X12 997 Functional ACK"], ["SLA Target", "< 5 Seconds"], ["Reconciliation", "Matches GS06 Group ID"]]}, {"icon": "⚙️", "label": "DW B2B -> Canonical", "type": "DataWeave Transaction Map", "what": "Maps EDI nested loops (BEG, N1, PO1/PID items) to the enterprise Canonical Order JSON so backend SAP/Order Process API stays 100% EDI-agnostic.", "config_values": "BEG03 -> purchaseOrderNumber | PO1 loop -> lineItems[]", "studio_props": [["Map Script", "x12-850-to-canonical-po.dwl"], ["Output Target", "Order Process API / MQ"]]}, {"icon": "📦", "label": "Order PAPI Dispatch", "type": "Process API Post + Replay", "what": "Submits the canonical JSON Purchase Order reliably into your Order PAPI and indexes ISA13 control numbers in Partner Manager search.", "config_values": "searchableAttributes=[poNumber, isaControlNum]", "studio_props": [["Downstream", "POST /papi/orders"], ["Audit Replay", "Enabled in Partner Manager UI"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <flow name=\"b2b-x12-850-to-canonical-po-flow\">\n    <ee:transform>\n      <ee:message><ee:set-payload><![CDATA[%dw 2.0\noutput application/json\nvar tx = payload.TransactionSets.v004010.'850'[0]\n---\n{\n  partnerId: payload.InterchangeHeader.ISA06,\n  isaControlNumber: payload.InterchangeHeader.ISA13,\n  purchaseOrderNumber: tx.Heading.'020_BEG'.BEG03,\n  orderDate: tx.Heading.'020_BEG'.BEG05 as String { format: \"yyyyMMdd\" },\n  lineItems: (tx.Detail.'010_PO1_Loop' default []) map ((item) -> {\n    lineNumber: item.'010_PO1'.PO101,\n    quantity: item.'010_PO1'.PO102,\n    unitPrice: item.'010_PO1'.PO104,\n    sku: item.'010_PO1'.PO107\n  })\n}]]><\/ee:set-payload><\/ee:message>\n    <\/ee:transform>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-partner-manager-b2b-edi-interview">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Onboard Host &amp; Partner ISA/GS qualifiers accurately</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Enforce Signed AS2 MDN + SHA-256 encryption certs</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Auto-generate X12 997 Functional ACK for inbound documents</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Alert 30 days prior to partner AS2 cert expiry</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Map EDI structures cleanly into Canonical API contracts via DW</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-partner-manager-b2b-edi-interview" aria-selected="true" aria-controls="panel-studio-mulesoft-partner-manager-b2b-edi-interview" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-partner-manager-b2b-edi-interview" aria-selected="false" aria-controls="panel-platform-mulesoft-partner-manager-b2b-edi-interview" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-partner-manager-b2b-edi-interview" aria-selected="false" aria-controls="panel-test-mulesoft-partner-manager-b2b-edi-interview" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-partner-manager-b2b-edi-interview" aria-labelledby="btn-tab-studio-mulesoft-partner-manager-b2b-edi-interview">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>b2b-partner-manager-850-sync</code> · <strong>Target Runtime:</strong> <code>Anypoint Partner Manager · CloudHub 2.0 Runtime</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;!-- Custom Studio mapping / ESL schema validation dependency if extending APM --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-x12-connector&lt;/artifactId&gt;
+  &lt;version&gt;2.12.2&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>ISA05/ISA06 Host IDs</code></td><td><code>Match exact trading partner agreement</code></td><td>A single trailing space breaks interchange matching</td></tr>
+<tr><td><code>Duplicate Control Check</code></td><td><code>Enforce ISA13 uniqueness</code></td><td>Blocks accidental double-processing of re-transmitted SFTP files</td></tr>
+<tr><td><code>997 ACK Tracking</code></td><td><code>Track Unacknowledged Outbound 850/810</code></td><td>Triggers B2B alert if partner fails to send 997 within SLA</td></tr>
+<tr><td><code>EDI -&gt; Canonical Reuse</code></td><td><code>Publish canonical DW maps cleanly</code></td><td>Onboarding Partner #49 takes 10 minutes instead of 2 weeks of Mule coding</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-partner-manager-b2b-edi-interview" aria-labelledby="btn-tab-platform-mulesoft-partner-manager-b2b-edi-interview" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Anypoint Partner Manager &gt; Host Setup: Configure Host identifiers (ZZ/DUNS), upload host AS2 signing/encryption keystores, and deploy Partner Manager endpoints.</li>
+        <li>Trading Partners &gt; Add Partner: Configure Walmart/Partner qualifiers, upload partner public `.cer`, attach 850 Inbound -&gt; Canonical DW map -&gt; Order PAPI target.</li>
+        <li>Monitor Transaction Activity screen filtering by Purchase Order # or failed 997 ACKs.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-partner-manager-b2b-edi-interview" aria-labelledby="btn-tab-test-mulesoft-partner-manager-b2b-edi-interview" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>Test mapping script in Studio Transform Preview or post mock X12 850 payload over AS2/HTTP</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;http://localhost:8081/as2/inbound&quot; \
+  -H &quot;AS2-From: PARTNER01&quot; -H &quot;AS2-To: MYCORP&quot; -H &quot;Content-Type: application/edi-x12&quot; \
+  --data &quot;ISA*00*          *00*          *01*PARTNER01      *ZZ*MYCORP         *261125*1200*U*00401*000004912*0*P*&gt;~&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>Status: 200 OK (Signed AS2 MDN Returned + 997 ACK Enqueued)</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>Unknown Trading Partner ISA mismatch</code></td><td>Trailing whitespace inside fixed-width 15-char ISA06/08 fields</td><td>Verify trimmed vs exact 15-char partner qualifiers in APM</td></tr>
+<tr><td><code>Partner complains 997 ACK never arrived</code></td><td>Return AS2/SFTP outbound channel missing or blocked by firewall</td><td>Verify partner&#x27;s public AS2 URL &amp; cert inside Outbound Message Flow</td></tr>
+<tr><td><code>AS2 decryption failed after annual renewal</code></td><td>Partner swapped certificate without coordinating swap window</td><td>Upload upcoming partner cert alongside active one ahead of expiry</td></tr>
+<tr><td><code>850 fails with unexpected segment error</code></td><td>Partner sent custom Z-segment not in base 4010.esl</td><td>Extend standard `.esl` schema cleanly in APM custom schema manager</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -159,21 +349,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-partner-manager-b2b-edi-interview" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-snowflake-connector-patterns.html"><span>← Previous Guide</span><strong>Snowflake Patterns</strong></a>
+  <a class="next" href="mulesoft-reusable-error-handler-plugin.html"><span>Next Guide →</span><strong>Global Error Handler Plugin</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="dataweave-performance-tuning-patterns.html">DataWeave Performance Tuning</a></li><li><a href="mulesoft-snowflake-connector-patterns.html">Snowflake High-Volume Integration</a></li><li><a href="mulesoft-reusable-error-handler-plugin.html">Enterprise Error Handler Plugin</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

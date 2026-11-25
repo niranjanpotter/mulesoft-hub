@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine & Concurrency</title>
   <meta name="description" content="Core Java interview questions for senior MuleSoft developers and architects: JVM memory pools, String Constant Pool, Project Reactor, and multi-threading.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-java-interview-mastery.html">
-  <meta property="og:title" content="Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine & Concurrency">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine &amp; Concurrency">
   <meta property="og:description" content="Core Java interview questions for senior MuleSoft developers and architects: JVM memory pools, String Constant Pool, Project Reactor, and multi-threading.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-java-interview-mastery.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,217 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › Java 17 &amp; Reactive Internals</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>Senior Java & Reactive Engine Mastery for MuleSoft Architects</h1>
+          <p class="post-lede">Deep dive into Java fundamentals powering MuleSoft: String immutability, Liskov Substitution Principle, vtables, and non-blocking event loops.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 15 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Understand Mule 4.9&#x27;s Java 17 upgrade, non-blocking CPU_LITE/CPU_INTENSIVE/BLOCKING_IO thread pools, Java Module invocation, and G1GC memory tuning.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Mule 4.9 LTS · Java 17 Reactive Thread Pool &amp; JVM Profiler</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">G1GC Active · Java 17 Modules Opens Configured</span>
+        <span class="anypoint-status-ok">● 0 POOL STARVATION</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">JDK Target</span><span class="anypoint-kpi-val">Java 17 LTS (Mule 4.6+ / 4.9)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">GC Collector</span><span class="anypoint-kpi-val">G1GC (Low Pause Tuning)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Execution Pools</span><span class="anypoint-kpi-val">UBER / Grizzly Shared Pool</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Java 17 Compatibility</span><span class="anypoint-kpi-val">Illegal Reflective Checks Strict</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Mule 4 Reactive Pool Routing (Auto-Classified)</div>
+          <div class="anypoint-pane-bd">HTTP Listener / Logger -&gt; Non-Blocking I/O / CPU_LITE
+DataWeave Complex Map  -&gt; CPU_INTENSIVE
+JDBC / File / Custom Java I/O -&gt; BLOCKING_IO
+NEVER execute Thread.sleep() or sync JDBC on CPU_LITE!</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Mule 4.9 / Java 17 Migration Guardrails</div>
+          <div class="anypoint-pane-bd">&lt;artifact&gt;pom.xml: maven.compiler.release = 17
+mule-artifact.json: &quot;javaSpecificationVersions&quot;: [&quot;17&quot;]
+Replace javax.* -&gt; jakarta.* in custom Java classes
+Check DataWeave java! calls for private JDK reflection</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Profiling Mule 4.9 LTS non-blocking UBER thread pool scheduling and Java 17 compatibility flags under sustained traffic.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">Java Interview Mastery</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">Senior Java & Reactive Engine Mastery for MuleSoft Architects</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Deep dive into Java fundamentals powering MuleSoft: String immutability, Liskov Substitution Principle, vtables, and non-blocking event loops.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">⚡</span><span class="flow-node-title">Non-Blocking I/O</span><span class="flow-node-type">Grizzly Selector Threads</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">☕</span><span class="flow-node-title">Java Module Call</span><span class="flow-node-type">java:invoke-static (Java 17)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛑</span><span class="flow-node-title">CPU vs Blocking Guard</span><span class="flow-node-type">Reactive Execution Type</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">♻️</span><span class="flow-node-title">G1GC Heap Health</span><span class="flow-node-type">JVM Memory &amp; Streams</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">✅</span><span class="flow-node-title">Verified Response</span><span class="flow-node-type">Low-Latency JSON Out</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Non-Blocking I/O (Grizzly Selector Threads)</h3>
+      <p class="insp-node-what">Accepts thousands of concurrent HTTP sockets asynchronously without dedicating 1 blocked OS thread per idle connection.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">Reactive Non-Blocking -&gt; Zero thread pinning</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Runtime Model</th><td>Project Reactor / Grizzly</td></tr>
+<tr><th scope="row">Behavior</th><td>Hand off immediately to UBER pool</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:java=&quot;http://www.mulesoft.org/schema/mule/java&quot;&gt;
+  &lt;flow name=&quot;java17-crypto-signer-flow&quot;&gt;
+    &lt;java:invoke-static class=&quot;com.corp.security.HmacSigner&quot;
+                        method=&quot;signPayload(java.lang.String, java.lang.String)&quot;&gt;
+      &lt;java:args&gt;&lt;![CDATA[#[{ arg0: write(payload, &#x27;application/json&#x27;), arg1: p(&#x27;secure::hmac.secret&#x27;) }]]]&gt;&lt;/java:args&gt;
+    &lt;/java:invoke-static&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "⚡", "label": "Non-Blocking I/O", "type": "Grizzly Selector Threads", "what": "Accepts thousands of concurrent HTTP sockets asynchronously without dedicating 1 blocked OS thread per idle connection.", "config_values": "Reactive Non-Blocking -> Zero thread pinning", "studio_props": [["Runtime Model", "Project Reactor / Grizzly"], ["Behavior", "Hand off immediately to UBER pool"]]}, {"icon": "☕", "label": "Java Module Call", "type": "java:invoke-static (Java 17)", "what": "Executes static stateless Java helper functions (e.g., HMAC/custom binary ASN.1 parser) compiled under Java 17.", "config_values": "class=com.corp.crypto.Signer | method=hmacSha256(String,String)", "studio_props": [["Display Name", "Invoke Java Helper"], ["Method Signature", "Must match exact arg types"], ["Stateless Rule", "Thread-safe pure methods"]]}, {"icon": "🛑", "label": "CPU vs Blocking Guard", "type": "Reactive Execution Type", "what": "Ensures blocking legacy SDK calls declare Blocking I/O or Async scope rather than stalling fast reactive CPU_LITE/UBER execution workers.", "config_values": "Never Thread.sleep() inside DW or fast subflows", "studio_props": [["Pool Safety", "Separate Blocking I/O calls"], ["Retry Rule", "Use Until-Successful / Async"]]}, {"icon": "♻️", "label": "G1GC Heap Health", "type": "JVM Memory & Streams", "what": "Releases InputStream/Reader buffers properly after consumption and tunes container heap limits safely within fractional vCore budgets.", "config_values": "Keep peak live objects < 65% of container heap", "studio_props": [["Heap Rule", "50% pod RAM = JVM Xmx"], ["Rest of RAM", "Direct buffers + Metaspace + OS"]]}, {"icon": "✅", "label": "Verified Response", "type": "Low-Latency JSON Out", "what": "Completes processing without thread contention, maintaining sub-50ms p95 overhead inside reactive flows.", "config_values": "HTTP 200 OK · p95 < 50ms core overhead", "studio_props": [["Metric", "Thread pool queue = 0"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:java=\"http://www.mulesoft.org/schema/mule/java\">\n  <flow name=\"java17-crypto-signer-flow\">\n    <java:invoke-static class=\"com.corp.security.HmacSigner\"\n                        method=\"signPayload(java.lang.String, java.lang.String)\">\n      <java:args><![CDATA[#[{ arg0: write(payload, 'application/json'), arg1: p('secure::hmac.secret') }]]]><\/java:args>\n    <\/java:invoke-static>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-java-interview-mastery">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Set maven-compiler-plugin &lt;release&gt;17&lt;/release&gt; in pom.xml</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Declare &quot;javaSpecificationVersions&quot;: [&quot;17&quot;] in mule-artifact.json</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Export public Java packages in mule-artifact.json classLoaderModelLoaderDescriptor</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Make all Java helper classes stateless &amp; thread-safe</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Run Anypoint Code/Mule Upgrade checks cleanly before prod deploy</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-java-interview-mastery" aria-selected="true" aria-controls="panel-studio-mulesoft-java-interview-mastery" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-java-interview-mastery" aria-selected="false" aria-controls="panel-platform-mulesoft-java-interview-mastery" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-java-interview-mastery" aria-selected="false" aria-controls="panel-test-mulesoft-java-interview-mastery" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-java-interview-mastery" aria-labelledby="btn-tab-studio-mulesoft-java-interview-mastery">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>mule49-java17-runtime-demo</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · Eclipse Temurin JDK 17</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.mule.module&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-java-module&lt;/artifactId&gt;
+  &lt;version&gt;1.2.13&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;
+&lt;!-- In build plugins: maven-compiler-plugin &lt;release&gt;17&lt;/release&gt; --&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Method Parameter Match</code></td><td><code>signPayload(String, String)</code></td><td>Must match exact Java arg types (int vs Integer throws MethodNotFound)</td></tr>
+<tr><td><code>mule-artifact.json Export</code></td><td><code>&quot;exportedPackages&quot;: [&quot;com.corp.security&quot;]</code></td><td>Required so DataWeave java! calls &amp; ClassLoader find custom classes</td></tr>
+<tr><td><code>Java 17 Module Encapsulation</code></td><td><code>Avoid internal sun.misc / java.lang reflect hacks</code></td><td>JDK 17 blocks deep reflection without explicit --add-opens</td></tr>
+<tr><td><code>Fractional vCore Sizing</code></td><td><code>0.2 vCore = ~1 GB RAM (~500MB JVM Heap)</code></td><td>Leave ~50% pod memory for Metaspace &amp; Netty/DW Direct Buffers</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-java-interview-mastery" aria-labelledby="btn-tab-platform-mulesoft-java-interview-mastery" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Runtime Manager &gt; Deployments: Select Runtime `4.9.x LTS` + Java Version `17` cleanly during upgrade from 4.4 / Java 8.</li>
+        <li>Inspect Startup Logs for IllegalAccessError / InaccessibleObjectException caused by un-upgraded legacy connectors.</li>
+        <li>Upgrade all Exchange/Maven connectors to Java-17-certified releases before production cutover.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-java-interview-mastery" aria-labelledby="btn-tab-test-mulesoft-java-interview-mastery" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST http://localhost:8081/api/v1/crypto/sign</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST &quot;http://localhost:8081/api/v1/crypto/sign&quot; -H &quot;Content-Type: application/json&quot; -d &#x27;{&quot;orderId&quot;:&quot;123&quot;}&#x27; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{ &quot;signature&quot;: &quot;a8f5e2c19b...&quot; }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>InaccessibleObjectException upgrading to Mule 4.9</code></td><td>Legacy connector or library uses Java 8 reflection on java.base</td><td>Upgrade connector version to Java 17 compatible release</td></tr>
+<tr><td><code>NoSuchMethodException in java:invoke-static</code></td><td>Parameter type mismatch (e.g., passed Number instead of java.lang.String)</td><td>Copy exact full class names from Studio Java method signature picker</td></tr>
+<tr><td><code>ClassNotFoundException calling Java via DW</code></td><td>Custom Java package missing from mule-artifact.json</td><td>Add package name to attributes.exportedPackages in mule-artifact.json</td></tr>
+<tr><td><code>Container OOMKilled even though JVM Heap &lt; 70%</code></td><td>Exceeded non-heap DirectMemory / DW off-heap buffer budget</td><td>Reduce excessive buffer sizes or increase pod vCore allocation</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -159,21 +332,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-java-interview-mastery" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-secure-properties-encryption-guide.html"><span>← Previous Guide</span><strong>Secure Properties Encryption</strong></a>
+  <a class="next" href="mulesoft-scenario-based-interview-questions.html"><span>Next Guide →</span><strong>Top 20 Scenario Q&amp;A</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li><li><a href="dataweave-performance-tuning-patterns.html">DataWeave Performance Tuning</a></li><li><a href="mulesoft-scenario-based-interview-questions.html">Top 20 Production Scenarios</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

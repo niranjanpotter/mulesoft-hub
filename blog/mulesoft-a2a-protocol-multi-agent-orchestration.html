@@ -14,8 +14,12 @@
 <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">
 <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
 <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="blog.css">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+<link rel="stylesheet" href="../assets/css/blog-portal.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,23 +33,33 @@
   "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html"
 }
 </script>
-<script defer src="blog.js"></script>
+<script defer src="../assets/js/blog-portal.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="blog-topbar">
-  <div class="blog-topbar-inner">
-    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
-    <nav class="blog-nav" aria-label="Main">
-      <a href="../index.html">Interview Hub</a>
-      <a href="index.html">All Articles</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
       <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
     </nav>
   </div>
 </header>
 
-<div class="blog-wrap">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › A2A Protocol in MuleSoft</nav>
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › A2A Protocol in MuleSoft</nav>
   <div class="post-layout">
     <main id="main">
       <article>
@@ -54,10 +68,11 @@
           <h1>Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration</h1>
           <p class="post-lede">Implement horizontal peer-to-peer agent delegation across Salesforce Agentforce, AWS Bedrock, Google Vertex AI, and MuleSoft using the official Mule 4 A2A Connector (<code>mule4-a2a-connector:2.0.0</code>), standardized Agent Cards, and stateful JSON-RPC task lifecycles.</p>
           <div class="post-meta">
+            <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
             <span>✍️ Niranjan Potter</span>
-            <span>📅 Nov 24, 2026</span>
+            <span>📅 Updated Nov 2026</span>
             <span>⏱️ 19 min read</span>
-            <span class="tag">A2A Protocol</span><span class="tag">Multi-Agent</span>
           </div>
         </header>
 
@@ -70,6 +85,50 @@
             <li><strong>Rich asynchronous task state machine:</strong> Unlike synchronous REST calls, A2A models long-running, multi-turn work across <code>submitted</code>, <code>working</code>, <code>input-required</code>, <code>completed</code>, <code>failed</code>, and <code>canceled</code> states, returning typed <code>artifacts</code> correlated by <code>sessionId</code> and <code>taskId</code>.</li>
             <li><strong>MuleSoft as the Enterprise Agent Control Plane:</strong> Placing Anypoint Flex Gateway and MuleSoft A2A coordinators between Agentforce, Bedrock, Vertex AI, and LangGraph enforces unified OAuth 2.0 identity, budget circuit breakers, and cross-cloud audit trails.</li>
           </ul>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint A2A Mesh · /.well-known/agent.json &amp; Task State</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">CloudHub 2.0 · mule4-a2a-connector 2.0.0</span>
+        <span class="anypoint-status-ok">● AGENT CARD LIVE</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Discovery Endpoint</span><span class="anypoint-kpi-val">/.well-known/agent.json</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Card Path Variable</span><span class="anypoint-kpi-val">${app.home}/agent-card.json</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Active Skills</span><span class="anypoint-kpi-val">2 (verify-dispute, issue-credit)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">State Store</span><span class="anypoint-kpi-val">Object Store v2 (Stateful)</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Agent Card Discovery (GET /.well-known/agent.json)</div>
+          <div class="anypoint-pane-bd">name: &quot;Order Dispute Specialist Agent&quot;
+capabilities: { streaming: true, pushNotifications: true }
+authentication: { schemes: [&quot;oauth2&quot;] }
+skills: [ &quot;dispute-triage&quot;, &quot;carrier-claim&quot; ]</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Task Lifecycle Transitions (Object Store v2)</div>
+          <div class="anypoint-pane-bd">task_94102: submitted -&gt; working -&gt; input-required
+  prompt: &quot;Confirm carrier photo attachment ID&quot;
+task_94102 (turn 2): input-required -&gt; working -&gt; completed
+  artifact: creditMemo.json | hopCount=1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — A2A Server config serving the Agent Card from ${app.home}/agent-card.json and tracking asynchronous multi-turn task states.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
           <h2 id="what-and-why">What it is and why it matters</h2>
           <p>No single enterprise runs on one AI vendor. Your CRM customer-service copilot lives in <strong>Salesforce Agentforce</strong>, your fraud-detection reasoning agent runs on <strong>AWS Bedrock</strong>, your supply-chain carrier optimizer runs on <strong>Google Vertex AI</strong>, and your back-office ERP dispute specialist runs in <strong>MuleSoft</strong> or Python <strong>LangGraph</strong>. Without an open wire protocol, connecting two agents forces engineers to write brittle custom REST wrappers that flatten multi-turn conversations, lose streaming progress, and leak internal prompt structures.</p>
@@ -157,6 +216,89 @@
             <figcaption>Figure 1: Horizontal A2A peer delegation across Agentforce, AWS Bedrock, and MuleSoft combined with vertical MCP tool execution inside the specialist boundary.</figcaption>
           </figure>
 
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🪪</span><span class="flow-node-title">Agent Card &amp; Listener</span><span class="flow-node-type">a2a:task-listener (Source)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔁</span><span class="flow-node-title">Hop Guard &amp; Session</span><span class="flow-node-type">Choice + Object Store v2</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚖️</span><span class="flow-node-title">Task State Router</span><span class="flow-node-type">Choice (submitted / input)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">☁️</span><span class="flow-node-title">Peer A2A / MCP Fanout</span><span class="flow-node-type">Scatter-Gather Client</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📦</span><span class="flow-node-title">Artifact Response</span><span class="flow-node-type">DataWeave A2A Envelope</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Agent Card &amp; Listener (a2a:task-listener (Source))</h3>
+      <p class="insp-node-what">Serves GET /.well-known/agent.json from ${app.home}/agent-card.json and accepts incoming JSON-RPC tasks/send and tasks/get requests.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">agentPath=/ | card=${app.home}/agent-card.json</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>Dispute A2A Server</td></tr>
+<tr><th scope="row">A2A Config</th><td>A2A_Server_config</td></tr>
+<tr><th scope="row">Card File</th><td>${app.home}/agent-card.json</td></tr>
+<tr><th scope="row">Auth Scheme</th><td>OAuth 2.0 Bearer</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:a2a=&quot;http://www.mulesoft.org/schema/mule/a2a&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;http:listener-config name=&quot;HTTP_Listener_config&quot;&gt;
+    &lt;http:listener-connection host=&quot;0.0.0.0&quot; port=&quot;8081&quot;/&gt;
+  &lt;/http:listener-config&gt;
+  &lt;a2a:server-config name=&quot;A2A_Server_config&quot;&gt;
+    &lt;a2a:connection listenerConfig=&quot;HTTP_Listener_config&quot; agentPath=&quot;/&quot;/&gt;
+    &lt;a2a:agent-card file=&quot;${app.home}/agent-card.json&quot;/&gt;
+  &lt;/a2a:server-config&gt;
+  &lt;flow name=&quot;dispute-specialist-a2a-flow&quot;&gt;
+    &lt;a2a:task-listener config-ref=&quot;A2A_Server_config&quot;/&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;&lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  id: payload.id,
+  status: { state: &quot;completed&quot;, timestamp: now() },
+  artifacts: [{ name: &quot;dispute-decision&quot;, parts: [{ kind: &quot;data&quot;, data: { approved: true, creditUsd: 185.00 } }] }]
+}]]&gt;&lt;/ee:set-payload&gt;&lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🪪", "label": "Agent Card & Listener", "type": "a2a:task-listener (Source)", "what": "Serves GET /.well-known/agent.json from ${app.home}/agent-card.json and accepts incoming JSON-RPC tasks/send and tasks/get requests.", "config_values": "agentPath=/ | card=${app.home}/agent-card.json", "studio_props": [["Display Name", "Dispute A2A Server"], ["A2A Config", "A2A_Server_config"], ["Card File", "${app.home}/agent-card.json"], ["Auth Scheme", "OAuth 2.0 Bearer"]]}, {"icon": "🔁", "label": "Hop Guard & Session", "type": "Choice + Object Store v2", "what": "Reads X-A2A-Hop-Count (rejecting >= 4 hops to prevent peer recursion loops) and restores prior multi-turn context from Object Store v2 by taskId.", "config_values": "maxHops=4 | osKey=vars.taskId | TTL=24h", "studio_props": [["Display Name", "Loop & State Guard"], ["Header Check", "X-A2A-Hop-Count < 4"], ["State Store", "A2A_Task_State_OS"], ["Key", "#[payload.id]"]]}, {"icon": "⚖️", "label": "Task State Router", "type": "Choice (submitted / input)", "what": "Routes initial requests vs follow-up user/agent replies, returning input-required when mandatory evidence (e.g., damage photo) is missing.", "config_values": "states: submitted -> working -> input-required | completed", "studio_props": [["Display Name", "A2A Lifecycle Router"], ["On Missing Photo", "state='input-required'"], ["On Complete", "state='completed'"]]}, {"icon": "☁️", "label": "Peer A2A / MCP Fanout", "type": "Scatter-Gather Client", "what": "Uses A2A Client (<a2a:send-task>) to delegate fraud scoring to Vertex AI while querying ERP carrier records over MCP tools.", "config_values": "vertexAgent=fraud-score-a2a | timeout=10000ms", "studio_props": [["Display Name", "Multi-Cloud Delegation"], ["Client Op", "a2a:send-task"], ["Propagate Header", "X-A2A-Hop-Count + 1"], ["Timeout", "10000 ms"]]}, {"icon": "📦", "label": "Artifact Response", "type": "DataWeave A2A Envelope", "what": "Persists updated task state to Object Store v2 and emits typed A2A JSON-RPC result containing status, message history, and structured artifacts.", "config_values": "status.state='completed' | artifacts=[creditMemo]", "studio_props": [["Display Name", "Build A2A Artifact"], ["Output Mime", "application/json"], ["Artifact Type", "data / application/json"], ["State Sync", "os:store -> A2A_Task_State_OS"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:a2a=\"http://www.mulesoft.org/schema/mule/a2a\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <http:listener-config name=\"HTTP_Listener_config\">\n    <http:listener-connection host=\"0.0.0.0\" port=\"8081\"/>\n  <\/http:listener-config>\n  <a2a:server-config name=\"A2A_Server_config\">\n    <a2a:connection listenerConfig=\"HTTP_Listener_config\" agentPath=\"/\"/>\n    <a2a:agent-card file=\"${app.home}/agent-card.json\"/>\n  <\/a2a:server-config>\n  <flow name=\"dispute-specialist-a2a-flow\">\n    <a2a:task-listener config-ref=\"A2A_Server_config\"/>\n    <ee:transform>\n      <ee:message><ee:set-payload><![CDATA[%dw 2.0\noutput application/json\n---\n{\n  id: payload.id,\n  status: { state: \"completed\", timestamp: now() },\n  artifacts: [{ name: \"dispute-decision\", parts: [{ kind: \"data\", data: { approved: true, creditUsd: 185.00 } }] }]\n}]]><\/ee:set-payload><\/ee:message>\n    <\/ee:transform>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-a2a-protocol-multi-agent-orchestration">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Add mule4-a2a-connector 2.0.0 to pom.xml</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Save agent-card.json in src/main/resources/</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Bind &lt;a2a:agent-card file=&quot;${app.home}/agent-card.json&quot;/&gt;</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Add Object Store v2 persistence + X-A2A-Hop-Count &lt; 4</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Test /.well-known/agent.json and tasks/send via curl</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
           <h2 id="prerequisites">Prerequisites</h2>
           <div class="callout prereq">
             <span class="callout-title">You need</span>
@@ -167,6 +309,66 @@
               <li><strong>Object Store v2</strong> enabled (for CloudHub 2.0 deployments) to persist stateful <code>taskId</code> and <code>sessionId</code> transitions across worker replicas.</li>
             </ul>
           </div>
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-a2a-protocol-multi-agent-orchestration" aria-selected="true" aria-controls="panel-studio-mulesoft-a2a-protocol-multi-agent-orchestration" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-a2a-protocol-multi-agent-orchestration" aria-selected="false" aria-controls="panel-platform-mulesoft-a2a-protocol-multi-agent-orchestration" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-a2a-protocol-multi-agent-orchestration" aria-selected="false" aria-controls="panel-test-mulesoft-a2a-protocol-multi-agent-orchestration" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-a2a-protocol-multi-agent-orchestration" aria-labelledby="btn-tab-studio-mulesoft-a2a-protocol-multi-agent-orchestration">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>order-dispute-a2a-specialist</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · JDK 17</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;mule4-a2a-connector&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>A2A Server Config</code></td><td><code>agentPath=&quot;/&quot;</code></td><td>Exposes /.well-known/agent.json and JSON-RPC task endpoint</td></tr>
+<tr><td><code>Agent Card Path</code></td><td><code>${app.home}/agent-card.json</code></td><td>CRITICAL: Absolute laptop paths fail on CloudHub 2.0 containers</td></tr>
+<tr><td><code>Task Persistence</code></td><td><code>Object Store v2 (persistent=true)</code></td><td>Prevents lost tasks/get calls across CloudHub 2.0 replicas</td></tr>
+<tr><td><code>Cycle Protection</code></td><td><code>X-A2A-Hop-Count &gt;= 4 -&gt; HTTP 400</code></td><td>Stops Agent A -&gt; Agent B -&gt; Agent A infinite loops</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-a2a-protocol-multi-agent-orchestration" aria-labelledby="btn-tab-platform-mulesoft-a2a-protocol-multi-agent-orchestration" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Package src/main/resources/agent-card.json inside the deployable JAR using ${app.home}/agent-card.json in Global Elements.</li>
+        <li>Deploy to CloudHub 2.0 (&gt;= 2 replicas for HA) with Persistent Object Store v2 enabled for task history lookups.</li>
+        <li>Register the A2A service in Anypoint Exchange (Agent Registry) so Agentforce and Vertex coordinators can discover skills dynamically.</li>
+        <li>Secure /.well-known/agent.json (read-only public/internal) and POST / (OAuth 2.0 OBO JWT required) in API Manager.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-a2a-protocol-multi-agent-orchestration" aria-labelledby="btn-tab-test-mulesoft-a2a-protocol-multi-agent-orchestration" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>GET http://localhost:8081/.well-known/agent.json  |  POST http://localhost:8081/ (method: tasks/send)</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s http://localhost:8081/.well-known/agent.json | head -n 12
+curl -s -X POST &quot;http://localhost:8081/&quot; \
+  -H &quot;Content-Type: application/json&quot; -H &quot;X-A2A-Hop-Count: 1&quot; \
+  -d &#x27;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:&quot;1&quot;,&quot;method&quot;:&quot;tasks/send&quot;,&quot;params&quot;:{&quot;id&quot;:&quot;task-501&quot;,&quot;message&quot;:{&quot;role&quot;:&quot;user&quot;,&quot;parts&quot;:[{&quot;kind&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Evaluate claim ORD-9021&quot;}]}}}&#x27;</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: &quot;1&quot;,
+  &quot;result&quot;: {
+    &quot;id&quot;: &quot;task-501&quot;,
+    &quot;status&quot;: { &quot;state&quot;: &quot;completed&quot; },
+    &quot;artifacts&quot;: [{ &quot;name&quot;: &quot;dispute-decision&quot;, &quot;parts&quot;: [{ &quot;kind&quot;: &quot;data&quot;, &quot;data&quot;: { &quot;approved&quot;: true, &quot;creditUsd&quot;: 185.0 } }] }]
+  }
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>FileNotFoundException /Users/.../agent-card.json</code></td><td>Hardcoded developer laptop path left in A2A_Server_config</td><td>Switch to file=&quot;${app.home}/agent-card.json&quot;</td></tr>
+<tr><td><code>404 Task Not Found on tasks/get</code></td><td>In-memory storage used across 2+ CloudHub replicas</td><td>Enable Persistent Object Store v2 backed by external state</td></tr>
+<tr><td><code>Infinite ping-pong between two agents</code></td><td>Mutual delegation without loop metadata</td><td>Enforce X-A2A-Hop-Count ceiling &amp; traceparent audit</td></tr>
+<tr><td><code>Coordinator hangs waiting on slow ERP</code></td><td>Synchronous blocking wait exceeded 30s HTTP limit</td><td>Return state=&#x27;working&#x27; immediately and stream or serve tasks/get polling</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
           <h2 id="setup">Step-by-step setup</h2>
           <ol class="steps">
@@ -788,15 +990,26 @@ curl -sS -X POST "https://dispute-agent.acme-corp.com/" \
           </ul>
         </div>
 
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-a2a-protocol-multi-agent-orchestration" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
         <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
           <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
           <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
         </aside>
 
         <nav class="post-nav" aria-label="More articles">
-          <a class="prev" href="mulesoft-mcp-bridge-openapi-to-agent-tools.html"><span>← Previous</span><strong>MuleSoft MCP Bridge: OpenAPI to Agent Tools</strong></a>
-          <a class="next" href="agentforce-mulesoft-topic-center-api-actions.html"><span>Next →</span><strong>Agentforce + MuleSoft Topic Center &amp; API Catalog</strong></a>
-        </nav>
+  <a class="prev" href="../blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html"><span>← Previous Guide</span><strong>MCP Bridge (OpenAPI to MCP)</strong></a>
+  <a class="next" href="../blog/agentforce-mulesoft-topic-center-api-actions.html"><span>Next Guide →</span><strong>Agentforce + MuleSoft Setup</strong></a>
+</nav>
       </article>
     </main>
 
@@ -804,9 +1017,12 @@ curl -sS -X POST "https://dispute-agent.acme-corp.com/" \
       <p class="toc-title">On this page</p>
       <ol>
         <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
         <li><a href="#what-and-why">What it is and why it matters</a></li>
         <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
         <li><a href="#setup">Step-by-step setup</a></li>
         <li><a href="#code">Full working example</a></li>
         <li><a href="#test">Test it</a></li>
@@ -820,8 +1036,9 @@ curl -sS -X POST "https://dispute-agent.acme-corp.com/" \
     </aside>
   </div>
 </div>
-<footer class="blog-footer">
-  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
 </footer>
 </body>
 </html>

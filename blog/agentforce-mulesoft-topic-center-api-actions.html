@@ -14,8 +14,12 @@
 <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html">
 <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
 <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="blog.css">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+<link rel="stylesheet" href="../assets/css/blog-portal.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,23 +33,33 @@
   "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html"
 }
 </script>
-<script defer src="blog.js"></script>
+<script defer src="../assets/js/blog-portal.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="blog-topbar">
-  <div class="blog-topbar-inner">
-    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
-    <nav class="blog-nav" aria-label="Main">
-      <a href="../index.html">Interview Hub</a>
-      <a href="index.html">All Articles</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
       <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
     </nav>
   </div>
 </header>
 
-<div class="blog-wrap">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › Agentforce + MuleSoft Setup</nav>
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › Agentforce + MuleSoft Setup</nav>
   <div class="post-layout">
     <main id="main">
       <article>
@@ -54,10 +68,11 @@
           <h1>Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup</h1>
           <p class="post-lede">Expose SAP S/4HANA, ERP, and Snowflake operations directly to the Salesforce Atlas Reasoning Engine using MuleSoft Topic Center, Anypoint Exchange, and Salesforce API Catalog — with zero custom Apex callout boilerplate.</p>
           <div class="post-meta">
+            <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
             <span>✍️ Niranjan Potter</span>
-            <span>📅 Nov 24, 2026</span>
+            <span>📅 Updated Nov 2026</span>
             <span>⏱️ 19 min read</span>
-            <span class="tag">Agentforce</span><span class="tag">Topic Center</span>
           </div>
         </header>
 
@@ -70,6 +85,50 @@
             <li><strong>Enforce zero-trust OAuth 2.0 end-to-end:</strong> Bind API Manager policies on CloudHub 2.0 to Salesforce <strong>Named Credentials</strong> + <strong>External Credentials</strong> (<code>client_credentials</code> or JWT Bearer) with human-in-the-loop confirmation instructions before any mutating <code>POST</code>/<code>PATCH</code> call.</li>
             <li><strong>Verify in Agent Builder Plan Tracer:</strong> Inspect every step of the Atlas loop — Topic classification, slot extraction, grounding, MuleSoft HTTP invocation, and final answer synthesis — before activating the agent on Experience Cloud or Slack.</li>
           </ul>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Salesforce API Catalog + ACB Topic Center Sync</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Anypoint Exchange &lt;-&gt; Agentforce Builder</span>
+        <span class="anypoint-status-ok">● ORG TRUST ENABLED</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Trusted Salesforce Org</span><span class="anypoint-kpi-val">Enabled (Prod + Sandbox)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Synced Topic</span><span class="anypoint-kpi-val">ERP_Order_And_Inventory</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Generated Named Cred</span><span class="anypoint-kpi-val">Mule_ERP_Order_NC</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Atlas Reasoning Mode</span><span class="anypoint-kpi-val">Plan + Ground + Act</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">ACB Topic Center Metadata</div>
+          <div class="anypoint-pane-bd">topic: ERP_Order_And_Inventory
+  instruction: Verify orderId before hold/refund
+  action_1: getSapOrderStatus (readOnly)
+  action_2: holdCustomerShipment (confirmFirst)</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Salesforce API Catalog -&gt; External Service</div>
+          <div class="anypoint-pane-bd">Sync Status: ACTIVE (0 warnings)
+  Named Credential: Mule_ERP_Order_NC
+  Auth Protocol: OAuth 2.0 Client Credentials
+  Agent Builder Actions: 2 Attached to Copilot</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Bi-directional Salesforce API Catalog synchronization turning MuleSoft Topic Center YAML directly into Agentforce Named Credentials and Actions.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
           <h2 id="what-and-why">What it is and why it matters</h2>
           <p>Before native Agentforce-to-MuleSoft catalog synchronization, exposing an enterprise ERP or data warehouse capability to a Salesforce copilot meant hand-rolling an <code>@InvocableMethod</code> Apex wrapper, writing <code>HttpRequest</code> serialization classes, maintaining duplicate credential secrets, and pasting brittle prompt instructions inside Salesforce org metadata. Every time an API field changed in SAP S/4HANA or Snowflake, Apex classes drifted out of sync and broke silently at runtime.</p>
@@ -132,6 +191,87 @@ DATA PLANE (RUNTIME EXECUTION)
             <figcaption>Figure 1: Control-plane metadata synchronization from ACB Topic Center to Salesforce API Catalog, paired with zero-Apex runtime invocation from the Atlas Reasoning Engine through CloudHub 2.0.</figcaption>
           </figure>
 
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🤖</span><span class="flow-node-title">Atlas Planner</span><span class="flow-node-type">Salesforce Agentforce</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">API Manager Guard</span><span class="flow-node-type">Client ID + OAuth Policy</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔒</span><span class="flow-node-title">Idempotency Gate</span><span class="flow-node-type">Object Store v2 Check</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🏭</span><span class="flow-node-title">SAP S/4HANA Call</span><span class="flow-node-type">SAP OData v4 / BAPI</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🪶</span><span class="flow-node-title">Atlas JSON Flattener</span><span class="flow-node-type">Transform Message (DW 2.0)</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Atlas Planner (Salesforce Agentforce)</h3>
+      <p class="insp-node-what">Interprets user natural language in Agentforce, selects the synced MuleSoft Topic by classification description, and resolves input slot arguments.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">Topic=ERP_Order_And_Inventory | NamedCred=Mule_ERP_Order_NC</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Component</th><td>Atlas Reasoning Engine</td></tr>
+<tr><th scope="row">Topic</th><td>ERP_Order_And_Inventory</td></tr>
+<tr><th scope="row">Confirmation</th><td>Required for mutations</td></tr>
+<tr><th scope="row">Credential</th><td>ExternalCredential OAuth</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:apikit=&quot;http://www.mulesoft.org/schema/mule/apikit&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;flow name=&quot;get:\orders\(orderId)\status:erp-order-config&quot;&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:variables&gt;&lt;ee:set-variable variableName=&quot;orderId&quot;&gt;attributes.uriParams.orderId&lt;/ee:set-variable&gt;&lt;/ee:variables&gt;
+    &lt;/ee:transform&gt;
+    &lt;flow-ref name=&quot;query-sap-sales-order-subflow&quot;/&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;&lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  orderId: vars.orderId,
+  fulfillmentStatus: payload.OverallDeliveryStatus default &quot;PROCESSING&quot;,
+  shipDate: payload.RequestedDeliveryDate,
+  totalAmountUsd: payload.TotalNetAmount as Number,
+  carrierTracking: payload.TrackingNumber default &quot;PENDING_PICKUP&quot;
+}]]&gt;&lt;/ee:set-payload&gt;&lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🤖", "label": "Atlas Planner", "type": "Salesforce Agentforce", "what": "Interprets user natural language in Agentforce, selects the synced MuleSoft Topic by classification description, and resolves input slot arguments.", "config_values": "Topic=ERP_Order_And_Inventory | NamedCred=Mule_ERP_Order_NC", "studio_props": [["Component", "Atlas Reasoning Engine"], ["Topic", "ERP_Order_And_Inventory"], ["Confirmation", "Required for mutations"], ["Credential", "ExternalCredential OAuth"]]}, {"icon": "🛡️", "label": "API Manager Guard", "type": "Client ID + OAuth Policy", "what": "Authenticates the inbound Salesforce External Credential OAuth token and enforces rate limits + IP allowlisting at the Mule Experience API edge.", "config_values": "policy=oauth2-token-introspect + rate-limit-sla", "studio_props": [["Display Name", "API Manager Autodiscovery"], ["API ID", "${api.autodiscovery.id}"], ["Auth Policy", "OAuth 2.0 Enforcement"], ["SLA Tier", "Agentforce-Gold"]]}, {"icon": "🔒", "label": "Idempotency Gate", "type": "Object Store v2 Check", "what": "Ensures repeated Agentforce LLM retries with the same X-Correlation-Id never execute duplicate SAP order holds or credits.", "config_values": "os=Idempotency_OS | key=attributes.headers['x-correlation-id']", "studio_props": [["Display Name", "Prevent Duplicate Action"], ["OS Operation", "retrieve-and-store"], ["TTL", "10 Minutes"], ["On Replay", "Return cached 200"]]}, {"icon": "🏭", "label": "SAP S/4HANA Call", "type": "SAP OData v4 / BAPI", "what": "Queries live SAP S/4HANA order & warehouse stock over an encrypted Private Space VPN/VPC link.", "config_values": "GET /A_SalesOrder('{orderId}') | expand=to_Item", "studio_props": [["Display Name", "Query SAP S/4HANA"], ["Connector", "SAP S/4HANA OData"], ["Entity", "A_SalesOrder"], ["Timeout", "10000 ms"]]}, {"icon": "🪶", "label": "Atlas JSON Flattener", "type": "Transform Message (DW 2.0)", "what": "Flattens 40+ SAP fields into 6 crisp key-value fields so the Atlas Reasoning Engine answers accurately without token waste or nested-array confusion.", "config_values": "maxFields=6 | flat JSON | friendly status enums", "studio_props": [["Display Name", "Flatten for Agentforce"], ["Output Type", "application/json"], ["Schema Depth", "1 level flat"], ["Missing Fields", "Explicit null/string"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:apikit=\"http://www.mulesoft.org/schema/mule/apikit\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <flow name=\"get:\\orders\\(orderId)\\status:erp-order-config\">\n    <ee:transform>\n      <ee:variables><ee:set-variable variableName=\"orderId\">attributes.uriParams.orderId<\/ee:set-variable><\/ee:variables>\n    <\/ee:transform>\n    <flow-ref name=\"query-sap-sales-order-subflow\"/>\n    <ee:transform>\n      <ee:message><ee:set-payload><![CDATA[%dw 2.0\noutput application/json\n---\n{\n  orderId: vars.orderId,\n  fulfillmentStatus: payload.OverallDeliveryStatus default \"PROCESSING\",\n  shipDate: payload.RequestedDeliveryDate,\n  totalAmountUsd: payload.TotalNetAmount as Number,\n  carrierTracking: payload.TrackingNumber default \"PENDING_PICKUP\"\n}]]><\/ee:set-payload><\/ee:message>\n    <\/ee:transform>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="agentforce-mulesoft-topic-center-api-actions">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Link Salesforce Setup &lt;-&gt; Anypoint Access Management</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Author Topic Center YAML &amp; Instructions in ACB</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Publish topic-tagged OAS asset to Anypoint Exchange</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Sync API Catalog in Salesforce Setup (Named Cred)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Attach Topic in Agent Builder &amp; verify Reasoning Trace</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
           <h2 id="prerequisites">Prerequisites</h2>
           <div class="callout prereq">
             <span class="callout-title">You need</span>
@@ -143,6 +283,64 @@ DATA PLANE (RUNTIME EXECUTION)
               <li><strong>OAuth 2.0 Identity Provider:</strong> An Anypoint Connected App (<code>client_credentials</code> grant with API access scope) or enterprise OIDC provider (Okta, Microsoft Entra ID, Salesforce External Client App) configured in API Manager.</li>
             </ul>
           </div>
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-agentforce-mulesoft-topic-center-api-actions" aria-selected="true" aria-controls="panel-studio-agentforce-mulesoft-topic-center-api-actions" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-agentforce-mulesoft-topic-center-api-actions" aria-selected="false" aria-controls="panel-platform-agentforce-mulesoft-topic-center-api-actions" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-agentforce-mulesoft-topic-center-api-actions" aria-selected="false" aria-controls="panel-test-agentforce-mulesoft-topic-center-api-actions" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-agentforce-mulesoft-topic-center-api-actions" aria-labelledby="btn-tab-studio-agentforce-mulesoft-topic-center-api-actions">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>erp-order-fulfillment-agent-eapi</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · JDK 17 · CloudHub 2.0</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;!-- Standard APIKit + API Manager Autodiscovery for Agentforce External Services --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.mule.modules&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-apikit-module&lt;/artifactId&gt;
+  &lt;version&gt;1.11.2&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>ACB Topic File</code></td><td><code>topics/erp-order-topic.yaml</code></td><td>Defines Topic scope, classification description &amp; instructions</td></tr>
+<tr><td><code>OpenAPI Property Names</code></td><td><code>Clear snake/camel names (orderId)</code></td><td>Avoid opaque ERP codes like VBELN or KUNNR in OAS</td></tr>
+<tr><td><code>API Governance Profile</code></td><td><code>Agentforce Readiness Ruleset</code></td><td>Flags missing response schemas or nested recursion</td></tr>
+<tr><td><code>Salesforce API Catalog</code></td><td><code>Setup -&gt; Integrations -&gt; API Catalog</code></td><td>Auto-creates External Services &amp; Named Credentials</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-agentforce-mulesoft-topic-center-api-actions" aria-labelledby="btn-tab-platform-agentforce-mulesoft-topic-center-api-actions" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Salesforce Setup -&gt; Anypoint Platform Setup: Authorize the Anypoint connection from your Agentforce-enabled org.</li>
+        <li>Anypoint Platform -&gt; Access Management &gt; Salesforce: Toggle the Salesforce Org to Enabled and select exposed Business Groups.</li>
+        <li>Exchange: Publish your Topic-enabled API and ensure its API Manager instance uses HTTPS Ingress URL + OAuth 2.0 policy.</li>
+        <li>Salesforce API Catalog -&gt; Activate Actions: Import the synced External Service actions into Agent Builder Topics.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-agentforce-mulesoft-topic-center-api-actions" aria-labelledby="btn-tab-test-agentforce-mulesoft-topic-center-api-actions" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>GET https://erp-agent-eapi.us-e1.cloudhub.io/api/v1/orders/SO-77412/status | Header: Authorization: Bearer $SF_OAUTH_TOKEN</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s &quot;http://localhost:8081/api/v1/orders/SO-77412/status&quot; \
+  -H &quot;Authorization: Bearer $SF_OAUTH_TOKEN&quot; \
+  -H &quot;X-Correlation-Id: af-trace-0019&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;orderId&quot;: &quot;SO-77412&quot;,
+  &quot;fulfillmentStatus&quot;: &quot;SHIPPED&quot;,
+  &quot;shipDate&quot;: &quot;2026-11-26&quot;,
+  &quot;totalAmountUsd&quot;: 1480.5,
+  &quot;carrierTracking&quot;: &quot;1Z999AA10123456784&quot;
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>API missing in Salesforce API Catalog</code></td><td>Business Group toggle not enabled in Access Management &gt; Salesforce</td><td>Enable the org AND select the exact Business Group holding the asset</td></tr>
+<tr><td><code>Agentforce picks wrong action or loops</code></td><td>Vague Topic instructions or opaque ERP field names (VBELN)</td><td>Rewrite instructions cleanly &amp; flatten DataWeave output to &lt;= 8 fields</td></tr>
+<tr><td><code>External Credential 401 on execution</code></td><td>Wrong OAuth token endpoint or missing API Manager Client ID</td><td>Verify External Credential scope &amp; Client App contract in API Manager</td></tr>
+<tr><td><code>Timeout in Agent Builder chat</code></td><td>Backend SAP call took &gt; 15s</td><td>Add Redis/OS cache for read lookups &amp; tighten SAP OData $select</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
           <h2 id="setup">Step-by-step setup</h2>
           <ol class="steps">
@@ -795,15 +993,26 @@ ATLAS REASONING TRACE (TURN 2):
           </ul>
         </div>
 
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="agentforce-mulesoft-topic-center-api-actions" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
         <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
           <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
           <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
         </aside>
 
         <nav class="post-nav" aria-label="More articles">
-          <a class="prev" href="mulesoft-a2a-protocol-multi-agent-orchestration.html"><span>← Previous</span><strong>A2A Protocol &amp; Multi-Agent Orchestration</strong></a>
-          <a class="next" href="mulesoft-ai-chain-einstein-inference-rag-setup.html"><span>Next →</span><strong>MuleSoft AI Chain, Einstein &amp; Inference RAG Setup</strong></a>
-        </nav>
+  <a class="prev" href="../blog/mulesoft-a2a-protocol-multi-agent-orchestration.html"><span>← Previous Guide</span><strong>A2A Protocol in MuleSoft</strong></a>
+  <a class="next" href="../blog/mulesoft-ai-chain-einstein-inference-rag-setup.html"><span>Next Guide →</span><strong>MAC, Einstein &amp; Inference RAG</strong></a>
+</nav>
       </article>
     </main>
 
@@ -811,9 +1020,12 @@ ATLAS REASONING TRACE (TURN 2):
       <p class="toc-title">On this page</p>
       <ol>
         <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
         <li><a href="#what-and-why">What it is and why it matters</a></li>
         <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
         <li><a href="#setup">Step-by-step setup</a></li>
         <li><a href="#code">Full working example</a></li>
         <li><a href="#test">Test it</a></li>
@@ -827,8 +1039,9 @@ ATLAS REASONING TRACE (TURN 2):
     </aside>
   </div>
 </div>
-<footer class="blog-footer">
-  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
 </footer>
 </body>
 </html>

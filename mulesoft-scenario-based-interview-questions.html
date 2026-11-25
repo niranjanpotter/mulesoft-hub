@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Top 20 MuleSoft Scenario-Based Interview Questions & Incident Solutions</title>
   <meta name="description" content="Real-world MuleSoft scenario interview questions: downstream latency spikes, dual-write failures, worker crashes, and poison pill DLQ debugging.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scenario-based-interview-questions.html">
-  <meta property="og:title" content="Top 20 MuleSoft Scenario-Based Interview Questions & Incident Solutions">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Top 20 MuleSoft Scenario-Based Interview Questions &amp; Incident Solutions">
   <meta property="og:description" content="Real-world MuleSoft scenario interview questions: downstream latency spikes, dual-write failures, worker crashes, and poison pill DLQ debugging.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scenario-based-interview-questions.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,222 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › Top 20 Scenario Q&amp;A</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>MuleSoft Scenario-Based Interview Questions: 20 Real Incident Walkthroughs</h1>
+          <p class="post-lede">Battle-tested production scenarios from 5.5 years at NextEra Energy / FPL handling 5M+ monthly API transactions across SAP, Salesforce, and AWS.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 16 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Real-world production incident troubleshooting in Mule 4: timeouts, 502 Ingress errors, poison MQ loops, OAuth storms, and zero-loss backpressure.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Monitoring · Production Incident Triage Dashboard</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">CloudHub 2.0 · P1 Incident Playbook</span>
+        <span class="anypoint-status-ok">● INCIDENT MITIGATED</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Top Incident Class</span><span class="anypoint-kpi-val">504 / Timeout Cascades</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">MTTR Pattern</span><span class="anypoint-kpi-val">Circuit Breaker + DLQ</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Duplicate Guard</span><span class="anypoint-kpi-val">Idempotency Key + OSv2</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">RCA Root Tool</span><span class="anypoint-kpi-val">CorrelationID + Thread Dump</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Failure Blast-Radius Isolation</div>
+          <div class="anypoint-pane-bd">Downstream ERP Stall -&gt; HTTP Req 5s Timeout + Retry(2)
+  Fallback Action: Park payload cleanly to Anypoint MQ
+  Result: Zero HTTP caller thread exhaustion; upstream stays 200/202</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">5-Minute Triage Sequence</div>
+          <div class="anypoint-pane-bd">1. Search Anypoint Logs by x-correlation-id
+2. Check API Manager 4xx/5xx spike vs upstream latency
+3. Inspect Pod CPU / JVM Heap / OOMKilled exit 137
+4. Drain / fix Poison Messages in DLQ before replay</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Rapid P1 incident triage correlating API Manager error spikes, correlation logs, and MQ backpressure containment.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">Top 20 Production Scenarios</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">MuleSoft Scenario-Based Interview Questions: 20 Real Incident Walkthroughs</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Battle-tested production scenarios from 5.5 years at NextEra Energy / FPL handling 5M+ monthly API transactions across SAP, Salesforce, and AWS.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🚨</span><span class="flow-node-title">Edge Incident Guard</span><span class="flow-node-type">Rate Limit + Timeout</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔁</span><span class="flow-node-title">Bounded Retry / Backoff</span><span class="flow-node-type">Until Successful (Exponential)</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚡</span><span class="flow-node-title">Circuit Breaker / MQ</span><span class="flow-node-type">Anypoint MQ Degrade</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔎</span><span class="flow-node-title">Diagnostic Telemetry</span><span class="flow-node-type">Structured JSON Logger</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">✅</span><span class="flow-node-title">SLA Contract Out</span><span class="flow-node-type">Canonical Error / 202</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Edge Incident Guard (Rate Limit + Timeout)</h3>
+      <p class="insp-node-what">Protects core threads from slow callers or burst DDoS storms via explicit HTTP timeouts and API Manager Spike Control.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">SpikeControl queues bursts | RateLimit rejects 429</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Edge Policy</th><td>Spike Control vs Rate Limit</td></tr>
+<tr><th scope="row">Listener Timeout</th><td>30000 ms</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:anypoint-mq=&quot;http://www.mulesoft.org/schema/mule/anypoint-mq&quot;&gt;
+  &lt;flow name=&quot;resilient-async-fallback-flow&quot;&gt;
+    &lt;until-successful maxRetries=&quot;2&quot; millisBetweenRetries=&quot;1500&quot;&gt;
+      &lt;flow-ref name=&quot;call-downstream-erp-subflow&quot;/&gt;
+    &lt;/until-successful&gt;
+    &lt;error-handler&gt;
+      &lt;on-error-continue type=&quot;MULE:RETRY_EXHAUSTED, HTTP:TIMEOUT&quot;&gt;
+        &lt;anypoint-mq:publish config-ref=&quot;Anypoint_MQ_Config&quot; destination=&quot;erp-recovery-queue&quot;/&gt;
+        &lt;set-variable variableName=&quot;httpStatus&quot; value=&quot;202&quot;/&gt;
+        &lt;set-payload value=&#x27;#[output application/json --- { accepted: true, status: &quot;QUEUED_FOR_RECOVERY&quot;, correlationId: correlationId }]&#x27;/&gt;
+      &lt;/on-error-continue&gt;
+    &lt;/error-handler&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🚨", "label": "Edge Incident Guard", "type": "Rate Limit + Timeout", "what": "Protects core threads from slow callers or burst DDoS storms via explicit HTTP timeouts and API Manager Spike Control.", "config_values": "SpikeControl queues bursts | RateLimit rejects 429", "studio_props": [["Edge Policy", "Spike Control vs Rate Limit"], ["Listener Timeout", "30000 ms"]]}, {"icon": "🔁", "label": "Bounded Retry / Backoff", "type": "Until Successful (Exponential)", "what": "Retries ONLY transient HTTP:CONNECTIVITY / HTTP:TIMEOUT errors with jittered backoff; skips 400 Bad Request immediately.", "config_values": "maxRetries=3 | backoff=1000ms", "studio_props": [["Display Name", "Transient Retry Only"], ["Retryable", "502, 503, 504, CONNECTIVITY"], ["Skip Immediately", "400, 401, 404, 422"]]}, {"icon": "⚡", "label": "Circuit Breaker / MQ", "type": "Anypoint MQ Degrade", "what": "When ERP stays down past retries, parks valid events onto Anypoint MQ cleanly returning HTTP 202 Accepted instead of cascading failure.", "config_values": "202 Accepted -> Async Replay when ERP recovers", "studio_props": [["Display Name", "Async Buffer Fallback"], ["HTTP Code", "202 Accepted"], ["Queue", "erp-retry-queue"]]}, {"icon": "🔎", "label": "Diagnostic Telemetry", "type": "Structured JSON Logger", "what": "Logs structured incident metadata (`errorType`, `failingConnector`, `correlationId`, `retryAttempt`) once per error rather than noisy duplicate logs across hops.", "config_values": "Log once at error origin; avoid redundant re-logging", "studio_props": [["Display Name", "RCA Structured Log"], ["Avoid", "Duplicate ERROR log per flow-ref"]]}, {"icon": "✅", "label": "SLA Contract Out", "type": "Canonical Error / 202", "what": "Guarantees upstream mobile/web channels never crash on HTML 502/500 pages or hung TCP connections.", "config_values": "Always valid JSON + correlationId header", "studio_props": [["Response Guarantee", "Valid JSON + Retry-After"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:anypoint-mq=\"http://www.mulesoft.org/schema/mule/anypoint-mq\">\n  <flow name=\"resilient-async-fallback-flow\">\n    <until-successful maxRetries=\"2\" millisBetweenRetries=\"1500\">\n      <flow-ref name=\"call-downstream-erp-subflow\"/>\n    <\/until-successful>\n    <error-handler>\n      <on-error-continue type=\"MULE:RETRY_EXHAUSTED, HTTP:TIMEOUT\">\n        <anypoint-mq:publish config-ref=\"Anypoint_MQ_Config\" destination=\"erp-recovery-queue\"/>\n        <set-variable variableName=\"httpStatus\" value=\"202\"/>\n        <set-payload value='#[output application/json --- { accepted: true, status: \"QUEUED_FOR_RECOVERY\", correlationId: correlationId }]'/>\n      <\/on-error-continue>\n    <\/error-handler>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-scenario-based-interview-questions">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Choose Spike Control (queue burst) vs Rate Limit (reject 429)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Never wrap 400 Bad Request inside Until-Successful retries</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Distinguish Read vs Write failure idempotency before auto-retry</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Investigate Exit Code 137 on pods as container RAM OOMKill</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Avoid Thread-blocking or un-streamed payload logs in Prod</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-scenario-based-interview-questions" aria-selected="true" aria-controls="panel-studio-mulesoft-scenario-based-interview-questions" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-scenario-based-interview-questions" aria-selected="false" aria-controls="panel-platform-mulesoft-scenario-based-interview-questions" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-scenario-based-interview-questions" aria-selected="false" aria-controls="panel-test-mulesoft-scenario-based-interview-questions" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-scenario-based-interview-questions" aria-labelledby="btn-tab-studio-mulesoft-scenario-based-interview-questions">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>production-incident-resilience-patterns</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · CloudHub 2.0</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;!-- Core Resilience modules: Anypoint MQ + Object Store v2 + Anypoint Tracing --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.connectors&lt;/groupId&gt;
+  &lt;artifactId&gt;anypoint-mq-connector&lt;/artifactId&gt;
+  &lt;version&gt;4.0.7&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>HTTP Listener vs Request Timeout</code></td><td><code>Listener &gt;= Client Timeout</code></td><td>Ensure Ingress timeout &gt; Process API timeout &gt; System API timeout</td></tr>
+<tr><td><code>Exit Code 137 Diagnostics</code></td><td><code>Container Linux OOMKill</code></td><td>Triggered when Native Direct RAM + Heap exceeds pod container cap</td></tr>
+<tr><td><code>Retry Storm Prevention</code></td><td><code>Do NOT auto-retry inside every layer</code></td><td>If EAPI retries 3x and PAPI retries 3x -&gt; 9x SAP load! Retry once.</td></tr>
+<tr><td><code>Thread Dump Inspection</code></td><td><code>Runtime Manager -&gt; Diagnostics</code></td><td>Check RUNNABLE vs BLOCKED/WAITING threads on stalled pods</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-scenario-based-interview-questions" aria-labelledby="btn-tab-platform-mulesoft-scenario-based-interview-questions" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Anypoint Monitoring &gt; Custom Alerts: Alert on HTTP 5xx &gt; 1%, JVM Heap &gt; 85%, and MQ DLQ &gt; 0.</li>
+        <li>Configure CloudHub 2.0 Horizontal Auto-Scaling rules safely cleanly separated from Stateful Batch workloads.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-scenario-based-interview-questions" aria-labelledby="btn-tab-test-mulesoft-scenario-based-interview-questions" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>Simulate downstream outage to verify graceful 202 QUEUED_FOR_RECOVERY response</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -i -s -X POST &quot;http://localhost:8081/api/v1/orders&quot; -H &quot;Content-Type: application/json&quot; -d &#x27;{&quot;simulateTimeout&quot;:true}&#x27; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>HTTP/1.1 202 Accepted
+{ &quot;accepted&quot;: true, &quot;status&quot;: &quot;QUEUED_FOR_RECOVERY&quot;, &quot;correlationId&quot;: &quot;inc-9921&quot; }</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>9x downstream amplification during blip</code></td><td>Both EAPI, PAPI, and SAPI have Until-Successful 3x configured</td><td>Retry ONLY at the System API boundary closest to the external system</td></tr>
+<tr><td><code>Clients timeout before backend finishes</code></td><td>Backend 45s exceed CloudHub Ingress default idle timeout</td><td>Switch long jobs cleanly to Async 202 + Webhook / Status Polling</td></tr>
+<tr><td><code>Spike bursts rejected immediately instead of smoothed</code></td><td>Used Rate Limiting SLA instead of Spike Control</td><td>Switch edge policy to Spike Control (queues short spikes safely)</td></tr>
+<tr><td><code>Duplicate orders inserted during retry</code></td><td>Retried non-idempotent POST without Request-Id key</td><td>Enforce Idempotency Key check before retried downstream POST</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -159,21 +337,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-scenario-based-interview-questions" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-java-interview-mastery.html"><span>← Previous Guide</span><strong>Java 17 &amp; Reactive Internals</strong></a>
+  <a class="next" href="mulesoft-agentforce-topic-center-actions.html"><span>Next Guide →</span><strong>Agentforce Topic Brief</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li><li><a href="mulesoft-scatter-gather-interview-questions.html">Scatter-Gather Router & Resiliency</a></li><li><a href="mulesoft-anypoint-mq-dlq-fifo-interview.html">Anypoint MQ & DLQ Architecture</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

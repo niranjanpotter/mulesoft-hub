@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation</title>
-  <meta name="description" content="Master Salesforce & enterprise OAuth 2.0 JWT Bearer Token flows in MuleSoft. Certificate generation, keystore setup, and zero-downtime key rotation.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="description" content="Master Salesforce &amp; enterprise OAuth 2.0 JWT Bearer Token flows in MuleSoft. Certificate generation, keystore setup, and zero-downtime key rotation.">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-oauth-jwt-bearer-token-interview.html">
-  <meta property="og:title" content="OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation">
-  <meta property="og:description" content="Master Salesforce & enterprise OAuth 2.0 JWT Bearer Token flows in MuleSoft. Certificate generation, keystore setup, and zero-downtime key rotation.">
-  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-oauth-jwt-bearer-token-interview.html">
   <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:title" content="OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation">
+  <meta property="og:description" content="Master Salesforce &amp; enterprise OAuth 2.0 JWT Bearer Token flows in MuleSoft. Certificate generation, keystore setup, and zero-downtime key rotation.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-oauth-jwt-bearer-token-interview.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,230 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › OAuth 2.0 JWT Bearer Flow</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>OAuth 2.0 JWT Bearer Token Flow & Zero-Downtime Certificate Rotation</h1>
+          <p class="post-lede">Automating headless server-to-server integration without storing human passwords or refreshing interactive browser authorization codes.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 13 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Replace fragile passwords and security tokens with RSA-256 OAuth 2.0 JWT Bearer authentication in MuleSoft, complete with OpenSSL setup and zero-downtime key rotation.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Access &amp; Key Management · OAuth 2.0 JWT Dual-Cert Rotation</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Connected App RSA-256 · Clock Skew: +/- 60s</span>
+        <span class="anypoint-status-ok">● ZERO-DOWNTIME ACTIVE</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Signing Algorithm</span><span class="anypoint-kpi-val">RS256 (PKCS#12 / JKS Keystore)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Password / Security Token</span><span class="anypoint-kpi-val">NONE (Zero Static Creds)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Token TTL / Cache</span><span class="anypoint-kpi-val">60m (Renew @ 50m in OSv2)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Dual-Cert Overlap</span><span class="anypoint-kpi-val">Primary + Next Cert Uploaded</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">JWT Assertion Claims (Signed in Mule)</div>
+          <div class="anypoint-pane-bd">iss: &quot;3MVG9...ConnectedAppConsumerKey&quot;
+sub: &quot;mule-integration@corp.com&quot;
+aud: &quot;https://login.salesforce.com&quot;
+exp: now() + 180 seconds (signed with privateKey.jks)</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Safe Cert Rotation Runbook (0 Downtime)</div>
+          <div class="anypoint-pane-bd">1. Generate New Keypair v2
+2. Upload v2 .crt alongside v1 in Connected App (Wait 10m)
+3. Swap Mule keystore.jks -&gt; v2 via CH2 redeployment
+4. Wait for active 1h tokens to drain -&gt; Delete v1 .crt</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Passwordless OAuth 2.0 JWT Bearer flow with dual-certificate overlap eliminating outages during annual key rotation.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">OAuth 2.0 JWT Bearer Flow</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">OAuth 2.0 JWT Bearer Token Flow & Zero-Downtime Certificate Rotation</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Automating headless server-to-server integration without storing human passwords or refreshing interactive browser authorization codes.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🗝️</span><span class="flow-node-title">Keystore &amp; Claims</span><span class="flow-node-type">OAuth JWT Config</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">💾</span><span class="flow-node-title">Token Cache Check</span><span class="flow-node-type">Object Store v2</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔐</span><span class="flow-node-title">Sign &amp; Exchange JWT</span><span class="flow-node-type">HTTP POST /oauth2/token</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔄</span><span class="flow-node-title">Auto-Refresh 401</span><span class="flow-node-type">Error Handler Retry</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🚀</span><span class="flow-node-title">Authorized Call</span><span class="flow-node-type">Protected Downstream Call</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Keystore &amp; Claims (OAuth JWT Config)</h3>
+      <p class="insp-node-what">Loads encrypted PKCS#12/JKS private key from ${app.home}/certs and builds JWT header + claims (iss, sub, aud, exp).</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">keyStore=${app.home}/certs/sf-jwt.p12 | alg=RS256</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>JWT Keystore Config</td></tr>
+<tr><th scope="row">Keystore Path</th><td>${app.home}/certs/sf-jwt.p12</td></tr>
+<tr><th scope="row">Store Pass</th><td>${secure::sf.keystore.pass}</td></tr>
+<tr><th scope="row">Audience</th><td>https://login.salesforce.com</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:salesforce=&quot;http://www.mulesoft.org/schema/mule/salesforce&quot;&gt;
+  &lt;salesforce:sfdc-config name=&quot;Salesforce_JWT_Config&quot;&gt;
+    &lt;salesforce:oauth-jwt-connection
+      consumerKey=&quot;${secure::sf.connected.app.key}&quot;
+      keyStore=&quot;${app.home}/certs/sf-jwt.p12&quot;
+      storePassword=&quot;${secure::sf.keystore.pass}&quot;
+      certificateAlias=&quot;mulesoft-prod-2026&quot;
+      principal=&quot;${sf.integration.username}&quot;
+      tokenEndpoint=&quot;https://login.salesforce.com/services/oauth2/token&quot;/&gt;
+  &lt;/salesforce:sfdc-config&gt;
+  &lt;flow name=&quot;sf-jwt-verify-auth-flow&quot;&gt;
+    &lt;salesforce:query config-ref=&quot;Salesforce_JWT_Config&quot;&gt;
+      &lt;salesforce:salesforce-query&gt;&lt;![CDATA[SELECT Id, Name FROM Account LIMIT 5]]&gt;&lt;/salesforce:salesforce-query&gt;
+    &lt;/salesforce:query&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🗝️", "label": "Keystore & Claims", "type": "OAuth JWT Config", "what": "Loads encrypted PKCS#12/JKS private key from ${app.home}/certs and builds JWT header + claims (iss, sub, aud, exp).", "config_values": "keyStore=${app.home}/certs/sf-jwt.p12 | alg=RS256", "studio_props": [["Display Name", "JWT Keystore Config"], ["Keystore Path", "${app.home}/certs/sf-jwt.p12"], ["Store Pass", "${secure::sf.keystore.pass}"], ["Audience", "https://login.salesforce.com"]]}, {"icon": "💾", "label": "Token Cache Check", "type": "Object Store v2", "what": "Checks Object Store v2 for a valid cached Bearer token (renewing 10 minutes before expiry) instead of signing a new assertion on every API call.", "config_values": "osKey=sf_oauth_jwt_token | ttl=3000s", "studio_props": [["Display Name", "Check Cached Token"], ["Store Ref", "OAuth_Token_OSv2"], ["Cache Margin", "Renew 10m early"]]}, {"icon": "🔐", "label": "Sign & Exchange JWT", "type": "HTTP POST /oauth2/token", "what": "Signs assertion with private key and posts grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer to the authorization server.", "config_values": "grant_type=jwt-bearer | assertion=<RS256 JWT>", "studio_props": [["Display Name", "Exchange JWT Assertion"], ["Token URL", "https://login.salesforce.com/services/oauth2/token"], ["Connector Support", "Native inside SF Connector"]]}, {"icon": "🔄", "label": "Auto-Refresh 401", "type": "Error Handler Retry", "what": "If downstream returns 401 (admin revoked token early), purges OSv2 cached token, generates fresh JWT assertion, and retries once cleanly.", "config_values": "on HTTP:UNAUTHORIZED -> os:remove + retry", "studio_props": [["Display Name", "Self-Heal Expired Token"], ["On 401", "Invalidate OSv2 & Re-sign"]]}, {"icon": "🚀", "label": "Authorized Call", "type": "Protected Downstream Call", "what": "Invokes Salesforce/OAuth-protected target cleanly with Authorization: Bearer <access_token> and logs auth correlation ID without exposing tokens.", "config_values": "Mask Authorization header in debug logs", "studio_props": [["Display Name", "Authenticated Request"], ["Security", "Never log access_token"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:salesforce=\"http://www.mulesoft.org/schema/mule/salesforce\">\n  <salesforce:sfdc-config name=\"Salesforce_JWT_Config\">\n    <salesforce:oauth-jwt-connection\n      consumerKey=\"${secure::sf.connected.app.key}\"\n      keyStore=\"${app.home}/certs/sf-jwt.p12\"\n      storePassword=\"${secure::sf.keystore.pass}\"\n      certificateAlias=\"mulesoft-prod-2026\"\n      principal=\"${sf.integration.username}\"\n      tokenEndpoint=\"https://login.salesforce.com/services/oauth2/token\"/>\n  <\/salesforce:sfdc-config>\n  <flow name=\"sf-jwt-verify-auth-flow\">\n    <salesforce:query config-ref=\"Salesforce_JWT_Config\">\n      <salesforce:salesforce-query><![CDATA[SELECT Id, Name FROM Account LIMIT 5]]><\/salesforce:salesforce-query>\n    <\/salesforce:query>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-oauth-jwt-bearer-token-interview">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Generate RSA-2048/4096 PKCS#12 keystore via OpenSSL</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Pre-authorize Integration Profile / Permission Set in Connected App</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Upload NEW public cert BEFORE removing OLD cert on rotation</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Use ${app.home}/certs/... relative keystore path</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Encrypt storePassword &amp; consumerKey via AES-256-GCM</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-oauth-jwt-bearer-token-interview" aria-selected="true" aria-controls="panel-studio-mulesoft-oauth-jwt-bearer-token-interview" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-oauth-jwt-bearer-token-interview" aria-selected="false" aria-controls="panel-platform-mulesoft-oauth-jwt-bearer-token-interview" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-oauth-jwt-bearer-token-interview" aria-selected="false" aria-controls="panel-test-mulesoft-oauth-jwt-bearer-token-interview" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-oauth-jwt-bearer-token-interview" aria-labelledby="btn-tab-studio-mulesoft-oauth-jwt-bearer-token-interview">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>oauth-jwt-bearer-template</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · OpenSSL PKCS#12 (.p12)</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code># Generate RSA keypair + self-signed cert + PKCS#12 keystore (for Mule 4.9 / Java 17)
+openssl req -x509 -sha256 -nodes -days 730 -newkey rsa:2048 \
+  -keyout sf-private.key -out sf-public.crt -subj &quot;/CN=mulesoft-prod-2026&quot;
+openssl pkcs12 -export -in sf-public.crt -inkey sf-private.key \
+  -out src/main/resources/certs/sf-jwt.p12 -name mulesoft-prod-2026</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>consumerKey</code></td><td><code>${secure::sf.connected.app.key}</code></td><td>Connected App Consumer Key from Salesforce Setup</td></tr>
+<tr><td><code>principal</code></td><td><code>mule-svc@company.com</code></td><td>Must exactly match the Salesforce Integration Username (sub claim)</td></tr>
+<tr><td><code>tokenEndpoint</code></td><td><code>test.salesforce.com vs login.salesforce.com</code></td><td>Use test.salesforce.com ONLY in Sandboxes (aud mismatch breaks auth!)</td></tr>
+<tr><td><code>Connected App Policy</code></td><td><code>Admin approved users are pre-authorized</code></td><td>NEVER leave Permitted Users on &#x27;All users may self-authorize&#x27;</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-oauth-jwt-bearer-token-interview" aria-labelledby="btn-tab-platform-mulesoft-oauth-jwt-bearer-token-interview" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Salesforce Setup &gt; App Manager &gt; Connected App: Enable Digital Signatures and upload sf-public.crt (with dual-cert support during rotation).</li>
+        <li>Set Permitted Users -&gt; &#x27;Admin approved users are pre-authorized&#x27; and assign the Integration User Profile / Permission Set.</li>
+        <li>Wait 2-10 minutes for Salesforce Connected App propagation globally before testing in CloudHub 2.0.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-oauth-jwt-bearer-token-interview" aria-labelledby="btn-tab-test-mulesoft-oauth-jwt-bearer-token-interview" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>Test Salesforce Connector &#x27;Test Connection&#x27; in Studio or hit GET http://localhost:8081/api/v1/auth/verify</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s &quot;http://localhost:8081/api/v1/auth/verify&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;authFlow&quot;: &quot;oauth2-jwt-bearer&quot;,
+  &quot;status&quot;: &quot;AUTHENTICATED&quot;,
+  &quot;certAlias&quot;: &quot;mulesoft-prod-2026&quot;,
+  &quot;passwordless&quot;: true
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>invalid_grant: user hasn&#x27;t approved this consumer</code></td><td>Permitted Users policy not pre-authorized for Integration User</td><td>Set Admin Approved Users + assign Permission Set in Connected App</td></tr>
+<tr><td><code>invalid_grant: invalid assertion</code></td><td>Wrong aud URL (login vs test) or certificate alias mismatch</td><td>Match tokenEndpoint to Sandbox vs Prod and verify alias inside .p12</td></tr>
+<tr><td><code>API outage during annual cert renewal</code></td><td>Replaced public cert before deploying new private key to Mule</td><td>Upload new cert alongside old cert first (Connected App holds multiple)</td></tr>
+<tr><td><code>Certificate file not found on CloudHub</code></td><td>Hardcoded C:\certs path instead of ${app.home}</td><td>Store .p12 in src/main/resources/certs/ and reference ${app.home}/certs/</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -159,21 +345,57 @@
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-oauth-jwt-bearer-token-interview" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-salesforce-bulk-api-2-interview.html"><span>← Previous Guide</span><strong>Salesforce Bulk API 2.0</strong></a>
+  <a class="next" href="mulesoft-scatter-gather-interview-questions.html"><span>Next Guide →</span><strong>Scatter-Gather Router</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-salesforce-bulk-api-2-interview.html">Salesforce Bulk API 2.0</a></li><li><a href="mulesoft-secure-properties-encryption-guide.html">Secure Properties Tool Guide</a></li><li><a href="mulesoft-cicd-maven-pipeline-guide.html">Enterprise CI/CD Pipeline</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

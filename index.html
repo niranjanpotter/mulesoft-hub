@@ -1,1739 +1,465 @@
 <!DOCTYPE html>
-
-<html data-theme="dark" lang="en">
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)"/>
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"/>
-<meta name="color-scheme" content="dark light"/>
-<title>MuleSoft Interview Questions &amp; Answers (2026) | 308 Real-World Scenario Q&amp;A</title>
-<meta content="100% Free, no-login MuleSoft interview prep hub: 308 real-world scenarios, live DataWeave 2.0 playground, Error Simulator, CloudHub vCore calculator &amp; timed mock interviews." name="description"/>
-<meta content="mulesoft interview questions, mulesoft scenario based questions, cloudhub 2.0 interview questions, cloudhub 1.0 to 2.0 migration, anypoint platform interview, dataweave 2.0 questions, mulesoft senior developer interview, mulesoft technical lead questions, mulesoft architect interview, mulesoft batch processing, mulesoft error handling, anypoint mq dlq fifo, object store vs cache, mulesoft xa transactions, dedicated load balancer vpc, mulesoft salesforce bulk api 2.0, sap connector idoc bapi, mulesoft agentforce mcp, mule maven plugin cicd, mulesoft java interview questions" name="keywords"/>
-<meta content="Niranjan Potter" name="author"/>
-<meta content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" name="robots"/>
-<link href="https://mulesoft.niranjanpotter.dpdns.org/" rel="canonical"/>
-<link rel="sitemap" type="application/xml" title="Sitemap" href="https://mulesoft.niranjanpotter.dpdns.org/sitemap.xml"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>MuleSoft Engineering Blog (2026) — 28 End-to-End AI, MCP, CloudHub &amp; Setup Guides</title>
+  <meta name="description" content="100% free MuleSoft engineering blog with 28 hands-on setup guides: Agent Fabric, MCP, A2A, Agentforce, RAG, Flex Gateway AI policies, CloudHub 2.0, DataWeave, Batch &amp; Security.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MuleSoft Engineering Blog (2026) — 28 End-to-End Hands-On Setup Guides">
+  <meta property="og:description" content="Real Anypoint Views, interactive Mule 4.9 animated flows, copy-paste XML/Maven code, and 3-tab Setup Playbooks from Beginner to Architect.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/">
   <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-hub.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-hub.png">
-  <!-- Open Graph / Facebook / LinkedIn -->
-<meta content="website" property="og:type"/>
-<meta content="https://mulesoft.niranjanpotter.dpdns.org/" property="og:url"/>
-<meta content="Free MuleSoft Interview Prep Hub (2026) | 308 Scenarios, Live DataWeave Lab &amp; Mock Tests" property="og:title"/>
-<meta content="100% Free, no-login MuleSoft interview prep hub: 308 real-world scenarios, live DataWeave 2.0 playground, Error Simulator, CloudHub vCore calculator &amp; timed mock interviews." property="og:description"/>
-<meta content="MuleSoft Enterprise Architecture &amp; Interview Hub" property="og:site_name"/>
-<!-- Twitter Cards -->
-<meta content="summary_large_image" name="twitter:card"/>
-<meta content="https://mulesoft.niranjanpotter.dpdns.org/" name="twitter:url"/>
-<meta content="Free MuleSoft Interview Prep Hub (2026) | 308 Scenarios, Live DataWeave Lab &amp; Mock Tests" name="twitter:title"/>
-<meta content="100% Free, no-login MuleSoft interview prep hub: 308 real-world scenarios, live DataWeave 2.0 playground, Error Simulator, CloudHub vCore calculator &amp; timed mock interviews." name="twitter:description"/>
-<!-- Google Site Verification -->
-<meta content="hvr2rDXVBAsF9EBfxbKffY4A8UM7TI7Umc4FGc7poNE" name="google-site-verification"/>
-<!-- Structured Data / JSON-LD Rich Snippets (FAQ Schema & WebSite Schema) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How does Batch Processing handle variables in MuleSoft (vars vs recordVars)?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "In Mule 4 Batch Jobs, flow variables (vars) set before the Batch Job are accessible read-only across batch steps. Any var modified or created inside a Batch Step is scoped locally to that step for that record unless defined as a recordVar. In Mule 4, record variables are automatically managed per record. In the On Complete phase, neither payload nor individual record variables are available; only the BatchJobResult summary object is accessible."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What are the key architectural differences between CloudHub 1.0 and CloudHub 2.0?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "CloudHub 1.0 provisions dedicated AWS EC2 worker instances running Mule runtime inside AWS VPCs with Dedicated Load Balancers (DLB). CloudHub 2.0 is built on a fully managed Kubernetes container architecture running lightweight replica pods in Shared Spaces or isolated Anypoint Private Spaces with built-in Ingress controllers, path-based routing, and simplified VPN/Transit Gateway interconnectivity."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why are Strings immutable in Java and how does immutability apply to DataWeave in MuleSoft?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Strings in Java are immutable for thread safety, security (classloading and network ports), and performance via the String Constant Pool. In MuleSoft, DataWeave 2.0 is a functional language where all data transformations are pure and immutable; every transformation yields a new output stream without mutating source input streams, guaranteeing zero concurrency collisions."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do you implement pagination in MuleSoft for large enterprise datasets?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Pagination in MuleSoft is implemented using either Offset/Limit queries, Keyset/Cursor-based tokens (such as Salesforce queryMore or NextPageToken), or database streaming. For memory safety, pagination loops fetch chunks sequentially into an Anypoint MQ queue or process them in a Batch Job to avoid OutOfMemory (OOM) errors."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the difference between Scatter-Gather and Parallel ForEach in MuleSoft?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Scatter-Gather broadcasts a single incoming Mule message across multiple distinct routes concurrently and aggregates their results into a composite map. Parallel ForEach splits a collection of records and executes the same flow route across elements concurrently using a multi-threaded pool, preserving element ordering in the output array."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "When should you choose On-Premises (Customer-Hosted Runtime Fabric) vs CloudHub 2.0?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Choose CloudHub 2.0 for fully managed cloud-native iPaaS with zero infrastructure overhead, automated patching, and global scaling. Choose On-Premises or Runtime Fabric (RTF) when regulatory, data sovereignty (HIPAA/PCI-DSS), or strict sub-millisecond local datacenter latency requires payloads to never leave corporate boundaries."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does API-led Connectivity structure enterprise integration?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "API-led connectivity organizes APIs into three distinct tiers: System APIs that unlock and abstract legacy systems of record; Process APIs that encapsulate business logic and aggregate multiple systems; and Experience APIs that format and deliver data tailored to specific frontend channels like mobile, web, and partner portals."
-      }
-    }
-  ]
-}
-  </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "MuleSoft Interview Questions & Answers",
-  "url": "https://mulesoft.niranjanpotter.dpdns.org/",
-  "description": "Comprehensive reference of 308 real-world MuleSoft scenario-based interview questions, CloudHub 2.0 architecture, DataWeave 2.0, and interactive diagrams.",
-  "author": {
-    "@type": "Person",
-    "name": "Niranjan Potter"
-  }
-}
-  </script>
-<script>
-    (function() {
-      try {
-        var savedTheme = localStorage.getItem('mulesoft_hub_theme');
-        if (savedTheme === 'light' || savedTheme === 'dark') {
-          document.documentElement.setAttribute('data-theme', savedTheme);
-        }
-      } catch(e) {}
-    })();
-  </script>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E"/>
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
   <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
-  <style>
-@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-</style>
-  <link rel="stylesheet" href="assets/css/hub.min.css?v=202614">
-  <link rel="stylesheet" href="assets/css/diagrams.min.css?v=202609" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="assets/css/diagrams.min.css?v=202609"></noscript>
-  <script src="assets/js/hub.min.js?v=202614" defer></script>
-  <script src="assets/js/diagrams.min.js?v=202609" defer></script>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "MuleSoft Hub Engineering Blog",
+    "url": "https://mulesoft.niranjanpotter.dpdns.org/",
+    "description": "28 end-to-end hands-on MuleSoft architecture and setup guides covering Agent Fabric, MCP, A2A, Agentforce, MuleSoft AI Chain, Flex Gateway AI policies, CloudHub 2.0, and core Mule 4 patterns.",
+    "author": { "@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171" },
+    "publisher": { "@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/" }
+  }
+  </script>
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
 <body>
-<a href="#mod-a" class="skip-link">Skip to content</a>
-<div id="top-progress"></div>
-<!-- Floating Glassmorphic Header -->
-<header class="hub-header">
-  <div class="header-left">
-    <button aria-label="Open Technical Modules Navigation" class="btn btn-hamburger-mobile" id="hamburgerBtn" onclick="toggleSidebarDrawer()" title="Open Module Index">
-      <svg fill="none" height="20" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="20"><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
-    </button>
-    <a class="brand-wrapper" href="#">
-      <div class="brand-icon">
-        <svg fill="none" height="22" stroke="white" stroke-width="2.2" viewBox="0 0 24 24" width="22"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-      </div>
-      <div class="brand-text-block">
-        <div class="brand-title">
-          <span>MuleSoft Hub</span>
-          <span class="badge badge-primary header-edition-badge" style="font-size:0.65rem;">2026 Edition</span>
-        </div>
-        <div class="brand-subtitle" style="font-size:0.7rem; color:var(--text-dim); letter-spacing:0.04em;">ENTERPRISE ARCHITECTURE &amp; INTERVIEW GUIDE</div>
-      </div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
     </a>
-  </div>
-
-  <div class="header-center">
-    <button type="button" class="search-trigger" onclick="openSearchModal()" aria-label="Search 308 topics, DW scripts, error codes (Ctrl+K)">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-        <span>Search 308 topics, DW scripts, error codes...</span>
-      </div>
-      <span class="search-shortcut">Ctrl+K</span>
-    </button>
-  </div>
-
-  <div class="header-author" role="region" aria-label="Author Attribution">
-    <span class="header-author-text">Curated &amp; Authored by Niranjan Potter</span>
-    <div class="header-author-links">
-      <a class="author-icon-link" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" title="LinkedIn Profile">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.69-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-      </a>
-      <a class="author-icon-link" href="https://niranjanprofile.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio Website" title="Portfolio Website">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
     </div>
-  </div>
-
-  <div class="header-actions">
-    <button aria-label="Search topics and DataWeave scripts" class="btn btn-search-mobile" onclick="openSearchModal()" title="Search Topics (Ctrl+K)">
-      <svg fill="none" height="18" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="18"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-    </button>
-    <a class="btn has-tooltip" href="blog/index.html" data-tooltip="Read 8 end-to-end MuleSoft 2026 AI, Agent Fabric, MCP, A2A &amp; Flex Gateway setup guides" title="MuleSoft Engineering Blog &amp; Hands-On Setup Guides" style="text-decoration:none;">📝 Engineering Blog</a>
-    <button class="btn has-tooltip" id="practice-btn" onclick="togglePracticeMode()" data-tooltip="Quiz yourself: hides all Q&amp;A answers so you can test active recall" title="Practice Mode: Hide all answers to test yourself">🎯 Practice Mode</button>
-    <button class="btn btn-primary btn-dw-header has-tooltip" onclick="openDataWeaveModal()" data-tooltip="Run &amp; test 26 live DataWeave 2.0 scripts right in your browser" title="Open Interactive DataWeave 2.0 Playground" aria-label="DW Playground — Open Interactive DataWeave 2.0 Playground">
-      <span class="btn-dw-icon">🧪</span>
-      <span class="btn-dw-label">DW Playground</span>
-    </button>
-    <button aria-label="Toggle Dark and Light theme" class="btn has-tooltip" id="theme-btn" onclick="toggleTheme()" data-tooltip="Switch between Dark Mode and Light Mode" title="Toggle Dark/Light Mode">
-      <span id="theme-icon">☀️</span>
-    </button>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html" aria-current="page">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
   </div>
 </header>
-<!-- Off-Canvas Sidebar Backdrop -->
-<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebarDrawer(false)"></div>
-<!-- Slim Utility Bar (Max 48px: Search, Practice Mode, Progress only) -->
-<div class="slim-utility-bar" id="utility-bar" role="toolbar" aria-label="Study Utilities">
-  <div class="utility-bar-inner">
-    <div class="utility-bar-left">
-      <button type="button" class="utility-btn" id="utility-search-btn" onclick="openSearchModal()" aria-label="Search 308 topics (Ctrl+K)" title="Search Topics (Ctrl+K)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <span class="utility-btn-label">Search</span>
-      </button>
-      <button type="button" class="utility-btn" id="utility-practice-btn" onclick="togglePracticeMode()" aria-pressed="false" title="Toggle Practice Mode (Hide/Show answers)">
-        <span aria-hidden="true">🎯</span>
-        <span id="utility-practice-label">Practice Mode</span>
-      </button>
-    </div>
-    <div class="utility-progress-pill" id="utility-progress-pill" title="Revealed Q&amp;A study progress (saved locally)">
-      <span class="utility-progress-icon" aria-hidden="true">📈</span>
-      <span id="utility-progress-text">0/308 done</span>
-      <span class="utility-progress-track" aria-hidden="true"><span class="utility-progress-fill" id="utility-progress-fill" style="width:0%;"></span></span>
-    </div>
-  </div>
-</div>
-<div class="hub-layout">
-<!-- Quick Navigation Sidebar -->
-<aside class="quick-sidebar" id="toc-sidebar">
-<div class="sidebar-header-box">
-<div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-<div>
-<div class="quick-sidebar-title" id="sidebar-section-title">All Modules</div>
-<div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
-<span id="sidebar-module-count" style="font-size:0.72rem; color:var(--text-dim);">Showing all 45 modules</span>
-<button type="button" id="sidebar-reset-filter" class="sidebar-reset-btn" style="display:none;" onclick="filterBlogCategory('all')">Show All</button>
-</div>
-</div>
-<button aria-label="Close Topic Navigation" class="sidebar-close-btn" onclick="toggleSidebarDrawer(false)">✕</button>
-</div>
-</div>
-<div class="sidebar-section-filter-wrap">
-  <label class="sr-only" for="sidebar-section-select">Filter by Section</label>
-  <select id="sidebar-section-select" class="sidebar-section-select" onchange="filterBlogCategory(this.value)" aria-label="Filter by Section">
-    <option value="all">All Sections (45)</option>
-    <option value="Getting Started &amp; Strategy">🚀 Getting Started &amp; Strategy (3)</option>
-    <option value="Salesforce &amp; Enterprise Connectors">🔌 Salesforce &amp; Enterprise Connectors (4)</option>
-    <option value="Security &amp; Connectivity">🔐 Security &amp; Connectivity (1)</option>
-    <option value="AWS &amp; Messaging">🌩️ AWS &amp; Messaging (3)</option>
-    <option value="Flow Scopes &amp; Concurrency">🔀 Flow Scopes &amp; Concurrency (5)</option>
-    <option value="Error Handling &amp; Resiliency">⚠️ Error Handling &amp; Resiliency (1)</option>
-    <option value="ObjectStore &amp; API Governance">💾 ObjectStore &amp; API Governance (4)</option>
-    <option value="Testing &amp; CI/CD">🧪 Testing &amp; CI/CD (1)</option>
-    <option value="DataWeave 2.0 Masterclass">💻 DataWeave 2.0 Masterclass (3)</option>
-    <option value="Deployment &amp; CloudHub 2.0">🌐 Deployment &amp; CloudHub 2.0 (3)</option>
-    <option value="Production Scenarios &amp; Incidents">🎯 Production Scenarios &amp; Incidents (2)</option>
-    <option value="Live Whiteboard &amp; Architecture">📐 Live Whiteboard &amp; Architecture (1)</option>
-    <option value="Modern Architecture &amp; AI">🤖 Modern Architecture &amp; AI (3)</option>
-    <option value="Interview Traps &amp; Pitfalls">⚡ Interview Traps &amp; Pitfalls (2)</option>
-    <option value="Enterprise Architect Masterclass">🎓 Enterprise Architect Masterclass (6)</option>
-    <option value="Senior Developer &amp; Lead Technical Interview">🧠 Senior Developer &amp; Lead Technical Interview (1)</option>
-    <option value="Rapid Review &amp; Cheat Sheets">🏆 Rapid Review &amp; Cheat Sheets (2)</option>
-  </select>
-</div>
-<label class="sr-only" for="sidebar-filter-input">Filter technical modules</label>
-<input id="sidebar-filter-input" class="sidebar-filter-input" aria-label="Filter technical modules" oninput="filterSidebarModules(this.value)" placeholder="🔍 Filter modules..." type="text"/>
-<ul class="quick-sidebar-list">
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-a" href="#mod-a" data-category="Getting Started &amp; Strategy">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🚀 Interview Coaching, Strategy &amp; Project Overview</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-b" href="#mod-b" data-category="Salesforce &amp; Enterprise Connectors">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☁️ Salesforce Connector &amp; Bulk API 2.0</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-c" href="#mod-c" data-category="Salesforce &amp; Enterprise Connectors">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">⚡ Platform Events &amp; Change Data Capture (CDC)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-d" href="#mod-d" data-category="Security &amp; Connectivity">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔑 OAuth 2.0 &amp; JWT Bearer Token Flow</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-e" href="#mod-e" data-category="AWS &amp; Messaging">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📦 AWS Integration Patterns (S3, SQS, DynamoDB)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-f" href="#mod-f" data-category="Salesforce &amp; Enterprise Connectors">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔄 SAP + Salesforce End-to-End Integration</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-g" href="#mod-g" data-category="Flow Scopes &amp; Concurrency">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔀 Scatter-Gather Router Deep Dive</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-h" href="#mod-h" data-category="Flow Scopes &amp; Concurrency">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔁 ForEach &amp; Parallel ForEach Scopes</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-i" href="#mod-i" data-category="Flow Scopes &amp; Concurrency">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📊 Batch Processing Deep Dive</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-j" href="#mod-j" data-category="Flow Scopes &amp; Concurrency">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">⏳ Until Successful Scope &amp; Resiliency</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-k" href="#mod-k" data-category="Flow Scopes &amp; Concurrency">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔀 Choice Router, First Successful &amp; Async Scopes</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-l" href="#mod-l" data-category="Error Handling &amp; Resiliency">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">⚠️ Error Handling Deep Dive (Continue vs Propagate)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-m" href="#mod-m" data-category="AWS &amp; Messaging">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📨 Anypoint MQ Deep Dive (Queues, Exchanges, DLQ)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-n" href="#mod-n" data-category="ObjectStore &amp; API Governance">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🗄️ ObjectStore Deep Dive (OSv2, TTL, Watermarking)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">3</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-o" href="#mod-o" data-category="ObjectStore &amp; API Governance">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🏗️ API-led Connectivity Deep Dive (RAML, Policies)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-p" href="#mod-p" data-category="Testing &amp; CI/CD">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🧪 MUnit Testing Framework &amp; Mocking</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-q" href="#mod-q" data-category="ObjectStore &amp; API Governance">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📋 Production Best Practices &amp; Naming Standards</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-r" href="#mod-r" data-category="DataWeave 2.0 Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">💻 DataWeave 2.0 Reference &amp; Core Operators</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">10</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-s" href="#mod-s" data-category="Getting Started &amp; Strategy">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">⚡ Enterprise Utility &amp; Energy Platform Deep Dive</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">1</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-t" href="#mod-t" data-category="Rapid Review &amp; Cheat Sheets">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📝 Quick Reference Interview Cheat Sheet</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">6</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-u" href="#mod-u" data-category="Rapid Review &amp; Cheat Sheets">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🏢 Real Interview Q&amp;A Collection (Global Companies)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">13</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-v" href="#mod-v" data-category="DataWeave 2.0 Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">⚙️ Advanced DataWeave Transformations &amp; Scripts</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-w" href="#mod-w" data-category="Deployment &amp; CloudHub 2.0">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☁️ CloudHub 1.0 vs 2.0 &amp; Technical Lead Topics</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">13</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-x" href="#mod-x" data-category="AWS &amp; Messaging">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔌 Core Connectors &amp; Protocols (HTTP, DB, JMS, Kafka, VM)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">9</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-tips" href="#mod-tips" data-category="Getting Started &amp; Strategy">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🎯 Interview Day Strategy &amp; STAR Method</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">Guide</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-y" href="#mod-y" data-category="Modern Architecture &amp; AI">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☕ Advanced MuleSoft Topics (Java 17, Agentforce AI)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">6</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-z" href="#mod-z" data-category="Production Scenarios &amp; Incidents">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🚨 20 Production Scenario Questions &amp; Cross-Questions (S1-S20)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">20</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-aa" href="#mod-aa" data-category="Live Whiteboard &amp; Architecture">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📐 Live Whiteboard Architecture Guide &amp; Scripts</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">1</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-bb" href="#mod-bb" data-category="Modern Architecture &amp; AI">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">❄️ 2026 Modern Tech: Agentforce AI, MCP &amp; Snowflake</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">8</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-cc" href="#mod-cc" data-category="Interview Traps &amp; Pitfalls">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🪤 Top 20 Interview Traps &amp; Senior Corrections (T1-T20)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">22</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-dd" href="#mod-dd" data-category="Enterprise Architect Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🧭 Architect: Requirement Gathering &amp; Discovery Framework</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">8</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-ee" href="#mod-ee" data-category="Enterprise Architect Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🥊 Architect: MuleSoft vs Competitors &amp; Objection Handling</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">9</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-ff" href="#mod-ff" data-category="Enterprise Architect Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🗣️ Architect: Client Communication &amp; Stakeholder Alignment</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-gg" href="#mod-gg" data-category="Enterprise Architect Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🏛️ Architect: Masterclass Interview Q&amp;A (A1 to A19)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">21</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-hh" href="#mod-hh" data-category="Enterprise Architect Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">😊 Architect: How to Explain So Clients &amp; Interviewers Are Happy</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">5</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-ii" href="#mod-ii" data-category="Senior Developer &amp; Lead Technical Interview">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☕ Senior Java &amp; MuleSoft Technical Interview (Q1 to Q30)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">30</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-jj" href="#mod-jj" data-category="Modern Architecture &amp; AI">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🤖 2026 AI Agentforce, MCP &amp; Autonomous Agents</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">4</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-kk" href="#mod-kk" data-category="Enterprise Architect Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🌐 B2B Integration, EDI &amp; Partner Manager</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">2</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-ll" href="#mod-ll" data-category="Deployment &amp; CloudHub 2.0">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">⚙️ Platform Operations, Terraform &amp; OpenTelemetry</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">2</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-mm" href="#mod-mm" data-category="Salesforce &amp; Enterprise Connectors">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🔌 Advanced Enterprise Connectors (Snowflake/gRPC)</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">2</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-nn" href="#mod-nn" data-category="Production Scenarios &amp; Incidents">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🏢 Production Scenario Solutions &amp; Trade-offs</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">8</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-oo" href="#mod-oo" data-category="ObjectStore &amp; API Governance">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🏛️ Anypoint Platform &amp; API Governance Masterclass</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">8</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-pp" href="#mod-pp" data-category="Deployment &amp; CloudHub 2.0">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☁️ CloudHub &amp; Infrastructure Topology</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">8</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-qq" href="#mod-qq" data-category="DataWeave 2.0 Masterclass">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">💻 Advanced DataWeave 2.0 Functions</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">8</span>
-</a>
-</li>
-<li class="quick-sidebar-item">
-<a class="quick-sidebar-link" data-mod-id="mod-rr" href="#mod-rr" data-category="Interview Traps &amp; Pitfalls">
-<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">💼 Global Consulting Interview Questions</span>
-<span style="font-size:0.7rem; color:var(--text-dim); margin-left:6px;">8</span>
-</a>
-</li>
 
-</ul>
-<div class="sidebar-tools-footer">
-  <div class="sidebar-tools-title">INTERACTIVE TOOLS</div>
-  <button type="button" class="sidebar-tool-btn" onclick="jumpToSectionTool('vcore-calculator'); toggleSidebarDrawer(false);">
-    <span>🧮 vCore Sizing Calculator</span>
-  </button>
-  <button type="button" class="sidebar-tool-btn" onclick="openDataWeaveModal(); toggleSidebarDrawer(false);">
-    <span>🧪 DataWeave 2.0 Playground</span>
-  </button>
-  <button type="button" class="sidebar-tool-btn" onclick="togglePracticeMode(); toggleSidebarDrawer(false);">
-    <span>🎯 Toggle Practice Mode</span>
-  </button>
-  <button type="button" class="sidebar-tool-btn" onclick="jumpToSectionTool('error-handling-simulator'); toggleSidebarDrawer(false);">
-    <span>🔥 Error Handling Simulator</span>
-  </button>
-  <button type="button" class="sidebar-tool-btn sidebar-tool-highlight" onclick="openMockInterviewModal(); toggleSidebarDrawer(false);">
-    <span>⏱️ Timed Mock Interview</span>
-  </button>
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="main-stream" id="main-learning-content">
-<!-- Content Breadcrumb & Full Screen Toggle -->
-<nav class="content-breadcrumb-bar" id="content-breadcrumb" aria-label="Breadcrumb">
-  <div class="breadcrumb-trail">
-    <a href="#hero-landing" class="bc-item bc-home" onclick="filterBlogCategory('all'); window.scrollTo({top:0, behavior:'smooth'}); return false;">Home</a>
-    <span class="bc-sep" aria-hidden="true">&gt;</span>
-    <span class="bc-item bc-section" id="bc-section-name">All Sections</span>
-    <span class="bc-sep" aria-hidden="true">&gt;</span>
-    <span class="bc-item bc-module" id="bc-module-name">Overview &amp; Quick Start</span>
-  </div>
-  <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="main-content-fullscreen-btn" onclick="toggleFeatureFullscreen('main-learning-content', this)" aria-pressed="false" title="Open Learning Content in Full Screen">⛶ Full Screen</button>
-</nav>
-<!-- Hero Section -->
-<section class="hero-portal hero-clean" id="hero-landing">
-  <div class="hero-eyebrow">
-    <span class="pulse-dot"></span>
-    <span>100% Free · No Login Required · Updated for 2026</span>
-  </div>
-  <h1 class="hero-headline">
-    Crack Your Next MuleSoft Interview — <br/>
-    <span class="hero-headline-gradient">308 Real Scenarios &amp; Live Labs</span>
-  </h1>
-  <p class="hero-description">
-    <strong>What is this site?</strong> A free, all-in-one MuleSoft interview preparation &amp; hands-on practice workspace. Prepare for <strong>Developer, Senior, Tech Lead &amp; Architect</strong> interviews with real production Q&amp;As, an in-browser DataWeave 2.0 playground, CloudHub vCore sizing calculator, and timed mock interviews.
-  </p>
+<div class="portal-wrap">
+  <main id="main">
+    <section class="portal-hero" aria-labelledby="portal-hero-h1">
+      <span class="hero-kicker">Dedicated MuleSoft Engineering Blog · 100% Free &amp; Open</span>
+      <h1 id="portal-hero-h1">Hands-On MuleSoft Setup Guides — From Zero to Production</h1>
+      <p class="portal-hero-sub">Every single one of the 28 articles includes a <strong>Real Anypoint View</strong> screen breakdown, an <strong>interactive Mule 4.9 flow simulator</strong> with Studio Properties Inspector, copy-paste Maven/XML/YAML code, 3-tab exact setup walkthroughs, and <code>curl</code> tests. Looking for interview flashcards? Visit our <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 MuleSoft Interview Q&amp;As &amp; Mock Labs ↗</a>.</p>
 
-  <div class="hero-who-pills" aria-label="Who this site is built for">
-    <span class="hero-who-pill">💻 MuleSoft Developers</span>
-    <span class="hero-who-pill">🚀 Senior &amp; Tech Leads</span>
-    <span class="hero-who-pill">🏛️ Integration Architects</span>
-    <span class="hero-who-pill">⚡ Instant Browser Labs · Zero Sign-Up</span>
-  </div>
+      <div class="trust-strip" role="note" aria-label="Portal highlights">
+        <span>📅 Updated Nov 2026</span>
+        <span>📚 28 Guides</span>
+        <span>☕ Mule 4.9 LTS &amp; Java 17</span>
+        <span>🎓 Beginner to Architect</span>
+        <span>⚡ Interactive Flow Labs</span>
+      </div>
 
-  <!-- Primary CTA Row -->
-  <div class="hero-cta-row">
-    <a class="btn btn-primary hero-cta-btn" href="#mod-a" onclick="jumpToSectionTool('mod-a'); return false;">
-      <span>🚀 Start Learning (Module A)</span>
-    </a>
-    <button type="button" class="btn hero-cta-btn has-tooltip" id="hero-practice-btn" onclick="togglePracticeMode(true)" data-tooltip="Hides all answers so you can quiz yourself before revealing">
-      <span>🎯 Practice Mode (Hide Answers)</span>
-    </button>
-    <button type="button" class="btn hero-cta-btn has-tooltip" onclick="openDataWeaveModal()" data-tooltip="Open the interactive 26-scenario DataWeave 2.0 Playground">
-      <span>🧪 Open DW Playground</span>
-    </button>
-    <button type="button" class="btn hero-cta-btn mock-cta-accent has-tooltip" id="hero-mock-btn" onclick="openMockInterviewModal()" data-tooltip="Take a timed mock interview (5–15 Qs) with live countdown &amp; readiness scorecard">
-      <span>⏱️ Timed Mock Interview</span>
-    </button>
-    <a class="btn hero-cta-btn has-tooltip" href="blog/index.html" data-tooltip="End-to-end MuleSoft 2026 hands-on setup guides: Agent Fabric, MCP, A2A, Agentforce, RAG &amp; Flex Gateway" style="text-decoration:none;">
-      <span>📝 Hands-On AI &amp; Setup Blogs</span>
-    </a>
-  </div>
+      <div class="filter-controls" role="region" aria-label="Search and filter blog guides">
+        <label class="sr-only" for="blog-search">Filter blogs by topic or connector keyword</label>
+        <input id="blog-search" class="portal-search-input" type="search" placeholder="Filter by keyword (e.g., Agent Fabric, mcp-connector, pgvector, CloudHub 2.0, OAuth, SAP, Batch)...">
+        <div class="filter-pills" role="group" aria-label="Category filters">
+          <button type="button" class="filter-pill" data-cat="all" aria-pressed="true">All Guides (28)</button>
+          <button type="button" class="filter-pill" data-cat="fabric" aria-pressed="false">Agent Fabric &amp; A2A</button>
+          <button type="button" class="filter-pill" data-cat="mcp" aria-pressed="false">MCP Server &amp; Bridge</button>
+          <button type="button" class="filter-pill" data-cat="rag" aria-pressed="false">Agentforce &amp; RAG</button>
+          <button type="button" class="filter-pill" data-cat="gov" aria-pressed="false">AI Gateway &amp; FinOps</button>
+          <button type="button" class="filter-pill" data-cat="core" aria-pressed="false">Core Mule 4 Playbooks</button>
+        </div>
+        <div class="filter-status-row">
+          <span id="portal-result-count" aria-live="polite">Showing 28 of 28 guides</span>
+          <span>💡 Click any guide for interactive flow animation &amp; 3-tab setup</span>
+        </div>
+      </div>
+    </section>
 
-  <!-- 1-Click Goal Onboarding Strip -->
-  <div class="hero-goal-label">👋 New here? Pick your goal to start in 1 click:</div>
-  <div class="hero-steps-grid" aria-label="Pick your goal to start in 1 click">
-    <button type="button" class="hero-step-card" onclick="jumpToSectionTool('mod-t')">
-      <span class="hero-step-num">1</span>
-      <span class="hero-step-body">
-        <span class="hero-step-title">⚡ Interview Tomorrow? (Rapid Prep)</span>
-        <span class="hero-step-desc">Jump straight to the 16-topic Quick Reference Cheat Sheet, top interview traps &amp; 30-min checklist.</span>
-      </span>
-    </button>
-    <button type="button" class="hero-step-card" onclick="openDataWeaveModal()">
-      <span class="hero-step-num">2</span>
-      <span class="hero-step-body">
-        <span class="hero-step-title">🧪 Practice DataWeave &amp; Live Labs</span>
-        <span class="hero-step-desc">Run 26 DataWeave 2.0 scripts in-browser, auto-generate DW from JSON/XML, or size workers in the vCore Calculator.</span>
-      </span>
-    </button>
-    <button type="button" class="hero-step-card" onclick="openMockInterviewModal()">
-      <span class="hero-step-num">3</span>
-      <span class="hero-step-body">
-        <span class="hero-step-title">🎯 Test Yourself (Timed Mock Panel)</span>
-        <span class="hero-step-desc">Take a 5–15 question timed mock interview with live countdown, self-grading &amp; readiness scorecard.</span>
-      </span>
-    </button>
-  </div>
+    <section aria-labelledby="flagship-track">
+      <div class="track-header">
+        <h2 id="flagship-track">🔥 Flagship Track: 2026 MuleSoft AI, Agents, MCP &amp; Governance (8 Guides)</h2>
+        <p class="track-sub">Deep-dive end-to-end builds targeting Mule 4.9 LTS, Flex Gateway 1.8+, and Salesforce Agentforce</p>
+      </div>
+      <div class="card-grid">
+      <a class="post-card" data-cat="fabric" href="blog/mulesoft-agent-fabric-end-to-end-guide.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance</h3>
+        <p>Set up MuleSoft&#x27;s cross-cloud AI control plane over Agentforce, AWS Bedrock, and Vertex AI using Exchange Agent Registry, scanners, .agent Broker scripts, and Model Wallet kill switches.</p>
+        <div class="card-meta">
+          <span>⏱️ 18 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="mcp" href="blog/mulesoft-mcp-connector-server-client-setup.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4</h3>
+        <p>Build an enterprise MCP Server with mule-mcp-connector over Streamable HTTP (/mcp), expose schema-validated tools, wire an MCP Client flow, and test with MCP Inspector.</p>
+        <div class="card-meta">
+          <span>⏱️ 20 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="mcp" href="blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools</h3>
+        <p>Project existing OpenAPI 3.0 &amp; RAML Process APIs in Anypoint Exchange into curated, OAuth-OBO governed MCP tools without writing a single new Mule flow.</p>
+        <div class="card-meta">
+          <span>⏱️ 17 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="fabric" href="blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration</h3>
+        <p>Implement mule4-a2a-connector 2.0.0 in Mule 4.9 LTS to publish /.well-known/agent.json Agent Cards and coordinate stateful peer agent tasks.</p>
+        <div class="card-meta">
+          <span>⏱️ 19 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="rag" href="blog/agentforce-mulesoft-topic-center-api-actions.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup</h3>
+        <p>Link Salesforce and Anypoint Platform, design Topic Center instructions in ACB, sync API Catalog External Services automatically, and inspect Atlas Reasoning traces.</p>
+        <div class="card-meta">
+          <span>⏱️ 19 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="rag" href="blog/mulesoft-ai-chain-einstein-inference-rag-setup.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>MuleSoft AI Chain (MAC), Einstein Trust Layer &amp; Inference Connector: Build Enterprise RAG in Mule 4</h3>
+        <p>Compare mule4-aichain-connector, mule4-einstein-ai-connector, and mule4-inference-connector, then build a complete PostgreSQL pgvector + Einstein RAG pipeline in Mule 4.9.</p>
+        <div class="card-meta">
+          <span>⏱️ 21 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="gov" href="blog/flex-gateway-ai-policies-llm-guardrails.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking &amp; Semantic Cache</h3>
+        <p>Run Anypoint Flex Gateway as a centralized Enterprise Model Proxy in Docker and Kubernetes with PII masking, prompt defense, semantic caching, and SSE token limits.</p>
+        <div class="card-meta">
+          <span>⏱️ 18 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="gov" href="blog/agent-evals-observability-finops-opentelemetry.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>Testing, Observability &amp; FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals &amp; Cost Guardrails</h3>
+        <p>Trace every Agentforce-Broker-MCP-LLM hop with W3C OpenTelemetry gen_ai.* attributes, run MUnit 3 deterministic + golden-dataset CI evals, and enforce kill-switch budgets.</p>
+        <div class="card-meta">
+          <span>⏱️ 18 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      </div>
+    </section>
 
-  <!-- Compact Stat Strip -->
-  <div class="metric-deck metric-deck-compact">
-    <div class="metric-card">
-      <span class="metric-val" style="color:#00f0ff;">45</span>
-      <span class="metric-label">Technical Modules</span>
-    </div>
-    <div class="metric-card">
-      <span class="metric-val" style="color:#3e63dd;">308</span>
-      <span class="metric-label">Interview Q&amp;As</span>
-    </div>
-    <div class="metric-card">
-      <span class="metric-val" style="color:#10b981;">26</span>
-      <span class="metric-label">Live DataWeave Labs</span>
-    </div>
-    <div class="metric-card">
-      <span class="metric-val" style="color:#d65db1;">159</span>
-      <span class="metric-label">Pages Transcribed</span>
-    </div>
-  </div>
+    <section aria-labelledby="core-track">
+      <div class="track-header">
+        <h2 id="core-track">📚 Core MuleSoft 4 Architecture &amp; Setup Playbooks (20 Guides)</h2>
+        <p class="track-sub">Production checklists, CloudHub 2.0 migrations, DataWeave tuning, Batch LMAX, MQ, Security &amp; Enterprise Connectors</p>
+      </div>
+      <div class="card-grid">
+      <a class="post-card" data-cat="core" href="cloudhub-1-to-2-migration-guide.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist</h3>
+        <p>Migrate Mule 4 apps cleanly from CloudHub 1.0 to CloudHub 2.0 Private Spaces with strict port 8081 bindings, ephemeral disk safety, Ingress TLS, and Maven 4.x config.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="dataweave-performance-tuning-patterns.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>DataWeave 2.0 Performance Tuning: Tail Recursion &amp; Memory Optimization</h3>
+        <p>Eliminate JVM OutOfMemoryError and O(n^2) loops in DataWeave 2.0 using @TailRec, off-heap disk buffering, deferred streaming, and groupBy indexed joins.</p>
+        <div class="card-meta">
+          <span>⏱️ 15 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-batch-processing-interview-questions.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>MuleSoft Batch Processing Interview Questions &amp; Architecture (2026 Guide)</h3>
+        <p>Master Mule 4 Batch Jobs: LMAX Disruptor ring buffers, blockSize &amp; thread tuning, record-scoped variables, Bulk Aggregators, and watermark crash recovery.</p>
+        <div class="card-meta">
+          <span>⏱️ 15 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-anypoint-mq-dlq-fifo-interview.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>Anypoint MQ &amp; DLQ Architecture: Interview Questions &amp; Best Practices</h3>
+        <p>Design resilient async messaging in Mule 4 using Anypoint MQ FIFO queues, manual ACK/NACK, Object Store v2 idempotency, and automated DLQ replay.</p>
+        <div class="card-meta">
+          <span>⏱️ 13 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-salesforce-bulk-api-2-interview.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>Salesforce Bulk API 2.0 in MuleSoft: Complete Interview &amp; Performance Guide</h3>
+        <p>Orchestrate high-volume Salesforce ingestions using Bulk API 2.0 jobs, CSV streaming, governor quota isolation (15,000 batches / 150M records), and failure reconciliation.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-oauth-jwt-bearer-token-interview.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation</h3>
+        <p>Replace fragile passwords and security tokens with RSA-256 OAuth 2.0 JWT Bearer authentication in MuleSoft, complete with OpenSSL setup and zero-downtime key rotation.</p>
+        <div class="card-meta">
+          <span>⏱️ 13 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-scatter-gather-interview-questions.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>MuleSoft Scatter-Gather Router: Interview Questions &amp; Error Recovery</h3>
+        <p>Master parallel Scatter-Gather execution in Mule 4: reactive thread pool sizing, per-route Try scopes for partial failures, and flattening route outputs cleanly.</p>
+        <div class="card-meta">
+          <span>⏱️ 12 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core gov" href="mulesoft-opentelemetry-tracing-observability.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>OpenTelemetry in MuleSoft: Direct Telemetry Export &amp; Distributed Tracing</h3>
+        <p>Configure native OpenTelemetry traceparent context propagation and OTLP gRPC export from Mule 4.9 / CloudHub 2.0 to Datadog, Grafana Tempo, and Splunk.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-cicd-maven-pipeline-guide.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>MuleSoft CI/CD Pipeline Guide: Maven Plugin &amp; GitHub Actions (2026)</h3>
+        <p>Automate Mule 4.9 builds, Parent POM governance, Connected App deployments, 80%+ MUnit coverage gates, and CloudHub 2.0 promotions in GitHub Actions.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-terraform-provider-guide.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>MuleSoft Terraform Provider Guide: Infrastructure as Code (IaC)</h3>
+        <p>Manage Anypoint Business Groups, Environments, CloudHub 2.0 Private Spaces, and API Manager instances declaratively using Terraform.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-sap-s4hana-odata-interview.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>SAP S/4HANA OData vs JCo RFC Connector in MuleSoft: Architecture Guide</h3>
+        <p>Choose cleanly between SAP S/4HANA OData v4 REST and SAP JCo BAPI/tRFC IDocs in Mule 4, including TID idempotency, CSRF handling, and canonical mapping.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-snowflake-connector-patterns.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>MuleSoft Snowflake Connector: High-Volume Ingestion &amp; Staging Patterns</h3>
+        <p>Build fast Snowflake analytics pipelines in Mule 4 using RSA Key-Pair Auth, S3/Blob staging + COPY INTO (instead of slow JDBC row inserts), and streaming reads.</p>
+        <div class="card-meta">
+          <span>⏱️ 13 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-partner-manager-b2b-edi-interview.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>Anypoint Partner Manager &amp; B2B EDI X12/EDIFACT: Interview Guide</h3>
+        <p>Configure EDI X12 850/810/856 and EDIFACT flows over AS2/SFTP in Anypoint Partner Manager, including automated 997 Functional ACKs and certificate rotation.</p>
+        <div class="card-meta">
+          <span>⏱️ 14 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-reusable-error-handler-plugin.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-beginner">Beginner</span>
+        </div>
+        <h3>Reusable MuleSoft Global Error Handler Plugin: Enterprise Architecture</h3>
+        <p>Eliminate copy-pasted APIKit &amp; HTTP error boilerplate across 50+ Mule microservices by building a shared Exchange Global Error Handler Plugin.</p>
+        <div class="card-meta">
+          <span>⏱️ 12 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-secure-properties-encryption-guide.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-beginner">Beginner</span>
+        </div>
+        <h3>MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook</h3>
+        <p>Encrypt database passwords, API secrets, and keystores per environment in Mule 4 using AES-256-GCM without committing plaintext secrets to Git.</p>
+        <div class="card-meta">
+          <span>⏱️ 11 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-java-interview-mastery.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-advanced">Advanced</span>
+        </div>
+        <h3>Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine &amp; Concurrency</h3>
+        <p>Understand Mule 4.9&#x27;s Java 17 upgrade, non-blocking CPU_LITE/CPU_INTENSIVE/BLOCKING_IO thread pools, Java Module invocation, and G1GC memory tuning.</p>
+        <div class="card-meta">
+          <span>⏱️ 15 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core" href="mulesoft-scenario-based-interview-questions.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>Top 20 MuleSoft Scenario-Based Interview Questions &amp; Incident Solutions</h3>
+        <p>Real-world production incident troubleshooting in Mule 4: timeouts, 502 Ingress errors, poison MQ loops, OAuth storms, and zero-loss backpressure.</p>
+        <div class="card-meta">
+          <span>⏱️ 16 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core rag" href="mulesoft-agentforce-topic-center-actions.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+          <span class="diff-pill diff-beginner">Beginner</span>
+        </div>
+        <h3>MuleSoft &amp; Salesforce Agentforce: Topic Center Actions (2026 Guide)</h3>
+        <p>Quick-reference interview &amp; architecture brief on Salesforce Agentforce Topic Center metadata, Anypoint Exchange API Catalog sync, and flat schema best practices.</p>
+        <div class="card-meta">
+          <span>⏱️ 10 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core mcp" href="mulesoft-mcp-connector-ai-agents.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+          <span class="diff-pill diff-beginner">Beginner</span>
+        </div>
+        <h3>MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents</h3>
+        <p>Quick-reference interview brief covering Streamable HTTP MCP servers, JSON Schema tool catalogs, and mutation safety guardrails in MuleSoft.</p>
+        <div class="card-meta">
+          <span>⏱️ 10 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      <a class="post-card" data-cat="core gov" href="mulesoft-model-proxy-semantic-cache.html">
+        <div class="card-badges">
+          <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+        </div>
+        <h3>MuleSoft Model Proxy: Semantic Caching &amp; LLM Token Cost Optimization</h3>
+        <p>Quick architecture guide on routing enterprise AI traffic through Anypoint Flex Gateway Model Proxy with semantic vector caching and token rate limits.</p>
+        <div class="card-meta">
+          <span>⏱️ 11 min read</span>
+          <span>📅 Updated Nov 2026</span>
+        </div>
+      </a>
+      </div>
+    </section>
 
-  <!-- LinkedIn Community & Comment Strip -->
-  <div class="linkedin-community-bar" role="region" aria-label="Join the MuleSoft Discussion on LinkedIn">
-    <div class="linkedin-community-copy">
-      <div class="linkedin-community-title">💬 Built Free for the MuleSoft Community by Niranjan Potter</div>
-      <p class="linkedin-community-desc">Found this hub helpful — or faced a tricky MuleSoft interview question we should add next? Drop a comment on LinkedIn or share your Mock Interview score so fellow engineers can benefit too.</p>
+    <div id="portal-empty-state" class="empty-state" hidden>
+      <p><strong>No guides match that filter or keyword.</strong> Clear your search box or select <em>All Guides (28)</em> above.</p>
     </div>
-    <div class="linkedin-community-actions">
-      <a class="btn btn-sm btn-linkedin" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">💬 Comment on LinkedIn ↗</a>
-      <a class="btn btn-sm" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2F" target="_blank" rel="noopener noreferrer">🔁 Share Hub ↗</a>
-      <button type="button" class="btn btn-sm" id="btn-copy-linkedin-share" onclick="copyLinkedInShareText(this)">📋 Copy Share Note</button>
-    </div>
-  </div>
 
-  <!-- Subdomain Exclusive: Hands-On Engineering Blog Strip -->
-  <div class="linkedin-community-bar" role="region" aria-label="2026 MuleSoft AI and Agents Hands-On Setup Blog">
-    <div class="linkedin-community-copy">
-      <div class="linkedin-community-title">🔥 New: 2026 MuleSoft AI &amp; Agents End-to-End Setup Blog (8 Deep-Dive Guides)</div>
-      <p class="linkedin-community-desc">Step-by-step setup guides with architecture diagrams, full Maven <code>pom.xml</code> &amp; Mule 4.9 XML code, CLI commands, and <code>curl</code> verification: Agent Fabric, MCP Connector, MCP Bridge, A2A Protocol, Agentforce Topic Center, MAC + Einstein RAG, Flex Gateway AI Policies &amp; OpenTelemetry FinOps.</p>
-    </div>
-    <div class="linkedin-community-actions">
-      <a class="btn btn-sm btn-primary" href="blog/index.html">📝 Explore All 8 Setup Guides →</a>
-      <a class="btn btn-sm" href="blog/mulesoft-agent-fabric-end-to-end-guide.html">🕸️ Agent Fabric</a>
-      <a class="btn btn-sm" href="blog/mulesoft-mcp-connector-server-client-setup.html">🔌 MCP Setup</a>
-      <a class="btn btn-sm" href="blog/agentforce-mulesoft-topic-center-api-actions.html">🤖 Agentforce</a>
-    </div>
-  </div>
+    <aside class="linkedin-cta" aria-label="Request a blog topic on LinkedIn">
+      <p>💬 <strong>Want a full hands-on blog on another MuleSoft topic</strong> (like Anypoint Code Builder from zero, RTF on EKS, or DataWeave 2.6 labs)? Drop a comment on LinkedIn!</p>
+      <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Suggest a Topic on LinkedIn ↗</a>
+    </aside>
+  </main>
+</div>
 
-  <!-- Global Study & Tool Controls with Clear Inline Explanations -->
-  <div class="global-toolbar">
-    <div class="global-toolbar-left">
-      <span class="toolbar-group-label">Study Controls:</span>
-      <button type="button" class="btn btn-sm has-tooltip" onclick="expandAllAnswers()" data-tooltip="Show all 308 Q&amp;A answers at once for fast reading">📖 Expand All</button>
-      <button type="button" class="btn btn-sm has-tooltip" onclick="collapseAllAnswers()" data-tooltip="Hide all answers so you can quiz yourself question-by-question">🔒 Hide Answers (Self-Test)</button>
-    </div>
-    <div class="global-toolbar-right">
-      <span class="toolbar-group-label">Interactive Tools:</span>
-      <button type="button" class="btn btn-sm btn-primary has-tooltip" id="btn-jump-vcore" onclick="jumpToSectionTool('vcore-calculator')" data-tooltip="Jump to the CloudHub 1.0/2.0 vCore &amp; Replica Sizing Calculator">🧮 vCore Calculator</button>
-      <button type="button" class="btn btn-sm has-tooltip" id="btn-jump-inlinelab" onclick="jumpToSectionTool('inline-dw-playground')" data-tooltip="Jump to the embedded DataWeave 2.0 Lab inside the guide">🧪 Inline DW Lab</button>
-      <button type="button" class="btn btn-sm has-tooltip" id="btn-jump-errorsim" onclick="jumpToSectionTool('error-handling-simulator')" data-tooltip="Simulate On Error Continue vs Propagate across Try, Private &amp; Main flows">🔥 Error Simulator</button>
-      <a class="btn btn-sm has-tooltip" href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer" data-tooltip="Open the 2026 Cross-Platform Integration Radar, Offline JWT Inspector &amp; MCP Tool Generator">🛰️ 2026 Integration Radar ↗</a>
-    </div>
-  </div>
-</section>
-
-<!-- Practice Mode Active Indicator Banner -->
-<div id="practice-mode-banner" class="practice-mode-banner" role="status" aria-live="polite" style="display:none;">
-  <div class="practice-banner-content">
-    <span class="practice-banner-icon">🎯</span>
-    <div>
-      <strong>Practice Mode is ON</strong> — All Q&amp;A answers are hidden so you can test your recall. Click any question card to reveal its answer.
-    </div>
-  </div>
-  <button type="button" class="btn btn-sm btn-outline" onclick="togglePracticeMode()">✕ Exit Practice Mode</button>
-</div>
-<!-- All 45 Technical Modules -->
-<section class="blog-article" data-category="Getting Started &amp; Strategy" data-role="Developer / Senior" id="mod-a" aria-labelledby="mod-a-title">
-<div class="article-header">
-<div class="article-meta">
-<span class="badge badge-senior">Module A</span>
-<span class="badge badge-senior">[DEVELOPER / SENIOR]</span>
-<span class="badge badge-primary">Getting Started &amp; Strategy</span>
-<span>⏱️ 6 min read</span>
-<span>📄 Guide Pages 1–4</span>
-<span>🎯 3 Interview Topics</span>
-</div>
-<h2 class="article-title">🚀 Interview Coaching, Strategy &amp; Project Overview</h2>
-<p class="article-excerpt">Interactive 2-minute pitch studio, enterprise API-led architecture, business outcomes, and key performance engineering.</p>
-</div>
-<div class="coaching-portal">
-<!-- Section Header -->
-<div class="coaching-header-band">
-<div class="coaching-eyebrow">
-<span class="pulse-dot"></span>
-<span>MODULE A • INTERVIEW COACHING &amp; STRATEGY</span>
-</div>
-<h2 class="coaching-headline">Master the 2-Minute Pitch &amp; Enterprise First Impressions</h2>
-<p class="coaching-subtext">
-          The interview panel forms their definitive opinion in the first 120 seconds. 
-          Use this structured verbal script template, practice the strategic cadence, and plug in your own quantifiable production metrics.
-        </p>
-</div>
-<!-- Comparative Battleboard: Killer Phrases vs Career Traps -->
-<div class="battleboard-section">
-<div class="battleboard-grid">
-<!-- Positive Column -->
-<div class="battleboard-col positive-col">
-<div class="battleboard-header">
-<div class="bb-header-icon">✅</div>
-<div class="bb-header-text">
-<h3 class="bb-title">KILLER PHRASES TO USE</h3>
-<span class="bb-subtitle">Signals Senior &amp; Architect Maturity</span>
-</div>
-</div>
-<ul class="battleboard-list">
-<li class="bb-item">
-<span class="bb-bullet">⚡</span>
-<div class="bb-content">
-<strong>"API-led connectivity with strict boundary separation"</strong>
-<p>Shows you understand decoupled architecture across Experience, Process, and System APIs.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">⚡</span>
-<div class="bb-content">
-<strong>"5M+ monthly API calls with 99.9% uptime SLA"</strong>
-<p>Grounds your answers in high-volume enterprise reality, not academic theory.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">⚡</span>
-<div class="bb-content">
-<strong>"95% MUnit branch coverage with all externals strictly mocked"</strong>
-<p>Demonstrates engineering discipline, CI/CD quality gates, and automated test rigor.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">⚡</span>
-<div class="bb-content">
-<strong>"SAP S/4HANA OData integration with idempotent queues &amp; DLQs"</strong>
-<p>Highlights enterprise ERP integration depth, manual ACK patterns, and poison message handling.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">⚡</span>
-<div class="bb-content">
-<strong>"Zero-downtime rolling deployments via CloudHub 2.0 Ingress"</strong>
-<p>Shows modern containerized CloudHub 2.0 (EKS) deployment and traffic-shifting knowledge.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">⚡</span>
-<div class="bb-content">
-<strong>"CorrelationId-based distributed end-to-end tracing via Splunk"</strong>
-<p>Proves you design for observability and production root-cause diagnostics.</p>
-</div>
-</li>
-</ul>
-</div>
-<!-- Negative Column -->
-<div class="battleboard-col negative-col">
-<div class="battleboard-header">
-<div class="bb-header-icon">❌</div>
-<div class="bb-header-text">
-<h3 class="bb-title">CAREER TRAPS — NEVER SAY THESE</h3>
-<span class="bb-subtitle">Instant Junior / Low-Impact Red Flags</span>
-</div>
-</div>
-<ul class="battleboard-list">
-<li class="bb-item">
-<span class="bb-bullet">🚫</span>
-<div class="bb-content">
-<strong>"I just follow what the team or lead tells me to do"</strong>
-<p class="bb-warn">Red flag: Shows zero technical ownership or architectural initiative.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">🚫</span>
-<div class="bb-content">
-<strong>"I'm not really sure, but I think that's how it works..."</strong>
-<p class="bb-warn">Red flag: Erodes confidence. If unsure, pivot to first-principles reasoning.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">🚫</span>
-<div class="bb-content">
-<strong>"I haven't used that connector or feature yet"</strong>
-<p class="bb-warn">Red flag: Better to say "While my primary production focus was SAP and DynamoDB, the protocol patterns (OData, REST, SDK) are identical."</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">🚫</span>
-<div class="bb-content">
-<strong>"It was mostly just basic CRUD operations"</strong>
-<p class="bb-warn">Red flag: Trivializes enterprise engineering and undercuts your perceived value.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">🚫</span>
-<div class="bb-content">
-<strong>"I only worked on a small isolated piece of the project"</strong>
-<p class="bb-warn">Red flag: Signals a siloed mindset instead of end-to-end platform awareness.</p>
-</div>
-</li>
-<li class="bb-item">
-<span class="bb-bullet">🚫</span>
-<div class="bb-content">
-<strong>"Error handling and security was configured by another team"</strong>
-<p class="bb-warn">Red flag: Senior developers and architects own resilience and zero-trust security.</p>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<!-- Interactive 2-Minute Pitch Teleprompter Studio -->
-<div class="teleprompter-card" id="teleprompter-studio">
-<div class="teleprompter-top-bar">
-<div class="teleprompter-heading-group">
-<div class="tp-badge">
-<span class="tp-rec-dot"></span>
-<span>EXECUTIVE VERBAL SCRIPT</span>
-</div>
-<h3 class="tp-title">🎯 The Perfect 2-Minute Pitch (Say These Exact Words)</h3>
-</div>
-<div class="teleprompter-actions">
-<span class="tp-stat-chip">⏱️ Target: 110s - 120s (~90 WPM)</span>
-<span class="tp-stat-chip">📝 175 Words</span>
-<button class="tp-btn tp-copy-btn" onclick="copyPitchScript(this)">
-<span class="tp-btn-icon">📋</span>
-<span class="tp-btn-text">Copy Script</span>
-</button>
-<button class="tp-btn tp-play-btn" id="tpPlayBtn" onclick="toggleTeleprompter()">
-<span class="tp-btn-icon">▶️</span>
-<span class="tp-btn-text">Practice Teleprompter</span>
-</button>
-</div>
-</div>
-<!-- Teleprompter Progress Bar -->
-<div class="teleprompter-progress-track" id="tpProgressTrack" style="display:none;">
-<div class="teleprompter-progress-bar" id="tpProgressBar"></div>
-</div>
-<!-- Teleprompter Speech Box -->
-<div class="teleprompter-speech-box" id="tpSpeechBox">
-<div class="tp-watermark">“</div>
-<p class="tp-sentence" data-idx="0">
-            "Good morning/afternoon. I'm <strong class="hl-cyan">[Your Name]</strong>, an Integration Engineer with <span class="script-badge hl-blue">[X] years of MuleSoft experience</span> designing and operating high-throughput enterprise platforms serving <span class="script-badge hl-green">millions of end users</span>.
-          </p>
-<p class="tp-sentence" data-idx="1">
-            In my core projects, I've architected and delivered an <strong class="hl-indigo">API-led connectivity platform</strong> connecting frontend channels such as <strong class="hl-cyan">Salesforce</strong> with enterprise systems of record including <strong class="hl-cyan">SAP S/4HANA</strong>, <strong class="hl-cyan">AWS DynamoDB</strong>, and <strong class="hl-cyan">PostgreSQL</strong>, scaling cleanly to <span class="script-badge hl-green">[5M+] monthly API invocations</span> across billing, account management, and Customer 360 domains.
-          </p>
-<p class="tp-sentence" data-idx="2">
-            I build across all three API tiers — <strong class="hl-indigo">Experience, Process, and System APIs</strong> — following an <strong class="hl-cyan">API-first design approach with RAML/OAS</strong>, enforcing <span class="script-badge hl-green">85–95% MUnit coverage gates</span>, and automating deployments via <strong class="hl-cyan">CI/CD pipelines to CloudHub 2.0 / RTF</strong>.
-          </p>
-<p class="tp-sentence" data-idx="3">
-            My hands-on stack centers on <strong class="hl-indigo">DataWeave 2.0</strong>, <strong class="hl-indigo">Anypoint MQ with MANUAL ack and ObjectStore v2 idempotency</strong>, <strong class="hl-cyan">AWS S3/SQS/DynamoDB</strong>, and enterprise connectors such as <strong class="hl-cyan">Salesforce Bulk API 2.0 and SAP S/4HANA OData</strong>."
-          </p>
-</div>
-<!-- 4 Golden Rules of Delivery -->
-<div class="delivery-rules-section">
-<div class="delivery-rules-header">
-<span class="dr-title">💡 How to Deliver This — 4 Psychological Directives</span>
-<span class="dr-tag">Executive Presence</span>
-</div>
-<div class="delivery-rules-grid">
-<div class="delivery-rule-card">
-<div class="dr-icon">⏱️</div>
-<h4 class="dr-card-title">Pacing &amp; Cadence</h4>
-<p class="dr-card-desc">Speak at a moderate pace (85–95 words per minute). Don't rush. Senior interviewers value clarity, gravitas, and executive composure over rapid-fire speed.</p>
-</div>
-<div class="delivery-rule-card">
-<div class="dr-icon">⏸️</div>
-<h4 class="dr-card-title">The 1-Second Pause</h4>
-<p class="dr-card-desc">When you say <strong>"5 million+ monthly API calls"</strong> — pause for 1 full second. Let the magnitude of the enterprise scale sink into the room.</p>
-</div>
-<div class="delivery-rule-card">
-<div class="dr-icon">👁️</div>
-<h4 class="dr-card-title">Unwavering Eye Contact</h4>
-<p class="dr-card-desc">Maintain steady, direct eye contact when saying <strong>"95% MUnit test coverage"</strong> — this communicates uncompromising standards in software reliability.</p>
-</div>
-<div class="delivery-rule-card">
-<div class="dr-icon">🎯</div>
-<h4 class="dr-card-title">The Power Handoff</h4>
-<p class="dr-card-desc">End with: <em>"I'd love to dive deeper into any of these areas — what would you like to explore first?"</em> This immediately gives YOU psychological control of the interview agenda.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="diagram-container" id="diagram-api-led">
-<div class="diagram-header">
-<div class="diagram-badge">🏛️ Core Architecture</div>
-<div class="diagram-title">3-Tier API-Led Connectivity Architecture</div>
-<div class="diagram-subtitle">Enterprise 3-Tier API-Led Connectivity Reference Architecture (Experience · Process · System)</div>
-</div>
-<div class="diagram-svg-wrapper">
-<svg class="responsive-svg" viewbox="0 0 1000 640" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<lineargradient id="expGrad" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" stop-color="#3E63DD" stop-opacity="0.25"></stop>
-<stop offset="100%" stop-color="#00A1E0" stop-opacity="0.1"></stop>
-</lineargradient>
-<lineargradient id="procGrad" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" stop-color="#845EC2" stop-opacity="0.25"></stop>
-<stop offset="100%" stop-color="#6366F1" stop-opacity="0.1"></stop>
-</lineargradient>
-<lineargradient id="sysGrad" x1="0%" x2="100%" y1="0%" y2="100%">
-<stop offset="0%" stop-color="#10B981" stop-opacity="0.25"></stop>
-<stop offset="100%" stop-color="#059669" stop-opacity="0.1"></stop>
-</lineargradient>
-<filter height="140%" id="neonGlow" width="140%" x="-20%" y="-20%">
-<fegaussianblur result="blur" stddeviation="6"></fegaussianblur>
-<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
-</filter>
-<marker id="arrowCyan" markerheight="10" markerwidth="10" orient="auto" refx="6" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#00F0FF"></path>
-</marker>
-<marker id="arrowPurple" markerheight="10" markerwidth="10" orient="auto" refx="6" refy="3">
-<path d="M0,0 L0,6 L9,3 z" fill="#845EC2"></path>
-</marker>
-</defs>
-<!-- Background Grid Pattern -->
-<rect fill="#0B0F19" height="640" rx="16" width="1000"></rect>
-<rect fill="none" height="638" rx="16" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" width="998" x="1" y="1"></rect>
-<!-- TIER 1: EXPERIENCE APIS -->
-<rect fill="url(#expGrad)" height="150" rx="12" stroke="#3E63DD" stroke-dasharray="6,4" stroke-width="1.5" width="940" x="30" y="30"></rect>
-<text fill="#00F0FF" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="800" letter-spacing="0.08em" x="50" y="60">TIER 1 · EXPERIENCE LAYER (OMNICHANNEL INGRESS &amp; MOBILE APIS)</text>
-<!-- Exp API Card 1 -->
-<g class="svg-node" transform="translate(60, 80)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(0,240,255,0.4)" stroke-width="1" width="260"></rect>
-<circle cx="24" cy="28" fill="#00A1E0" r="8"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" x="42" y="32">Mobile Customer eAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="42" y="52">GET /v1/customers/{id}</text>
-<rect fill="rgba(0,161,224,0.2)" height="18" rx="4" width="52" x="195" y="18"></rect>
-<text fill="#00A1E0" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" x="221" y="31">iOS/Web</text>
-</g>
-<!-- Exp API Card 2 -->
-<g class="svg-node" transform="translate(370, 80)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(0,240,255,0.4)" stroke-width="1" width="260"></rect>
-<circle cx="24" cy="28" fill="#3E63DD" r="8"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" x="42" y="32">Outage &amp; Smart Meter eAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="42" y="52">POST /v1/outage/report</text>
-<rect fill="rgba(62,99,221,0.2)" height="18" rx="4" width="52" x="195" y="18"></rect>
-<text fill="#3E63DD" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" x="221" y="31">Portal</text>
-</g>
-<!-- Exp API Card 3 -->
-<g class="svg-node" transform="translate(680, 80)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(0,240,255,0.4)" stroke-width="1" width="260"></rect>
-<circle cx="24" cy="28" fill="#6366F1" r="8"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" x="42" y="32">Partner &amp; B2B eAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="42" y="52">POST /v1/orders/batch</text>
-<rect fill="rgba(99,102,241,0.2)" height="18" rx="4" width="52" x="195" y="18"></rect>
-<text fill="#6366F1" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" x="221" y="31">mTLS</text>
-</g>
-<!-- Connecting Connectors Exp -> Proc -->
-<path d="M 190 160 L 190 230" marker-end="url(#arrowCyan)" stroke="#00F0FF" stroke-dasharray="4,4" stroke-width="2"></path>
-<path d="M 500 160 L 500 230" marker-end="url(#arrowCyan)" stroke="#00F0FF" stroke-dasharray="4,4" stroke-width="2"></path>
-<path d="M 810 160 L 620 230" marker-end="url(#arrowCyan)" stroke="#00F0FF" stroke-dasharray="4,4" stroke-width="2"></path>
-<!-- TIER 2: PROCESS APIS -->
-<rect fill="url(#procGrad)" height="150" rx="12" stroke="#845EC2" stroke-dasharray="6,4" stroke-width="1.5" width="940" x="30" y="235"></rect>
-<text fill="#D65DB1" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="800" letter-spacing="0.08em" x="50" y="265">TIER 2 · PROCESS LAYER (BUSINESS LOGIC, ORCHESTRATION &amp; SAGAS)</text>
-<!-- Proc API Card 1 -->
-<g class="svg-node" transform="translate(110, 285)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(132,94,194,0.4)" stroke-width="1" width="340"></rect>
-<circle cx="24" cy="28" fill="#845EC2" r="8"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" x="44" y="32">Customer 360 Aggregator pAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="44" y="52">Merges Salesforce CRM + SAP Billing Profile</text>
-<rect fill="rgba(132,94,194,0.2)" height="18" rx="4" width="68" x="260" y="18"></rect>
-<text fill="#D65DB1" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" x="294" y="31">Scatter-Gather</text>
-</g>
-<!-- Proc API Card 2 -->
-<g class="svg-node" transform="translate(540, 285)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(132,94,194,0.4)" stroke-width="1" width="350"></rect>
-<circle cx="24" cy="28" fill="#D65DB1" r="8"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" x="44" y="32">Smart Meter Grid Ingestion pAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="44" y="52">Telemetry De-duplication + Outage Thresholds</text>
-<rect fill="rgba(214,93,177,0.2)" height="18" rx="4" width="68" x="270" y="18"></rect>
-<text fill="#D65DB1" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" x="304" y="31">High-Volume</text>
-</g>
-<!-- Connecting Connectors Proc -> Sys -->
-<path d="M 280 365 L 170 435" marker-end="url(#arrowPurple)" stroke="#845EC2" stroke-dasharray="4,4" stroke-width="2"></path>
-<path d="M 280 365 L 400 435" marker-end="url(#arrowPurple)" stroke="#845EC2" stroke-dasharray="4,4" stroke-width="2"></path>
-<path d="M 715 365 L 630 435" marker-end="url(#arrowPurple)" stroke="#845EC2" stroke-dasharray="4,4" stroke-width="2"></path>
-<path d="M 715 365 L 860 435" marker-end="url(#arrowPurple)" stroke="#845EC2" stroke-dasharray="4,4" stroke-width="2"></path>
-<!-- TIER 3: SYSTEM APIS -->
-<rect fill="url(#sysGrad)" height="150" rx="12" stroke="#10B981" stroke-dasharray="6,4" stroke-width="1.5" width="940" x="30" y="440"></rect>
-<text fill="#10B981" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="800" letter-spacing="0.08em" x="50" y="470">TIER 3 · SYSTEM LAYER (SYSTEMS OF RECORD UNLOCKED VIA CANONICAL DATA MODELS)</text>
-<!-- Sys API 1 -->
-<g class="svg-node" transform="translate(50, 490)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(16,185,129,0.4)" stroke-width="1" width="210"></rect>
-<circle cx="20" cy="26" fill="#10B981" r="6"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700" x="34" y="30">SAP S/4HANA sAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="34" y="48">BAPI / OData RFC</text>
-<text fill="#00A1E0" font-family="'JetBrains Mono', monospace" font-size="9" x="34" y="64">ERP &amp; Finance</text>
-</g>
-<!-- Sys API 2 -->
-<g class="svg-node" transform="translate(285, 490)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(16,185,129,0.4)" stroke-width="1" width="210"></rect>
-<circle cx="20" cy="26" fill="#0176D3" r="6"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700" x="34" y="30">Salesforce CRM sAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="34" y="48">Bulk 2.0 / CDC Events</text>
-<text fill="#0176D3" font-family="'JetBrains Mono', monospace" font-size="9" x="34" y="64">Accounts &amp; Leads</text>
-</g>
-<!-- Sys API 3 -->
-<g class="svg-node" transform="translate(520, 490)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(16,185,129,0.4)" stroke-width="1" width="210"></rect>
-<circle cx="20" cy="26" fill="#F59E0B" r="6"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700" x="34" y="30">AWS DynamoDB sAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="34" y="48">PutItem / Query</text>
-<text fill="#F59E0B" font-family="'JetBrains Mono', monospace" font-size="9" x="34" y="64">Sub-10ms Audit</text>
-</g>
-<!-- Sys API 4 -->
-<g class="svg-node" transform="translate(755, 490)">
-<rect fill="#111827" height="80" rx="8" stroke="rgba(16,185,129,0.4)" stroke-width="1" width="200"></rect>
-<circle cx="20" cy="26" fill="#00A1E0" r="6"></circle>
-<text fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700" x="34" y="30">Snowflake Data sAPI</text>
-<text fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10" x="34" y="48">SQL Warehouse REST</text>
-<text fill="#00A1E0" font-family="'JetBrains Mono', monospace" font-size="9" x="34" y="64">Analytics Engine</text>
-</g>
-</svg>
-<button type="button" class="diagram-expand-btn" aria-label="Expand diagram to fullscreen"><span>⤢</span> <span>Expand</span></button></div>
-<div class="diagram-footer">
-<span>💡 <strong>Architectural Rule:</strong> Strict downstream isolation. System APIs NEVER call Process APIs. Experience APIs NEVER query databases or SAP directly.</span>
-</div>
-</div>
-<div class="diagram-container" id="diagram-technical-toolkit" style="margin-top: 36px; margin-bottom: 40px;">
-<div class="diagram-header">
-<div class="diagram-badge">🛠️ Enterprise Technology Stack</div>
-<div class="diagram-title">03 / Technical Toolkit — Built Around Integration</div>
-<div class="diagram-subtitle">Comprehensive Skills Matrix · Mule 4 · CloudHub 2.0 · DataWeave · AWS Cloud · CI/CD Automation · Enterprise Databases</div>
-</div>
-<div class="diagram-svg-wrapper">
-<svg aria-labelledby="toolkit-title toolkit-desc" class="responsive-svg" height="620" role="img" viewbox="0 0 1200 620" width="1200" xmlns="http://www.w3.org/2000/svg">
-<title id="toolkit-title">03 / Technical toolkit | Built around integration.</title>
-<desc id="toolkit-desc">Integration: Mule 4, Anypoint Platform, CloudHub 2.0, Anypoint MQ.
-    API and data: DataWeave, RAML, REST, SOAP, GraphQL. Cloud: AWS S3, DynamoDB, Secrets Manager.
-    Delivery: Azure DevOps, Maven, MUnit, SonarQube. Databases: SQL, PostgreSQL, Oracle, MySQL.
-    Team tooling: Splunk, Postman, Jira, Confluence, Anypoint Code Builder.</desc>
-<defs>
-<radialgradient id="toolkit-halo"><stop stop-color="#087F9C" stop-opacity=".45"></stop><stop offset="1" stop-color="#087F9C" stop-opacity="0"></stop></radialgradient>
-</defs>
-
-<rect fill="#0B2033" height="620" rx="22" width="1200"></rect>
-<ellipse cx="600" cy="340" fill="url(#toolkit-halo)" rx="570" ry="270"></ellipse>
-<path d="M409 131V573M790 131V573M44 345H1156" stroke="#DFC28E" stroke-opacity=".3"></path>
-<g fill="none" stroke="#A6EAF4" stroke-width="1.5">
-<path class="toolkit-trace" d="M409 131V345H1156" pathlength="100"></path>
-<path class="toolkit-trace" d="M790 573V345H44" pathlength="100"></path>
-</g>
-<rect fill="none" height="618" rx="21" stroke="#53CADD" stroke-opacity=".3" width="1198" x="1" y="1"></rect>
-<g class="rise" font-family="Segoe UI, Arial, sans-serif">
-<text fill="#A6EAF4" font-size="13" letter-spacing="3" x="44" y="45">03 / TECHNICAL TOOLKIT</text>
-<text fill="#F0F9FF" font-family="Georgia,serif" font-size="40" x="44" y="94">Built around integration.</text>
-<g fill="#071321" stroke="#53CADD" stroke-opacity=".25">
-<rect height="205" rx="14" width="350" x="44" y="130"></rect>
-<rect height="205" rx="14" width="350" x="425" y="130"></rect>
-<rect height="205" rx="14" width="350" x="806" y="130"></rect>
-<rect height="220" rx="14" width="350" x="44" y="355"></rect>
-<rect height="220" rx="14" width="350" x="425" y="355"></rect>
-<rect height="220" rx="14" width="350" x="806" y="355"></rect>
-</g>
-<g fill="#A6EAF4" font-size="13" letter-spacing="2">
-<text x="68" y="166">01 / INTEGRATION</text>
-<text x="449" y="166">02 / API + DATA</text>
-<text x="830" y="166">03 / AWS</text>
-<text x="68" y="391">04 / DELIVERY</text>
-<text x="449" y="391">05 / LANGUAGES + DATABASES</text>
-<text x="830" y="391">06 / TEAM TOOLING</text>
-</g>
-<g fill="#F0F9FF" font-family="Georgia,serif" font-size="25">
-<text x="68" y="211">MuleSoft</text>
-<text x="449" y="211">DataWeave 2.0</text>
-<text x="830" y="211">Cloud services</text>
-<text x="68" y="436">CI/CD + quality</text>
-<text x="449" y="436">Java 17 + SQL</text>
-<text x="830" y="436">Observe + collaborate</text>
-</g>
-<g fill="#C1D9E7" font-size="18">
-<text x="68" y="251">Mule 4 / Anypoint Platform</text>
-<text x="68" y="280">CloudHub 2.0 / Anypoint MQ</text>
-<text x="68" y="309">API Manager / APIkit</text>
-<text x="449" y="251">RAML / REST / SOAP</text>
-<text x="449" y="280">JSON / XML / GraphQL</text>
-<text x="449" y="309">API-led connectivity</text>
-<text x="830" y="251">Amazon S3</text>
-<text x="830" y="280">DynamoDB</text>
-<text x="830" y="309">Secrets Manager</text>
-<text x="68" y="476">Azure DevOps / Maven / Git</text>
-<text x="68" y="505">MUnit / SonarQube</text>
-<text x="68" y="534">Jenkins</text>
-<text x="449" y="476">PostgreSQL / Oracle</text>
-<text x="449" y="505">MySQL / SQL Server</text>
-<text x="449" y="534">Data mapping + transformation</text>
-<text x="830" y="476">Splunk / Postman</text>
-<text x="830" y="505">Jira / Confluence</text>
-<text x="830" y="534">Studio / Anypoint Code Builder</text>
-</g>
-</g>
-<g fill="none" stroke="#A6EAF4" stroke-opacity=".65" stroke-width="1.2">
-<rect class="toolkit-trace" height="205" pathlength="100" rx="14" width="350" x="44" y="130"></rect>
-<rect class="toolkit-trace" height="205" pathlength="100" rx="14" style="animation-delay:-4s" width="350" x="425" y="130"></rect>
-<rect class="toolkit-trace" height="205" pathlength="100" rx="14" style="animation-delay:-8s" width="350" x="806" y="130"></rect>
-<rect class="toolkit-trace" height="220" pathlength="100" rx="14" style="animation-delay:-6s" width="350" x="44" y="355"></rect>
-<rect class="toolkit-trace" height="220" pathlength="100" rx="14" style="animation-delay:-10s" width="350" x="425" y="355"></rect>
-<rect class="toolkit-trace" height="220" pathlength="100" rx="14" style="animation-delay:-2s" width="350" x="806" y="355"></rect>
-</g>
-</svg>
-<button type="button" class="diagram-expand-btn" aria-label="Expand diagram to fullscreen"><span>⤢</span> <span>Expand</span></button></div>
-<div class="diagram-footer">
-<span>💡 <strong>Production Core:</strong> Battle-tested across high-volume enterprise transformations connecting SAP, Salesforce, Kafka, and AWS.</span>
-</div>
-</div>
-<div class="faq-card" data-role="developer / senior" id="mod-a-q1">
-<div class="faq-header">
-<div class="faq-meta-row">
-<span class="q-tag">Q1</span>
-<span class="badge badge-dev">[DEVELOPER / SENIOR]</span>
-<span class="q-read-time">⏱️ 1 min read</span>
-<span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module A</span>
-</div>
-<h3 class="q-title">Tell me about your project end to end.</h3>
-<div class="faq-action-bar">
-<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
-<span class="reveal-btn-icon">👁️</span>
-<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
-</button>
-<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
-</div>
-</div>
-<div class="answer-drawer">
-<div class="answer-drawer-inner">
-<div class="answer-body-content">
-<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
-<p class="doc-p">Reference Domain: Large-Scale Enterprise Utility &amp; Customer Integration Platform (Reference Case Study).</p>
-<p class="doc-p">Platform: Customer Integration Platform connecting Salesforce Employee Desktop and</p>
-<p class="doc-p">Conversational AI channels → SAP S/4HANA, DynamoDB, PostgreSQL. Domains: billing, account</p>
-<p class="doc-p">maintenance, payment, customer 360.</p>
-<p class="doc-p">Architecture: XAPI (channel auth+validation) → PAPI (business orchestration, async) → SAPI (reusable</p>
-<p class="doc-p">backend access). Dynamic DataWeave from AWS S3. Secrets via AWS Secrets Manager. CI/CD via</p>
-<p class="doc-p">GitHub Actions.</p>
-<div class="answer-badge-tag"><span class="badge badge-success">✅  KEY TECHNOLOGIES</span></div>
-<p class="doc-p">DataWeave 2.0 — complex SAP XML nested namespace transformations</p>
-<p class="doc-p">Anypoint MQ — async preference updates, interaction events with MANUAL ack + idempotency</p>
-<p class="doc-p">AWS S3/DynamoDB — runtime DWL loading, UCDP customer interaction storage</p>
-<p class="doc-p">SAP S/4HANA Cloud Connector — OData for deposits, billing programs, contract accounts</p>
-<p class="doc-p">Splunk monitoring — correlationId tracked end-to-end across all API layers</p>
-<div class="callout callout-verbal interview-pitch-card">
-<div class="callout-header"><span class="callout-icon">🎯</span><strong>🎯 Interview Pitch - Say It Like This (30 Sec)</strong></div>
-<div class="callout-body">
-    "In my recent enterprise engagement, I led the end-to-end integration architecture for a major US utility, modernizing legacy systems into an event-driven API-led platform on CloudHub 2.0. I designed 35+ microservices across Experience, Process, and System layers connecting smart meters, Salesforce, and SAP S/4HANA, processing over 15,000 events per minute with sub-second response times."
-  </div>
-</div>
-<div class="callout callout-info project-example-card">
-<div class="callout-header"><span class="callout-icon">💼</span><strong>💼 Real-Time Project Example</strong></div>
-<div class="callout-body">
-<p class="example-line"><strong>Project:</strong> Energy &amp; Utility — Smart Grid Meter Data Ingestion Platform.</p><p class="example-line"><strong>Problem:</strong> Point-to-point connections between customer portals, SAP, and Salesforce caused frequent sync discrepancies and high maintenance overhead.</p><p class="example-line"><strong>What I Did:</strong> Architected a three-tier API-led ecosystem on <code>CloudHub 2.0</code> with Anypoint MQ for async decoupling and ObjectStore v2 for caching and idempotency.</p><p class="example-line"><strong>Result:</strong> Delivered real-time sync across 15,000 meter pings/minute, cut operational sync failures by 98%, and achieved sub-1.5s SLA.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="faq-card" data-role="developer / senior" id="mod-a-q2">
-<div class="faq-header">
-<div class="faq-meta-row">
-<span class="q-tag">Q2</span>
-<span class="badge badge-dev">[DEVELOPER / SENIOR]</span>
-<span class="q-read-time">⏱️ 1 min read</span>
-<span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module A</span>
-</div>
-<h3 class="q-title">What is API-led connectivity and why did you use it?</h3>
-<div class="faq-action-bar">
-<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
-<span class="reveal-btn-icon">👁️</span>
-<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
-</button>
-<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
-</div>
-</div>
-<div class="answer-drawer">
-<div class="answer-drawer-inner">
-<div class="answer-body-content">
-<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
-<p class="doc-p">API-led organizes integrations into 3 reusable layers eliminating point-to-point coupling:</p>
-<p class="doc-p">LAYER PURPOSE ENTERPRISE EXAMPLE</p>
-<p class="doc-p">XAPI —</p>
-<p class="doc-p">Experience</p>
-<p class="doc-p">Channel-specific auth + validation + response</p>
-<p class="doc-p">formatting</p>
-<p class="doc-p">accmain-empdsk-xapi — employee</p>
-<p class="doc-p">desktop channel</p>
-<p class="doc-p">PAPI — Process Business orchestration, parallel calls, async</p>
-<p class="doc-p">patterns</p>
-<p class="doc-p">billing-inquiry-papi — SAP + DynamoDB</p>
-<p class="doc-p">in parallel</p>
-<p class="doc-p">SAPI — System Reusable backend access — one per system sap-sapi reused by 4 PAPIs = 75% code</p>
-<p class="doc-p">reduction</p>
-<div class="callout callout-tip">
-<div class="callout-header"><span class="callout-icon">💡</span><strong>💡 Killer Phrases &amp; Value · 💡  BUSINESS VALUE</strong></div>
-<div class="callout-body">Before API-led: 8 direct point-to-point connections per domain. After: SAP SAPI changed once, all PAPIs<br/>updated automatically. Adding new channel (mobile) took days not weeks.
-<div class="callout callout-verbal interview-pitch-card">
-<div class="callout-header"><span class="callout-icon">🎯</span><strong>🎯 Interview Pitch - Say It Like This (30 Sec)</strong></div>
-<div class="callout-body">
-    "We enforce an uncompromising API-first design methodology. Before a single line of Mule XML is scaffolded, we specify the API contract in RAML 1.0 or OAS 3.0 using Design Center, leveraging reusable Exchange fragments for canonical data types and security traits. Once reviewed with consumer teams, APIKit auto-generates routing logic with strict input validation, linked to API Manager via Autodiscovery."
-  </div>
-</div>
-<div class="callout callout-info project-example-card">
-<div class="callout-header"><span class="callout-icon">💼</span><strong>💼 Real-Time Project Example</strong></div>
-<div class="callout-body">
-<p class="example-line"><strong>Project:</strong> Retail &amp; E-Commerce — API-led Microservices Modernization.</p><p class="example-line"><strong>Problem:</strong> Frontend and backend teams worked in silos, leading to contract discrepancies, breaking changes, and 3-week delays during integration testing.</p><p class="example-line"><strong>What I Did:</strong> Standardized RAML 1.0 API specifications with modular DataTypes and mock services in Exchange, enforcing API Autodiscovery and Client ID enforcement policies.</p><p class="example-line"><strong>Result:</strong> Enabled consumer teams to develop against live mocks 4 weeks earlier, eliminating contract defects and accelerating time-to-market by 35%.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="faq-card" data-role="developer / senior" id="mod-a-q3">
-<div class="faq-header">
-<div class="faq-meta-row">
-<span class="q-tag">Q3</span>
-<span class="badge badge-dev">[DEVELOPER / SENIOR]</span>
-<span class="q-read-time">⏱️ 1 min read</span>
-<span style="font-size:0.75rem; color:var(--text-dim); margin-left:auto;">Module A</span>
-</div>
-<h3 class="q-title">What technology did you work with? (Full tech stack)</h3>
-<div class="faq-action-bar">
-<button aria-expanded="false" class="reveal-answer-btn" onclick="toggleAnswerDrawer(this)">
-<span class="reveal-btn-icon">👁️</span>
-<span class="reveal-btn-text">Reveal Senior Model Answer &amp; Verbal Script</span>
-</button>
-<span style="font-size:0.75rem; color:var(--text-dim);">⚡ Self-Test Mode Ready</span>
-</div>
-</div>
-<div class="answer-drawer">
-<div class="answer-drawer-inner">
-<div class="answer-body-content">
-<div class="answer-badge-tag"><span class="badge badge-success">✓ ANSWER</span></div>
-<div class="table-responsive">
-<div class="table-scroll"><table class="responsive-table doc-table">
-<thead><tr><th>CATEGORY</th><th>TECHNOLOGY</th><th>DETAILS</th></tr></thead>
-<tbody>
-<tr><td data-label="CATEGORY">Runtime</td><td data-label="TECHNOLOGY">Mule 4.x</td><td data-label="DETAILS">Mule 4.4 / 4.6 LTS / 4.9 (Java 17) on CloudHub 2.0 &amp; RTF</td></tr>
-<tr><td data-label="CATEGORY">API Design</td><td data-label="TECHNOLOGY">RAML 1.0 / OAS 3.0</td><td data-label="DETAILS">Contract-first API design; APIkit auto-scaffolds &amp; validates flows</td></tr>
-<tr><td data-label="CATEGORY">Transform</td><td data-label="TECHNOLOGY">DataWeave 2.0</td><td data-label="DETAILS">Streaming transformations, complex SAP XML, dynamic DWL loading from S3</td></tr>
-<tr><td data-label="CATEGORY">ERP / Core</td><td data-label="TECHNOLOGY">SAP S/4HANA</td><td data-label="DETAILS">Cloud OData &amp; BAPI/IDoc — deposits, billing, contract accounts</td></tr>
-<tr><td data-label="CATEGORY">CRM Source</td><td data-label="TECHNOLOGY">Salesforce</td><td data-label="DETAILS">OAuth 2.0 JWT Bearer, Bulk API 2.0, Platform Events &amp; CDC</td></tr>
-<tr><td data-label="CATEGORY">Messaging</td><td data-label="TECHNOLOGY">Anypoint MQ</td><td data-label="DETAILS">Async decoupling with MANUAL Ack, DLQ replay &amp; ObjectStore v2 idempotency</td></tr>
-<tr><td data-label="CATEGORY">Cloud / Secrets</td><td data-label="TECHNOLOGY">AWS Stack</td><td data-label="DETAILS">S3, SQS, DynamoDB, AWS Secrets Manager &amp; Mule Secure Properties</td></tr>
-<tr><td data-label="CATEGORY">Testing</td><td data-label="TECHNOLOGY">MUnit + SonarQube</td><td data-label="DETAILS">Automated PR unit/mock suites enforcing 85–95% coverage quality gates</td></tr>
-<tr><td data-label="CATEGORY">CI/CD</td><td data-label="TECHNOLOGY">Maven + GitHub Actions</td><td data-label="DETAILS">Parent POM/BOM inheritance, Nexus Exchange publishing &amp; CH 2.0 deployment</td></tr>
-<tr><td data-label="CATEGORY">Observability</td><td data-label="TECHNOLOGY">Splunk / Anypoint</td><td data-label="DETAILS">Structured JSON logs with end-to-end <code>X-Correlation-ID</code> tracing</td></tr>
-</tbody>
-</table></div>
-<div class="callout callout-verbal interview-pitch-card">
-<div class="callout-header"><span class="callout-icon">🎯</span><strong>🎯 Interview Pitch - Say It Like This (30 Sec)</strong></div>
-<div class="callout-body">
-    "My technical stack is centered around Mule 4.x running on CloudHub 2.0 Private Spaces and Runtime Fabric on Kubernetes. For core development, I use Anypoint Studio 7.18+, DataWeave 2.0, MUnit, and Maven, orchestrating integrations across Salesforce, SAP S/4HANA, Anypoint MQ, Kafka, AWS S3/DynamoDB, and enforcing enterprise security with OAuth 2.0, mTLS, and API Manager policies."
-  </div>
-</div>
-<div class="callout callout-info project-example-card">
-<div class="callout-header"><span class="callout-icon">💼</span><strong>💼 Real-Time Project Example</strong></div>
-<div class="callout-body">
-<p class="example-line"><strong>Project:</strong> Commercial Banking — Enterprise Core Architecture.</p><p class="example-line"><strong>Problem:</strong> Fragmented developer tooling and inconsistent dependency versions led to frequent deployment conflicts and security vulnerabilities.</p><p class="example-line"><strong>What I Did:</strong> Standardized the enterprise Parent POM with locked Mule runtime (4.6.x/4.9.x), connector versions, automated MUnit thresholds (80%+), and Jenkins/GitHub Actions CI/CD pipelines.</p><p class="example-line"><strong>Result:</strong> Streamlined deployment velocity by 40%, eliminated environment configuration drift, and ensured 100% security policy adherence.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<div id="deferred-modules-mount"></div>
-</main>
-</div>
-<!-- Footer -->
-<footer class="hub-footer">
-<div class="footer-signature-wrapper" style="max-width: 1000px; margin: 0 auto 36px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5); border: 1px solid rgba(83, 202, 221, 0.2);">
-<div class="diagram-svg-wrapper">
-<svg aria-labelledby="footer-title" class="responsive-svg" height="230" role="img" viewbox="0 0 1200 230" width="1200" xmlns="http://www.w3.org/2000/svg">
-<title id="footer-title">Niranjan. Connecting systems. Enabling teams.</title>
-<defs>
-<lineargradient id="footer-bg" x2="0" y2="1"><stop stop-color="#071321"></stop><stop offset="1" stop-color="#0B2033"></stop></lineargradient>
-<radialgradient cx="50%" cy="100%" id="footer-glow" r="70%"><stop stop-color="#087F9C" stop-opacity=".7"></stop><stop offset="1" stop-color="#124052" stop-opacity="0"></stop></radialgradient>
-<lineargradient gradientunits="userSpaceOnUse" id="footer-rule" x1="100" x2="1100" y1="0" y2="0"><stop stop-color="#087F9C" stop-opacity="0"></stop><stop offset=".5" stop-color="#53CADD"></stop><stop offset="1" stop-color="#087F9C" stop-opacity="0"></stop></lineargradient>
-</defs>
-
-<rect fill="url(#footer-bg)" height="230" rx="20" width="1200"></rect>
-<rect fill="url(#footer-glow)" height="230" rx="20" width="1200"></rect>
-<rect fill="none" height="229" rx="19.5" stroke="#53CADD" stroke-opacity=".2" width="1199" x=".5" y=".5"></rect>
-<text class="sig-name" font-size="84" text-anchor="middle" x="600" y="118">Niranjan</text>
-<path class="sig-rule" d="M100 146H1100" stroke="url(#footer-rule)" stroke-width="1"></path>
-<g class="sig-in" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">
-<text fill="#ADC6D6" font-size="13" letter-spacing="3" x="600" y="182">CONNECTING SYSTEMS / ENABLING TEAMS</text>
-</g>
-<g fill="none" stroke="#A6EAF4" stroke-linecap="round" stroke-width="2">
-<path class="sig-flow" d="M60 206H1140" pathlength="100"></path>
-</g>
-</svg>
-<button type="button" class="diagram-expand-btn" aria-label="Expand diagram to fullscreen"><span>⤢</span> <span>Expand</span></button></div>
-</div>
-<div style="max-width: 1080px; margin: 0 auto 24px auto; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
-<div style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px;">📝 2026 MuleSoft AI &amp; Agents End-to-End Setup Blog</div>
-<div class="footer-links" style="gap: 10px 18px; font-size: 0.84rem; margin-bottom: 0;">
-<a href="blog/index.html"><strong>All Engineering Blog Guides →</strong></a>
-<a href="blog/mulesoft-agent-fabric-end-to-end-guide.html">Agent Fabric End-to-End</a>
-<a href="blog/mulesoft-mcp-connector-server-client-setup.html">MCP Connector Server &amp; Client</a>
-<a href="blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">MCP Bridge (OpenAPI to Tools)</a>
-<a href="blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">A2A Protocol &amp; Agent Cards</a>
-<a href="blog/agentforce-mulesoft-topic-center-api-actions.html">Agentforce + Topic Center</a>
-<a href="blog/mulesoft-ai-chain-einstein-inference-rag-setup.html">MAC, Einstein &amp; pgvector RAG</a>
-<a href="blog/flex-gateway-ai-policies-llm-guardrails.html">Flex Gateway AI Policies</a>
-<a href="blog/agent-evals-observability-finops-opentelemetry.html">Agent Evals, OTel &amp; FinOps</a>
-</div>
-</div>
-<div style="max-width: 1080px; margin: 0 auto 24px auto; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
-<div style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px;">📚 Deep-Dive MuleSoft Guides &amp; Playbooks</div>
-<div class="footer-links" style="gap: 10px 18px; font-size: 0.84rem; margin-bottom: 0;">
-<a href="mulesoft-scenario-based-interview-questions.html">Top 20 Scenario-Based Q&amp;A</a>
-<a href="mulesoft-batch-processing-interview-questions.html">Batch Processing &amp; LMAX Disruptor</a>
-<a href="cloudhub-1-to-2-migration-guide.html">CloudHub 1.0 → 2.0 Migration</a>
-<a href="dataweave-performance-tuning-patterns.html">DataWeave 2.0 Performance Tuning</a>
-<a href="mulesoft-java-interview-mastery.html">Senior Java Mastery for MuleSoft</a>
-<a href="mulesoft-agentforce-topic-center-actions.html">Agentforce Topic Center Actions</a>
-<a href="mulesoft-mcp-connector-ai-agents.html">MCP Connector for AI Agents</a>
-<a href="mulesoft-model-proxy-semantic-cache.html">Model Proxy &amp; Semantic Cache</a>
-<a href="mulesoft-salesforce-bulk-api-2-interview.html">Salesforce Bulk API 2.0</a>
-<a href="mulesoft-scatter-gather-interview-questions.html">Scatter-Gather &amp; Error Recovery</a>
-<a href="mulesoft-anypoint-mq-dlq-fifo-interview.html">Anypoint MQ, DLQ &amp; FIFO</a>
-<a href="mulesoft-oauth-jwt-bearer-token-interview.html">OAuth 2.0 JWT Bearer Flow</a>
-<a href="mulesoft-partner-manager-b2b-edi-interview.html">B2B EDI &amp; Partner Manager</a>
-<a href="mulesoft-terraform-provider-guide.html">MuleSoft Terraform Provider (IaC)</a>
-<a href="mulesoft-opentelemetry-tracing-observability.html">OpenTelemetry &amp; Tracing</a>
-<a href="mulesoft-snowflake-connector-patterns.html">Snowflake Connector Patterns</a>
-<a href="mulesoft-cicd-maven-pipeline-guide.html">CI/CD Maven &amp; GitHub Actions</a>
-<a href="mulesoft-sap-s4hana-odata-interview.html">SAP S/4HANA OData vs JCo RFC</a>
-<a href="mulesoft-reusable-error-handler-plugin.html">Global Error Handler Plugin</a>
-<a href="mulesoft-secure-properties-encryption-guide.html">Secure Properties AES-256-GCM</a>
-</div>
-</div>
-<div class="footer-links">
-<a href="#mod-a">API-Led Architecture</a>
-<a href="#mod-b">Mule 4 Threading</a>
-<a href="#mod-g">Scatter-Gather Router</a>
-<a href="#mod-r">DataWeave 2.0 Lab</a>
-<a href="#mod-w">CloudHub 2.0 Sizing</a>
-<a href="#vcore-calculator" onclick="jumpToSectionTool('vcore-calculator'); return false;">vCore Calculator</a>
-<button type="button" class="footer-link-btn" onclick="openDataWeaveModal()">DW Playground</button>
-</div>
-<div class="footer-linkedin-cta">
-  <span>💬 Got a real MuleSoft interview question to add or feedback on the hub?</span>
-  <a class="btn btn-sm btn-linkedin" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Drop a Comment on LinkedIn ↗</a>
-</div>
-<p>© 2026 MuleSoft Developer &amp; Enterprise Architect Hub · Authored with 100% full content fidelity from the 159-page Complete Interview Guide 2026.</p>
-<p style="font-size:0.8rem; color:var(--text-dim); margin-top:8px;">Designed and optimized for Senior Developers, Technical Leads, and Enterprise Architects.</p>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
 </footer>
-<!-- Modals -->
-<div class="modal-overlay" id="dw-modal" onclick="closeDataWeaveModal(event)" role="dialog" aria-modal="true" aria-label="DataWeave 2.0 Interactive Playground">
-  <div class="dw-modal-container" id="dw-modal-container" onclick="event.stopPropagation()">
-    <!-- Sticky Modal Top Bar -->
-    <div class="dw-modal-header-bar">
-      <div class="dw-toolbar-left" style="display:flex; align-items:center; gap:12px;">
-        <span class="dw-logo-badge">🧪</span>
-        <div>
-          <div class="dw-modal-title-row">
-            <span>DataWeave 2.0 Studio Lab</span>
-            <span class="badge dw-engine-badge">Engine v2.4</span>
-          </div>
-          <div class="dw-modal-subtitle">Live In-Browser Transformation Engine · 26 Real Enterprise Scenarios</div>
-        </div>
-      </div>
-      <div class="dw-toolbar-right" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-        <button type="button" class="btn btn-sm btn-primary" id="modal-dw-run-btn" onclick="runDwTransformation('modal')" title="Run transformation in browser">▶ Run / Transform</button>
-        <button type="button" class="btn btn-sm" onclick="resetDwPreset()" title="Reset to original code">↺ Reset</button>
-        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="dw-fullscreen-btn" onclick="toggleDwFullscreen()" aria-pressed="false" title="Toggle Full Screen Mode">⛶ Full Screen</button>
-        <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeDataWeaveModal()" title="Close Playground (Esc)">✕ Close</button>
-      </div>
-    </div>
-
-    <!-- Scrollable Modal Body (Fixes scroll cutoff bug on all viewports) -->
-    <div class="dw-modal-scroll-body" id="modal-dw-playground">
-
-<!-- Studio Mode Switcher: Manual Mode vs Auto-Generate Mode -->
-<div class="dw-mode-switcher" data-scope="modal">
-  <button type="button" class="dw-mode-btn active" data-mode="manual" onclick="switchDwMode('manual', this, 'modal')">✍️ Manual Mode</button>
-  <button type="button" class="dw-mode-btn" data-mode="autogen" onclick="switchDwMode('autogen', this, 'modal')">✨ Auto-Generate Mode (JSON / XML → DW 2.0)</button>
-</div>
-
-<!-- AUTO-GENERATE WORKSPACE (3 Boxes: Input | Desired Output | Generated Script) -->
-<div class="dw-autogen-workspace" id="modal-dw-autogen-workspace" style="display:none;">
-  <div class="dw-autogen-toolbar">
-    <div class="dw-autogen-hint">Paste any <strong>JSON or XML Input</strong> and your <strong>Desired JSON Output</strong> — 100% offline engine infers field maps, concatenations, math, arrays &amp; constants.</div>
-    <button type="button" class="btn btn-sm btn-primary dw-autogen-run-btn" id="modal-dw-autogen-btn" onclick="autoGenerateDwScript('modal')">✨ Auto-Generate DataWeave</button>
-  </div>
-  <div class="dw-autogen-error" id="modal-dw-autogen-error" role="alert" style="display:none;"></div>
-  <div class="dw-autogen-grid">
-    <div class="dw-editor-panel">
-      <div class="dw-panel-header">
-        <span>📥 1. INPUT (JSON / XML)</span>
-        <button type="button" class="btn-copy-pane" onclick="copyAutogenBox('input', 'modal')">📋 Copy</button>
-      </div>
-      <label class="sr-only" for="modal-dw-autogen-input">Input JSON or XML payload for Auto-Generate DataWeave</label>
-  <textarea class="dw-code-editor dw-autogen-input" id="modal-dw-autogen-input" aria-label="Input JSON or XML payload for Auto-Generate DataWeave" spellcheck="false" placeholder="Paste JSON or XML input payload...">{
-  "firstName": "Niranjan",
-  "lastName": "Potter",
-  "price": 50,
-  "qty": 3,
-  "items": [
-    { "sku": "A1", "cost": 100 },
-    { "sku": "B2", "cost": 200 }
-  ]
-}</textarea>
-    </div>
-    <div class="dw-editor-panel">
-      <div class="dw-panel-header">
-        <span>🎯 2. DESIRED OUTPUT (JSON)</span>
-        <button type="button" class="btn-copy-pane" onclick="copyAutogenBox('desired', 'modal')">📋 Copy</button>
-      </div>
-      <label class="sr-only" for="modal-dw-autogen-desired">Desired JSON output payload for Auto-Generate DataWeave</label>
-  <textarea class="dw-code-editor dw-autogen-desired" id="modal-dw-autogen-desired" aria-label="Desired JSON output payload for Auto-Generate DataWeave" spellcheck="false" placeholder="Paste desired JSON output...">{
-  "fullName": "Niranjan Potter",
-  "total": 150,
-  "city": "Abu",
-  "products": [
-    { "code": "A1", "amount": 100 },
-    { "code": "B2", "amount": 200 }
-  ]
-}</textarea>
-    </div>
-    <div class="dw-editor-panel">
-      <div class="dw-panel-header">
-        <span>⚡ 3. GENERATED SCRIPT (%dw 2.0)</span>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="btn-copy-pane" onclick="copyAutogenBox('script', 'modal')">📋 Copy</button>
-          <button type="button" class="btn-copy-pane dw-use-script-btn" id="modal-dw-use-script-btn" onclick="useGeneratedDwScript('modal')">⚡ Use This Script</button>
-        </div>
-      </div>
-      <label class="sr-only" for="modal-dw-autogen-script">Auto-Generated DataWeave 2.0 script</label>
-  <textarea class="dw-code-editor dw-autogen-script" id="modal-dw-autogen-script" aria-label="Auto-Generated DataWeave 2.0 script" spellcheck="false" readonly="" placeholder="Click 'Auto-Generate DataWeave' to generate your %dw 2.0 script..."></textarea>
-    </div>
-  </div>
-  <div class="dw-autogen-notes" id="modal-dw-autogen-notes" style="display:none;"></div>
-</div>
-<div class="dw-manual-workspace" id="modal-dw-manual-workspace">
-
-      <!-- Search & Category Filters -->
-      <div class="dw-filter-bar" style="display:flex; flex-direction:column; gap:12px; margin: 0 0 16px 0;">
-        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-          <div style="flex:1; min-width:240px; position:relative;">
-            <label class="sr-only" for="modal-dw-search-input">Search DataWeave 2.0 examples</label>
-            <input class="dw-search-input" id="modal-dw-search-input" aria-label="Search DataWeave 2.0 examples" oninput="searchDwPresets(this.value)" placeholder="🔍 Search 26 DataWeave examples (e.g. filter, groupBy, XML, CSV)..." type="text"/>
-          </div>
-          <div style="flex:1.5; min-width:260px;">
-            <label class="sr-only" for="modal-dw-preset-select">DataWeave 2.0 Preset Scenario</label>
-            <select class="dw-select" id="modal-dw-preset-select" aria-label="DataWeave 2.0 Preset Scenario" onchange="loadDwPreset(this.value)"></select>
-          </div>
-        </div>
-        <div class="dw-category-pills" style="display:flex; gap:6px; flex-wrap:wrap;">
-          <button type="button" class="dw-cat-pill active" onclick="filterDwByCategory('all', this)">All (26)</button>
-          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('json', this)">JSON (5)</button>
-          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('xml', this)">XML (2)</button>
-          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('csv', this)">CSV (2)</button>
-          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('array', this)">Array Functions (7)</button>
-          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('string', this)">String (2)</button>
-          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('date', this)">Date (1)</button>
-          <button type="button" class="dw-cat-pill" onclick="filterDwByCategory('advanced', this)">Enterprise Scenarios (7)</button>
-        </div>
-      </div>
-
-      <!-- Mobile Tab Bar (< 768px) -->
-      <div class="dw-mobile-tab-bar" id="modal-dwMobileTabs" data-scope="modal">
-        <button type="button" class="dw-tab-btn active" data-tab="input" data-scope="modal">📥 Input</button>
-        <button type="button" class="dw-tab-btn" data-tab="script" data-scope="modal">⚡ Script</button>
-        <button type="button" class="dw-tab-btn" data-tab="output" data-scope="modal">📤 Output</button>
-        <button type="button" class="dw-tab-btn" data-tab="notes" data-scope="modal">💡 Notes</button>
-      </div>
-
-      <!-- 4-PANEL WORKSPACE -->
-      <div class="dw-4panel-grid">
-        <div class="dw-editor-panel dw-tab-active" id="modal-dw-panel-input">
-          <div class="dw-panel-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span>📥 INPUT PAYLOAD</span>
-              <span class="dw-panel-format" id="modal-dw-input-format-badge">JSON</span>
-            </div>
-            <button type="button" class="btn-copy-pane" onclick="copyDwPanel('input', 'modal')" title="Copy Input Payload">📋 Copy Input</button>
-          </div>
-          <label class="sr-only" for="modal-dw-input-editor">DataWeave input payload editor</label>
-          <textarea class="dw-code-editor dw-input-editor" id="modal-dw-input-editor" aria-label="DataWeave input payload editor" placeholder="Enter input payload here..." spellcheck="false"></textarea>
-        </div>
-
-        <div class="dw-editor-panel" id="modal-dw-panel-script">
-          <div class="dw-panel-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span>⚡ DATAWEAVE SCRIPT (%dw 2.0)</span>
-              <span style="font-size:0.7rem; opacity:0.8;">output application/...</span>
-            </div>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <button type="button" class="btn-copy-pane" onclick="copyDwPanel('script', 'modal')" title="Copy DW Script">📋 Copy Script</button>
-            </div>
-          </div>
-          <label class="sr-only" for="modal-dw-script-editor">DataWeave 2.0 transformation script editor</label>
-          <textarea class="dw-code-editor dw-script-editor" id="modal-dw-script-editor" aria-label="DataWeave 2.0 transformation script editor" placeholder="%dw 2.0&#10;output application/json&#10;---" spellcheck="false"></textarea>
-        </div>
-
-        <div class="dw-editor-panel" id="modal-dw-panel-output">
-          <div class="dw-panel-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span>📤 TRANSFORMED OUTPUT</span>
-              <span class="dw-status-indicator" id="modal-dw-live-status" style="font-size:0.72rem; color:#34d399; font-weight:700;">✅ Evaluated</span>
-            </div>
-            <button type="button" class="btn-copy-pane" onclick="copyDwPanel('output', 'modal')" title="Copy Output Payload">📋 Copy Output</button>
-          </div>
-          <label class="sr-only" for="modal-dw-output-viewer">Evaluated DataWeave transformation output</label>
-          <textarea class="dw-code-editor dw-output-viewer" id="modal-dw-output-viewer" aria-label="Evaluated DataWeave transformation output" placeholder="Output will appear here..." readonly="" spellcheck="false"></textarea>
-        </div>
-
-        <div class="dw-editor-panel dw-explanation-panel" id="modal-dw-panel-notes">
-          <div class="dw-panel-header dw-notes-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span>💡 EXPLANATION &amp; ARCHITECT INTERVIEW NOTES</span>
-            </div>
-            <span style="font-size:0.7rem; color:#a78bfa;">How it works &amp; Real Project Use Case</span>
-          </div>
-          <div class="dw-explanation-content" id="modal-dw-explanation-box"></div>
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal-overlay" id="search-modal" onclick="closeSearchModal(event)">
-<div class="search-modal-container" onclick="event.stopPropagation()">
-<div class="search-input-wrapper">
-<svg fill="none" height="20" stroke="#00f0ff" stroke-width="2.5" viewbox="0 0 24 24" width="20"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
-<label class="sr-only" for="search-input-field">Search topics, DataWeave scripts, and error codes</label>
-<input class="search-input-field" id="search-input-field" aria-label="Search topics, DataWeave scripts, and error codes" oninput="handleSearchInput(event)" onkeydown="handleSearchKeydown(event)" placeholder="Search 308 topics, DW scripts, error codes..." type="text"/>
-<button class="btn btn-sm" id="btn-close-search" onclick="closeSearchModal()">Esc</button>
-</div>
-<div class="search-history-row" id="search-history-container" style="display:none; padding:8px 20px; border-bottom:1px solid var(--border); font-size:0.75rem; color:var(--text-dim); align-items:center; gap:8px;">
-<span>Recent:</span>
-<div id="history-chips-container" style="display:flex; gap:6px;"></div>
-</div>
-<ul class="search-results-list" id="search-results-list"></ul>
-</div>
-</div>
-
-<!-- Timed Mock Interview Simulator Modal -->
-<div class="modal-overlay" id="mock-interview-modal" onclick="closeMockInterviewModal(event)" role="dialog" aria-modal="true" aria-label="Timed MuleSoft Mock Interview Simulator">
-  <div class="mock-modal-container" id="mock-modal-container" onclick="event.stopPropagation()">
-    <!-- Sticky Header -->
-    <div class="mock-modal-header">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span class="mock-logo-badge">⏱️</span>
-        <div>
-          <div class="mock-modal-title">MuleSoft Timed Mock Interview</div>
-          <div class="mock-modal-sub" id="mock-header-sub">Simulate a real technical panel · Self-grade &amp; get your Readiness Scorecard</div>
-        </div>
-      </div>
-      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-        <span class="mock-timer-pill" id="mock-timer-pill" style="display:none;">⏱️ 15:00</span>
-        <button type="button" class="btn btn-sm" id="mock-pause-btn" onclick="toggleMockPause()" style="display:none;">⏸ Pause</button>
-        <button type="button" class="btn btn-sm btn-outline feature-fs-btn" id="mock-fullscreen-btn" onclick="toggleFeatureFullscreen('mock-modal-container', this)" aria-pressed="false" title="Toggle Full Screen">⛶ Full Screen</button>
-        <button type="button" class="btn btn-sm btn-outline btn-close-modal" onclick="closeMockInterviewModal()" title="Close Simulator (Esc)">✕ Close</button>
-      </div>
-    </div>
-
-    <!-- Scrollable Body -->
-    <div class="mock-modal-body" id="mock-modal-body">
-
-      <!-- SCREEN 1: SETUP -->
-      <div id="mock-screen-setup" class="mock-screen">
-        <div class="mock-stats-strip" id="mock-past-stats" style="display:none;">
-          <span>🏆 Best Readiness Score: <strong id="mock-stat-best">0%</strong></span>
-          <span>·</span>
-          <span>Sessions Completed: <strong id="mock-stat-count">0</strong></span>
-        </div>
-
-        <div class="mock-setup-group">
-          <div class="mock-setup-label">1. Choose Your Target Role / Difficulty</div>
-          <div class="mock-choice-grid" id="mock-role-choices">
-            <button type="button" class="mock-choice-card active" data-role="all" onclick="selectMockRole('all', this)">
-              <div class="mock-choice-title">🌐 All Levels (Mixed)</div>
-              <div class="mock-choice-desc">Balanced mix from all 45 modules &amp; 308 real scenarios</div>
-            </button>
-            <button type="button" class="mock-choice-card" data-role="developer" onclick="selectMockRole('developer', this)">
-              <div class="mock-choice-title">💻 MuleSoft Developer</div>
-              <div class="mock-choice-desc">Core Mule 4, Connectors, DataWeave, Error Handling &amp; MUnit</div>
-            </button>
-            <button type="button" class="mock-choice-card" data-role="senior" onclick="selectMockRole('senior', this)">
-              <div class="mock-choice-title">🚀 Senior / Tech Lead</div>
-              <div class="mock-choice-desc">Batch, Anypoint MQ, Performance Tuning &amp; CloudHub 2.0</div>
-            </button>
-            <button type="button" class="mock-choice-card" data-role="architect" onclick="selectMockRole('architect', this)">
-              <div class="mock-choice-title">🏛️ Integration Architect</div>
-              <div class="mock-choice-desc">API Governance, Sagas, Multi-AZ HA, Security &amp; Sizing</div>
-            </button>
-          </div>
-        </div>
-
-        <div class="mock-setup-group">
-          <div class="mock-setup-label">2. Choose Interview Length</div>
-          <div class="mock-choice-grid mock-choice-grid-3" id="mock-length-choices">
-            <button type="button" class="mock-choice-card" onclick="selectMockPreset(5, 7, this)">
-              <div class="mock-choice-title">⚡ Quick Drill</div>
-              <div class="mock-choice-desc">5 Questions · 7 Minutes</div>
-            </button>
-            <button type="button" class="mock-choice-card active" onclick="selectMockPreset(10, 15, this)">
-              <div class="mock-choice-title">🎯 Standard Panel</div>
-              <div class="mock-choice-desc">10 Questions · 15 Minutes (Recommended)</div>
-            </button>
-            <button type="button" class="mock-choice-card" onclick="selectMockPreset(15, 25, this)">
-              <div class="mock-choice-title">🏆 Full Architect Round</div>
-              <div class="mock-choice-desc">15 Questions · 25 Minutes</div>
-            </button>
-          </div>
-        </div>
-
-        <div class="mock-start-bar">
-          <button type="button" class="btn btn-primary mock-start-btn" id="mock-start-btn" onclick="startMockInterview()">
-            🚀 Start Timed Mock Interview
-          </button>
-          <span class="mock-setup-hint">Tip: Speak your answer aloud for 60–90 seconds before clicking Reveal!</span>
-        </div>
-      </div>
-
-      <!-- SCREEN 2: ACTIVE INTERVIEW -->
-      <div id="mock-screen-active" class="mock-screen" style="display:none;">
-        <div class="mock-progress-row">
-          <span class="mock-progress-label" id="mock-q-counter">Question 1 of 10</span>
-          <div class="mock-progress-track">
-            <div class="mock-progress-fill" id="mock-progress-fill" style="width:10%;"></div>
-          </div>
-          <span class="mock-badge-pill" id="mock-q-role-badge">SENIOR</span>
-        </div>
-
-        <div class="mock-q-card">
-          <div class="mock-q-module" id="mock-q-module">Module A · Interview Coaching</div>
-          <h3 class="mock-q-title" id="mock-q-title">Loading question...</h3>
-          <p class="mock-q-prompt-hint" id="mock-q-hint">🎙️ Think aloud like a real panel interview (60–90 sec), then reveal the model answer to self-grade.</p>
-
-          <div id="mock-reveal-wrap">
-            <button type="button" class="btn btn-primary mock-reveal-btn" id="mock-reveal-btn" onclick="revealMockAnswer()">
-              👁️ Reveal Senior Model Answer
-            </button>
-          </div>
-
-          <div id="mock-answer-section" style="display:none;">
-            <div class="mock-answer-box" id="mock-answer-content"></div>
-            <div class="mock-grade-bar">
-              <div class="mock-grade-prompt">How well did you answer this?</div>
-              <div class="mock-grade-buttons">
-                <button type="button" class="mock-grade-btn grade-got" onclick="gradeMockQuestion('got')">✅ Got It (100%)</button>
-                <button type="button" class="mock-grade-btn grade-partial" onclick="gradeMockQuestion('partial')">⚠️ Partial (50%)</button>
-                <button type="button" class="mock-grade-btn grade-missed" onclick="gradeMockQuestion('missed')">❌ Missed (0%)</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SCREEN 3: READINESS SCORECARD -->
-      <div id="mock-screen-results" class="mock-screen" style="display:none;">
-        <div class="mock-score-hero">
-          <div class="mock-score-circle" id="mock-score-circle">
-            <span class="mock-score-pct" id="mock-score-pct">0%</span>
-            <span class="mock-score-caption">Readiness</span>
-          </div>
-          <div class="mock-score-summary">
-            <h3 class="mock-score-verdict" id="mock-score-verdict">Interview Ready!</h3>
-            <p class="mock-score-meta" id="mock-score-meta">Completed 10 questions in 08:42</p>
-            <div class="mock-tally-pills">
-              <span class="tally-pill tally-got" id="mock-tally-got">✅ 0 Got It</span>
-              <span class="tally-pill tally-partial" id="mock-tally-partial">⚠️ 0 Partial</span>
-              <span class="tally-pill tally-missed" id="mock-tally-missed">❌ 0 Missed</span>
-            </div>
-            <div class="mock-result-actions">
-              <button type="button" class="btn btn-primary btn-sm" id="mock-copy-score-btn" onclick="copyMockScorecard()">📋 Copy Readiness Summary</button>
-              <a class="btn btn-sm btn-linkedin" id="mock-linkedin-share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2F" target="_blank" rel="noopener noreferrer" onclick="copyMockScorecard()">💬 Share Score on LinkedIn ↗</a>
-              <button type="button" class="btn btn-sm" onclick="resetMockToSetup()">🔄 New Mock Interview</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="mock-results-section">
-          <h4 class="mock-results-heading">📊 Performance by Module</h4>
-          <div id="mock-module-breakdown" class="mock-breakdown-list"></div>
-        </div>
-
-        <div class="mock-results-section" id="mock-review-section">
-          <h4 class="mock-results-heading">🎯 Questions to Review (Missed &amp; Partial)</h4>
-          <div id="mock-review-list" class="mock-review-list"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-<!-- Floating Action Buttons for Mobile (< 1024px) -->
-<div class="fab-container">
-  <button aria-label="Back to Top" class="fab-btn fab-top" id="fabBackToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="Back to Top">
-    <span class="fab-icon">↑</span>
-  </button>
-</div>
-<!-- Diagram Lightbox Modal -->
-<div class="diagram-lightbox" id="diagramLightbox" role="dialog" aria-modal="true" aria-label="Diagram Fullscreen View">
-  <button class="diagram-lightbox-close" id="diagramLightboxClose" aria-label="Close fullscreen view">×</button>
-  <div class="diagram-lightbox-content" id="diagramLightboxContent"></div>
-</div>
 </body>
 </html>

@@ -1,0 +1,348 @@
+// MuleSoft Hub Engineering Blog Portal — Search, Filters, Theme, Flow Animator, ARIA Tabs & Checklists
+(function () {
+  var THEME_KEY = 'mulesoft_blog_theme';
+
+  function applyTheme(theme) {
+    var t = theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    var btn = document.getElementById('theme-toggle-btn');
+    if (btn) {
+      btn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+      btn.textContent = t === 'dark' ? '☀️ Light' : '🌙 Dark';
+    }
+    try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
+  }
+
+  function initTheme() {
+    var saved = 'light';
+    try { saved = localStorage.getItem(THEME_KEY) || 'light'; } catch (e) {}
+    applyTheme(saved);
+    var btn = document.getElementById('theme-toggle-btn');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        var cur = document.documentElement.getAttribute('data-theme');
+        applyTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+  }
+
+  function initSearchAndFilters() {
+    var topInput = document.getElementById('portal-global-search');
+    var heroInput = document.getElementById('blog-search');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
+    var pills = Array.prototype.slice.call(document.querySelectorAll('.filter-pill'));
+    var countEl = document.getElementById('portal-result-count');
+    var emptyEl = document.getElementById('portal-empty-state');
+
+    if (cards.length === 0) {
+      if (topInput) {
+        topInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && topInput.value.trim()) {
+            var rootUrl = topInput.getAttribute('data-root') || 'index.html';
+            window.location.href = rootUrl + '?q=' + encodeURIComponent(topInput.value.trim());
+          }
+        });
+      }
+      return;
+    }
+
+    var activeCat = 'all';
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var qParam = params.get('q') || '';
+      if (qParam) {
+        if (topInput) topInput.value = qParam;
+        if (heroInput) heroInput.value = qParam;
+      }
+    } catch (e) {}
+
+    function filterCards(sourceVal) {
+      var q = (sourceVal || '').toLowerCase().trim();
+      var visible = 0;
+      cards.forEach(function (card) {
+        var cats = (card.getAttribute('data-cat') || '').split(/\s+/);
+        var matchCat = activeCat === 'all' || cats.indexOf(activeCat) !== -1;
+        var matchQ = !q || card.textContent.toLowerCase().indexOf(q) !== -1;
+        var show = matchCat && matchQ;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (countEl) {
+        countEl.textContent = 'Showing ' + visible + ' of ' + cards.length + ' guides';
+      }
+      if (emptyEl) {
+        emptyEl.hidden = visible > 0;
+      }
+    }
+
+    function syncInputs(val, origin) {
+      if (topInput && origin !== topInput) topInput.value = val;
+      if (heroInput && origin !== heroInput) heroInput.value = val;
+      filterCards(val);
+    }
+
+    if (topInput) topInput.addEventListener('input', function () { syncInputs(topInput.value, topInput); });
+    if (heroInput) heroInput.addEventListener('input', function () { syncInputs(heroInput.value, heroInput); });
+
+    pills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        activeCat = pill.getAttribute('data-cat') || 'all';
+        pills.forEach(function (p) { p.setAttribute('aria-pressed', p === pill ? 'true' : 'false'); });
+        filterCards(heroInput ? heroInput.value : (topInput ? topInput.value : ''));
+      });
+    });
+
+    filterCards(heroInput ? heroInput.value : (topInput ? topInput.value : ''));
+  }
+
+  function addCopyButtons() {
+    document.querySelectorAll('.post-body pre').forEach(function (pre) {
+      if (pre.querySelector('.copy-btn')) return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code snippet to clipboard');
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code');
+        var text = (code || pre).innerText;
+        var done = function () {
+          btn.textContent = 'Copied ✓';
+          setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(function () {});
+        }
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  function initTabs() {
+    document.querySelectorAll('.setup-tabs-box').forEach(function (box) {
+      var tabs = Array.prototype.slice.call(box.querySelectorAll('[role="tab"]'));
+      var panels = Array.prototype.slice.call(box.querySelectorAll('[role="tabpanel"]'));
+
+      function activateTab(tab) {
+        var targetId = tab.getAttribute('aria-controls');
+        tabs.forEach(function (t) {
+          var active = t === tab;
+          t.setAttribute('aria-selected', active ? 'true' : 'false');
+          t.setAttribute('tabindex', active ? '0' : '-1');
+        });
+        panels.forEach(function (p) {
+          p.hidden = p.id !== targetId;
+        });
+      }
+
+      tabs.forEach(function (tab, idx) {
+        tab.addEventListener('click', function () { activateTab(tab); });
+        tab.addEventListener('keydown', function (e) {
+          var nextIdx = null;
+          if (e.key === 'ArrowRight') nextIdx = (idx + 1) % tabs.length;
+          else if (e.key === 'ArrowLeft') nextIdx = (idx - 1 + tabs.length) % tabs.length;
+          else if (e.key === 'Home') nextIdx = 0;
+          else if (e.key === 'End') nextIdx = tabs.length - 1;
+          if (nextIdx !== null) {
+            e.preventDefault();
+            tabs[nextIdx].focus();
+            activateTab(tabs[nextIdx]);
+          }
+        });
+      });
+    });
+  }
+
+  function initFlowSimulators() {
+    document.querySelectorAll('.flow-sim').forEach(function (sim) {
+      var dataScript = sim.querySelector('.flow-sim-data');
+      if (!dataScript) return;
+      var flowData;
+      try { flowData = JSON.parse(dataScript.textContent); } catch (e) { return; }
+
+      var nodes = Array.prototype.slice.call(sim.querySelectorAll('.flow-node'));
+      var dot = sim.querySelector('.flow-pulse-dot');
+      var railWrap = sim.querySelector('.flow-rail-wrap');
+      var statusEl = sim.querySelector('.flow-sim-status');
+      var inspTitle = sim.querySelector('.insp-node-title');
+      var inspWhat = sim.querySelector('.insp-node-what');
+      var inspCfg = sim.querySelector('.insp-node-config');
+      var inspProps = sim.querySelector('.studio-props-tbody');
+      var playBtn = sim.querySelector('.btn-play-flow');
+      var copyXmlBtn = sim.querySelector('.btn-copy-xml');
+      var timer = null;
+
+      function moveDotTo(node) {
+        if (!dot || !railWrap || !node) return;
+        var left = node.offsetLeft + node.offsetWidth / 2 - 7;
+        dot.style.transform = 'translateX(' + Math.max(0, left - 24) + 'px)';
+      }
+
+      function selectNode(idx) {
+        var n = (flowData.nodes || [])[idx];
+        if (!n) return;
+        nodes.forEach(function (el, i) {
+          el.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+          el.classList.toggle('is-active', i === idx);
+        });
+        if (inspTitle) inspTitle.textContent = (idx + 1) + '. ' + n.label + ' (' + n.type + ')';
+        if (inspWhat) inspWhat.textContent = n.what || '';
+        if (inspCfg) inspCfg.textContent = n.config_values || '';
+        if (inspProps) {
+          inspProps.innerHTML = '';
+          (n.studio_props || []).forEach(function (pair) {
+            var tr = document.createElement('tr');
+            var th = document.createElement('th');
+            th.scope = 'row';
+            th.textContent = pair[0];
+            var td = document.createElement('td');
+            td.textContent = pair[1];
+            tr.appendChild(th);
+            tr.appendChild(td);
+            inspProps.appendChild(tr);
+          });
+        }
+        moveDotTo(nodes[idx]);
+      }
+
+      nodes.forEach(function (nodeEl, idx) {
+        nodeEl.addEventListener('click', function () {
+          if (timer) { clearInterval(timer); timer = null; }
+          if (dot) dot.classList.remove('is-running');
+          if (playBtn) playBtn.textContent = '▶ Play Flow Animation';
+          selectNode(idx);
+          if (statusEl) statusEl.textContent = 'Inspecting Step ' + (idx + 1) + ' of ' + nodes.length;
+        });
+      });
+
+      if (playBtn) {
+        playBtn.addEventListener('click', function () {
+          if (timer) {
+            clearInterval(timer);
+            timer = null;
+            if (dot) dot.classList.remove('is-running');
+            playBtn.textContent = '▶ Play Flow Animation';
+            if (statusEl) statusEl.textContent = 'Animation paused';
+            return;
+          }
+          var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var idx = 0;
+          if (dot && !reduced) dot.classList.add('is-running');
+          playBtn.textContent = '⏸ Pause Animation';
+          selectNode(0);
+          if (statusEl) statusEl.textContent = 'Running step 1 of ' + nodes.length + '...';
+          timer = setInterval(function () {
+            idx++;
+            if (idx >= nodes.length) {
+              clearInterval(timer);
+              timer = null;
+              if (dot) dot.classList.remove('is-running');
+              playBtn.textContent = '▶ Replay Flow';
+              if (statusEl) statusEl.textContent = 'Flow completed (' + nodes.length + '/' + nodes.length + ' processors)';
+              return;
+            }
+            selectNode(idx);
+            if (statusEl) statusEl.textContent = 'Running step ' + (idx + 1) + ' of ' + nodes.length + '...';
+          }, reduced ? 400 : 900);
+        });
+      }
+
+      if (copyXmlBtn && flowData.flow_xml) {
+        copyXmlBtn.addEventListener('click', function () {
+          var done = function () {
+            copyXmlBtn.textContent = '✓ XML Copied';
+            setTimeout(function () { copyXmlBtn.textContent = '📋 Copy XML'; }, 2000);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(flowData.flow_xml).then(done).catch(function () {});
+          }
+        });
+      }
+
+      selectNode(0);
+    });
+  }
+
+  function initSetupChecklists() {
+    document.querySelectorAll('.setup-checklist-box').forEach(function (box) {
+      var slug = box.getAttribute('data-slug') || 'default';
+      var key = 'mulesoft_checklist_' + slug;
+      var btns = Array.prototype.slice.call(box.querySelectorAll('.setup-cl-btn'));
+      var fill = box.querySelector('.setup-cl-fill');
+      var countEl = box.querySelector('.setup-cl-count');
+      var state = [];
+      try { state = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) {}
+
+      function render() {
+        var checked = 0;
+        btns.forEach(function (b, i) {
+          var on = !!state[i];
+          if (on) checked++;
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          var tick = b.querySelector('.cl-tick');
+          if (tick) tick.textContent = on ? '✓' : '';
+        });
+        if (fill) fill.style.width = Math.round((checked / Math.max(1, btns.length)) * 100) + '%';
+        if (countEl) countEl.textContent = checked + ' / ' + btns.length + ' done';
+      }
+
+      btns.forEach(function (b, i) {
+        b.addEventListener('click', function () {
+          state[i] = !state[i];
+          try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) {}
+          render();
+        });
+      });
+
+      render();
+    });
+  }
+
+  function initHelpfulWidgets() {
+    document.querySelectorAll('.helpful-box').forEach(function (box) {
+      var slug = box.getAttribute('data-slug') || 'page';
+      var key = 'mulesoft_helpful_' + slug;
+      var yesBtn = box.querySelector('[data-vote="yes"]');
+      var fixBtn = box.querySelector('[data-vote="fix"]');
+      var reply = box.querySelector('.helpful-reply');
+
+      function apply(vote) {
+        if (yesBtn) yesBtn.setAttribute('aria-pressed', vote === 'yes' ? 'true' : 'false');
+        if (fixBtn) fixBtn.setAttribute('aria-pressed', vote === 'fix' ? 'true' : 'false');
+        if (reply) {
+          if (vote === 'yes') {
+            reply.textContent = 'Thanks for the feedback! Feel free to share what you built in the LinkedIn comments below.';
+            reply.hidden = false;
+          } else if (vote === 'fix') {
+            reply.textContent = 'Appreciate it! Click Comment on LinkedIn below with the step or error to improve.';
+            reply.hidden = false;
+          }
+        }
+      }
+
+      try {
+        var saved = localStorage.getItem(key);
+        if (saved) apply(saved);
+      } catch (e) {}
+
+      [yesBtn, fixBtn].forEach(function (b) {
+        if (!b) return;
+        b.addEventListener('click', function () {
+          var vote = b.getAttribute('data-vote');
+          try { localStorage.setItem(key, vote); } catch (e) {}
+          apply(vote);
+        });
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initTheme();
+    initSearchAndFilters();
+    addCopyButtons();
+    initTabs();
+    initFlowSimulators();
+    initSetupChecklists();
+    initHelpfulWidgets();
+  });
+})();

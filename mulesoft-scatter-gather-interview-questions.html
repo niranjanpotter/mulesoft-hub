@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090D16" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="color-scheme" content="dark light">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>MuleSoft Scatter-Gather Router: Interview Questions & Error Recovery</title>
   <meta name="description" content="In-depth guide to MuleSoft Scatter-Gather router. Master MULE:COMPOSITE_ROUTING errors, payload aggregation, and route isolation.">
-  <meta name="keywords" content="mulesoft interview questions, mulesoft scenario based interview questions, mulesoft architecture, anypoint platform 2026">
+  <meta name="author" content="Niranjan Potter">
   <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scatter-gather-interview-questions.html">
-  <meta property="og:title" content="MuleSoft Scatter-Gather Router: Interview Questions & Error Recovery">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MuleSoft Scatter-Gather Router: Interview Questions &amp; Error Recovery">
   <meta property="og:description" content="In-depth guide to MuleSoft Scatter-Gather router. Master MULE:COMPOSITE_ROUTING errors, payload aggregation, and route isolation.">
   <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scatter-gather-interview-questions.html">
-  <meta property="og:type" content="article">
-  <link rel="stylesheet" href="assets/css/article.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="assets/css/blog-portal.css">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +45,6 @@
   ]
 }
   </script>
-
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,44 +87,240 @@
   "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"
 }
   </script>
-  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script defer src="assets/js/blog-portal.js"></script>
 </head>
-<body class="dark-theme">
-  <!-- Top Global Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">
-        <span class="brand-logo">⚡</span>
-        <span class="brand-text">MuleSoft Hub</span>
-        <span class="badge-edition">2026 EDITION</span>
-      </a>
-      <div class="nav-controls">
-        <a href="index.html" class="btn btn-outline">← Back to Master Hub</a>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a> › Scatter-Gather Router</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header">
+          <span class="post-kicker">Core Mule 4 Playbook · Interactive Setup + Architecture Q&amp;A</span>
+          <h1>MuleSoft Scatter-Gather Router: Architecture & Error Handling</h1>
+          <p class="post-lede">Parallel execution mechanics, thread pooling, timeout management, and extracting successful routes from partial failures.</p>
+          <div class="post-meta">
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span>✍️ Niranjan Potter</span>
+            <span>📅 Updated Nov 2026</span>
+            <span>⏱️ 12 min read</span>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <h2 id="overview">Overview &amp; Key Takeaways</h2>
+          <p>Master parallel Scatter-Gather execution in Mule 4: reactive thread pool sizing, per-route Try scopes for partial failures, and flattening route outputs cleanly.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Studio · Scatter-Gather Parallel Route &amp; Try Recovery</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Mule 4.9 Reactive Engine · Max Concurrency Tuned</span>
+        <span class="anypoint-status-ok">● PARTIAL-SAFE ROUTE UP</span>
       </div>
     </div>
-  </header>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Parallel Latency</span><span class="anypoint-kpi-val">max(R1, R2, R3) ~ 240 ms</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">maxConcurrency</span><span class="anypoint-kpi-val">3 (Tuned vs Pool Limit)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Timeout Per Route</span><span class="anypoint-kpi-val">3,000 ms Strict</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Output Index Access</span><span class="anypoint-kpi-val">payload[&#x27;0&#x27;].payload</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Parallel Routes + Try Error Isolation</div>
+          <div class="anypoint-pane-bd">Route 0 -&gt; SAP Pricing SAPI    [OK: 180 ms]
+Route 1 -&gt; Inventory SAPI      [OK: 240 ms]
+Route 2 -&gt; Loyalty Points SAPI [Try -&gt; OnErrorContinue -&gt; default 0]</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Merged Message Map &amp; DataWeave Flatten</div>
+          <div class="anypoint-pane-bd">payload[&#x27;0&#x27;].payload -&gt; { unitPrice: 120.00 }
+payload[&#x27;1&#x27;].payload -&gt; { inStock: true, qty: 42 }
+payload[&#x27;2&#x27;].payload -&gt; { loyaltyBonus: 0, degraded: true }</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — Isolating non-critical Route 2 inside a Try + On-Error-Continue scope so a Loyalty service blip never crashes an Order checkout.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
-  <div class="container main-content-layout" style="max-width: 1050px; margin: 30px auto; padding: 0 20px;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumb-trail" style="margin-bottom: 25px; color: var(--text-dim); font-size: 0.85rem;">
-      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none;">Home</a> &gt; 
-      <span style="color: var(--text-main);">Scatter-Gather Router</span>
-    </nav>
+          <h2 id="architecture">Architecture &amp; Flow Path</h2>
+          <p>Trace how an inbound request flows across Mule Runtime 4.9 LTS processors below, inspect Studio properties per component, and copy the production XML configuration.</p>
 
-    <!-- Hero Header -->
-    <header class="page-hero-header" style="margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;">
-      <span class="module-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; padding: 4px 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">ENTERPRISE GUIDE 2026</span>
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 15px 0 10px 0; line-height: 1.25;">MuleSoft Scatter-Gather Router: Architecture & Error Handling</h1>
-      <p style="color: var(--text-dim); font-size: 1.05rem; max-width: 850px; line-height: 1.6;">Parallel execution mechanics, thread pooling, timeout management, and extracting successful routes from partial failures.</p>
-    </header>
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🌐</span><span class="flow-node-title">Checkout Listener</span><span class="flow-node-type">HTTP GET /quote</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔀</span><span class="flow-node-title">Scatter-Gather</span><span class="flow-node-type">Parallel Multicast</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">Try Error Boundary</span><span class="flow-node-type">Route 2 On-Error-Continue</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚙️</span><span class="flow-node-title">DW Route Merger</span><span class="flow-node-type">DataWeave 2.0 Merge</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📤</span><span class="flow-node-title">Aggregated Reply</span><span class="flow-node-type">JSON Quote Response</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Checkout Listener (HTTP GET /quote)</h3>
+      <p class="insp-node-what">Receives a parallel quote/aggregation request carrying customerId and sku parameters.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">path=/api/v1/quote/{sku}</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>Quote Aggregation API</td></tr>
+<tr><th scope="row">Path</th><td>/api/v1/quote/{sku}</td></tr>
+<tr><th scope="row">Allowed</th><td>GET</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;flow name=&quot;scatter-gather-partial-recovery-flow&quot;&gt;
+    &lt;scatter-gather maxConcurrency=&quot;3&quot; timeout=&quot;4000&quot;&gt;
+      &lt;route&gt;&lt;flow-ref name=&quot;sap-pricing-subflow&quot;/&gt;&lt;/route&gt;
+      &lt;route&gt;&lt;flow-ref name=&quot;warehouse-stock-subflow&quot;/&gt;&lt;/route&gt;
+      &lt;route&gt;
+        &lt;try&gt;
+          &lt;flow-ref name=&quot;loyalty-points-subflow&quot;/&gt;
+          &lt;error-handler&gt;
+            &lt;on-error-continue type=&quot;ANY&quot;&gt;
+              &lt;set-payload value=&#x27;#[output application/json --- { points: 0, degraded: true }]&#x27;/&gt;
+            &lt;/on-error-continue&gt;
+          &lt;/error-handler&gt;
+        &lt;/try&gt;
+      &lt;/route&gt;
+    &lt;/scatter-gather&gt;
+    &lt;ee:transform&gt;
+      &lt;ee:message&gt;&lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+---
+{
+  pricing: payload[&#x27;0&#x27;].payload,
+  inventory: payload[&#x27;1&#x27;].payload,
+  loyalty: payload[&#x27;2&#x27;].payload
+}]]&gt;&lt;/ee:set-payload&gt;&lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🌐", "label": "Checkout Listener", "type": "HTTP GET /quote", "what": "Receives a parallel quote/aggregation request carrying customerId and sku parameters.", "config_values": "path=/api/v1/quote/{sku}", "studio_props": [["Display Name", "Quote Aggregation API"], ["Path", "/api/v1/quote/{sku}"], ["Allowed", "GET"]]}, {"icon": "🔀", "label": "Scatter-Gather", "type": "Parallel Multicast", "what": "Broadcasts immutable Mule Event copies across all child routes simultaneously, cutting total wait from Sum(routes) to Max(slowest route).", "config_values": "maxConcurrency=3 | timeout=4000ms", "studio_props": [["Display Name", "Parallel Quote Lookup"], ["Max Concurrency", "3"], ["Global Timeout", "4000 ms"], ["Output", "Map{'0':Msg,'1':Msg,'2':Msg}"]]}, {"icon": "🛡️", "label": "Try Error Boundary", "type": "Route 2 On-Error-Continue", "what": "Wraps non-critical Loyalty/Promo route in Try -> On Error Continue returning a degraded fallback object so one failing route does NOT throw MULE:COMPOSITE_ROUTING.", "config_values": "try -> on-error-continue -> {loyaltyDegraded: true}", "studio_props": [["Display Name", "Isolate Loyalty Route"], ["Scope", "Try + On Error Continue"], ["Fallback Points", "0"]]}, {"icon": "⚙️", "label": "DW Route Merger", "type": "DataWeave 2.0 Merge", "what": "Reads indexed route outputs (payload['0'].payload, payload['1'].payload) rather than assuming an Array (remember Mule 4 returns a numbered Map/Object!).", "config_values": "price: payload['0'].payload.price | flatten", "studio_props": [["Display Name", "Merge Route Maps"], ["Route 0 Key", "payload['0'].payload"], ["Route 1 Key", "payload['1'].payload"], ["Helper", "valuesOf(payload) map $.payload"]]}, {"icon": "📤", "label": "Aggregated Reply", "type": "JSON Quote Response", "what": "Returns unified quote object with partial-degradation flags to caller within the strict p95 SLA budget.", "config_values": "200 OK even when non-critical route degraded", "studio_props": [["Display Name", "Return Quote JSON"], ["Status", "200 OK"], ["Partial Flag", "degradedRoutes[]"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <flow name=\"scatter-gather-partial-recovery-flow\">\n    <scatter-gather maxConcurrency=\"3\" timeout=\"4000\">\n      <route><flow-ref name=\"sap-pricing-subflow\"/><\/route>\n      <route><flow-ref name=\"warehouse-stock-subflow\"/><\/route>\n      <route>\n        <try>\n          <flow-ref name=\"loyalty-points-subflow\"/>\n          <error-handler>\n            <on-error-continue type=\"ANY\">\n              <set-payload value='#[output application/json --- { points: 0, degraded: true }]'/>\n            <\/on-error-continue>\n          <\/error-handler>\n        <\/try>\n      <\/route>\n    <\/scatter-gather>\n    <ee:transform>\n      <ee:message><ee:set-payload><![CDATA[%dw 2.0\noutput application/json\n---\n{\n  pricing: payload['0'].payload,\n  inventory: payload['1'].payload,\n  loyalty: payload['2'].payload\n}]]><\/ee:set-payload><\/ee:message>\n    <\/ee:transform>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mulesoft-scatter-gather-interview-questions">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Index Scatter-Gather output as payload[&#x27;0&#x27;].payload (Object Map)</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Wrap optional downstream routes in Try + On-Error-Continue</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Set explicit route &amp; global timeouts on slow backends</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Cap maxConcurrency when running inside 0.1-0.2 vCore pods</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Test partial route failure cleanly using MUnit mock-when</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
 
-    <!-- Main Q&A Content -->
-    <main>
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mulesoft-scatter-gather-interview-questions" aria-selected="true" aria-controls="panel-studio-mulesoft-scatter-gather-interview-questions" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mulesoft-scatter-gather-interview-questions" aria-selected="false" aria-controls="panel-platform-mulesoft-scatter-gather-interview-questions" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mulesoft-scatter-gather-interview-questions" aria-selected="false" aria-controls="panel-test-mulesoft-scatter-gather-interview-questions" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mulesoft-scatter-gather-interview-questions" aria-labelledby="btn-tab-studio-mulesoft-scatter-gather-interview-questions">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>scatter-gather-quote-papi</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · Core Scatter-Gather Router</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;!-- Scatter-Gather is built directly into mule-core; test error isolation via MUnit --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.munit&lt;/groupId&gt;
+  &lt;artifactId&gt;munit-runner&lt;/artifactId&gt;
+  &lt;version&gt;${munit.version}&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Timeout (ms)</code></td><td><code>4000</code></td><td>Abort slow routes instead of pinning reactive pool threads indefinitely</td></tr>
+<tr><td><code>maxConcurrency</code></td><td><code>3</code></td><td>Prevents thread starvation under high concurrent HTTP traffic</td></tr>
+<tr><td><code>Critical vs Optional</code></td><td><code>Try + On-Error-Continue per route</code></td><td>Mandatory to avoid MULE:COMPOSITE_ROUTING aborting whole response</td></tr>
+<tr><td><code>DataWeave Reading</code></td><td><code>payload[&#x27;0&#x27;].payload or valuesOf(payload)</code></td><td>Scatter-Gather outputs numbered Object Map, NOT direct Array</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mulesoft-scatter-gather-interview-questions" aria-labelledby="btn-tab-platform-mulesoft-scatter-gather-interview-questions" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Size CloudHub 2.0 vCores accurately (0.2+ vCore when running 5+ concurrent heavy downstream calls).</li>
+        <li>Monitor reactive CPU_LITE &amp; HTTP client latency per target dependency in Anypoint Monitoring.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mulesoft-scatter-gather-interview-questions" aria-labelledby="btn-tab-test-mulesoft-scatter-gather-interview-questions" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>GET http://localhost:8081/api/v1/quote/SKU-401</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s &quot;http://localhost:8081/api/v1/quote/SKU-401&quot; </code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;pricing&quot;: { &quot;unitPrice&quot;: 120.00 },
+  &quot;inventory&quot;: { &quot;inStock&quot;: true, &quot;qty&quot;: 42 },
+  &quot;loyalty&quot;: { &quot;points&quot;: 0, &quot;degraded&quot;: true }
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>MULE:COMPOSITE_ROUTING aborted valid routes</code></td><td>Route 2 threw exception without inner Try scope</td><td>Wrap optional routes inside Try -&gt; On Error Continue</td></tr>
+<tr><td><code>DataWeave error indexing payload[0]</code></td><td>Accessed payload[0] as array instead of string key payload[&#x27;0&#x27;]</td><td>Use payload[&#x27;0&#x27;].payload or pluck((v) -&gt; v.payload)</td></tr>
+<tr><td><code>Thread pool exhaustion on 0.1 vCore</code></td><td>Unbounded parallel fan-out under load spike</td><td>Set explicit maxConcurrency and tighten HTTP responseTimeout</td></tr>
+<tr><td><code>Variables set in Route 0 missing in Route 1</code></td><td>Routes run concurrently on isolated Event copies</td><td>Only merge variables AFTER Scatter-Gather completes</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
-    <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
+          <h2 id="deep-dive-qa">Architecture Deep-Dive Q&amp;A</h2>
+          <!-- PORTAL:START:ORIG_QA -->
+          <div class="faq-card" data-role="senior developer / architect" id="topic-q1">
       <div class="faq-header">
         <div class="faq-meta-row">
           <span class="q-tag">Q1</span>
@@ -169,21 +365,57 @@ output application/json
         
       </div>
     </div>
+          <!-- PORTAL:END:ORIG_QA -->
 
+          <h2 id="related">Related Enterprise Architecture Topics</h2>
+          <section class="related-topics-section" aria-label="Related guides">
+            <ul>
+              
+            </ul>
+          </section>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mulesoft-scatter-gather-interview-questions" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p>💬 Tried this playbook or hit an edge case in production? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="mulesoft-oauth-jwt-bearer-token-interview.html"><span>← Previous Guide</span><strong>OAuth 2.0 JWT Bearer Flow</strong></a>
+  <a class="next" href="mulesoft-opentelemetry-tracing-observability.html"><span>Next Guide →</span><strong>OpenTelemetry &amp; Tracing</strong></a>
+</nav>
+      </article>
     </main>
 
-    <!-- Related Topics -->
-    <section class="related-topics-section" style="margin-top: 50px; padding: 30px; background: rgba(19, 27, 46, 0.7); border: 1px solid var(--border-color); border-radius: 12px;">
-      <h3 style="color: #fff; margin-bottom: 15px;">📚 Related Enterprise Architecture Topics</h3>
-      <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-        <li><a href="mulesoft-batch-processing-interview-questions.html">Batch Processing Deep Dive</a></li><li><a href="mulesoft-reusable-error-handler-plugin.html">Enterprise Error Handler Plugin</a></li><li><a href="mulesoft-scenario-based-interview-questions.html">Top 20 Production Scenarios</a></li>
-      </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-      <p>© 2026 Niranjan Kumar Potter. MuleSoft Hub — Derived from the 159-Page Enterprise Runbook &amp; Master 2026 Guide.</p>
-    </footer>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">Overview &amp; Key Takeaways</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; Flow Path</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#deep-dive-qa">Architecture Deep-Dive Q&amp;A</a></li>
+        <li><a href="#related">Related Enterprise Architecture Topics</a></li>
+      </ol>
+    </aside>
   </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
 </body>
 </html>

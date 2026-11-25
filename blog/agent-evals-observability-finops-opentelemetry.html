@@ -14,8 +14,12 @@
 <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html">
 <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
 <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300F2FE'/%3E%3Cstop offset='1' stop-color='%233E63DD'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23090D16'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="blog.css">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+<link rel="stylesheet" href="../assets/css/blog-portal.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,23 +33,33 @@
   "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html"
 }
 </script>
-<script defer src="blog.js"></script>
+<script defer src="../assets/js/blog-portal.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="blog-topbar">
-  <div class="blog-topbar-inner">
-    <a class="blog-brand" href="../index.html">⚡ MuleSoft Hub <span class="blog-brand-badge">Blog</span></a>
-    <nav class="blog-nav" aria-label="Main">
-      <a href="../index.html">Interview Hub</a>
-      <a href="index.html">All Articles</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 28 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search MCP, Agent Fabric, A2A, Batch, CloudHub 2.0...">
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
       <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
     </nav>
   </div>
 </header>
 
-<div class="blog-wrap">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Blog</a> › Agent Evals, OTel &amp; FinOps</nav>
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › Agent Evals, OTel &amp; FinOps</nav>
   <div class="post-layout">
     <main id="main">
       <article>
@@ -54,10 +68,11 @@
           <h1>Testing, Observability &amp; FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals &amp; Cost Guardrails</h1>
           <p class="post-lede">Ship production-grade MuleSoft AI agents with confidence by uniting end-to-end W3C OpenTelemetry <code>gen_ai.*</code> distributed tracing, two-tier MUnit 3 deterministic + Golden Dataset LLM-as-a-Judge evaluations, tiered model routing, and sub-second Object Store v2 FinOps kill switches.</p>
           <div class="post-meta">
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
             <span>✍️ Niranjan Potter</span>
-            <span>📅 Nov 24, 2026</span>
+            <span>📅 Updated Nov 2026</span>
             <span>⏱️ 18 min read</span>
-            <span class="tag">OpenTelemetry</span><span class="tag">MUnit &amp; FinOps</span>
           </div>
         </header>
 
@@ -69,6 +84,50 @@
             <li><strong>Pillar 2 — Two-Tier MUnit 3 Evaluation Pipeline:</strong> Run fast, zero-cost mocked MUnit 3 tests on every PR (schema validation, PII scrubbing, 429 fallback, loop bounds) plus a nightly 50+ scenario <strong>Golden Dataset Suite</strong> gated in GitHub Actions on Tool Selection Accuracy, Argument Faithfulness, Groundedness, and P95 Latency.</li>
             <li><strong>Pillar 3 — AI FinOps, Model Wallet &amp; Kill Switch:</strong> Enforce <code>X-Cost-Center</code> and <code>X-Agent-Id</code> chargeback headers, route low-complexity intents to compact models, cap agent iterations (<code>maxIterations = 4</code>), and wire an Object Store v2 + Flex Gateway kill switch to halt runaway spend in under 1 second.</li>
           </ul>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Monitoring + OpenTelemetry GenAI Trace Waterfall</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Production · OTLP -&gt; Tempo / Datadog / Splunk</span>
+        <span class="anypoint-status-ok">● EVALS 96.4% · ON BUDGET</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Golden Eval Pass Rate</span><span class="anypoint-kpi-val">96.4% (50/52 Cases)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Trace P95 Latency</span><span class="anypoint-kpi-val">1,420 ms End-to-End</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Cost Center Attribution</span><span class="anypoint-kpi-val">100% Tagged (X-Cost-Center)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Max Loop Iterations</span><span class="anypoint-kpi-val">4 (Circuit Breaker Active)</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Distributed Trace Waterfall (W3C traceparent)</div>
+          <div class="anypoint-pane-bd">|- agentforce.atlas.plan          [280ms]
+  |- mule.a2a.broker              [940ms] cc=FIN-204
+    |- flex.llm.proxy             [510ms] gen_ai.tokens=1140 ($0.004)
+    |- mule.mcp.sap-lookup        [190ms] tool=lookup-order-status</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Nightly CI Golden Eval Metrics (GitHub Actions)</div>
+          <div class="anypoint-pane-bd">Tool Selection Accuracy : 98.1% (min gate &gt;= 95%)
+Argument Faithfulness   : 96.5% (min gate &gt;= 93%)
+Groundedness (Zero Hall): 97.2% (min gate &gt;= 95%)
+Kill Switch E2E Probe   : PASS (&lt; 450 ms quarantine)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View — End-to-end distributed OpenTelemetry waterfall pairing gen_ai.usage.* cost spans with nightly GitHub Actions MUnit evaluation gates.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
 
           <h2 id="what-and-why">What it is and why it matters</h2>
           <p>Building a MuleSoft AI agent or MCP tool server that works in a 5-minute demo takes an afternoon. Keeping that same agent accurate, observable, and financially predictable across 200,000 daily enterprise transactions is where most AI initiatives stall before production sign-off.</p>
@@ -117,6 +176,83 @@
             <figcaption>Figure 1: Unified observability, MUnit + Golden Dataset evaluation pipeline, and FinOps kill-switch control loop for MuleSoft AI agents.</figcaption>
           </figure>
 
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">📡</span><span class="flow-node-title">OTel &amp; FinOps Headers</span><span class="flow-node-type">Traceparent + Cost Center</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🧭</span><span class="flow-node-title">Tiered Model Router</span><span class="flow-node-type">DataWeave Classifier</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛑</span><span class="flow-node-title">Loop &amp; Cost Guard</span><span class="flow-node-type">Object Store Budget Check</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔬</span><span class="flow-node-title">GenAI Telemetry Span</span><span class="flow-node-type">OTel gen_ai.* Attributes</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🧪</span><span class="flow-node-title">Async Eval &amp; Reply</span><span class="flow-node-type">MUnit Golden Gate / VM</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. OTel &amp; FinOps Headers (Traceparent + Cost Center)</h3>
+      <p class="insp-node-what">Enforces mandatory X-Cost-Center &amp; X-Agent-Id headers and starts a W3C traceparent root span tagging gen_ai.agent.id.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">headers=[X-Cost-Center, traceparent] | rejectMissing=400</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>FinOps &amp; OTel Ingress</td></tr>
+<tr><th scope="row">Trace Context</th><td>W3C traceparent + baggage</td></tr>
+<tr><th scope="row">Required Header</th><td>X-Cost-Center</td></tr>
+<tr><th scope="row">Missing Action</th><td>400 Bad Request</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:tracing=&quot;http://www.mulesoft.org/schema/mule/tracing&quot;
+      xmlns:os=&quot;http://www.mulesoft.org/schema/mule/os&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;&gt;
+  &lt;flow name=&quot;governed-agent-execution-telemetry-flow&quot;&gt;
+    &lt;tracing:with-correlation-id correlationId=&quot;#[attributes.headers[&#x27;traceparent&#x27;] default correlationId]&quot;&gt;
+      &lt;os:retrieve key=&quot;#[&#x27;budget:&#x27; ++ (attributes.headers[&#x27;x-cost-center&#x27;] default &#x27;UNKNOWN&#x27;)]&quot; objectStore=&quot;FinOps_OS&quot; target=&quot;spentUsd&quot;&gt;
+        &lt;os:default-value&gt;&lt;![CDATA[0]]&gt;&lt;/os:default-value&gt;
+      &lt;/os:retrieve&gt;
+      &lt;choice&gt;
+        &lt;when expression=&quot;#[(vars.spentUsd as Number) &gt;= (p(&#x27;finops.budget.cap.usd&#x27;) as Number)]&quot;&gt;
+          &lt;raise-error type=&quot;FINOPS:BUDGET_EXCEEDED&quot; description=&quot;Cost center AI budget limit reached&quot;/&gt;
+        &lt;/when&gt;
+      &lt;/choice&gt;
+      &lt;flow-ref name=&quot;tiered-model-dispatch-subflow&quot;/&gt;
+      &lt;tracing:set-logging-variable variableName=&quot;gen_ai_tokens&quot; value=&quot;#[vars.usage.totalTokens]&quot;/&gt;
+    &lt;/tracing:with-correlation-id&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "📡", "label": "OTel & FinOps Headers", "type": "Traceparent + Cost Center", "what": "Enforces mandatory X-Cost-Center & X-Agent-Id headers and starts a W3C traceparent root span tagging gen_ai.agent.id.", "config_values": "headers=[X-Cost-Center, traceparent] | rejectMissing=400", "studio_props": [["Display Name", "FinOps & OTel Ingress"], ["Trace Context", "W3C traceparent + baggage"], ["Required Header", "X-Cost-Center"], ["Missing Action", "400 Bad Request"]]}, {"icon": "🧭", "label": "Tiered Model Router", "type": "DataWeave Classifier", "what": "Routes simple intent classification to fast/low-cost models (gpt-4o-mini / haiku) and reserves frontier reasoning models for high-complexity disputes.", "config_values": "simple -> small-fast-model | complex -> frontier-model", "studio_props": [["Display Name", "Tiered LLM Router"], ["Fast Model", "gpt-4o-mini"], ["Reasoning Model", "claude-sonnet / gpt-4o"], ["Est. Savings", "60-70% Token Spend"]]}, {"icon": "🛑", "label": "Loop & Cost Guard", "type": "Object Store Budget Check", "what": "Checks maxIterations <= 4 and monthly cost-center spend ceiling in Object Store v2; trips the automated Kill Switch if runaway loop detected.", "config_values": "maxIterations=4 | budgetKey=X-Cost-Center | killSwitch=OSv2", "studio_props": [["Display Name", "Circuit & Budget Check"], ["Loop Cap", "vars.hopCount <= 4"], ["Budget Cap", "${finops.monthly.cap.usd}"], ["Trip Status", "429 / 503 Quarantine"]]}, {"icon": "🔬", "label": "GenAI Telemetry Span", "type": "OTel gen_ai.* Attributes", "what": "Records gen_ai.system, gen_ai.request.model, gen_ai.usage.input_tokens, output_tokens, and computed USD cost after scrubbing all PII from attributes.", "config_values": "OTLP gRPC -> Collector -> Redact PII -> Tempo/Datadog", "studio_props": [["Display Name", "Record gen_ai Metrics"], ["Span Attr 1", "gen_ai.usage.input_tokens"], ["Span Attr 2", "gen_ai.usage.output_tokens"], ["PII Scrub", "Never log raw prompts"]]}, {"icon": "🧪", "label": "Async Eval & Reply", "type": "MUnit Golden Gate / VM", "what": "Publishes 10% production sample asynchronously to the Eval scorer queue (without adding response latency) and returns response + X-Cost-Usd header.", "config_values": "sampleRate=10% -> VM async eval queue", "studio_props": [["Display Name", "Async Eval Dispatch"], ["Sampling", "10% Prod / 100% Stage"], ["Metrics Exported", "X-Agent-Cost-Usd"], ["CI Suite", "munit + golden-evals.json"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:tracing=\"http://www.mulesoft.org/schema/mule/tracing\"\n      xmlns:os=\"http://www.mulesoft.org/schema/mule/os\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\">\n  <flow name=\"governed-agent-execution-telemetry-flow\">\n    <tracing:with-correlation-id correlationId=\"#[attributes.headers['traceparent'] default correlationId]\">\n      <os:retrieve key=\"#['budget:' ++ (attributes.headers['x-cost-center'] default 'UNKNOWN')]\" objectStore=\"FinOps_OS\" target=\"spentUsd\">\n        <os:default-value><![CDATA[0]]><\/os:default-value>\n      <\/os:retrieve>\n      <choice>\n        <when expression=\"#[(vars.spentUsd as Number) >= (p('finops.budget.cap.usd') as Number)]\">\n          <raise-error type=\"FINOPS:BUDGET_EXCEEDED\" description=\"Cost center AI budget limit reached\"/>\n        <\/when>\n      <\/choice>\n      <flow-ref name=\"tiered-model-dispatch-subflow\"/>\n      <tracing:set-logging-variable variableName=\"gen_ai_tokens\" value=\"#[vars.usage.totalTokens]\"/>\n    <\/tracing:with-correlation-id>\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="agent-evals-observability-finops-opentelemetry">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Enable OpenTelemetry OTLP export in Runtime Manager</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Enforce X-Cost-Center &amp; X-A2A-Hop-Count headers</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Implement deterministic MUnit 3 mocks for every PR build</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Schedule nightly 50-case Golden Dataset LLM Eval run</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Test emergency Kill Switch propagation &lt; 1 second</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
           <h2 id="prerequisites">Prerequisites</h2>
           <div class="callout prereq">
             <span class="callout-title">You need</span>
@@ -127,6 +263,73 @@
               <li><strong>GitHub Actions</strong> (or GitLab/Jenkins) with Maven 3.9+, JDK 17, and a dedicated low-cost evaluation API key scoped to a sandbox Flex Gateway tier for nightly Golden Dataset runs.</li>
             </ul>
           </div>
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-agent-evals-observability-finops-opentelemetry" aria-selected="true" aria-controls="panel-studio-agent-evals-observability-finops-opentelemetry" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-agent-evals-observability-finops-opentelemetry" aria-selected="false" aria-controls="panel-platform-agent-evals-observability-finops-opentelemetry" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-agent-evals-observability-finops-opentelemetry" aria-selected="false" aria-controls="panel-test-agent-evals-observability-finops-opentelemetry" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-agent-evals-observability-finops-opentelemetry" aria-labelledby="btn-tab-studio-agent-evals-observability-finops-opentelemetry">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>mule-agent-otel-evals-finops</code> · <strong>Target Runtime:</strong> <code>Mule Runtime 4.9.x LTS · MUnit 3.2+ · OpenTelemetry Collector</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.modules&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-tracing-module&lt;/artifactId&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
+  &lt;classifier&gt;mule-plugin&lt;/classifier&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;com.mulesoft.munit&lt;/groupId&gt;
+  &lt;artifactId&gt;munit-tools&lt;/artifactId&gt;
+  &lt;version&gt;${munit.version}&lt;/version&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Anypoint Tracing Module</code></td><td><code>tracing:with-correlation-id</code></td><td>Propagates W3C traceparent automatically across HTTP/MCP/A2A</td></tr>
+<tr><td><code>MUnit Deterministic PR</code></td><td><code>munit-tools:mock-when</code></td><td>Mocks LLM HTTP calls so PR CI finishes in &lt; 30s with 0 token spend</td></tr>
+<tr><td><code>Nightly Eval CI Gate</code></td><td><code>golden-evals.json (50+ prompts)</code></td><td>Fails nightly release if Tool Selection Accuracy &lt; 95%</td></tr>
+<tr><td><code>OTel Collector Scrub</code></td><td><code>attributes/redact-pii processor</code></td><td>Strips prompt bodies before exporting spans to Datadog/Tempo</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-agent-evals-observability-finops-opentelemetry" aria-labelledby="btn-tab-platform-agent-evals-observability-finops-opentelemetry" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>Anypoint Monitoring &gt; Telemetry Exporter: Configure OTLP endpoint targeting your OpenTelemetry Collector / Grafana Tempo.</li>
+        <li>Deploy FinOps Collector YAML with attributes processor transforming gen_ai.usage.* tokens into calculated cost_usd metrics.</li>
+        <li>Configure GitHub Actions: run `mvn test` (mocked MUnit) on every PR, and schedule nightly live eval suite via `workflow_dispatch` / cron.</li>
+        <li>API Manager: Enable automated Kill Switch policy webhook triggered when hourly tenant burn spikes &gt; 3x baseline.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-agent-evals-observability-finops-opentelemetry" aria-labelledby="btn-tab-test-agent-evals-observability-finops-opentelemetry" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST http://localhost:8081/api/v1/agent/run | Headers: X-Cost-Center: CC-FIN-204, traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -i -s -X POST &quot;http://localhost:8081/api/v1/agent/run&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -H &quot;X-Cost-Center: CC-FIN-204&quot; \
+  -H &quot;traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01&quot; \
+  -d &#x27;{&quot;intent&quot;:&quot;Classify return severity for ORD-9921&quot;}&#x27;</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>HTTP/1.1 200 OK
+traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
+X-Agent-Cost-Usd: 0.00042
+
+{
+  &quot;modelRouted&quot;: &quot;gpt-4o-mini&quot;,
+  &quot;severity&quot;: &quot;MEDIUM&quot;,
+  &quot;evalSampled&quot;: true
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>Broken trace between Broker and MCP Server</code></td><td>HTTP Request omitted traceparent outbound propagation</td><td>Upgrade Mule 4.9 Tracing module &amp; pass traceparent in HTTP Request headers</td></tr>
+<tr><td><code>PR MUnit build randomly fails or costs $$$</code></td><td>Unit tests hit live OpenAI endpoint instead of mock-when</td><td>Mock external LLM connectors in MUnit; run live evals nightly only</td></tr>
+<tr><td><code>Unexpected $4,000 weekend token bill</code></td><td>No hop limit on peer A2A retries + missing Model Wallet quota</td><td>Set X-A2A-Hop-Count &lt;= 4 AND enforce Flex Gateway LLM Token Rate Limit</td></tr>
+<tr><td><code>PII exposed in Splunk/Tempo traces</code></td><td>Logged full #[payload] in INFO logger or OTel span attributes</td><td>Log correlationId + token counts only; scrub prompts in Collector</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
 
           <h2 id="setup">Step-by-step setup</h2>
           <ol class="steps">
@@ -699,15 +902,26 @@ X-RateLimit-Remaining-Tokens: 0
           </ul>
         </div>
 
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="agent-evals-observability-finops-opentelemetry" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
         <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
           <p>💬 Tried this setup? Share what worked (or broke) — I read every comment.</p>
           <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
         </aside>
 
         <nav class="post-nav" aria-label="More articles">
-          <a class="prev" href="flex-gateway-ai-policies-llm-guardrails.html"><span>← Previous</span><strong>Flex Gateway AI Policies &amp; LLM Guardrails</strong></a>
-          <a class="next" href="index.html"><span>All Articles →</span><strong>Back to MuleSoft Blog Home</strong></a>
-        </nav>
+  <a class="prev" href="../blog/flex-gateway-ai-policies-llm-guardrails.html"><span>← Previous Guide</span><strong>Flex Gateway AI Policies</strong></a>
+  <a class="next" href="../cloudhub-1-to-2-migration-guide.html"><span>Next Guide →</span><strong>CloudHub 1.0 to 2.0 Migration</strong></a>
+</nav>
       </article>
     </main>
 
@@ -715,9 +929,12 @@ X-RateLimit-Remaining-Tokens: 0
       <p class="toc-title">On this page</p>
       <ol>
         <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
         <li><a href="#what-and-why">What it is and why it matters</a></li>
         <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
         <li><a href="#setup">Step-by-step setup</a></li>
         <li><a href="#code">Full working example</a></li>
         <li><a href="#test">Test it</a></li>
@@ -731,8 +948,9 @@ X-RateLimit-Remaining-Tokens: 0
     </aside>
   </div>
 </div>
-<footer class="blog-footer">
-  <p>© 2026 Niranjan Potter · MuleSoft Hub Blog · Independent community content, not affiliated with Salesforce or MuleSoft.</p>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
 </footer>
 </body>
 </html>
