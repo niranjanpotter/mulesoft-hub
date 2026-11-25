@@ -34,13 +34,14 @@
 <header class="portal-topbar">
   <div class="portal-topbar-inner">
     <a class="portal-brand" href="index.html">
-      <span class="portal-brand-mark" aria-hidden="true">⚡</span>
+      <span class="portal-brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="17" fill="#00A3E0" stroke="#005A87" stroke-width="1.5"/><circle cx="18" cy="18" r="13" fill="#001639"/><path d="M10.5 24V12l7.5 7 7.5-7v12h-3.2v-5.8L18 22.4l-4.3-4.2V24h-3.2z" fill="#FFFFFF"/></svg></span>
       <span>MuleSoft Blog</span>
       <span class="portal-brand-pill">2026 · 36 Guides</span>
     </a>
     <div class="portal-topbar-search">
       <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
-      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP, Batch...">
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="index.html" placeholder="Search Vibes, ACB, Omni Gateway, RTF 3.x, MCP...">
+      <kbd class="search-kbd-hint" aria-hidden="true">Ctrl K</kbd>
     </div>
     <nav class="portal-nav" aria-label="Main">
       <a href="index.html" aria-current="page">All Blogs</a>
@@ -52,13 +53,12 @@
   </div>
 </header>
 
-<div class="portal-wrap">
-  <main id="main">
-    <section class="portal-hero" aria-labelledby="portal-hero-h1">
-      <span class="hero-kicker">Dedicated MuleSoft Engineering Blog · 100% Free &amp; Open · Updated Nov 2026</span>
+<section class="docs-hero-band" aria-labelledby="portal-hero-h1">
+  <div class="docs-hero-inner">
+    <div>
+      <span class="hero-kicker">MuleSoft Engineering Docs &amp; Playbooks · Updated Nov 2026</span>
       <h1 id="portal-hero-h1">36 End-to-End MuleSoft Setup Guides — Built for Production</h1>
       <p class="portal-hero-sub">Every guide covers setup from zero to live <code>curl</code> verification with a <strong>Real Anypoint View</strong> mockup, interactive <strong>Mule 4.9 / 4.13 animated flow simulator</strong>, Studio Properties Inspector, copy-paste XML/YAML/Maven configs, and 3-tab setup steps. Practicing for interviews? Visit our companion <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 MuleSoft Interview Q&amp;As &amp; Mock Labs ↗</a>.</p>
-
       <div class="trust-strip" role="note" aria-label="Portal highlights">
         <span>📅 Updated Nov 2026</span>
         <span>📚 36 Hands-On Guides</span>
@@ -66,26 +66,86 @@
         <span>🎓 Beginner to Architect</span>
         <span>⚡ Interactive Flow Labs</span>
       </div>
+      <div class="docs-hero-actions">
+        <a class="docs-cta-primary" href="#trending-track">Explore Latest Nov 2026 Guides →</a>
+        <a class="docs-cta-secondary" href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      </div>
+    </div>
+    <div class="docs-hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 440 290" width="440" height="290" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="220" cy="145" r="118" stroke="#00A2DF" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="4 6"/>
+  <circle cx="220" cy="145" r="76" stroke="#00C2A8" stroke-opacity="0.32" stroke-width="1.5" stroke-dasharray="3 5"/>
+  <path d="M96 86L220 145M344 86L220 145M84 198L220 145M356 202L220 145M220 34V145M220 256V145" stroke="#38BDF8" stroke-opacity="0.45" stroke-width="1.6" stroke-dasharray="4 4"/>
+  <rect x="34" y="54" width="124" height="58" rx="10" fill="#0B234A" stroke="#38BDF8" stroke-width="1.4"/>
+  <circle cx="56" cy="83" r="11" fill="#0176D3"/>
+  <path d="M51 83h10M56 78v10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+  <rect x="75" y="72" width="66" height="7" rx="3.5" fill="#E0F2FE"/>
+  <rect x="75" y="86" width="46" height="6" rx="3" fill="#7DD3FC" fill-opacity="0.7"/>
+  <rect x="282" y="54" width="124" height="58" rx="10" fill="#0B234A" stroke="#00C2A8" stroke-width="1.4"/>
+  <circle cx="304" cy="83" r="11" fill="#00C2A8"/>
+  <path d="M299 83l3.5 3.5L309 80" stroke="#001639" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="323" y="72" width="66" height="7" rx="3.5" fill="#CCFBF1"/>
+  <rect x="323" y="86" width="50" height="6" rx="3" fill="#5EEAD4" fill-opacity="0.7"/>
+  <rect x="30" y="172" width="126" height="58" rx="10" fill="#0B234A" stroke="#38BDF8" stroke-width="1.4"/>
+  <rect x="46" y="186" width="38" height="16" rx="4" fill="#166534"/>
+  <text x="53" y="198" fill="#DCFCE7" font-family="monospace" font-size="9" font-weight="700">GET</text>
+  <rect x="90" y="190" width="52" height="7" rx="3.5" fill="#E0F2FE"/>
+  <rect x="46" y="209" width="94" height="6" rx="3" fill="#7DD3FC" fill-opacity="0.65"/>
+  <rect x="284" y="172" width="126" height="58" rx="10" fill="#0B234A" stroke="#FF6A00" stroke-width="1.4"/>
+  <rect x="300" y="186" width="40" height="16" rx="4" fill="#7C2D12"/>
+  <text x="305" y="198" fill="#FFEDD5" font-family="monospace" font-size="9" font-weight="700">MCP</text>
+  <rect x="346" y="190" width="50" height="7" rx="3.5" fill="#FFEDD5"/>
+  <rect x="300" y="209" width="96" height="6" rx="3" fill="#FDBA74" fill-opacity="0.7"/>
+  <circle cx="220" cy="145" r="34" fill="#0176D3" stroke="#7DD3FC" stroke-width="2"/>
+  <path d="M207 156v-22l13 12 13-12v22h-5.5v-10.2l-7.5 7.2-7.5-7.2V156H207z" fill="#FFFFFF"/>
+</svg>
+    </div>
+  </div>
+</section>
 
-      <div class="filter-controls" role="region" aria-label="Search and filter blog guides">
-        <label class="sr-only" for="blog-search">Filter blogs by topic or connector keyword</label>
-        <input id="blog-search" class="portal-search-input" type="search" placeholder="Filter by keyword (e.g., Vibes, launch.json, Omni Gateway, RTF 3.0, OAS 3.1, Zero Copy, Agent Fabric, MCP, Batch)...">
-        <div class="filter-pills" role="group" aria-label="Category filters">
-          <button type="button" class="filter-pill" data-cat="all" aria-pressed="true">All Guides (36)</button>
-          <button type="button" class="filter-pill" data-cat="trending" aria-pressed="false">🔥 Trending Nov 2026 (8)</button>
-          <button type="button" class="filter-pill" data-cat="fabric" aria-pressed="false">Agent Fabric &amp; A2A</button>
-          <button type="button" class="filter-pill" data-cat="mcp" aria-pressed="false">MCP &amp; OpenAPI</button>
-          <button type="button" class="filter-pill" data-cat="rag" aria-pressed="false">Agentforce, Data Cloud &amp; RAG</button>
-          <button type="button" class="filter-pill" data-cat="gov" aria-pressed="false">Omni Gateway, OTel &amp; FinOps</button>
-          <button type="button" class="filter-pill" data-cat="core" aria-pressed="false">Core Mule 4 Playbooks</button>
-          <button type="button" class="filter-pill" id="filter-saved-chip" data-cat="saved" aria-pressed="false">🔖 Saved (0)</button>
-        </div>
-        <div class="filter-status-row">
-          <span id="portal-result-count" aria-live="polite">Showing 36 of 36 guides</span>
-          <span>💡 Save your favorite playbooks with the 🔖 button inside any guide</span>
-        </div>
+<div class="portal-wrap">
+  <main id="main">
+    <section class="docs-overlap-panels" aria-label="Featured releases and architecture tracks">
+      <div class="docs-panel">
+        <h2>Latest Releases &amp; Deep Dives</h2>
+        <ul class="docs-panel-list">
+          <li><span class="docs-date-pill">Nov 2026</span><a href="blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html">MuleSoft Vibes in Anypoint Code Builder (Skills &amp; MCP)</a></li>
+          <li><span class="docs-date-pill">Nov 2026</span><a href="blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html">Omni Gateway v1.14.5: Custom Rust PDK &amp; Redis Tuning</a></li>
+          <li><span class="docs-date-pill">Nov 2026</span><a href="blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html">Runtime Fabric 3.x (v3.0.41102) on EKS &amp; AKS</a></li>
+          <li><span class="docs-date-pill">Nov 2026</span><a href="blog/anypoint-studio-to-acb-migration-launch-json-guide.html">Studio to ACB Migration: launch.json &amp; Java 17 Debug</a></li>
+        </ul>
+        <a class="docs-panel-more" href="#trending-track">View all 8 trending guides</a>
+      </div>
+      <div class="docs-panel">
+        <h2>Featured Architecture Tracks</h2>
+        <ul class="docs-panel-list">
+          <li><span class="docs-date-pill">Agent AI</span><a href="blog/mulesoft-agent-fabric-end-to-end-guide.html">Agent Fabric: Registry, Broker &amp; Hyperforce mTLS</a></li>
+          <li><span class="docs-date-pill">Protocol</span><a href="blog/mulesoft-mcp-connector-server-client-setup.html">MCP Connector: Streamable HTTP Server &amp; Client</a></li>
+          <li><span class="docs-date-pill">Data 360</span><a href="blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html">Data Cloud Zero Copy vs MuleSoft for Flow &amp; Composer</a></li>
+          <li><span class="docs-date-pill">Urgent</span><a href="cloudhub-1-to-2-migration-guide.html">CloudHub 1.0 → 2.0 Migration (Oct 31 DLB TLS Cutoff)</a></li>
+        </ul>
+        <a class="docs-panel-more" href="#flagship-track">Explore AI &amp; Core tracks</a>
       </div>
     </section>
+
+    <div class="docs-filter-console filter-controls" role="region" aria-label="Search and filter blog guides">
+      <label class="sr-only" for="blog-search">Filter blogs by topic or connector keyword</label>
+      <input id="blog-search" class="portal-search-input" type="search" placeholder="Filter by keyword (e.g., Vibes, launch.json, Omni Gateway, RTF 3.0, OAS 3.1, Zero Copy, Agent Fabric, MCP, Batch)...">
+      <div class="filter-pills" role="group" aria-label="Category filters">
+        <button type="button" class="filter-pill" data-cat="all" aria-pressed="true">All Guides (36)</button>
+        <button type="button" class="filter-pill" data-cat="trending" aria-pressed="false">🔥 Trending Nov 2026 (8)</button>
+        <button type="button" class="filter-pill" data-cat="fabric" aria-pressed="false">Agent Fabric &amp; A2A</button>
+        <button type="button" class="filter-pill" data-cat="mcp" aria-pressed="false">MCP &amp; OpenAPI</button>
+        <button type="button" class="filter-pill" data-cat="rag" aria-pressed="false">Agentforce, Data Cloud &amp; RAG</button>
+        <button type="button" class="filter-pill" data-cat="gov" aria-pressed="false">Omni Gateway, OTel &amp; FinOps</button>
+        <button type="button" class="filter-pill" data-cat="core" aria-pressed="false">Core Mule 4 Playbooks</button>
+        <button type="button" class="filter-pill" id="filter-saved-chip" data-cat="saved" aria-pressed="false">🔖 Saved (0)</button>
+      </div>
+      <div class="filter-status-row">
+        <span id="portal-result-count" aria-live="polite">Showing 36 of 36 guides</span>
+        <span>💡 Press <kbd>Ctrl+K</kbd> or <kbd>/</kbd> to search · Save guides with 🔖 inside any post</span>
+      </div>
+    </div>
 
     <section aria-labelledby="trending-track">
       <div class="track-header">
@@ -94,12 +154,13 @@
       </div>
       <div class="card-grid">
       <a class="post-card" data-cat="rag trending" data-slug="mulesoft-vibes-agentforce-acb-dev-agent-setup" href="blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/><circle cx="19" cy="5" r="1.3"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills &amp; MCP Dev Workflows</h3>
         <p>Configure MuleSoft Vibes (Agentforce Vibes) inside Anypoint Code Builder (ACB): link your Salesforce Agentforce org, run multi-step integration plans, author reusable skills, and connect MCP context.</p>
@@ -109,12 +170,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core trending" data-slug="anypoint-studio-to-acb-migration-launch-json-guide" href="blog/anypoint-studio-to-acb-migration-launch-json-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 7 3 12 8 17"/><polyline points="16 7 21 12 16 17"/><line x1="13.5" y1="5" x2="10.5" y2="19"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven &amp; Debug Playbook</h3>
         <p>Migrate existing Mule 4 projects from Anypoint Studio (Eclipse) to Anypoint Code Builder (VS Code) cleanly: convert Run Config VM args to launch.json, fix Maven pom.xml errors, and debug Java 17 flows.</p>
@@ -124,12 +186,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="gov trending" data-slug="mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" href="blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 8.2-7 9.5-4-1.3-7-5-7-9.5V6l7-3z"/><path d="M9.5 12l1.8 1.8 3.5-3.6"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning &amp; AI Policies</h3>
         <p>Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.</p>
@@ -139,12 +202,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core trending" data-slug="anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup" href="blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v6.5M20 7.5l-5.6 3.2M4 7.5l5.6 3.2M12 21v-6.5"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration &amp; Zero-Downtime Upgrades</h3>
         <p>Deploy and run Anypoint Runtime Fabric 3.x (v3.0.41102) on EKS or AKS: configure rtfctl, Helm, local registries, K8s 1.30-1.37 alignment, and declarative spec.lifecycle.restartGeneration rolling restarts.</p>
@@ -154,12 +218,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="mcp trending" data-slug="raml-to-openapi-oas-3-1-modular-migration-mulesoft" href="blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5H6a2 2 0 0 0-2 2v3c0 1-1 2-2 2 1 0 2 1 2 2v3a2 2 0 0 0 2 2h2"/><path d="M16 5h2a2 2 0 0 1 2 2v3c0 1 1 2 2 2-1 0-2 1-2 2v3a2 2 0 0 1-2 2h-2"/><circle cx="12" cy="12" r="1.5"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>RAML to OpenAPI (OAS 3.1) Migration in MuleSoft: Modular $ref Structure, APIKit &amp; Exchange Governance</h3>
         <p>Convert legacy RAML 1.0 specs to modular OpenAPI 3.0 / 3.1 contracts with clean external $ref files, APIKit scaffolding, Anypoint API Governance, and MCP Bridge readiness.</p>
@@ -169,12 +234,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="rag trending" data-slug="salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer" href="blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .8-7.9A5.5 5.5 0 0 0 7.2 8.7 3.8 3.8 0 0 0 7 18z"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Salesforce Data Cloud (Data 360) Zero Copy vs. MuleSoft for Flow &amp; Composer: Enterprise Decision Guide</h3>
         <p>Architect the modern Salesforce integration stack clearly: know when to use Data Cloud Zero Copy federation, MuleSoft API-Led / MuleSoft for Flow, or MuleSoft Composer (and understand Composer&#x27;s auto-deactivation rules).</p>
@@ -184,12 +250,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core trending" data-slug="scatter-gather-vs-parallel-foreach-dynamic-db-secrets" href="blog/scatter-gather-vs-parallel-foreach-dynamic-db-secrets.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 12h4l6-6M11 12l6 6"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Scatter-Gather vs. Parallel For-Each &amp; Zero-Redeploy Dynamic DB Password Rotation in Mule 4</h3>
         <p>Solve the two most-asked r/MuleSoft engineering questions in one deep guide: Scatter-Gather vs Parallel For-Each internals (and error collection) + zero-redeploy dynamic DB credential rotation.</p>
@@ -199,12 +266,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core trending" data-slug="salesforce-mulesoft-certification-roadmap-2026-exam-guide" href="blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5V21l3-1.8 3 1.8v-7.5"/></svg></span>
+          <div class="card-badges">
             <span class="trend-pill">🔥 Nov 2026</span>
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-beginner">Beginner</span>
           </div>
-          <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>2026 Salesforce Certified MuleSoft Developer &amp; Platform Architect Exam Guide: Changes, Retirements &amp; Study Plan</h3>
         <p>Navigate 2026 MuleSoft certifications hosted on Trailhead: renamed Salesforce Certified MuleSoft Developer exam specs, retired Catalyst &amp; Hyperautomation certs, Platform Architect maintenance, and a 30-day study map.</p>
@@ -223,12 +291,13 @@
       </div>
       <div class="card-grid">
       <a class="post-card" data-cat="fabric" data-slug="mulesoft-agent-fabric-end-to-end-guide" href="blog/mulesoft-agent-fabric-end-to-end-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 7v4M10.4 14.2L6.6 16.8M13.6 14.2l3.8 2.6"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners &amp; Governance</h3>
         <p>Set up MuleSoft&#x27;s cross-cloud AI control plane over Agentforce, AWS Bedrock, and Vertex AI using Exchange Agent Registry, scanners, .agent Broker scripts, and Model Wallet kill switches.</p>
@@ -238,12 +307,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="mcp" data-slug="mulesoft-mcp-connector-server-client-setup" href="blog/mulesoft-mcp-connector-server-client-setup.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="8" width="10" height="8" rx="2"/><path d="M10 8V4M14 8V4M12 16v4M4 12h3M17 12h3"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft MCP Connector Hands-On: Build an MCP Server &amp; Client in Mule 4</h3>
         <p>Build an enterprise MCP Server with mule-mcp-connector over Streamable HTTP (/mcp), expose schema-validated tools, wire an MCP Client flow, and test with MCP Inspector.</p>
@@ -253,12 +323,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="mcp" data-slug="mulesoft-mcp-bridge-openapi-to-agent-tools" href="blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5H6a2 2 0 0 0-2 2v3c0 1-1 2-2 2 1 0 2 1 2 2v3a2 2 0 0 0 2 2h2"/><path d="M16 5h2a2 2 0 0 1 2 2v3c0 1 1 2 2 2-1 0-2 1-2 2v3a2 2 0 0 1-2 2h-2"/><circle cx="12" cy="12" r="1.5"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools</h3>
         <p>Project existing OpenAPI 3.0 &amp; RAML Process APIs in Anypoint Exchange into curated, OAuth-OBO governed MCP tools without writing a single new Mule flow.</p>
@@ -268,12 +339,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="fabric" data-slug="mulesoft-a2a-protocol-multi-agent-orchestration" href="blog/mulesoft-a2a-protocol-multi-agent-orchestration.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 7v4M10.4 14.2L6.6 16.8M13.6 14.2l3.8 2.6"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-fabric">Agent Fabric &amp; A2A</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation &amp; Multi-Cloud Orchestration</h3>
         <p>Implement mule4-a2a-connector 2.0.0 in Mule 4.9 LTS to publish /.well-known/agent.json Agent Cards and coordinate stateful peer agent tasks.</p>
@@ -283,12 +355,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="rag" data-slug="agentforce-mulesoft-topic-center-api-actions" href="blog/agentforce-mulesoft-topic-center-api-actions.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/><circle cx="19" cy="5" r="1.3"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog &amp; External Actions Setup</h3>
         <p>Link Salesforce and Anypoint Platform, design Topic Center instructions in ACB, sync API Catalog External Services automatically, and inspect Atlas Reasoning traces.</p>
@@ -298,12 +371,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="rag" data-slug="mulesoft-ai-chain-einstein-inference-rag-setup" href="blog/mulesoft-ai-chain-einstein-inference-rag-setup.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6"/><path d="M5 12v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-6"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft AI Chain (MAC), Einstein Trust Layer &amp; Inference Connector: Build Enterprise RAG in Mule 4</h3>
         <p>Compare mule4-aichain-connector, mule4-einstein-ai-connector, and mule4-inference-connector, then build a complete PostgreSQL pgvector + Einstein RAG pipeline in Mule 4.9.</p>
@@ -313,12 +387,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="gov" data-slug="flex-gateway-ai-policies-llm-guardrails" href="blog/flex-gateway-ai-policies-llm-guardrails.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 8.2-7 9.5-4-1.3-7-5-7-9.5V6l7-3z"/><path d="M9.5 12l1.8 1.8 3.5-3.6"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking &amp; Semantic Cache</h3>
         <p>Run Anypoint Flex Gateway as a centralized Enterprise Model Proxy in Docker and Kubernetes with PII masking, prompt defense, semantic caching, and SSE token limits.</p>
@@ -328,12 +403,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="gov" data-slug="agent-evals-observability-finops-opentelemetry" href="blog/agent-evals-observability-finops-opentelemetry.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l5-6 4 4 4-7 5 5"/><circle cx="8" cy="10" r="1.2"/><circle cx="16" cy="7" r="1.2"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Testing, Observability &amp; FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals &amp; Cost Guardrails</h3>
         <p>Trace every Agentforce-Broker-MCP-LLM hop with W3C OpenTelemetry gen_ai.* attributes, run MUnit 3 deterministic + golden-dataset CI evals, and enforce kill-switch budgets.</p>
@@ -352,12 +428,13 @@
       </div>
       <div class="card-grid">
       <a class="post-card" data-cat="core" data-slug="cloudhub-1-to-2-migration-guide" href="cloudhub-1-to-2-migration-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .8-7.9A5.5 5.5 0 0 0 7.2 8.7 3.8 3.8 0 0 0 7 18z"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist</h3>
         <p>Migrate Mule 4 apps cleanly from CloudHub 1.0 to CloudHub 2.0 Private Spaces with strict port 8081 bindings, ephemeral disk safety, Ingress TLS, and Maven 4.x config.</p>
@@ -367,12 +444,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="dataweave-performance-tuning-patterns" href="dataweave-performance-tuning-patterns.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9m-2.5-2.5L13 8l-2.5 2.5"/><path d="M20 16h-9m2.5-2.5L11 16l2.5 2.5"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>DataWeave 2.0 Performance Tuning: Tail Recursion &amp; Memory Optimization</h3>
         <p>Eliminate JVM OutOfMemoryError and O(n^2) loops in DataWeave 2.0 using @TailRec, off-heap disk buffering, deferred streaming, and groupBy indexed joins.</p>
@@ -382,12 +460,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-batch-processing-interview-questions" href="mulesoft-batch-processing-interview-questions.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="8" height="7" rx="1.5"/><rect x="13" y="4" width="8" height="7" rx="1.5"/><rect x="8" y="13" width="8" height="7" rx="1.5"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft Batch Processing Interview Questions &amp; Architecture (2026 Guide)</h3>
         <p>Master Mule 4 Batch Jobs: LMAX Disruptor ring buffers, blockSize &amp; thread tuning, record-scoped variables, Bulk Aggregators, and watermark crash recovery.</p>
@@ -397,12 +476,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-anypoint-mq-dlq-fifo-interview" href="mulesoft-anypoint-mq-dlq-fifo-interview.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="5" height="12" rx="1"/><rect x="10" y="6" width="5" height="12" rx="1"/><path d="M17 12h4m-2-2l2 2-2 2"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Anypoint MQ &amp; DLQ Architecture: Interview Questions &amp; Best Practices</h3>
         <p>Design resilient async messaging in Mule 4 using Anypoint MQ FIFO queues, manual ACK/NACK, Object Store v2 idempotency, and automated DLQ replay.</p>
@@ -412,12 +492,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-salesforce-bulk-api-2-interview" href="mulesoft-salesforce-bulk-api-2-interview.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .8-7.9A5.5 5.5 0 0 0 7.2 8.7 3.8 3.8 0 0 0 7 18z"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Salesforce Bulk API 2.0 in MuleSoft: Complete Interview &amp; Performance Guide</h3>
         <p>Orchestrate high-volume Salesforce ingestions using Bulk API 2.0 jobs, CSV streaming, governor quota isolation (15,000 batches / 150M records), and failure reconciliation.</p>
@@ -427,12 +508,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-oauth-jwt-bearer-token-interview" href="mulesoft-oauth-jwt-bearer-token-interview.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation</h3>
         <p>Replace fragile passwords and security tokens with RSA-256 OAuth 2.0 JWT Bearer authentication in MuleSoft, complete with OpenSSL setup and zero-downtime key rotation.</p>
@@ -442,12 +524,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-scatter-gather-interview-questions" href="mulesoft-scatter-gather-interview-questions.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 12h4l6-6M11 12l6 6"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft Scatter-Gather Router: Interview Questions &amp; Error Recovery</h3>
         <p>Master parallel Scatter-Gather execution in Mule 4: reactive thread pool sizing, per-route Try scopes for partial failures, and flattening route outputs cleanly.</p>
@@ -457,12 +540,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="gov core" data-slug="mulesoft-opentelemetry-tracing-observability" href="mulesoft-opentelemetry-tracing-observability.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l5-6 4 4 4-7 5 5"/><circle cx="8" cy="10" r="1.2"/><circle cx="16" cy="7" r="1.2"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>OpenTelemetry in MuleSoft: Direct Telemetry Export &amp; Distributed Tracing</h3>
         <p>Configure native OpenTelemetry traceparent context propagation and OTLP gRPC export from Mule 4.9 / CloudHub 2.0 to Datadog, Grafana Tempo, and Splunk.</p>
@@ -472,12 +556,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-cicd-maven-pipeline-guide" href="mulesoft-cicd-maven-pipeline-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 7 3 12 8 17"/><polyline points="16 7 21 12 16 17"/><line x1="13.5" y1="5" x2="10.5" y2="19"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft CI/CD Pipeline Guide: Maven Plugin &amp; GitHub Actions (2026)</h3>
         <p>Automate Mule 4.9 builds, Parent POM governance, Connected App deployments, 80%+ MUnit coverage gates, and CloudHub 2.0 promotions in GitHub Actions.</p>
@@ -487,12 +572,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-terraform-provider-guide" href="mulesoft-terraform-provider-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="8" height="7" rx="1.5"/><rect x="13" y="4" width="8" height="7" rx="1.5"/><rect x="8" y="13" width="8" height="7" rx="1.5"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>MuleSoft Terraform Provider Guide: Infrastructure as Code (IaC)</h3>
         <p>Manage Anypoint Business Groups, Environments, CloudHub 2.0 Private Spaces, and API Manager instances declaratively using Terraform.</p>
@@ -502,12 +588,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-sap-s4hana-odata-interview" href="mulesoft-sap-s4hana-odata-interview.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9m-2.5-2.5L13 8l-2.5 2.5"/><path d="M20 16h-9m2.5-2.5L11 16l2.5 2.5"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>SAP S/4HANA OData vs JCo RFC Connector in MuleSoft: Architecture Guide</h3>
         <p>Choose cleanly between SAP S/4HANA OData v4 REST and SAP JCo BAPI/tRFC IDocs in Mule 4, including TID idempotency, CSRF handling, and canonical mapping.</p>
@@ -517,12 +604,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-snowflake-connector-patterns" href="mulesoft-snowflake-connector-patterns.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/><circle cx="12" cy="12" r="2.2"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft Snowflake Connector: High-Volume Ingestion &amp; Staging Patterns</h3>
         <p>Build fast Snowflake analytics pipelines in Mule 4 using RSA Key-Pair Auth, S3/Blob staging + COPY INTO (instead of slow JDBC row inserts), and streaming reads.</p>
@@ -532,12 +620,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-partner-manager-b2b-edi-interview" href="mulesoft-partner-manager-b2b-edi-interview.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="5" height="12" rx="1"/><rect x="10" y="6" width="5" height="12" rx="1"/><path d="M17 12h4m-2-2l2 2-2 2"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Anypoint Partner Manager &amp; B2B EDI X12/EDIFACT: Interview Guide</h3>
         <p>Configure EDI X12 850/810/856 and EDIFACT flows over AS2/SFTP in Anypoint Partner Manager, including automated 997 Functional ACKs and certificate rotation.</p>
@@ -547,12 +636,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-reusable-error-handler-plugin" href="mulesoft-reusable-error-handler-plugin.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 8.2-7 9.5-4-1.3-7-5-7-9.5V6l7-3z"/><path d="M9.5 12l1.8 1.8 3.5-3.6"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-beginner">Beginner</span>
           </div>
-          <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>Reusable MuleSoft Global Error Handler Plugin: Enterprise Architecture</h3>
         <p>Eliminate copy-pasted APIKit &amp; HTTP error boilerplate across 50+ Mule microservices by building a shared Exchange Global Error Handler Plugin.</p>
@@ -562,12 +652,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-secure-properties-encryption-guide" href="mulesoft-secure-properties-encryption-guide.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-beginner">Beginner</span>
           </div>
-          <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook</h3>
         <p>Encrypt database passwords, API secrets, and keystores per environment in Mule 4 using AES-256-GCM without committing plaintext secrets to Git.</p>
@@ -577,12 +668,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-java-interview-mastery" href="mulesoft-java-interview-mastery.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 7 3 12 8 17"/><polyline points="16 7 21 12 16 17"/><line x1="13.5" y1="5" x2="10.5" y2="19"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-advanced">Advanced</span>
           </div>
-          <span class="diff-pill diff-advanced">Advanced</span>
         </div>
         <h3>Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine &amp; Concurrency</h3>
         <p>Understand Mule 4.9&#x27;s Java 17 upgrade, non-blocking CPU_LITE/CPU_INTENSIVE/BLOCKING_IO thread pools, Java Module invocation, and G1GC memory tuning.</p>
@@ -592,12 +684,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="core" data-slug="mulesoft-scenario-based-interview-questions" href="mulesoft-scenario-based-interview-questions.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 12h4l6-6M11 12l6 6"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>Top 20 MuleSoft Scenario-Based Interview Questions &amp; Incident Solutions</h3>
         <p>Real-world production incident troubleshooting in Mule 4: timeouts, 502 Ingress errors, poison MQ loops, OAuth storms, and zero-loss backpressure.</p>
@@ -607,12 +700,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="rag core" data-slug="mulesoft-agentforce-topic-center-actions" href="mulesoft-agentforce-topic-center-actions.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/><circle cx="19" cy="5" r="1.3"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-rag">Agentforce &amp; RAG</span>
+            <span class="diff-pill diff-beginner">Beginner</span>
           </div>
-          <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>MuleSoft &amp; Salesforce Agentforce: Topic Center Actions (2026 Guide)</h3>
         <p>Quick-reference interview &amp; architecture brief on Salesforce Agentforce Topic Center metadata, Anypoint Exchange API Catalog sync, and flat schema best practices.</p>
@@ -622,12 +716,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="mcp core" data-slug="mulesoft-mcp-connector-ai-agents" href="mulesoft-mcp-connector-ai-agents.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="8" width="10" height="8" rx="2"/><path d="M10 8V4M14 8V4M12 16v4M4 12h3M17 12h3"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-mcp">MCP Server &amp; Bridge</span>
+            <span class="diff-pill diff-beginner">Beginner</span>
           </div>
-          <span class="diff-pill diff-beginner">Beginner</span>
         </div>
         <h3>MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents</h3>
         <p>Quick-reference interview brief covering Streamable HTTP MCP servers, JSON Schema tool catalogs, and mutation safety guardrails in MuleSoft.</p>
@@ -637,12 +732,13 @@
         </div>
       </a>
       <a class="post-card" data-cat="gov core" data-slug="mulesoft-model-proxy-semantic-cache" href="mulesoft-model-proxy-semantic-cache.html">
-        <div class="card-badges">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <div class="card-top-row">
+          <span class="card-logo-ring" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l5-6 4 4 4-7 5 5"/><circle cx="8" cy="10" r="1.2"/><circle cx="16" cy="7" r="1.2"/></svg></span>
+          <div class="card-badges">
             
             <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
           </div>
-          <span class="diff-pill diff-intermediate">Intermediate</span>
         </div>
         <h3>MuleSoft Model Proxy: Semantic Caching &amp; LLM Token Cost Optimization</h3>
         <p>Quick architecture guide on routing enterprise AI traffic through Anypoint Flex Gateway Model Proxy with semantic vector caching and token rate limits.</p>

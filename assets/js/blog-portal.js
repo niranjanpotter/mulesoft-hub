@@ -442,9 +442,26 @@
     });
   }
 
+  function initSearchShortcut() {
+    document.addEventListener('keydown', function (e) {
+      var target = e.target;
+      var inField = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+      var isCmdK = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k';
+      var isSlash = !inField && e.key === '/';
+      if (!isCmdK && !isSlash) return;
+      var box = document.getElementById('blog-search') || document.getElementById('portal-global-search');
+      if (box) {
+        e.preventDefault();
+        box.focus();
+        if (box.select) box.select();
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
     initSearchAndFilters();
+    initSearchShortcut();
     addCopyButtons();
     initTabs();
     initFlowSimulators();
