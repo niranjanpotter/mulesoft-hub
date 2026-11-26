@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Mule 4.13 &amp; DataWeave 2.13: Native JWT &amp; JPMS Fix Guide</title>
+  <meta name="description" content="Upgrade to Mule 4.13 Edge &amp; DataWeave 2.13: sign JWTs natively with dw::util::jwt::HMAC/RSA, fix Java 17 JPMS IllegalAccessException &amp; Studio 7.29.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Mule 4.13 &amp; DataWeave 2.13: Native JWT &amp; JPMS Fix Guide">
+  <meta property="og:description" content="Upgrade to Mule 4.13 Edge &amp; DataWeave 2.13: sign JWTs natively with dw::util::jwt::HMAC/RSA, fix Java 17 JPMS IllegalAccessException &amp; Studio 7.29.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="../assets/css/blog-portal.min.css?v=20261126-uxmax">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Mule 4.13 & DataWeave 2.13: Native JWT & JPMS Fix Guide", "description": "Upgrade to Mule 4.13 Edge & DataWeave 2.13: sign JWTs natively with dw::util::jwt::HMAC/RSA, fix Java 17 JPMS IllegalAccessException & Studio 7.29.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html", "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I still need an external Java library to sign JWTs in Mule 4.13?", "acceptedAnswer": {"@type": "Answer", "text": "No. DataWeave 2.13.0 (bundled with Mule 4.13.0+) includes native dw::util::jwt::HMAC and dw::util::jwt::RSA modules supporting HS256/384/512 and RS256/384/512."}}, {"@type": "Question", "name": "Why did my Java call inside DataWeave break after upgrading to Mule 4.13?", "acceptedAnswer": {"@type": "Answer", "text": "DataWeave 2.13.0 enforces JDK 17+ JPMS package filtering by default, blocking access to unexported internal JDK packages. Replace internal calls with exported public Java 17 APIs."}}, {"@type": "Question", "name": "What else improved in Mule 4.13.2 / DataWeave 2.13.1?", "acceptedAnswer": {"@type": "Answer", "text": "November 2026 patch releases lowered memory consumption for text/plain DataWeave outputs, upgraded Jackson to 2.21.7, and improved Java map thread safety."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mulesoft.niranjanpotter.dpdns.org/"}, {"@type": "ListItem", "position": 2, "name": "Mule 4.13 & DW 2.13 JWT", "item": "https://mulesoft.niranjanpotter.dpdns.org/blog/mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html"}]}</script>
+  <script defer src="../assets/js/blog-portal.min.js?v=20261126-uxmax"></script>
+</head>
+<body>
+<div class="read-progress-bar" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="17" fill="#00A3E0" stroke="#005A87" stroke-width="1.5"/><circle cx="18" cy="18" r="13" fill="#001639"/><path d="M10.5 24V12l7.5 7 7.5-7v12h-3.2v-5.8L18 22.4l-4.3-4.2V24h-3.2z" fill="#FFFFFF"/></svg></span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 38 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search 36 guides (Vibes, ACB, MCP...)">
+      <kbd class="search-kbd-hint" aria-hidden="true">Ctrl K</kbd>
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><span class="btn-txt">Dark</span></button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › Mule 4.13 &amp; DW 2.13 JWT</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header post-header-docs">
+          <div class="post-header-top">
+            <div class="post-logo-badge" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+            <div class="post-header-copy">
+              <span class="post-kicker">Trending Sep–Nov 2026 · End-to-End Hands-On Guide</span>
+          <h1>Mule 4.13 &amp; DataWeave 2.13: Native JWT &amp; JPMS Fix Guide</h1>
+          <p class="post-lede">Upgrade to Mule 4.13 Edge &amp; DataWeave 2.13: sign JWTs natively with dw::util::jwt::HMAC/RSA, fix Java 17 JPMS IllegalAccessException &amp; Studio 7.29.</p>
+          <div class="post-meta">
+            <span class="trend-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> New Nov 2026</span>
+            <span class="cat-pill cat-core">Core Mule 4 Playbooks</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Niranjan Potter</span>
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Updated Nov 2026</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 10 min read</span>
+          </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <div class="quick-answer-box" role="note" aria-label="Quick answer summary">
+            <span class="quick-answer-head">⚡ Quick Answer</span>
+            <p>Mule 4.13.0 Edge (Oct 2026) and patch 4.13.2 (Nov 2026) bundle DataWeave 2.13.0/2.13.1 on Java 17, introducing native JWT signing via dw::util::jwt::HMAC and dw::util::jwt::RSA (no external Exchange library needed) and enforcing JDK 17+ JPMS filtering so unexported Java packages throw IllegalAccessException unless explicitly opened or refactored.</p>
+          </div>
+
+          <!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span class="btn-txt">Copy LinkedIn Post</span></button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=Mule+4.13+%26+DataWeave+2.13%3A+Native+JWT+%26+JPMS+Fix+Guide+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> <span class="btn-txt">Copy Link</span></button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> <span class="btn-txt">Save Guide</span></button>
+</div>
+<!-- PORTAL:END:SHARE -->
+
+          <h2 id="overview">What It Is &amp; Why It Is Trending (Nov 2026)</h2>
+          <p>Upgrade to Mule 4.13 Edge &amp; DataWeave 2.13: sign JWTs natively with dw::util::jwt::HMAC/RSA, fix Java 17 JPMS IllegalAccessException &amp; Studio 7.29.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Anypoint Runtime Manager — Mule 4.13.2 Edge</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">Production · US-East</span>
+        <span class="anypoint-status-ok">● RUNNING (JDK 17)</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Runtime Engine</span><span class="anypoint-kpi-val">Mule 4.13.2 Edge</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">DataWeave</span><span class="anypoint-kpi-val">2.13.1 (Native JWT)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Studio / MUnit</span><span class="anypoint-kpi-val">7.29.0 / 3.7.5</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">JDK Baseline</span><span class="anypoint-kpi-val">Java 17 (JPMS Strict)</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">DataWeave 2.13 Native JWT Signing</div>
+          <div class="anypoint-pane-bd">import * from dw::util::jwt::RSA
+JWT(header, claims, rsaKeyPem, &quot;Sha256withRSA&quot;)
+Supports HS256/384/512 &amp; RS256/384/512 cleanly without external Exchange modules.</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">JPMS Java 17 Security &amp; 4.13.2 Patch</div>
+          <div class="anypoint-pane-bd">Blocks unexported JDK internal packages by default.
+Jackson 2.21.7 + lower text/plain memory footprint + Studio 7.29.0 / MUnit 3.7.5 alignment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View: Runtime Manager &amp; Studio 7.29.0 running Mule 4.13.2 Edge with DataWeave 2.13.1 native dw::util::jwt::RSA signing and Java 17 JPMS compliance.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
+
+          <h2 id="architecture">Architecture &amp; End-to-End Flow</h2>
+          <p>Explore each stage of the production runtime flow below — hit <strong>Play Flow Animation</strong> to watch an event step through the components, click any node to inspect its Studio Properties, and copy the validated Mule configuration XML.</p>
+
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🌐</span><span class="flow-node-title">HTTP Listener</span><span class="flow-node-type">http:listener</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🔐</span><span class="flow-node-title">Load Private Key</span><span class="flow-node-type">ee:transform</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">⚙️</span><span class="flow-node-title">DW 2.13 JWT Sign</span><span class="flow-node-type">ee:transform</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">JPMS Guard Check</span><span class="flow-node-type">java:invoke-static</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">📝</span><span class="flow-node-title">JSON Response</span><span class="flow-node-type">logger</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. HTTP Listener (http:listener)</h3>
+      <p class="insp-node-what">Receives incoming token-minting or API request on port 8081 in Mule 4.13.2 Edge.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">path=&quot;/api/v1/token&quot; allowedMethods=&quot;POST&quot;</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Display Name</th><td>POST /api/v1/token</td></tr>
+<tr><th scope="row">Path</th><td>/api/v1/token</td></tr>
+<tr><th scope="row">Runtime</th><td>4.13.2 Edge</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:doc=&quot;http://www.mulesoft.org/schema/mule/documentation&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:ee=&quot;http://www.mulesoft.org/schema/mule/ee/core&quot;
+      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+      xsi:schemaLocation=&quot;
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd&quot;&gt;
+  &lt;http:listener-config name=&quot;HTTP_Listener_413&quot;&gt;
+    &lt;http:listener-connection host=&quot;0.0.0.0&quot; port=&quot;8081&quot; /&gt;
+  &lt;/http:listener-config&gt;
+  &lt;flow name=&quot;mule413-dw213-native-jwt-flow&quot;&gt;
+    &lt;http:listener config-ref=&quot;HTTP_Listener_413&quot; path=&quot;/api/v1/token&quot; allowedMethods=&quot;POST&quot; /&gt;
+    &lt;ee:transform doc:name=&quot;Sign JWT with DataWeave 2.13&quot;&gt;
+      &lt;ee:message&gt;
+        &lt;ee:set-payload&gt;&lt;![CDATA[%dw 2.0
+output application/json
+import * from dw::util::jwt::RSA
+var nowEpoch = now() as Number {unit: &quot;seconds&quot;}
+var header = { alg: &quot;RS256&quot;, typ: &quot;JWT&quot;, kid: &quot;ch2-2026-key1&quot; }
+var claims = {
+  iss: &quot;mulesoft-auth-api&quot;,
+  sub: payload.clientId default &quot;svc-order-papi&quot;,
+  aud: &quot;https://api.enterprise.internal&quot;,
+  iat: nowEpoch,
+  exp: nowEpoch + 900
+}
+---
+{
+  token_type: &quot;Bearer&quot;,
+  expires_in: 900,
+  access_token: JWT(header, claims, Mule::p(&#x27;secure::jwt.rsaPrivateKeyPem&#x27;), &quot;Sha256withRSA&quot;)
+}]]&gt;&lt;/ee:set-payload&gt;
+      &lt;/ee:message&gt;
+    &lt;/ee:transform&gt;
+    &lt;logger level=&quot;INFO&quot; message=&quot;#[&#x27;JWT minted corrId=&#x27; ++ correlationId]&quot; /&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🌐", "label": "HTTP Listener", "type": "http:listener", "what": "Receives incoming token-minting or API request on port 8081 in Mule 4.13.2 Edge.", "config_values": "path=\"/api/v1/token\" allowedMethods=\"POST\"", "studio_props": [["Display Name", "POST /api/v1/token"], ["Path", "/api/v1/token"], ["Runtime", "4.13.2 Edge"]]}, {"icon": "🔐", "label": "Load Private Key", "type": "ee:transform", "what": "Reads unencrypted PKCS#8 PEM private key from secure properties without legacy Java KeyStore reflection.", "config_values": "Mule::p('secure::jwt.rsaPrivateKeyPem')", "studio_props": [["Target", "vars.rsaKeyPem"], ["Key Format", "PKCS#8 PEM"]]}, {"icon": "⚙️", "label": "DW 2.13 JWT Sign", "type": "ee:transform", "what": "Uses native dw::util::jwt::RSA::JWT() (or HMAC::JWT()) introduced in DataWeave 2.13.0—zero external Java libs.", "config_values": "JWT({alg:\"RS256\",typ:\"JWT\"}, claims, vars.rsaKeyPem, \"Sha256withRSA\")", "studio_props": [["Module", "dw::util::jwt::RSA"], ["Algorithm", "Sha256withRSA / HS256"]]}, {"icon": "🛡️", "label": "JPMS Guard Check", "type": "java:invoke-static", "what": "Calls only public exported Java 17 packages (no java.base internal reflection that DW 2.13 JPMS filter blocks).", "config_values": "class=\"com.acme.auth.PublicClaimsValidator\" method=\"validate(String)\"", "studio_props": [["Package", "Exported Public API"], ["JDK", "17 LTS"]]}, {"icon": "📝", "label": "JSON Response", "type": "logger", "what": "Logs correlationId and returns signed bearer token with expiry metadata.", "config_values": "message=\"#['JWT minted corrId=' ++ correlationId]\"", "studio_props": [["Level", "INFO"], ["Status", "200 OK"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:doc=\"http://www.mulesoft.org/schema/mule/documentation\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:ee=\"http://www.mulesoft.org/schema/mule/ee/core\"\n      xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n      xsi:schemaLocation=\"\n        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd\n        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd\n        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd\">\n  <http:listener-config name=\"HTTP_Listener_413\">\n    <http:listener-connection host=\"0.0.0.0\" port=\"8081\" />\n  <\/http:listener-config>\n  <flow name=\"mule413-dw213-native-jwt-flow\">\n    <http:listener config-ref=\"HTTP_Listener_413\" path=\"/api/v1/token\" allowedMethods=\"POST\" />\n    <ee:transform doc:name=\"Sign JWT with DataWeave 2.13\">\n      <ee:message>\n        <ee:set-payload><![CDATA[%dw 2.0\noutput application/json\nimport * from dw::util::jwt::RSA\nvar nowEpoch = now() as Number {unit: \"seconds\"}\nvar header = { alg: \"RS256\", typ: \"JWT\", kid: \"ch2-2026-key1\" }\nvar claims = {\n  iss: \"mulesoft-auth-api\",\n  sub: payload.clientId default \"svc-order-papi\",\n  aud: \"https://api.enterprise.internal\",\n  iat: nowEpoch,\n  exp: nowEpoch + 900\n}\n---\n{\n  token_type: \"Bearer\",\n  expires_in: 900,\n  access_token: JWT(header, claims, Mule::p('secure::jwt.rsaPrivateKeyPem'), \"Sha256withRSA\")\n}]]><\/ee:set-payload>\n      <\/ee:message>\n    <\/ee:transform>\n    <logger level=\"INFO\" message=\"#['JWT minted corrId=' ++ correlationId]\" />\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Anypoint Studio upgraded to 7.29.0 and MUnit upgraded to 3.7.5</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>pom.xml targets Mule Runtime 4.13.2 Edge on Java 17</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Legacy Java JWT signers replaced with dw::util::jwt::HMAC or RSA</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>All .dwl java! imports verified against exported JDK 17 JPMS packages</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>PKCS#8 PEM keys stored in Secure Properties / Secret Manager (never plaintext)</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" aria-selected="true" aria-controls="panel-studio-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" aria-selected="false" aria-controls="panel-platform-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" aria-selected="false" aria-controls="panel-test-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" aria-labelledby="btn-tab-studio-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>mule413-dw213-jwt-api</code> · <strong>Target Runtime:</strong> <code>4.13.2 Edge (Java 17)</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;properties&gt;
+  &lt;app.runtime&gt;4.13.2&lt;/app.runtime&gt;
+  &lt;munit.version&gt;3.7.5&lt;/munit.version&gt;
+  &lt;mule.maven.plugin.version&gt;4.10.4&lt;/mule.maven.plugin.version&gt;
+&lt;/properties&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>Anypoint Studio</code></td><td><code>7.29.0</code></td><td>Released Oct 2026 with Mule 4.13.x runtime bundle</td></tr>
+<tr><td><code>MUnit Version</code></td><td><code>3.7.5</code></td><td>Compatible with Mule 4.13 &amp; DataWeave 2.13.1</td></tr>
+<tr><td><code>JWT Signing Module</code></td><td><code>dw::util::jwt::RSA / HMAC</code></td><td>Native DW 2.13 JWT signing without external Exchange jars</td></tr>
+<tr><td><code>Java / JPMS Check</code></td><td><code>JDK 17 Exported APIs</code></td><td>Avoid unexported JDK internals blocked by DW 2.13 JPMS filter</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" aria-labelledby="btn-tab-platform-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>In Runtime Manager (CloudHub 2.0 or RTF), select Runtime Version 4.13.2 Edge on Java 17.</li>
+        <li>Store the unencrypted PKCS#1 / PKCS#8 PEM private key in Anypoint Secret Manager / Secure Properties (never commit PEMs to Git).</li>
+        <li>Verify zero IllegalAccessException warnings in Runtime Manager logs during smoke tests.</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" aria-labelledby="btn-tab-test-mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>POST https://your-app.cloudhub.io/api/v1/token  (Body: {&quot;clientId&quot;:&quot;erp-sync-papi&quot;})</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -s -X POST https://your-app.cloudhub.io/api/v1/token -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;clientId&quot;:&quot;erp-sync-papi&quot;}&#x27;</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;token_type&quot;: &quot;Bearer&quot;,
+  &quot;expires_in&quot;: 900,
+  &quot;access_token&quot;: &quot;eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...&quot;
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>IllegalAccessException in DataWeave</code></td><td>DW 2.13.0 filters unexported JDK 17+ JPMS packages by default</td><td>Refactor Java invocation to public exported classes or pass explicit --add-opens only as a temporary bridge</td></tr>
+<tr><td><code>InvalidKeySpecException on RSA JWT</code></td><td>Private key is encrypted or DER-encoded instead of PKCS#1/PKCS#8 PEM</td><td>Convert key to unencrypted PKCS#8 PEM before passing to dw::util::jwt::RSA::JWT()</td></tr>
+<tr><td><code>NoClassDefFoundError / MUnit 3.5 crash on 4.13</code></td><td>Older Studio / MUnit versions lack Mule 4.13 Edge classloader alignment</td><td>Upgrade to Anypoint Studio 7.29.0 and MUnit 3.7.5</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
+
+          <h2 id="hmac-vs-rsa">1. dw::util::jwt::HMAC vs dw::util::jwt::RSA in DataWeave 2.13</h2>
+          <p>Before DataWeave 2.13 (Oct 2026), generating signed JWTs in MuleSoft required custom Java classes (<code>jjwt</code>/<code>nimbus-jose-jwt</code>) or external Exchange modules. Now both symmetric (<code>HMAC</code>) and asymmetric (<code>RSA</code>) signing are built straight into DataWeave:</p><ul><li><code>dw::util::jwt::HMAC</code>: Supports <code>HS256</code>, <code>HS384</code>, and <code>HS512</code> with a shared secret string.</li><li><code>dw::util::jwt::RSA</code>: Supports <code>RS256</code> (<code>Sha256withRSA</code>), <code>RS384</code> (<code>Sha384withRSA</code>), and <code>RS512</code> with unencrypted PKCS#1 or PKCS#8 PEM private keys.</li></ul><pre><code>%dw 2.0
+output application/json
+import * from dw::util::jwt::HMAC
+---
+{
+  jwt: JWT({alg: "HS256", typ: "JWT"}, {sub: "partner-01", exp: 1796000000}, Mule::p('secure::jwt.hmacSecret'), "HmacSHA256")
+}</code></pre>
+          <h2 id="jpms-java17">2. Fixing JDK 17 JPMS IllegalAccessException When Upgrading to 4.13</h2>
+          <p>Mule 4.13.0 + DataWeave 2.13.0 tightens Java Platform Module System (JPMS) reflection security on JDK 17+. Unexported JDK packages are now filtered out during Java module resolution inside DataWeave. Any legacy script calling internal JDK helpers (e.g., <code>sun.misc.*</code> or non-public <code>java.util.*</code> internals) will fail cleanly at resolution time rather than slipping through with warnings.</p><p><strong>Rule of thumb (and MuleGuard check):</strong> Audit every <code>java!</code> import in `.dwl` files and custom Java SDK classes before bumping <code>app.runtime</code> to <code>4.13.2</code>.</p>
+
+          <h2 id="troubleshooting">Troubleshooting &amp; Production Edge Cases</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Symptom</th><th scope="col">Root Cause</th><th scope="col">Production Fix</th></tr></thead>
+              <tbody>
+              <tr><td><code>IllegalAccessException in DataWeave</code></td><td>DW 2.13.0 filters unexported JDK 17+ JPMS packages by default</td><td>Refactor Java invocation to public exported classes or pass explicit --add-opens only as a temporary bridge</td></tr>
+              <tr><td><code>InvalidKeySpecException on RSA JWT</code></td><td>Private key is encrypted or DER-encoded instead of PKCS#1/PKCS#8 PEM</td><td>Convert key to unencrypted PKCS#8 PEM before passing to dw::util::jwt::RSA::JWT()</td></tr>
+              <tr><td><code>NoClassDefFoundError / MUnit 3.5 crash on 4.13</code></td><td>Older Studio / MUnit versions lack Mule 4.13 Edge classloader alignment</td><td>Upgrade to Anypoint Studio 7.29.0 and MUnit 3.7.5</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production Readiness Checklist</h2>
+          <ul class="checklist">
+            <li>Anypoint Studio upgraded to 7.29.0 and MUnit upgraded to 3.7.5</li>
+            <li>pom.xml targets Mule Runtime 4.13.2 Edge on Java 17</li>
+            <li>Legacy Java JWT signers replaced with dw::util::jwt::HMAC or RSA</li>
+            <li>All .dwl java! imports verified against exported JDK 17 JPMS packages</li>
+            <li>PKCS#8 PEM keys stored in Secure Properties / Secret Manager (never plaintext)</li>
+          </ul>
+
+          <h2 id="interview">Frequently Asked Questions &amp; Interview Q&amp;A</h2>
+          <details class="qa"><summary>Do I still need an external Java library to sign JWTs in Mule 4.13?</summary><div><p>No. DataWeave 2.13.0 (bundled with Mule 4.13.0+) includes native dw::util::jwt::HMAC and dw::util::jwt::RSA modules supporting HS256/384/512 and RS256/384/512.</p></div></details>
+          <details class="qa"><summary>Why did my Java call inside DataWeave break after upgrading to Mule 4.13?</summary><div><p>DataWeave 2.13.0 enforces JDK 17+ JPMS package filtering by default, blocking access to unexported internal JDK packages. Replace internal calls with exported public Java 17 APIs.</p></div></details>
+          <details class="qa"><summary>What else improved in Mule 4.13.2 / DataWeave 2.13.1?</summary><div><p>November 2026 patch releases lowered memory consumption for text/plain DataWeave outputs, upgraded Jackson to 2.21.7, and improved Java map thread safety.</p></div></details>
+
+          <h2 id="sources">Sources &amp; Official Documentation</h2>
+          <ul class="post-sources">
+            <li><a href="https://docs.mulesoft.com/release-notes/mule-runtime/mule-4.13.0-release-notes" target="_blank" rel="noopener noreferrer">Mule Runtime 4.13.0 Release Notes (Oct 2026)</a></li>
+            <li><a href="https://docs.mulesoft.com/dataweave/latest/dw-jwt" target="_blank" rel="noopener noreferrer">DataWeave 2.13 dw::util::jwt Documentation</a></li>
+            <li><a href="https://docs.mulesoft.com/release-notes/studio/anypoint-studio-7.29-with-4.13-runtime-update-site" target="_blank" rel="noopener noreferrer">Anypoint Studio 7.29.0 &amp; MUnit 3.7.5 Release Notes</a></li>
+          </ul>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="../index.html"><span>← Home</span><strong>All 38 MuleSoft Blogs</strong></a>
+  <a class="next" href="../blog/cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html"><span>Next Guide →</span><strong>TLS 502 &amp; Maven 4.10.4</strong></a>
+</nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">What It Is &amp; Why It Is Trending (Nov 2026)</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; End-to-End Flow</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#hmac-vs-rsa">1. dw::util::jwt::HMAC vs dw::util::jwt::RSA in DataWeave 2.13</a></li>
+        <li><a href="#jpms-java17">2. Fixing JDK 17 JPMS IllegalAccessException When Upgrading to 4.13</a></li>
+        <li><a href="#troubleshooting">Troubleshooting &amp; Production Edge Cases</a></li>
+        <li><a href="#checklist">Production Readiness Checklist</a></li>
+        <li><a href="#interview">Frequently Asked Questions &amp; Interview Q&amp;A</a></li>
+        <li><a href="#sources">Sources &amp; Official Documentation</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

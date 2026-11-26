@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Fix CloudHub DLB 502 TLS Errors &amp; Maven 3.10.0 Builds</title>
+  <meta name="description" content="Resolve 502 upstream errors after the Oct 31 CloudHub 1.0 DLB TLS cutoff, fix Maven 3.10.0 CI/CD builds with mule-maven-plugin 4.10.4 &amp; RTF TLS.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Fix CloudHub DLB 502 TLS Errors &amp; Maven 3.10.0 Builds">
+  <meta property="og:description" content="Resolve 502 upstream errors after the Oct 31 CloudHub 1.0 DLB TLS cutoff, fix Maven 3.10.0 CI/CD builds with mule-maven-plugin 4.10.4 &amp; RTF TLS.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300A3E0'/%3E%3Cstop offset='1' stop-color='%230B1F4B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230B1F4B'/%3E%3Cpath d='M16 44V20l16 14 16-14v24h-7V32l-9 8-9-8v12z' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
+<style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
+  <link rel="stylesheet" href="../assets/css/blog-portal.min.css?v=20261126-uxmax">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Fix CloudHub DLB 502 TLS Errors & Maven 3.10.0 Builds", "description": "Resolve 502 upstream errors after the Oct 31 CloudHub 1.0 DLB TLS cutoff, fix Maven 3.10.0 CI/CD builds with mule-maven-plugin 4.10.4 & RTF TLS.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html", "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why did my CloudHub API start returning 502 Bad Gateway in November 2026?", "acceptedAnswer": {"@type": "Answer", "text": "All remaining CloudHub 1.0 DLBs blocked TLS 1.0/1.1 on October 31, 2026. If your upstream Mule app or partner client pins older TLS versions, the handshake fails with a 502 error."}}, {"@type": "Question", "name": "How do I fix Mule Maven build errors on GitHub Actions / Azure DevOps?", "acceptedAnswer": {"@type": "Answer", "text": "Hosted CI runners updated to Apache Maven 3.10.0. Upgrade org.mule.tools.maven:mule-maven-plugin to 4.10.4 (released Nov 4, 2026)."}}, {"@type": "Question", "name": "What causes 'tls: certificate required' or NOT READY pods in Runtime Fabric?", "acceptedAnswer": {"@type": "Answer", "text": "Usually missing mTLS certificates, duplicate image pull secrets, or corporate firewalls performing SSL inspection on *.ingest.mulesoft.com."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mulesoft.niranjanpotter.dpdns.org/"}, {"@type": "ListItem", "position": 2, "name": "TLS 502 & Maven 4.10.4", "item": "https://mulesoft.niranjanpotter.dpdns.org/blog/cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html"}]}</script>
+  <script defer src="../assets/js/blog-portal.min.js?v=20261126-uxmax"></script>
+</head>
+<body>
+<div class="read-progress-bar" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html">
+      <span class="portal-brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="17" fill="#00A3E0" stroke="#005A87" stroke-width="1.5"/><circle cx="18" cy="18" r="13" fill="#001639"/><path d="M10.5 24V12l7.5 7 7.5-7v12h-3.2v-5.8L18 22.4l-4.3-4.2V24h-3.2z" fill="#FFFFFF"/></svg></span>
+      <span>MuleSoft Blog</span>
+      <span class="portal-brand-pill">2026 · 38 Guides</span>
+    </a>
+    <div class="portal-topbar-search">
+      <label class="sr-only" for="portal-global-search">Search MuleSoft guides, connectors, and setup steps</label>
+      <input id="portal-global-search" class="portal-search-input" type="search" data-root="../index.html" placeholder="Search 36 guides (Vibes, ACB, MCP...)">
+      <kbd class="search-kbd-hint" aria-hidden="true">Ctrl K</kbd>
+    </div>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+      <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><span class="btn-txt">Dark</span></button>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › TLS 502 &amp; Maven 4.10.4</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header post-header-docs">
+          <div class="post-header-top">
+            <div class="post-logo-badge" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 8.2-7 9.5-4-1.3-7-5-7-9.5V6l7-3z"/><path d="M9.5 12l1.8 1.8 3.5-3.6"/></svg></div>
+            <div class="post-header-copy">
+              <span class="post-kicker">Trending Sep–Nov 2026 · End-to-End Hands-On Guide</span>
+          <h1>Fix CloudHub DLB 502 TLS Errors &amp; Maven 3.10.0 Builds</h1>
+          <p class="post-lede">Resolve 502 upstream errors after the Oct 31 CloudHub 1.0 DLB TLS cutoff, fix Maven 3.10.0 CI/CD builds with mule-maven-plugin 4.10.4 &amp; RTF TLS.</p>
+          <div class="post-meta">
+            <span class="trend-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> New Nov 2026</span>
+            <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
+            <span class="diff-pill diff-intermediate">Intermediate</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Niranjan Potter</span>
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Updated Nov 2026</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 9 min read</span>
+          </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <div class="quick-answer-box" role="note" aria-label="Quick answer summary">
+            <span class="quick-answer-head">⚡ Quick Answer</span>
+            <p>On October 31, 2026, MuleSoft permanently stopped TLS 1.0/1.1 on all CloudHub 1.0 Dedicated Load Balancers (causing 502 Bad Gateway errors on outdated upstream TLS configs), and on November 4, 2026 released mule-maven-plugin 4.10.4 to fix CI/CD build failures triggered by Apache Maven 3.10.0 runners.</p>
+          </div>
+
+          <!-- PORTAL:START:SHARE -->
+<div class="viral-share-bar" data-slug="cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html" role="region" aria-label="Share and save guide">
+  <span class="viral-share-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fcloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span class="btn-txt">Copy LinkedIn Post</span></button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=Fix+CloudHub+DLB+502+TLS+Errors+%26+Maven+3.10.0+Builds+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fcloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> <span class="btn-txt">Copy Link</span></button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> <span class="btn-txt">Save Guide</span></button>
+</div>
+<!-- PORTAL:END:SHARE -->
+
+          <h2 id="overview">What It Is &amp; Why It Is Trending (Nov 2026)</h2>
+          <p>Resolve 502 upstream errors after the Oct 31 CloudHub 1.0 DLB TLS cutoff, fix Maven 3.10.0 CI/CD builds with mule-maven-plugin 4.10.4 &amp; RTF TLS.</p>
+
+          <!-- PORTAL:START:ANYPOINT_VIEW -->
+<h2 id="anypoint-view">Real Anypoint View</h2>
+<figure>
+  <div class="anypoint-frame">
+    <div class="anypoint-chrome">
+      <div class="anypoint-chrome-left">
+        <span class="chrome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="real-view-tag">Real Anypoint View</span>
+        <strong>Runtime Manager — DLB Upstream TLS &amp; CI/CD</strong>
+      </div>
+      <div>
+        <span style="margin-right:8px;opacity:0.9;">CH 1.0 DLB / CH 2.0</span>
+        <span class="anypoint-status-ok">● TLS 1.2+ ENFORCED</span>
+      </div>
+    </div>
+    <div class="anypoint-canvas">
+      <div class="anypoint-kpi-row">
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">DLB TLS Cutoff</span><span class="anypoint-kpi-val">Oct 31, 2026 (1.2+)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Maven Plugin Fix</span><span class="anypoint-kpi-val">v4.10.4 (Nov 4, 2026)</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">Apache Maven</span><span class="anypoint-kpi-val">3.10.0 Supported</span></div>
+          <div class="anypoint-kpi"><span class="anypoint-kpi-lbl">RTF Health</span><span class="anypoint-kpi-val">mTLS + Pull Secrets</span></div>
+      </div>
+      <div class="anypoint-split">
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Oct 31, 2026 DLB / CH2 Upstream TLS</div>
+          <div class="anypoint-pane-bd">TLS 1.0/1.1 permanently blocked on Oct 31, 2026.
+Ensure enabledProtocols=&quot;TLSv1.2,TLSv1.3&quot; on HTTP Listener &amp; Runtime Manager Upstream TLS to eliminate 502 Bad Gateway errors.</div>
+        </div>
+        <div class="anypoint-pane">
+          <div class="anypoint-pane-hd">Maven 3.10.0 + RTF Pod Readiness</div>
+          <div class="anypoint-pane-bd">Upgrade mule-maven-plugin to 4.10.4 (Nov 4, 2026) for Maven 3.10.0 runners.
+Bypass SSL MITM for *.ingest.mulesoft.com and deduplicate RTF imagePullSecrets.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>Real Anypoint View: Runtime Manager Upstream TLS 1.2/1.3 enforcement paired with GitHub Actions / Azure DevOps running mule-maven-plugin 4.10.4 on Maven 3.10.0.</figcaption>
+</figure>
+<!-- PORTAL:END:ANYPOINT_VIEW -->
+
+          <h2 id="architecture">Architecture &amp; End-to-End Flow</h2>
+          <p>Explore each stage of the production runtime flow below — hit <strong>Play Flow Animation</strong> to watch an event step through the components, click any node to inspect its Studio Properties, and copy the validated Mule configuration XML.</p>
+
+          <!-- PORTAL:START:FLOW_SIM -->
+<h2 id="flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</h2>
+<p>Click <strong>Play Flow Animation</strong> to trace the runtime message token step by step, or click any processor card to inspect its Anypoint Studio / ACB configuration properties and copy the full Mule 4.9 XML.</p>
+<div class="flow-sim">
+  <div class="flow-sim-toolbar">
+    <div class="flow-sim-actions">
+      <button type="button" class="btn-action primary btn-play-flow">▶ Play Flow Animation</button>
+      <button type="button" class="btn-action btn-copy-xml">📋 Copy XML</button>
+    </div>
+    <span class="flow-sim-status" aria-live="polite">Inspecting Step 1 of 5</span>
+  </div>
+  <div class="flow-rail-wrap">
+    <div class="flow-pulse-dot" aria-hidden="true"></div>
+    <div class="flow-rail" role="group" aria-label="Interactive Mule 4 Flow Processors">
+      <button type="button" class="flow-node is-active" aria-pressed="true"><span class="flow-node-icon" aria-hidden="true">🔨</span><span class="flow-node-title">Maven 3.10.0 CI</span><span class="flow-node-type">mvn:validate</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🛡️</span><span class="flow-node-title">TLS 1.2+ Context</span><span class="flow-node-type">tls:context</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🌐</span><span class="flow-node-title">CH2 Ingress / DLB</span><span class="flow-node-type">http:listener</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">🚀</span><span class="flow-node-title">CH2 / RTF Deploy</span><span class="flow-node-type">mule:deploy</span></button> <span class="flow-arrow" aria-hidden="true">→</span> <button type="button" class="flow-node" aria-pressed="false"><span class="flow-node-icon" aria-hidden="true">✅</span><span class="flow-node-title">TLS Health Probe</span><span class="flow-node-type">logger</span></button>
+    </div>
+  </div>
+  <div class="flow-inspector">
+    <div class="flow-insp-col">
+      <h3 class="insp-node-title">1. Maven 3.10.0 CI (mvn:validate)</h3>
+      <p class="insp-node-what">CI/CD runner (GitHub Actions / Azure DevOps) invokes Apache Maven 3.10.0 with mule-maven-plugin 4.10.4.</p>
+      <p><strong>Exact Config Values:</strong> <code class="insp-node-config">&lt;mule.maven.plugin.version&gt;4.10.4&lt;/mule.maven.plugin.version&gt;</code></p>
+    </div>
+    <div class="flow-insp-col">
+      <div class="studio-props-box">
+        <div class="studio-props-title">Anypoint Studio / ACB Properties Tab</div>
+        <table class="studio-props-table">
+          <thead><tr><th scope="col">Property</th><th scope="col">Value</th></tr></thead>
+          <tbody class="studio-props-tbody"><tr><th scope="row">Plugin</th><td>mule-maven-plugin 4.10.4</td></tr>
+<tr><th scope="row">Maven</th><td>3.10.0+</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <details class="flow-xml-drawer">
+    <summary>View Complete Mule 4.9 LTS Flow XML / Declarative Config</summary>
+    <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mule xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot;
+      xmlns:doc=&quot;http://www.mulesoft.org/schema/mule/documentation&quot;
+      xmlns:http=&quot;http://www.mulesoft.org/schema/mule/http&quot;
+      xmlns:tls=&quot;http://www.mulesoft.org/schema/mule/tls&quot;
+      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+      xsi:schemaLocation=&quot;
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd&quot;&gt;
+  &lt;tls:context name=&quot;Strict_TLS12_TLS13_Context&quot; enabledProtocols=&quot;TLSv1.2,TLSv1.3&quot;&gt;
+    &lt;tls:key-store type=&quot;pkcs12&quot; path=&quot;certs/api-keystore.p12&quot; keyPassword=&quot;${secure::tls.keyPass}&quot; password=&quot;${secure::tls.storePass}&quot; /&gt;
+  &lt;/tls:context&gt;
+  &lt;http:listener-config name=&quot;HTTPS_CH2_Listener&quot;&gt;
+    &lt;http:listener-connection protocol=&quot;HTTPS&quot; host=&quot;0.0.0.0&quot; port=&quot;8081&quot; tlsContext=&quot;Strict_TLS12_TLS13_Context&quot; /&gt;
+  &lt;/http:listener-config&gt;
+  &lt;flow name=&quot;tls12-health-probe-flow&quot;&gt;
+    &lt;http:listener config-ref=&quot;HTTPS_CH2_Listener&quot; path=&quot;/health&quot; allowedMethods=&quot;GET&quot; /&gt;
+    &lt;set-payload value=&#x27;{&quot;status&quot;:&quot;ok&quot;,&quot;tls&quot;:&quot;TLSv1.2+&quot;}&#x27; mimeType=&quot;application/json&quot; /&gt;
+  &lt;/flow&gt;
+&lt;/mule&gt;</code></pre>
+  </details>
+  <script type="application/json" class="flow-sim-data">{"nodes": [{"icon": "🔨", "label": "Maven 3.10.0 CI", "type": "mvn:validate", "what": "CI/CD runner (GitHub Actions / Azure DevOps) invokes Apache Maven 3.10.0 with mule-maven-plugin 4.10.4.", "config_values": "<mule.maven.plugin.version>4.10.4<\/mule.maven.plugin.version>", "studio_props": [["Plugin", "mule-maven-plugin 4.10.4"], ["Maven", "3.10.0+"]]}, {"icon": "🛡️", "label": "TLS 1.2+ Context", "type": "tls:context", "what": "Explicitly enforces TLSv1.2 and TLSv1.3 in Mule HTTP Listener/Request—never TLSv1.0 or TLSv1.1.", "config_values": "enabledProtocols=\"TLSv1.2,TLSv1.3\"", "studio_props": [["Protocol", "TLSv1.2, TLSv1.3"], ["Cutoff", "Oct 31, 2026"]]}, {"icon": "🌐", "label": "CH2 Ingress / DLB", "type": "http:listener", "what": "Accepts HTTPS traffic on port 8081 with Upstream TLS aligned to TLS 1.2+ to avoid 502 errors.", "config_values": "port=\"8081\" protocol=\"HTTPS\"", "studio_props": [["Port", "8081 (CH2)"], ["Upstream TLS", "TLS 1.2+"]]}, {"icon": "🚀", "label": "CH2 / RTF Deploy", "type": "mule:deploy", "what": "Deploys JAR cleanly via Connected App OAuth credentials without duplicate imagePullSecrets.", "config_values": "<cloudhub2Deployment><provider>MC<\/provider>...<\/cloudhub2Deployment>", "studio_props": [["Auth", "Connected App"], ["Target", "Private Space / RTF"]]}, {"icon": "✅", "label": "TLS Health Probe", "type": "logger", "what": "Verifies end-to-end TLS 1.2/1.3 handshake via curl/openssl with zero 502 Bad Gateway errors.", "config_values": "openssl s_client -tls1_2 -connect api.company.com:443", "studio_props": [["Expected", "HTTP 200 OK"], ["Cipher", "TLS 1.2 / 1.3"]]}], "flow_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n      xmlns:doc=\"http://www.mulesoft.org/schema/mule/documentation\"\n      xmlns:http=\"http://www.mulesoft.org/schema/mule/http\"\n      xmlns:tls=\"http://www.mulesoft.org/schema/mule/tls\"\n      xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n      xsi:schemaLocation=\"\n        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd\n        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd\n        http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd\">\n  <tls:context name=\"Strict_TLS12_TLS13_Context\" enabledProtocols=\"TLSv1.2,TLSv1.3\">\n    <tls:key-store type=\"pkcs12\" path=\"certs/api-keystore.p12\" keyPassword=\"${secure::tls.keyPass}\" password=\"${secure::tls.storePass}\" />\n  <\/tls:context>\n  <http:listener-config name=\"HTTPS_CH2_Listener\">\n    <http:listener-connection protocol=\"HTTPS\" host=\"0.0.0.0\" port=\"8081\" tlsContext=\"Strict_TLS12_TLS13_Context\" />\n  <\/http:listener-config>\n  <flow name=\"tls12-health-probe-flow\">\n    <http:listener config-ref=\"HTTPS_CH2_Listener\" path=\"/health\" allowedMethods=\"GET\" />\n    <set-payload value='{\"status\":\"ok\",\"tls\":\"TLSv1.2+\"}' mimeType=\"application/json\" />\n  <\/flow>\n<\/mule>"}</script>
+  <div class="setup-checklist-box" data-slug="cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes">
+    <div class="setup-cl-top">
+      <strong>Setup Checklist (Click steps to track your progress)</strong>
+      <span class="setup-cl-count">0 / 5 done</span>
+    </div>
+    <div class="setup-cl-bar" aria-hidden="true"><div class="setup-cl-fill"></div></div>
+    <ul class="setup-cl-list">
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>mule-maven-plugin upgraded to 4.10.4 in parent &amp; service pom.xml files</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Zero TLSv1 or TLSv1.1 references in XML tls:context or tls-default.conf</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Runtime Manager Upstream TLS set to TLS 1.2 / 1.3 on all DLBs &amp; Private Spaces</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>Studio ~/.m2/settings.xml Enterprise Nexus credentials validated</span></button></li>
+      <li><button type="button" class="setup-cl-btn" aria-pressed="false"><span class="cl-tick" aria-hidden="true"></span><span>RTF outbound connectivity to us1.ingest.mulesoft.com verified without SSL MITM</span></button></li>
+    </ul>
+  </div>
+</div>
+<!-- PORTAL:END:FLOW_SIM -->
+
+          <!-- PORTAL:START:SETUP_TABS -->
+<h2 id="real-setup-tabs">Real Setup — Follow Exactly</h2>
+<div class="setup-tabs-box">
+  <div class="setup-tablist" role="tablist" aria-label="Hands-on Setup Steps">
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-studio-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" aria-selected="true" aria-controls="panel-studio-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" tabindex="0">1. Anypoint Studio / ACB (Mule 4.9 LTS)</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-platform-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" aria-selected="false" aria-controls="panel-platform-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" tabindex="-1">2. Anypoint Platform Setup</button>
+    <button type="button" role="tab" class="setup-tab-btn" id="btn-tab-test-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" aria-selected="false" aria-controls="panel-test-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" tabindex="-1">3. Test It Live</button>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-studio-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" aria-labelledby="btn-tab-studio-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes">
+    <h3>Project &amp; Runtime Setup</h3>
+    <p><strong>Project Name:</strong> <code>ch2-tls-maven4104-template</code> · <strong>Target Runtime:</strong> <code>4.9 LTS / 4.13 Edge (CH2 / RTF)</code></p>
+    <span class="code-label">pom.xml / CLI Setup</span>
+    <pre><code>&lt;plugin&gt;
+  &lt;groupId&gt;org.mule.tools.maven&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;4.10.4&lt;/version&gt;
+  &lt;extensions&gt;true&lt;/extensions&gt;
+&lt;/plugin&gt;</code></pre>
+    <h3>Exact Configuration Fields to Fill</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Setting / Component</th><th scope="col">Exact Value</th><th scope="col">Production Note</th></tr></thead><tbody><tr><td><code>mule-maven-plugin</code></td><td><code>4.10.4 (Nov 4, 2026)</code></td><td>Fixes Apache Maven 3.10.0 process-sources CI failures</td></tr>
+<tr><td><code>enabledProtocols</code></td><td><code>TLSv1.2,TLSv1.3</code></td><td>Required after Oct 31, 2026 CH 1.0 DLB TLS cutoff</td></tr>
+<tr><td><code>~/.m2/settings.xml</code></td><td><code>Enterprise Nexus Auth</code></td><td>Resolves Studio &#x27;Could not resolve dependencies&#x27; errors</td></tr>
+<tr><td><code>MuleGuard Rule</code></td><td><code>TLS + Plugin Version</code></td><td>Auto-flags TLSv1/1.1 &amp; mule-maven-plugin &lt; 4.10.4 in VS Code</td></tr></tbody></table></div>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-platform-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" aria-labelledby="btn-tab-platform-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" hidden>
+    <h3>Anypoint Platform / CloudHub 2.0 / Gateway Click-Path</h3>
+    <ol class="steps">
+        <li>In Runtime Manager -&gt; Dedicated Load Balancer (or CloudHub 2.0 Private Space Ingress), confirm Upstream TLS is set to TLS 1.2 or higher.</li>
+        <li>On Runtime Fabric (RTF), verify image pull secrets aren&#x27;t duplicated and outbound mTLS to *.ingest.mulesoft.com isn&#x27;t SSL-inspected by a proxy.</li>
+        <li>Re-test legacy B2B/partner clients that previously negotiated TLS 1.0/1.1 (blocked since Oct 31, 2026).</li>
+    </ol>
+  </div>
+  <div role="tabpanel" class="setup-tabpanel" id="panel-test-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" aria-labelledby="btn-tab-test-cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" hidden>
+    <h3>Postman &amp; curl Live Verification</h3>
+    <p><strong>Postman Request:</strong> <code>GET https://your-api.company.com/health  (Settings -&gt; TLSv1.2+ enabled)</code></p>
+    <span class="code-label">Terminal verification command (curl / CLI)</span>
+    <pre><code>curl -sI --tlsv1.2 https://your-api.company.com/health</code></pre>
+    <span class="code-label">Expected JSON / HTTP response</span>
+    <pre><code>{
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;tls&quot;: &quot;TLSv1.2+&quot;
+}</code></pre>
+    <h3>Common Errors &amp; Quick Fixes</h3>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Symptom / Status</th><th scope="col">Root Cause</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code>502 Bad Gateway after Oct 31, 2026</code></td><td>DLB or CH 2.0 Ingress cannot complete TLS handshake because upstream app forces TLS 1.0/1.1 or mismatched protocol</td><td>Set enabledProtocols=&#x27;TLSv1.2,TLSv1.3&#x27; on HTTP Listener and align Runtime Manager Upstream TLS</td></tr>
+<tr><td><code>Maven process-sources fails on CI runner</code></td><td>CI image upgraded to Apache Maven 3.10.0 while pom.xml uses mule-maven-plugin &lt;= 4.10.3</td><td>Upgrade mule-maven-plugin to 4.10.4 (Nov 4, 2026 release)</td></tr>
+<tr><td><code>RTF pod NOT READY / tls: certificate required</code></td><td>Missing mTLS client cert, corporate proxy breaking us1.ingest.mulesoft.com, or duplicate pull secret</td><td>Bypass SSL inspection for *.ingest.mulesoft.com and deduplicate RTF imagePullSecrets</td></tr></tbody></table></div>
+  </div>
+</div>
+<!-- PORTAL:END:SETUP_TABS -->
+
+          <h2 id="oct31-tls-cutoff">1. Why 502 Errors Spiked After October 31, 2026</h2>
+          <p>Following the CloudHub 1.0 Shared Load Balancer (SLB) deprecation, MuleSoft permanently stopped inbound TLS 1.0 and TLS 1.1 connections on <strong>all existing CloudHub 1.0 Dedicated Load Balancers (DLBs) on October 31, 2026</strong>. When a DLB or CloudHub 2.0 Private Space Ingress receives traffic and forwards to an upstream Mule worker whose <code>&lt;tls:context&gt;</code> or <code>tls-default.conf</code> pins legacy protocols or mismatched ciphers, the proxy immediately returns <code>502 Bad Gateway</code>.</p>
+          <h2 id="maven-4104-fix">2. Fixing Apache Maven 3.10.0 CI/CD Breakages (mule-maven-plugin 4.10.4)</h2>
+          <p>In October 2026, hosted GitHub Actions and Azure DevOps runners rolled out Apache Maven 3.10.0, causing older <code>mule-maven-plugin</code> builds to fail during <code>process-sources</code> / plugin inheritance checks. Upgrading to <strong>mule-maven-plugin 4.10.4</strong> (released November 4, 2026) restores full Maven 3.10.0 compatibility:</p><pre><code>&lt;plugin&gt;
+  &lt;groupId&gt;org.mule.tools.maven&lt;/groupId&gt;
+  &lt;artifactId&gt;mule-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;4.10.4&lt;/version&gt;
+  &lt;extensions&gt;true&lt;/extensions&gt;
+&lt;/plugin&gt;</code></pre><p><strong>Pro Tip (MuleGuard):</strong> Pair <code>mule-maven-plugin:4.10.4</code> with a quality-gate check that rejects <code>TLSv1</code>/<code>TLSv1.1</code> and unpinned plugin versions on every PR.</p>
+
+          <h2 id="troubleshooting">Troubleshooting &amp; Production Edge Cases</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Symptom</th><th scope="col">Root Cause</th><th scope="col">Production Fix</th></tr></thead>
+              <tbody>
+              <tr><td><code>502 Bad Gateway after Oct 31, 2026</code></td><td>DLB or CH 2.0 Ingress cannot complete TLS handshake because upstream app forces TLS 1.0/1.1 or mismatched protocol</td><td>Set enabledProtocols=&#x27;TLSv1.2,TLSv1.3&#x27; on HTTP Listener and align Runtime Manager Upstream TLS</td></tr>
+              <tr><td><code>Maven process-sources fails on CI runner</code></td><td>CI image upgraded to Apache Maven 3.10.0 while pom.xml uses mule-maven-plugin &lt;= 4.10.3</td><td>Upgrade mule-maven-plugin to 4.10.4 (Nov 4, 2026 release)</td></tr>
+              <tr><td><code>RTF pod NOT READY / tls: certificate required</code></td><td>Missing mTLS client cert, corporate proxy breaking us1.ingest.mulesoft.com, or duplicate pull secret</td><td>Bypass SSL inspection for *.ingest.mulesoft.com and deduplicate RTF imagePullSecrets</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="checklist">Production Readiness Checklist</h2>
+          <ul class="checklist">
+            <li>mule-maven-plugin upgraded to 4.10.4 in parent &amp; service pom.xml files</li>
+            <li>Zero TLSv1 or TLSv1.1 references in XML tls:context or tls-default.conf</li>
+            <li>Runtime Manager Upstream TLS set to TLS 1.2 / 1.3 on all DLBs &amp; Private Spaces</li>
+            <li>Studio ~/.m2/settings.xml Enterprise Nexus credentials validated</li>
+            <li>RTF outbound connectivity to us1.ingest.mulesoft.com verified without SSL MITM</li>
+          </ul>
+
+          <h2 id="interview">Frequently Asked Questions &amp; Interview Q&amp;A</h2>
+          <details class="qa"><summary>Why did my CloudHub API start returning 502 Bad Gateway in November 2026?</summary><div><p>All remaining CloudHub 1.0 DLBs blocked TLS 1.0/1.1 on October 31, 2026. If your upstream Mule app or partner client pins older TLS versions, the handshake fails with a 502 error.</p></div></details>
+          <details class="qa"><summary>How do I fix Mule Maven build errors on GitHub Actions / Azure DevOps?</summary><div><p>Hosted CI runners updated to Apache Maven 3.10.0. Upgrade org.mule.tools.maven:mule-maven-plugin to 4.10.4 (released Nov 4, 2026).</p></div></details>
+          <details class="qa"><summary>What causes &#x27;tls: certificate required&#x27; or NOT READY pods in Runtime Fabric?</summary><div><p>Usually missing mTLS certificates, duplicate image pull secrets, or corporate firewalls performing SSL inspection on *.ingest.mulesoft.com.</p></div></details>
+
+          <h2 id="sources">Sources &amp; Official Documentation</h2>
+          <ul class="post-sources">
+            <li><a href="https://help.salesforce.com/s/articleView?id=000394025&amp;type=1" target="_blank" rel="noopener noreferrer">Salesforce Help: TLS 1.0/1.1 Deprecation on CloudHub DLBs (Oct 31, 2026)</a></li>
+            <li><a href="https://docs.mulesoft.com/release-notes/mule-maven-plugin/mule-maven-plugin-4.10.4-release-notes" target="_blank" rel="noopener noreferrer">Mule Maven Plugin 4.10.4 Release Notes (Nov 4, 2026)</a></li>
+            <li><a href="https://docs.mulesoft.com/runtime-fabric/latest/" target="_blank" rel="noopener noreferrer">Anypoint Runtime Fabric Troubleshooting &amp; mTLS Docs</a></li>
+          </ul>
+        </div>
+
+        <!-- PORTAL:START:HELPFUL -->
+<aside class="helpful-box" data-slug="cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes" aria-label="Article feedback">
+  <strong>Was this hands-on setup guide helpful?</strong>
+  <div class="helpful-actions">
+    <button type="button" class="helpful-btn" data-vote="yes" aria-pressed="false">👍 Yes, solved my setup</button>
+    <button type="button" class="helpful-btn" data-vote="fix" aria-pressed="false">💡 Suggest improvement</button>
+  </div>
+  <p class="helpful-reply" hidden></p>
+</aside>
+<!-- PORTAL:END:HELPFUL -->
+
+        <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
+          <p><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
+          <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
+        </aside>
+
+        <nav class="post-nav" aria-label="More articles">
+  <a class="prev" href="../blog/mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html"><span>← Previous Guide</span><strong>Mule 4.13 &amp; DW 2.13 JWT</strong></a>
+  <a class="next" href="../blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html"><span>Next Guide →</span><strong>MuleSoft Vibes (ACB Dev Agent)</strong></a>
+</nav>
+      </article>
+    </main>
+
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#overview">What It Is &amp; Why It Is Trending (Nov 2026)</a></li>
+        <li><a href="#anypoint-view">Real Anypoint View</a></li>
+        <li><a href="#architecture">Architecture &amp; End-to-End Flow</a></li>
+        <li><a href="#flow-simulator">Interactive Mule 4 Flow &amp; Setup Checklist</a></li>
+        <li><a href="#real-setup-tabs">Real Setup — Follow Exactly</a></li>
+        <li><a href="#oct31-tls-cutoff">1. Why 502 Errors Spiked After October 31, 2026</a></li>
+        <li><a href="#maven-4104-fix">2. Fixing Apache Maven 3.10.0 CI/CD Breakages (mule-maven-plugin 4.10.4)</a></li>
+        <li><a href="#troubleshooting">Troubleshooting &amp; Production Edge Cases</a></li>
+        <li><a href="#checklist">Production Readiness Checklist</a></li>
+        <li><a href="#interview">Frequently Asked Questions &amp; Interview Q&amp;A</a></li>
+        <li><a href="#sources">Sources &amp; Official Documentation</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog (mulesoft.niranjanpotter.dpdns.org)</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As &amp; Labs ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a></p>
+  <p>Independent community MuleSoft engineering content, not affiliated with Salesforce or MuleSoft.</p>
+</footer>
+</body>
+</html>

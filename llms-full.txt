@@ -1,11 +1,49 @@
-# MuleSoft Engineering Blog — Complete Technical Reference (36 Guides, Updated Nov 2026)
+# MuleSoft Engineering Blog — Complete Technical Reference (38 Guides, Updated Nov 2026)
 Canonical Root: https://mulesoft.niranjanpotter.dpdns.org/
 Author: Niranjan Potter (https://www.linkedin.com/in/niranjan-potter-551b49171)
-Companion 308 Interview Hub: https://niranjanpotter.github.io/
+Companion 320 Interview Hub: https://niranjanpotter.github.io/
 
 
 ---
-## 1. MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills & MCP Dev Workflows
+## 1. Mule 4.13 & DataWeave 2.13: Native JWT & JPMS Fix Guide
+URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mule-4-13-dataweave-2-13-jwt-jpms-upgrade-guide.html
+Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: 4.13.2 Edge (Java 17)
+Quick Answer: Mule 4.13.0 Edge (Oct 2026) and patch 4.13.2 (Nov 2026) bundle DataWeave 2.13.0/2.13.1 on Java 17, introducing native JWT signing via dw::util::jwt::HMAC and dw::util::jwt::RSA (no external Exchange library needed) and enforcing JDK 17+ JPMS filtering so unexported Java packages throw IllegalAccessException unless explicitly opened or refactored.
+Key Setup Checklist:
+- Anypoint Studio upgraded to 7.29.0 and MUnit upgraded to 3.7.5
+- pom.xml targets Mule Runtime 4.13.2 Edge on Java 17
+- Legacy Java JWT signers replaced with dw::util::jwt::HMAC or RSA
+- All .dwl java! imports verified against exported JDK 17 JPMS packages
+- PKCS#8 PEM keys stored in Secure Properties / Secret Manager (never plaintext)
+Top Q&As:
+Q: Do I still need an external Java library to sign JWTs in Mule 4.13?
+A: No. DataWeave 2.13.0 (bundled with Mule 4.13.0+) includes native dw::util::jwt::HMAC and dw::util::jwt::RSA modules supporting HS256/384/512 and RS256/384/512.
+Q: Why did my Java call inside DataWeave break after upgrading to Mule 4.13?
+A: DataWeave 2.13.0 enforces JDK 17+ JPMS package filtering by default, blocking access to unexported internal JDK packages. Replace internal calls with exported public Java 17 APIs.
+Q: What else improved in Mule 4.13.2 / DataWeave 2.13.1?
+A: November 2026 patch releases lowered memory consumption for text/plain DataWeave outputs, upgraded Jackson to 2.21.7, and improved Java map thread safety.
+
+---
+## 2. Fix CloudHub DLB 502 TLS Errors & Maven 3.10.0 Builds
+URL: https://mulesoft.niranjanpotter.dpdns.org/blog/cloudhub-dlb-tls-502-maven-4-10-4-cicd-fixes.html
+Category: AI Gateway & FinOps | Difficulty: Intermediate | Target Runtime: 4.9 LTS / 4.13 Edge (CH2 / RTF)
+Quick Answer: On October 31, 2026, MuleSoft permanently stopped TLS 1.0/1.1 on all CloudHub 1.0 Dedicated Load Balancers (causing 502 Bad Gateway errors on outdated upstream TLS configs), and on November 4, 2026 released mule-maven-plugin 4.10.4 to fix CI/CD build failures triggered by Apache Maven 3.10.0 runners.
+Key Setup Checklist:
+- mule-maven-plugin upgraded to 4.10.4 in parent & service pom.xml files
+- Zero TLSv1 or TLSv1.1 references in XML tls:context or tls-default.conf
+- Runtime Manager Upstream TLS set to TLS 1.2 / 1.3 on all DLBs & Private Spaces
+- Studio ~/.m2/settings.xml Enterprise Nexus credentials validated
+- RTF outbound connectivity to us1.ingest.mulesoft.com verified without SSL MITM
+Top Q&As:
+Q: Why did my CloudHub API start returning 502 Bad Gateway in November 2026?
+A: All remaining CloudHub 1.0 DLBs blocked TLS 1.0/1.1 on October 31, 2026. If your upstream Mule app or partner client pins older TLS versions, the handshake fails with a 502 error.
+Q: How do I fix Mule Maven build errors on GitHub Actions / Azure DevOps?
+A: Hosted CI runners updated to Apache Maven 3.10.0. Upgrade org.mule.tools.maven:mule-maven-plugin to 4.10.4 (released Nov 4, 2026).
+Q: What causes 'tls: certificate required' or NOT READY pods in Runtime Fabric?
+A: Usually missing mTLS certificates, duplicate image pull secrets, or corporate firewalls performing SSL inspection on *.ingest.mulesoft.com.
+
+---
+## 3. MuleSoft Vibes (Agentforce Vibes) in Anypoint Code Builder: Complete Setup, Skills & MCP Dev Workflows
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-vibes-agentforce-acb-dev-agent-setup.html
 Category: Agentforce & RAG | Difficulty: Intermediate | Target Runtime: Anypoint Code Builder (VS Code) · Mule 4.9 LTS / 4.13 Edge · JDK 17
 Quick Answer: MuleSoft Vibes (Agentforce Vibes) is MuleSoft's agentic Dev Agent embedded inside Anypoint Code Builder (ACB) on VS Code. Built on Salesforce Agentforce rather than passive autocomplete, Vibes uses reusable prompt skills and Model Context Protocol (MCP) file tools to plan API specifications, scaffold Mule 4.9 / 4.13 XML flows, map DataWeave 2.0, and generate MUnit 3 suites. Enabling it requires linking an Agentforce-enabled Salesforce org under Access Management > Salesforce.
@@ -24,7 +62,7 @@ Q: Can MuleSoft Vibes generate MUnit 3 tests automatically?
 A: Yes. When prompted alongside an existing Mule flow or APIKit router, Vibes generates MUnit 3 test suites with mocked downstream HTTP/DB processors and DataWeave payload assertions aligned to your project's pom.xml version.
 
 ---
-## 2. Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven & Debug Playbook
+## 4. Anypoint Studio to Anypoint Code Builder (ACB) Migration: .vscode/launch.json, Maven & Debug Playbook
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-studio-to-acb-migration-launch-json-guide.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Anypoint Code Builder (VS Code) · JDK 17 · Mule 4.9 LTS / 4.13 Edge
 Quick Answer: Migrating a Mule 4 project from Anypoint Studio to Anypoint Code Builder (ACB) succeeds when you migrate three layers explicitly: (1) upgrade pom.xml to Java 17 and Mule Maven Plugin 4.x before opening the folder, (2) translate Studio Run Configuration VM arguments (-Dmule.env, -Dmule.key, debug port 6666) into .vscode/launch.json, and (3) ensure ~/.m2/settings.xml authenticates cleanly against Mule Enterprise Nexus without Eclipse workspace metadata collisions.
@@ -43,7 +81,7 @@ Q: Why does my project build cleanly in Anypoint Studio but fail in ACB?
 A: Studio silently resolves some legacy workspace metadata and bundled Enterprise Maven credentials behind the scenes, whereas ACB strictly relies on your terminal `~/.m2/settings.xml`, Java 17 JDK, and valid pom.xml plugin declarations.
 
 ---
-## 3. MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning & AI Policies
+## 5. MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning & AI Policies
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html
 Category: AI Gateway & FinOps | Difficulty: Advanced | Target Runtime: MuleSoft Omni Gateway 1.14.5 · Anypoint Custom PDK (Rust)
 Quick Answer: MuleSoft Omni Gateway (the evolved Envoy-based runtime replacing Flex Gateway branding in late 2026) serves as a unified high-throughput gateway governing REST APIs, MCP Servers, and LLM Model Proxies. Late-2026 releases 1.14.4 (Oct 23) and 1.14.5 (Nov 18) introduced `api.consumerUri` in Custom PDK Policy contexts, intermediate CA trust hardening, and `sharedStorage.redis` (`timeoutMilliseconds` + `maxRetries`) tuning for resilient distributed rate limiting.
@@ -62,7 +100,7 @@ Q: Why write Custom Gateway Policies in Rust PDK instead of Mule 4 XML?
 A: Rust compiles to native WebAssembly (`wasm32-wasip1`) executed directly inside Envoy C++ worker threads with sub-millisecond latency and minimal RAM — ideal for high-TPS header/JWT/signature enforcement at the edge.
 
 ---
-## 4. Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration & Zero-Downtime Upgrades
+## 6. Anypoint Runtime Fabric (RTF 3.x) on Kubernetes (EKS/AKS): Setup, restartGeneration & Zero-Downtime Upgrades
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/anypoint-runtime-fabric-rtf-3-kubernetes-eks-setup.html
 Category: Core Mule 4 Playbooks | Difficulty: Advanced | Target Runtime: Anypoint Runtime Fabric 3.0.41102 · Kubernetes 1.30-1.37 · Mule 4.9 / 4.13
 Quick Answer: Anypoint Runtime Fabric (RTF) 3.x deploys Mule 4.9 LTS and 4.13 Edge workloads natively onto self-managed Kubernetes clusters (AWS EKS, Azure AKS, OpenShift, K8s 1.30-1.37). The November 19, 2026 release (v3.0.41102) bundles updated rtf-agent (3.0.41102), rtf-core-actions (1.0.10500), and rtf-cluster-ops (2.0), plus declarative rolling restarts via `spec.lifecycle.restartGeneration` so GitOps pipelines trigger zero-downtime pod recycles cleanly.
@@ -81,7 +119,7 @@ Q: What is the difference between CPU Reserved and CPU Limit in RTF deployment s
 A: CPU Reserved guarantees minimum node compute capacity scheduled for the pod (which drives licensing/bin-packing), while CPU Limit allows the JVM to burst higher during initial application startup and traffic spikes.
 
 ---
-## 5. RAML to OpenAPI (OAS 3.1) Migration in MuleSoft: Modular $ref Structure, APIKit & Exchange Governance
+## 7. RAML to OpenAPI (OAS 3.1) Migration in MuleSoft: Modular $ref Structure, APIKit & Exchange Governance
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/raml-to-openapi-oas-3-1-modular-migration-mulesoft.html
 Category: MCP Server & Bridge | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9 LTS / 4.13 Edge · APIKit 1.11+ · Exchange CLI v4
 Quick Answer: Enterprises are migrating MuleSoft API contracts from RAML 1.0 to OpenAPI 3.0 / 3.1 (OAS) because Salesforce Agentforce Topic Center, MuleSoft MCP Bridge (upgraded in Nov 2026 for OAS 3.1 and 3.2 QUERY operations), and external developer portals prioritize OpenAPI natively. A clean migration organizes schemas, parameters, and RFC-7807 error responses under `components/` via modular `$ref` pointers while keeping APIKit 4.x flow routing identical.
@@ -100,7 +138,7 @@ Q: Does Mule APIKit work natively with OpenAPI 3.0/3.1?
 A: Yes. APIKit supports OpenAPI specs natively, generating Mule flows per path/method and performing inbound JSON Schema validation at runtime.
 
 ---
-## 6. Salesforce Data Cloud (Data 360) Zero Copy vs. MuleSoft for Flow & Composer: Enterprise Decision Guide
+## 8. Salesforce Data Cloud (Data 360) Zero Copy vs. MuleSoft for Flow & Composer: Enterprise Decision Guide
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-data-cloud-zero-copy-vs-mulesoft-flow-composer.html
 Category: Agentforce & RAG | Difficulty: Intermediate | Target Runtime: Salesforce Data 360 + MuleSoft for Flow + Anypoint Platform
 Quick Answer: In 2026 Salesforce + MuleSoft architectures, use Salesforce Data Cloud (Data 360) Zero Copy for federated analytical reads from Snowflake, BigQuery, or Redshift without physically duplicating terabytes of storage. Use MuleSoft Anypoint (and MuleSoft for Flow: Integration) when processes require transactional bi-directional writes, orchestration across legacy ERPs like SAP, or strict governance. Reserve MuleSoft Composer strictly for rapid admin-led SaaS syncs (remembering Composer auto-deactivates flows after 100 consecutive errors across 10 days).
@@ -119,7 +157,7 @@ Q: Why did my MuleSoft Composer flow deactivate automatically?
 A: MuleSoft Composer includes smart error prevention: flows experiencing 100+ consecutive errors across 10 continuous days are automatically paused and owners are notified to prevent runaway resource consumption.
 
 ---
-## 7. Scatter-Gather vs. Parallel For-Each & Zero-Redeploy Dynamic DB Password Rotation in Mule 4
+## 9. Scatter-Gather vs. Parallel For-Each & Zero-Redeploy Dynamic DB Password Rotation in Mule 4
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/scatter-gather-vs-parallel-foreach-dynamic-db-secrets.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · AWS Secrets Manager / Vault + OSv2
 Quick Answer: Use Scatter-Gather when executing different heterogeneous integrations in parallel (e.g., SAP + Salesforce + Fraud DB); it outputs a numbered Map (`payload['0'].payload`). Use Parallel For-Each when running the same flow logic concurrently across items in one dynamic Array; it outputs a merged Array of results cleanly honoring `maxConcurrency`. For zero-redeploy DB password rotation, fetch rotated passwords dynamically from AWS Secrets Manager/Vault into Object Store v2 and invalidate on SQL auth error.
@@ -138,7 +176,7 @@ Q: Why should you ALWAYS configure `maxConcurrency` on Parallel For-Each?
 A: Without `maxConcurrency`, Mule attempts to execute all array elements concurrently at once — a 1,000-item payload can instantly exhaust HTTP client pools, database connections, and CloudHub fractional vCore memory.
 
 ---
-## 8. 2026 Salesforce Certified MuleSoft Developer & Platform Architect Exam Guide: Changes, Retirements & Study Plan
+## 10. 2026 Salesforce Certified MuleSoft Developer & Platform Architect Exam Guide: Changes, Retirements & Study Plan
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/salesforce-mulesoft-certification-roadmap-2026-exam-guide.html
 Category: Core Mule 4 Playbooks | Difficulty: Beginner | Target Runtime: Mule Runtime 4.9.x LTS · Trailhead Academy 2026
 Quick Answer: In 2026, all MuleSoft credentials live inside the Salesforce Trailhead certification ecosystem: the former MCD Level 1 is indexed as Salesforce Certified MuleSoft Developer (60 multiple-choice questions, 120 minutes, 70% passing score, annual Trailhead release maintenance), while niche credentials such as MuleSoft Catalyst Consultant and Hyperautomation Developer have been retired. Senior candidates target MuleSoft Integration Architect and Platform Architect alongside Agentforce + MCP hands-on skills.
@@ -157,7 +195,7 @@ Q: How do you renew a MuleSoft Developer or Platform Architect certification?
 A: Rather than retaking expensive proctored exams, Trailhead requires completing short online release maintenance modules by scheduled annual deadlines.
 
 ---
-## 9. MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners & Governance
+## 11. MuleSoft Agent Fabric End-to-End: Agent Registry, Broker, Scanners & Governance
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-agent-fabric-end-to-end-guide.html
 Category: Agent Fabric & A2A | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · JDK 17
 Quick Answer: Set up MuleSoft's cross-cloud AI control plane over Agentforce, AWS Bedrock, and Vertex AI using Exchange Agent Registry, scanners, .agent Broker scripts, and Model Wallet kill switches.
@@ -169,7 +207,7 @@ Key Setup Checklist:
 - Verify Kill Switch & A2A call via curl
 
 ---
-## 10. MuleSoft MCP Connector Hands-On: Build an MCP Server & Client in Mule 4
+## 12. MuleSoft MCP Connector Hands-On: Build an MCP Server & Client in Mule 4
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-connector-server-client-setup.html
 Category: MCP Server & Bridge | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · JDK 17
 Quick Answer: Build an enterprise MCP Server with mule-mcp-connector over Streamable HTTP (/mcp), expose schema-validated tools, wire an MCP Client flow, and test with MCP Inspector.
@@ -181,7 +219,7 @@ Key Setup Checklist:
 - Test initialize, tools/list & tools/call via MCP Inspector
 
 ---
-## 11. MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools
+## 13. MuleSoft MCP Bridge: Expose Any OpenAPI / Anypoint Exchange API as MCP Tools
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-mcp-bridge-openapi-to-agent-tools.html
 Category: MCP Server & Bridge | Difficulty: Intermediate | Target Runtime: Anypoint Exchange + Flex Gateway 1.8+ · Backends on Mule 4.9 LTS
 Quick Answer: Project existing OpenAPI 3.0 & RAML Process APIs in Anypoint Exchange into curated, OAuth-OBO governed MCP tools without writing a single new Mule flow.
@@ -193,7 +231,7 @@ Key Setup Checklist:
 - Verify filtered tools/list count via curl
 
 ---
-## 12. Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation & Multi-Cloud Orchestration
+## 14. Agent-to-Agent (A2A) Protocol in MuleSoft: Agent Cards, Delegation & Multi-Cloud Orchestration
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-a2a-protocol-multi-agent-orchestration.html
 Category: Agent Fabric & A2A | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · JDK 17
 Quick Answer: Implement mule4-a2a-connector 2.0.0 in Mule 4.9 LTS to publish /.well-known/agent.json Agent Cards and coordinate stateful peer agent tasks.
@@ -205,7 +243,7 @@ Key Setup Checklist:
 - Test /.well-known/agent.json and tasks/send via curl
 
 ---
-## 13. Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog & External Actions Setup
+## 15. Salesforce Agentforce + MuleSoft End-to-End: Topic Center, API Catalog & External Actions Setup
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/agentforce-mulesoft-topic-center-api-actions.html
 Category: Agentforce & RAG | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · JDK 17 · CloudHub 2.0
 Quick Answer: Link Salesforce and Anypoint Platform, design Topic Center instructions in ACB, sync API Catalog External Services automatically, and inspect Atlas Reasoning traces.
@@ -217,7 +255,7 @@ Key Setup Checklist:
 - Attach Topic in Agent Builder & verify Reasoning Trace
 
 ---
-## 14. MuleSoft AI Chain (MAC), Einstein Trust Layer & Inference Connector: Build Enterprise RAG in Mule 4
+## 16. MuleSoft AI Chain (MAC), Einstein Trust Layer & Inference Connector: Build Enterprise RAG in Mule 4
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-ai-chain-einstein-inference-rag-setup.html
 Category: Agentforce & RAG | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · JDK 17 · PostgreSQL 16 + pgvector
 Quick Answer: Compare mule4-aichain-connector, mule4-einstein-ai-connector, and mule4-inference-connector, then build a complete PostgreSQL pgvector + Einstein RAG pipeline in Mule 4.9.
@@ -229,7 +267,7 @@ Key Setup Checklist:
 - Verify grounded citations via POST /rag/ask curl
 
 ---
-## 15. Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking & Semantic Cache
+## 17. Anypoint Flex Gateway AI Policies: Token Rate Limits, Prompt Guardrails, PII Masking & Semantic Cache
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/flex-gateway-ai-policies-llm-guardrails.html
 Category: AI Gateway & FinOps | Difficulty: Advanced | Target Runtime: Anypoint Flex Gateway 1.8+ (Docker / Kubernetes Helm)
 Quick Answer: Run Anypoint Flex Gateway as a centralized Enterprise Model Proxy in Docker and Kubernetes with PII masking, prompt defense, semantic caching, and SSE token limits.
@@ -241,7 +279,7 @@ Key Setup Checklist:
 - Verify 200 OK, Cache HIT, 400 Blocked & 429 Token Limit via curl
 
 ---
-## 16. Testing, Observability & FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals & Cost Guardrails
+## 18. Testing, Observability & FinOps for MuleSoft AI Agents: OpenTelemetry, MUnit Evals & Cost Guardrails
 URL: https://mulesoft.niranjanpotter.dpdns.org/blog/agent-evals-observability-finops-opentelemetry.html
 Category: AI Gateway & FinOps | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · MUnit 3.2+ · OpenTelemetry Collector
 Quick Answer: Trace every Agentforce-Broker-MCP-LLM hop with W3C OpenTelemetry gen_ai.* attributes, run MUnit 3 deterministic + golden-dataset CI evals, and enforce kill-switch budgets.
@@ -253,7 +291,7 @@ Key Setup Checklist:
 - Test emergency Kill Switch propagation < 1 second
 
 ---
-## 17. CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist
+## 19. CloudHub 1.0 to CloudHub 2.0 Migration Guide: Enterprise 10-Point Checklist
 URL: https://mulesoft.niranjanpotter.dpdns.org/cloudhub-1-to-2-migration-guide.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · JDK 17 · Mule Maven Plugin 4.2.0
 Quick Answer: Migrate Mule 4 apps cleanly from CloudHub 1.0 to CloudHub 2.0 Private Spaces with strict port 8081 bindings, ephemeral disk safety, Ingress TLS, and Maven 4.x config.
@@ -265,7 +303,7 @@ Key Setup Checklist:
 - Verify 2/2 replicas healthy & curl Ingress endpoint
 
 ---
-## 18. DataWeave 2.0 Performance Tuning: Tail Recursion & Memory Optimization
+## 20. DataWeave 2.0 Performance Tuning: Tail Recursion & Memory Optimization
 URL: https://mulesoft.niranjanpotter.dpdns.org/dataweave-performance-tuning-patterns.html
 Category: Core Mule 4 Playbooks | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · DataWeave 2.6+
 Quick Answer: Eliminate JVM OutOfMemoryError and O(n^2) loops in DataWeave 2.0 using @TailRec, off-heap disk buffering, deferred streaming, and groupBy indexed joins.
@@ -277,7 +315,7 @@ Key Setup Checklist:
 - Benchmark 50MB+ payload under 0.5 vCore heap limits
 
 ---
-## 19. MuleSoft Batch Processing Interview Questions & Architecture (2026 Guide)
+## 21. MuleSoft Batch Processing Interview Questions & Architecture (2026 Guide)
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-batch-processing-interview-questions.html
 Category: Core Mule 4 Playbooks | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · Batch Engine (LMAX Disruptor)
 Quick Answer: Master Mule 4 Batch Jobs: LMAX Disruptor ring buffers, blockSize & thread tuning, record-scoped variables, Bulk Aggregators, and watermark crash recovery.
@@ -289,7 +327,7 @@ Key Setup Checklist:
 - Implement external watermark checkpoint for crash recovery
 
 ---
-## 20. Anypoint MQ & DLQ Architecture: Interview Questions & Best Practices
+## 22. Anypoint MQ & DLQ Architecture: Interview Questions & Best Practices
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-anypoint-mq-dlq-fifo-interview.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · Anypoint MQ Connector 4.x
 Quick Answer: Design resilient async messaging in Mule 4 using Anypoint MQ FIFO queues, manual ACK/NACK, Object Store v2 idempotency, and automated DLQ replay.
@@ -301,7 +339,7 @@ Key Setup Checklist:
 - Add Object Store v2 deduplication for idempotency
 
 ---
-## 21. Salesforce Bulk API 2.0 in MuleSoft: Complete Interview & Performance Guide
+## 23. Salesforce Bulk API 2.0 in MuleSoft: Complete Interview & Performance Guide
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-salesforce-bulk-api-2-interview.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · Salesforce Connector 10.21+
 Quick Answer: Orchestrate high-volume Salesforce ingestions using Bulk API 2.0 jobs, CSV streaming, governor quota isolation (15,000 batches / 150M records), and failure reconciliation.
@@ -313,7 +351,7 @@ Key Setup Checklist:
 - Pull & archive failedResults (Salesforce purges after 7 days)
 
 ---
-## 22. OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation
+## 24. OAuth 2.0 JWT Bearer Token Flow in MuleSoft: Zero-Downtime Key Rotation
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-oauth-jwt-bearer-token-interview.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · OpenSSL PKCS#12 (.p12)
 Quick Answer: Replace fragile passwords and security tokens with RSA-256 OAuth 2.0 JWT Bearer authentication in MuleSoft, complete with OpenSSL setup and zero-downtime key rotation.
@@ -325,7 +363,7 @@ Key Setup Checklist:
 - Encrypt storePassword & consumerKey via AES-256-GCM
 
 ---
-## 23. MuleSoft Scatter-Gather Router: Interview Questions & Error Recovery
+## 25. MuleSoft Scatter-Gather Router: Interview Questions & Error Recovery
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scatter-gather-interview-questions.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · Core Scatter-Gather Router
 Quick Answer: Master parallel Scatter-Gather execution in Mule 4: reactive thread pool sizing, per-route Try scopes for partial failures, and flattening route outputs cleanly.
@@ -337,7 +375,7 @@ Key Setup Checklist:
 - Test partial route failure cleanly using MUnit mock-when
 
 ---
-## 24. OpenTelemetry in MuleSoft: Direct Telemetry Export & Distributed Tracing
+## 26. OpenTelemetry in MuleSoft: Direct Telemetry Export & Distributed Tracing
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-opentelemetry-tracing-observability.html
 Category: AI Gateway & FinOps | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · Anypoint Telemetry Exporter
 Quick Answer: Configure native OpenTelemetry traceparent context propagation and OTLP gRPC export from Mule 4.9 / CloudHub 2.0 to Datadog, Grafana Tempo, and Splunk.
@@ -349,7 +387,7 @@ Key Setup Checklist:
 - Verify connected EAPI -> PAPI -> SAPI waterfall in Tempo/Datadog
 
 ---
-## 25. MuleSoft CI/CD Pipeline Guide: Maven Plugin & GitHub Actions (2026)
+## 27. MuleSoft CI/CD Pipeline Guide: Maven Plugin & GitHub Actions (2026)
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-cicd-maven-pipeline-guide.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: GitHub Actions · JDK 17 · Mule Maven Plugin 4.2.0
 Quick Answer: Automate Mule 4.9 builds, Parent POM governance, Connected App deployments, 80%+ MUnit coverage gates, and CloudHub 2.0 promotions in GitHub Actions.
@@ -361,7 +399,7 @@ Key Setup Checklist:
 - Promote tested immutable JAR instead of recompiling for Prod
 
 ---
-## 26. MuleSoft Terraform Provider Guide: Infrastructure as Code (IaC)
+## 28. MuleSoft Terraform Provider Guide: Infrastructure as Code (IaC)
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-terraform-provider-guide.html
 Category: Core Mule 4 Playbooks | Difficulty: Advanced | Target Runtime: Terraform 1.8+ · MuleSoft Anypoint Provider (~> 1.8)
 Quick Answer: Manage Anypoint Business Groups, Environments, CloudHub 2.0 Private Spaces, and API Manager instances declaratively using Terraform.
@@ -373,7 +411,7 @@ Key Setup Checklist:
 - Run scheduled nightly terraform plan drift detection
 
 ---
-## 27. SAP S/4HANA OData vs JCo RFC Connector in MuleSoft: Architecture Guide
+## 29. SAP S/4HANA OData vs JCo RFC Connector in MuleSoft: Architecture Guide
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-sap-s4hana-odata-interview.html
 Category: Core Mule 4 Playbooks | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · SAP Connector / S/4HANA OData
 Quick Answer: Choose cleanly between SAP S/4HANA OData v4 REST and SAP JCo BAPI/tRFC IDocs in Mule 4, including TID idempotency, CSRF handling, and canonical mapping.
@@ -385,7 +423,7 @@ Key Setup Checklist:
 - Use $select & $top pagination on OData queries (avoid full entity dump)
 
 ---
-## 28. MuleSoft Snowflake Connector: High-Volume Ingestion & Staging Patterns
+## 30. MuleSoft Snowflake Connector: High-Volume Ingestion & Staging Patterns
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-snowflake-connector-patterns.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · Snowflake Connector 1.1+
 Quick Answer: Build fast Snowflake analytics pipelines in Mule 4 using RSA Key-Pair Auth, S3/Blob staging + COPY INTO (instead of slow JDBC row inserts), and streaming reads.
@@ -397,7 +435,7 @@ Key Setup Checklist:
 - Use streaming=true & fetchSize=5000 on huge SELECT queries
 
 ---
-## 29. Anypoint Partner Manager & B2B EDI X12/EDIFACT: Interview Guide
+## 31. Anypoint Partner Manager & B2B EDI X12/EDIFACT: Interview Guide
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-partner-manager-b2b-edi-interview.html
 Category: Core Mule 4 Playbooks | Difficulty: Advanced | Target Runtime: Anypoint Partner Manager · CloudHub 2.0 Runtime
 Quick Answer: Configure EDI X12 850/810/856 and EDIFACT flows over AS2/SFTP in Anypoint Partner Manager, including automated 997 Functional ACKs and certificate rotation.
@@ -409,7 +447,7 @@ Key Setup Checklist:
 - Map EDI structures cleanly into Canonical API contracts via DW
 
 ---
-## 30. Reusable MuleSoft Global Error Handler Plugin: Enterprise Architecture
+## 32. Reusable MuleSoft Global Error Handler Plugin: Enterprise Architecture
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-reusable-error-handler-plugin.html
 Category: Core Mule 4 Playbooks | Difficulty: Beginner | Target Runtime: Mule Runtime 4.9.x LTS · Reusable Mule Plugin JAR
 Quick Answer: Eliminate copy-pasted APIKit & HTTP error boilerplate across 50+ Mule microservices by building a shared Exchange Global Error Handler Plugin.
@@ -421,7 +459,7 @@ Key Setup Checklist:
 - Publish versioned plugin to Anypoint Exchange (Maven repo)
 
 ---
-## 31. MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook
+## 33. MuleSoft Secure Properties Tool: AES-256-GCM Encryption Playbook
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-secure-properties-encryption-guide.html
 Category: Core Mule 4 Playbooks | Difficulty: Beginner | Target Runtime: Mule Runtime 4.9.x LTS · Secure Properties Module 1.2+
 Quick Answer: Encrypt database passwords, API secrets, and keystores per environment in Mule 4 using AES-256-GCM without committing plaintext secrets to Git.
@@ -433,7 +471,7 @@ Key Setup Checklist:
 - Maintain separate master keys for Dev, Stage & Prod
 
 ---
-## 32. Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine & Concurrency
+## 34. Senior Java Mastery for MuleSoft Developers: JVM, Reactive Engine & Concurrency
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-java-interview-mastery.html
 Category: Core Mule 4 Playbooks | Difficulty: Advanced | Target Runtime: Mule Runtime 4.9.x LTS · Eclipse Temurin JDK 17
 Quick Answer: Understand Mule 4.9's Java 17 upgrade, non-blocking CPU_LITE/CPU_INTENSIVE/BLOCKING_IO thread pools, Java Module invocation, and G1GC memory tuning.
@@ -445,7 +483,7 @@ Key Setup Checklist:
 - Run Anypoint Code/Mule Upgrade checks cleanly before prod deploy
 
 ---
-## 33. Top 20 MuleSoft Scenario-Based Interview Questions & Incident Solutions
+## 35. Top 20 MuleSoft Scenario-Based Interview Questions & Incident Solutions
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-scenario-based-interview-questions.html
 Category: Core Mule 4 Playbooks | Difficulty: Intermediate | Target Runtime: Mule Runtime 4.9.x LTS · CloudHub 2.0
 Quick Answer: Real-world production incident troubleshooting in Mule 4: timeouts, 502 Ingress errors, poison MQ loops, OAuth storms, and zero-loss backpressure.
@@ -457,7 +495,7 @@ Key Setup Checklist:
 - Avoid Thread-blocking or un-streamed payload logs in Prod
 
 ---
-## 34. MuleSoft & Salesforce Agentforce: Topic Center Actions (2026 Guide)
+## 36. MuleSoft & Salesforce Agentforce: Topic Center Actions (2026 Guide)
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-agentforce-topic-center-actions.html
 Category: Agentforce & RAG | Difficulty: Beginner | Target Runtime: Anypoint Code Builder + CloudHub 2.0 + Salesforce Agentforce
 Quick Answer: Quick-reference interview & architecture brief on Salesforce Agentforce Topic Center metadata, Anypoint Exchange API Catalog sync, and flat schema best practices.
@@ -469,7 +507,7 @@ Key Setup Checklist:
 - Complete full setup via Flagship Guide #5
 
 ---
-## 35. MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents
+## 37. MuleSoft MCP Connector: Model Context Protocol for Enterprise AI Agents
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-mcp-connector-ai-agents.html
 Category: MCP Server & Bridge | Difficulty: Beginner | Target Runtime: Mule Runtime 4.9.x LTS · JDK 17 · mule-mcp-connector 1.2.0
 Quick Answer: Quick-reference interview brief covering Streamable HTTP MCP servers, JSON Schema tool catalogs, and mutation safety guardrails in MuleSoft.
@@ -481,7 +519,7 @@ Key Setup Checklist:
 - Follow Flagship Guide #2 for full multi-tool XML
 
 ---
-## 36. MuleSoft Model Proxy: Semantic Caching & LLM Token Cost Optimization
+## 38. MuleSoft Model Proxy: Semantic Caching & LLM Token Cost Optimization
 URL: https://mulesoft.niranjanpotter.dpdns.org/mulesoft-model-proxy-semantic-cache.html
 Category: AI Gateway & FinOps | Difficulty: Intermediate | Target Runtime: Anypoint Flex Gateway 1.8+ + Redis Stack Vector Store
 Quick Answer: Quick architecture guide on routing enterprise AI traffic through Anypoint Flex Gateway Model Proxy with semantic vector caching and token rate limits.
