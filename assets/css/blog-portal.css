@@ -92,7 +92,7 @@ a:hover { text-decoration-thickness: 2px; }
 .portal-topbar-inner {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 8px 20px;
+  padding: 8px max(20px, env(safe-area-inset-right, 0px)) 8px max(20px, env(safe-area-inset-left, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -122,7 +122,7 @@ a:hover { text-decoration-thickness: 2px; }
   flex-shrink: 0;
 }
 .portal-brand-pill {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   padding: 2px 9px;
   border-radius: 999px;
@@ -384,7 +384,7 @@ a:hover { text-decoration-thickness: 2px; }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   padding: 3px 10px;
   border-radius: 999px;
@@ -622,7 +622,7 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
   color: #FFFFFF;
 }
 .badge-lead {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   padding: 3px 9px;
   border-radius: 999px;
@@ -635,7 +635,7 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
 .q-title { margin: 6px 0 12px !important; font-size: 1.18rem !important; color: var(--navy) !important; }
 .ans-badge {
   display: inline-block;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   padding: 3px 10px;
@@ -674,7 +674,7 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
 .chrome-dots i:nth-child(2) { background: #FBBF24; }
 .chrome-dots i:nth-child(3) { background: #34D399; }
 .real-view-tag {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -684,7 +684,7 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
   color: #7C2D12;
 }
 .anypoint-status-ok {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   padding: 3px 10px;
   border-radius: 999px;
@@ -704,7 +704,7 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
   border-radius: 10px;
   padding: 10px 12px;
 }
-.anypoint-kpi-lbl { display: block; font-size: 0.74rem; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+.anypoint-kpi-lbl { display: block; font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; }
 .anypoint-kpi-val { display: block; font-size: 1.08rem; font-weight: 800; color: var(--navy); font-family: var(--mono); margin-top: 2px; }
 .anypoint-split {
   display: grid;
@@ -835,7 +835,7 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
 }
 .flow-node-icon { font-size: 1.2rem; line-height: 1; }
 .flow-node-title { font-size: 0.82rem; font-weight: 800; color: var(--navy); }
-.flow-node-type { font-size: 0.72rem; font-weight: 600; color: var(--muted); }
+.flow-node-type { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
 .flow-arrow { font-weight: 800; color: var(--link); flex-shrink: 0; user-select: none; }
 
 .flow-inspector {
@@ -1087,7 +1087,7 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   padding: 3px 9px;
   border-radius: 999px;
@@ -1419,8 +1419,8 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
 }
 .back-to-top-btn {
   position: fixed;
-  right: 22px;
-  bottom: 24px;
+  right: calc(22px + env(safe-area-inset-right, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   z-index: 80;
   width: 44px;
   height: 44px;
@@ -1503,6 +1503,10 @@ figcaption { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
   color: #FFFFFF;
   border-color: #38BDF8;
 }
+
+.trust-strip svg, .cat-pill svg, .trend-pill svg, .filter-pill svg, .card-meta svg, .post-meta svg, .share-btn svg, .theme-toggle-btn svg, .track-header svg, .linkedin-cta svg { vertical-align: -2px; flex-shrink: 0; }
+
+.trust-strip svg, .cat-pill svg, .trend-pill svg, .filter-pill svg, .card-meta svg, .post-meta svg, .share-btn svg, .theme-toggle-btn svg, .track-header svg, .linkedin-cta svg { vertical-align: -2px; flex-shrink: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

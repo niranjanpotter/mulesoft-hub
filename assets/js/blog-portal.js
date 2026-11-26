@@ -13,8 +13,9 @@
       if (btn.getAttribute('aria-pressed') !== expectedPressed) {
         btn.setAttribute('aria-pressed', expectedPressed);
       }
-      var expectedText = t === 'dark' ? '☀️ Light' : '🌙 Dark';
-      if (btn.textContent !== expectedText) btn.textContent = expectedText;
+      var lbl = btn.querySelector('.btn-txt');
+      var expectedText = t === 'dark' ? 'Light' : 'Dark';
+      if (lbl) { if (lbl.textContent !== expectedText) lbl.textContent = expectedText; } else if (btn.textContent !== expectedText) { btn.textContent = expectedText; }
     }
     try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
   }
@@ -67,9 +68,9 @@
     function updateSavedChipCount() {
       if (!savedChip) return;
       var n = getSavedSlugs().length;
-      if (n > 0 || savedChip.textContent !== '🔖 Saved (0)') {
-        savedChip.textContent = '🔖 Saved (' + n + ')';
-      }
+      var lbl = savedChip.querySelector('.btn-txt');
+      var nextTxt = 'Saved (' + n + ')';
+      if (lbl) { if (lbl.textContent !== nextTxt) lbl.textContent = nextTxt; } else if (n > 0) { savedChip.textContent = nextTxt; }
     }
     if (getSavedSlugs().length > 0) updateSavedChipCount();
 
@@ -425,8 +426,8 @@
           var summary = desc ? desc.getAttribute('content') : '';
           var post = '🚀 ' + title + '\n\n' + summary + '\n\nIncludes Real Anypoint View, animated Mule 4 flow simulator & 3-tab setup guide:\n👉 ' + canonical + '\n\nWhat do you think — drop your thoughts in the comments! #MuleSoft #Anypoint #MuleSoft2026 #IntegrationArchitect';
           copyTextSafe(post, function () {
-            copyLiBtn.textContent = '✓ LinkedIn Post Copied!';
-            setTimeout(function () { copyLiBtn.textContent = '📋 Copy LinkedIn Post'; }, 2400);
+            var cl = copyLiBtn.querySelector('.btn-txt'); if (cl) cl.textContent = 'LinkedIn Post Copied!'; else copyLiBtn.textContent = 'LinkedIn Post Copied!';
+            setTimeout(function () { if (cl) cl.textContent = 'Copy LinkedIn Post'; else copyLiBtn.textContent = 'Copy LinkedIn Post'; }, 2400);
           });
         });
       }
@@ -434,8 +435,8 @@
       if (copyUrlBtn) {
         copyUrlBtn.addEventListener('click', function () {
           copyTextSafe(canonical, function () {
-            copyUrlBtn.textContent = '✓ Link Copied!';
-            setTimeout(function () { copyUrlBtn.textContent = '🔗 Copy Link'; }, 2000);
+            var cu = copyUrlBtn.querySelector('.btn-txt'); if (cu) cu.textContent = 'Link Copied!'; else copyUrlBtn.textContent = 'Link Copied!';
+            setTimeout(function () { if (cu) cu.textContent = 'Copy Link'; else copyUrlBtn.textContent = 'Copy Link'; }, 2000);
           });
         });
       }
@@ -444,7 +445,7 @@
         function syncSaveBtn() {
           var isSaved = getSaved().indexOf(slug) !== -1;
           saveBtn.setAttribute('aria-pressed', isSaved ? 'true' : 'false');
-          saveBtn.textContent = isSaved ? '🔖 Saved ✓' : '🔖 Save Guide';
+          var sl = saveBtn.querySelector('.btn-txt'); if (sl) sl.textContent = isSaved ? 'Saved ✓' : 'Save Guide'; else saveBtn.textContent = isSaved ? 'Saved ✓' : 'Save Guide';
         }
         syncSaveBtn();
         saveBtn.addEventListener('click', function () {
@@ -500,7 +501,7 @@
       };
       window.addEventListener('scroll', sync, { passive: true });
       btn.addEventListener('click', function () {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        var red = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; window.scrollTo({ top: 0, behavior: red ? 'auto' : 'smooth' });
       });
       sync();
     }, { once: true, passive: true });

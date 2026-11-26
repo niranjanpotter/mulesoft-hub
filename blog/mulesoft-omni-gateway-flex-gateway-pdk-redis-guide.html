@@ -21,11 +21,11 @@
   <link rel="preload" as="font" type="font/woff2" href="../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2" crossorigin>
 <style>@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url(../fonts/plus-jakarta-sans-LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2) format('woff2')}@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 700;font-display:optional;src:url(../fonts/jetbrains-mono-tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2) format('woff2')}</style>
-  <link rel="stylesheet" href="../assets/css/blog-portal.min.css?v=20261125-perf">
+  <link rel="stylesheet" href="../assets/css/blog-portal.min.css?v=20261126-uxmax">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning & AI Policies", "description": "Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes & Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.", "author": {"@type": "Person", "name": "Niranjan Potter", "url": "https://www.linkedin.com/in/niranjan-potter-551b49171", "sameAs": ["https://www.linkedin.com/in/niranjan-potter-551b49171", "https://github.com/niranjanpotter", "https://niranjanprofile.vercel.app/"]}, "publisher": {"@type": "Organization", "name": "MuleSoft Blog Portal", "url": "https://mulesoft.niranjanpotter.dpdns.org/"}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html", "image": "https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is MuleSoft Omni Gateway compared to Flex Gateway?", "acceptedAnswer": {"@type": "Answer", "text": "MuleSoft Omni Gateway is the evolved architecture of Envoy-based Anypoint Flex Gateway designed to unify governance across traditional APIs, AI Model Proxies, MCP servers, and A2A agent endpoints under one policy engine."}}, {"@type": "Question", "name": "What new capabilities shipped in Omni Gateway 1.14.4 and 1.14.5 (Oct-Nov 2026)?", "acceptedAnswer": {"@type": "Answer", "text": "Release 1.14.4 (Oct 2026) added access to `api.consumerUri` inside Custom PDK policies and hardened intermediate TLS CA validation. Release 1.14.5 (Nov 2026) added explicit `timeoutMilliseconds` (default 2000ms) and `maxRetries` (default 1) settings under `sharedStorage.redis`."}}, {"@type": "Question", "name": "Why write Custom Gateway Policies in Rust PDK instead of Mule 4 XML?", "acceptedAnswer": {"@type": "Answer", "text": "Rust compiles to native WebAssembly (`wasm32-wasip1`) executed directly inside Envoy C++ worker threads with sub-millisecond latency and minimal RAM — ideal for high-TPS header/JWT/signature enforcement at the edge."}}, {"@type": "Question", "name": "How does Redis sharedStorage fail safely during a cluster failover?", "acceptedAnswer": {"@type": "Answer", "text": "By explicitly tuning `timeoutMilliseconds` to 2000ms and `maxRetries` to 1, Omni Gateway avoids queuing thousands of stalled requests waiting on an unreachable Redis shard."}}, {"@type": "Question", "name": "Can Omni Gateway run in both Docker/Local Mode and Kubernetes Connected Mode?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Use Local Mode declarative YAML files for rapid laptop testing or GitOps, and Kubernetes Helm Connected Mode for centralized API Manager policy control and telemetry."}}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mulesoft.niranjanpotter.dpdns.org/"}, {"@type": "ListItem", "position": 2, "name": "Omni Gateway (v1.14.5) & PDK", "item": "https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html"}]}</script>
-  <script defer src="../assets/js/blog-portal.min.js?v=20261125-perf"></script>
+  <script defer src="../assets/js/blog-portal.min.js?v=20261126-uxmax"></script>
 </head>
 <body>
 <div class="read-progress-bar" aria-hidden="true"></div>
@@ -47,7 +47,7 @@
       <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">308 Interview Q&amp;As ↗</a>
       <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
       <a href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme">🌙 Dark</button>
+      <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-pressed="false" aria-label="Toggle Dark and Light theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><span class="btn-txt">Dark</span></button>
     </nav>
   </div>
 </header>
@@ -65,12 +65,12 @@
           <h1>MuleSoft Omni Gateway (Flex Gateway v1.14.5) Deep Dive: Custom Rust PDK (api.consumerUri), Redis Tuning &amp; AI Policies</h1>
           <p class="post-lede">Configure MuleSoft Omni Gateway (Flex Gateway 1.14.5) in Kubernetes &amp; Docker: tune sharedStorage.redis timeouts, build Custom Rust PDK policies accessing api.consumerUri, and govern REST + MCP + LLM APIs.</p>
           <div class="post-meta">
-            <span class="trend-pill">🔥 New Nov 2026</span>
+            <span class="trend-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> New Nov 2026</span>
             <span class="cat-pill cat-gov">AI Gateway &amp; FinOps</span>
             <span class="diff-pill diff-advanced">Advanced</span>
-            <span>✍️ Niranjan Potter</span>
-            <span>📅 Updated Nov 2026</span>
-            <span>⏱️ 17 min read</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Niranjan Potter</span>
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Updated Nov 2026</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 17 min read</span>
           </div>
             </div>
           </div>
@@ -84,12 +84,12 @@
 
           <!-- PORTAL:START:SHARE -->
 <div class="viral-share-bar" data-slug="mulesoft-omni-gateway-flex-gateway-pdk-redis-guide" data-url="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" role="region" aria-label="Share and save guide">
-  <span class="viral-share-label">📤 Share &amp; Save:</span>
-  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" target="_blank" rel="noopener noreferrer">🔁 LinkedIn ↗</a>
-  <button type="button" class="share-btn btn-copy-li-post">📋 Copy LinkedIn Post</button>
-  <a class="share-btn share-btn-wa" href="https://wa.me/?text=MuleSoft+Omni+Gateway+%28Flex+Gateway+v1.14.5%29+Deep+Dive%3A+Custom+Rust+PDK+%28api.consumerUri%29%2C+Redis+Tuning+%26+AI+Policies+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" target="_blank" rel="noopener noreferrer">💬 WhatsApp ↗</a>
-  <button type="button" class="share-btn btn-copy-article-url">🔗 Copy Link</button>
-  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false">🔖 Save Guide</button>
+  <span class="viral-share-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share &amp; Save:</span>
+  <a class="share-btn share-btn-li" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> LinkedIn ↗</a>
+  <button type="button" class="share-btn btn-copy-li-post"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span class="btn-txt">Copy LinkedIn Post</span></button>
+  <a class="share-btn share-btn-wa" href="https://wa.me/?text=MuleSoft+Omni+Gateway+%28Flex+Gateway+v1.14.5%29+Deep+Dive%3A+Custom+Rust+PDK+%28api.consumerUri%29%2C+Redis+Tuning+%26+AI+Policies+%E2%80%94+Step-by-step+MuleSoft+hands-on+guide%3A+https%3A%2F%2Fmulesoft.niranjanpotter.dpdns.org%2Fblog%2Fmulesoft-omni-gateway-flex-gateway-pdk-redis-guide.html" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> WhatsApp ↗</a>
+  <button type="button" class="share-btn btn-copy-article-url"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> <span class="btn-txt">Copy Link</span></button>
+  <button type="button" class="share-btn btn-bookmark-guide" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> <span class="btn-txt">Save Guide</span></button>
 </div>
 <!-- PORTAL:END:SHARE -->
 
@@ -317,7 +317,7 @@ x-ratelimit-remaining: 99
 <!-- PORTAL:END:HELPFUL -->
 
         <aside class="linkedin-cta" aria-label="Discuss on LinkedIn">
-          <p>💬 Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
+          <p><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Tried this guide or want us to cover another 2026 MuleSoft release? Drop a comment on LinkedIn — I read every message.</p>
           <a class="btn-li" href="https://www.linkedin.com/in/niranjan-potter-551b49171" target="_blank" rel="noopener noreferrer">Comment on LinkedIn ↗</a>
         </aside>
 
