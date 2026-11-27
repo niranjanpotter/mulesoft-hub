@@ -17,12 +17,12 @@
 }
 
 :root {
-  --bg: #F6F8FB;
+  --bg: #F8FAFC;
   --surface: #FFFFFF;
-  --surface-alt: #EEF3F9;
-  --border: #D4DFEE;
+  --surface-alt: #F1F5F9;
+  --border: #E2E8F0;
   --navy: #0B1F4B;
-  --text: #1E293B;
+  --text: #0F172A;
   --muted: #475569;
   --link: #005A87;
   --mule-blue: #00A3E0;
@@ -33,29 +33,29 @@
   --btn-primary-text: #FFFFFF;
   --code-bg: #0B1120;
   --code-text: #E2E8F0;
-  --shadow-sm: 0 4px 16px rgba(11, 31, 75, 0.06);
-  --shadow-hover: 0 12px 28px rgba(0, 163, 224, 0.16);
-  --radius: 16px;
-  --radius-sm: 10px;
+  --shadow-sm: 0 1px 3px rgba(11, 31, 75, 0.05), 0 8px 24px rgba(11, 31, 75, 0.04);
+  --shadow-hover: 0 4px 14px rgba(0, 163, 224, 0.14), 0 12px 28px rgba(0, 163, 224, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
   --maxw: 1240px;
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
 [data-theme="dark"] {
-  --bg: #091124;
-  --surface: #111C36;
-  --surface-alt: #162447;
-  --border: #263963;
+  --bg: #070C18;
+  --surface: #0D1629;
+  --surface-alt: #121F38;
+  --border: rgba(255, 255, 255, 0.08);
   --navy: #F8FAFC;
-  --text: #E2E8F0;
-  --muted: #CBD5E1;
+  --text: #F1F5F9;
+  --muted: #94A3B8;
   --link: #38BDF8;
   --btn-primary-bg: #005A87;
   --btn-primary-hover: #0369A1;
   --btn-primary-text: #FFFFFF;
-  --shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.35);
-  --shadow-hover: 0 12px 28px rgba(0, 163, 224, 0.24);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 4px 14px rgba(0, 163, 224, 0.22), 0 14px 32px rgba(0, 163, 224, 0.18);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -65,9 +65,18 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: 17px;
-  line-height: 1.7;
+  font-size: 16.5px;
+  letter-spacing: -0.011em;
+  line-height: 1.68;
   -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.026em;
+  font-weight: 700;
+  color: var(--navy);
+}
+h1 {
+  letter-spacing: -0.034em;
 }
 a { color: var(--link); text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
