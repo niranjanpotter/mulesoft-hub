@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>MuleSoft for Flow Integration: Setup &amp; Use Cases (2026)</title>
+  <meta name="description" content="What does MuleSoft for Flow: Integration let you do in a Salesforce Flow? Connect external systems with third-party connectors, Exchange APIs, and no-code actions.">
+  <meta name="author" content="Niranjan Potter">
+  <link rel="canonical" href="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-for-flow-integration-guide.html">
+  <link rel="alternate" type="application/rss+xml" title="MuleSoft Engineering Blog RSS" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MuleSoft for Flow: Integration — What It Does in Salesforce Flow (2026 Guide)">
+  <meta property="og:description" content="Learn what MuleSoft for Flow: Integration lets you do inside Salesforce Flow Builder: third-party connectors, Anypoint Exchange APIs, and external actions without Apex.">
+  <meta property="og:url" content="https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-for-flow-integration-guide.html">
+  <meta property="og:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png">
+  <script>(function(){try{var t=localStorage.getItem("mulesoft_blog_theme");document.documentElement.setAttribute("data-theme",t==="dark"?"dark":"light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <link rel="stylesheet" href="../assets/css/blog-portal.min.css?v=20261127-uxpro">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"MuleSoft for Flow: Integration — What It Does in Salesforce Flow (2026 Guide)","description":"Learn what MuleSoft for Flow: Integration lets you do inside Salesforce Flow Builder: third-party connectors, Anypoint Exchange APIs, and external actions without Apex.","author":{"@type":"Person","name":"Niranjan Potter","url":"https://www.linkedin.com/in/niranjan-potter-551b49171"},"publisher":{"@type":"Organization","name":"MuleSoft Blog Portal","url":"https://mulesoft.niranjanpotter.dpdns.org/"},"datePublished":"2026-11-28","dateModified":"2026-11-28","mainEntityOfPage":"https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-for-flow-integration-guide.html","image":"https://mulesoft.niranjanpotter.dpdns.org/assets/img/og-article.png"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does MuleSoft for Flow: Integration let you do in a Salesforce Flow?","acceptedAnswer":{"@type":"Answer","text":"MuleSoft for Flow: Integration lets Salesforce admins and builders use governed third-party connectors (like Jira, Slack, NetSuite, Google Sheets, Workday, Snowflake) and Anypoint Exchange APIs directly as actions inside Salesforce Flow Builder—without writing custom Apex callout classes."}},{"@type":"Question","name":"How is MuleSoft for Flow different from MuleSoft Composer?","acceptedAnswer":{"@type":"Answer","text":"MuleSoft Composer runs as a separate external no-code automation tool outside Flow Builder, whereas MuleSoft for Flow: Integration embeds external connector actions natively inside Salesforce Flow Builder and Automation Lightning App."}},{"@type":"Question","name":"When should I use MuleSoft Anypoint Mule 4 instead of MuleSoft for Flow?","acceptedAnswer":{"@type":"Answer","text":"Use Anypoint Mule 4 when you need high-volume Batch ETL, complex DataWeave transformations, on-prem SAP/DB connectivity, or strict API-led orchestration outside Salesforce Flow limits."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mulesoft.niranjanpotter.dpdns.org/"},{"@type":"ListItem","position":2,"name":"MuleSoft for Flow: Integration","item":"https://mulesoft.niranjanpotter.dpdns.org/blog/mulesoft-for-flow-integration-guide.html"}]}</script>
+  <script defer src="../assets/js/blog-portal.min.js?v=20261126-uxmax"></script>
+</head>
+<body>
+<div class="read-progress-bar" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="portal-topbar">
+  <div class="portal-topbar-inner">
+    <a class="portal-brand" href="../index.html"><span>MuleSoft Blog</span><span class="portal-brand-pill">2026 · Guides</span></a>
+    <nav class="portal-nav" aria-label="Main">
+      <a href="../index.html">All Blogs</a>
+      <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">320 Interview Q&amp;As ↗</a>
+      <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Radar ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="portal-wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a> › MuleSoft for Flow: Integration</nav>
+  <div class="post-layout">
+    <main id="main">
+      <article>
+        <header class="post-header post-header-docs">
+          <div class="post-header-copy">
+            <span class="post-kicker">Salesforce Flow + MuleSoft · Nov 2026</span>
+            <h1>MuleSoft for Flow: Integration — Capabilities, Setup &amp; When to Use It</h1>
+            <p class="post-lede">Understand what MuleSoft for Flow: Integration lets you do inside Salesforce Flow Builder—using third-party connectors and Anypoint APIs cleanly without custom Apex.</p>
+          </div>
+        </header>
+
+        <div class="post-body">
+          <div class="quick-answer-box" role="note" aria-label="Quick answer summary">
+            <span class="quick-answer-head">⚡ Quick Answer</span>
+            <p><strong>MuleSoft for Flow: Integration</strong> lets you call <strong>third-party connectors</strong> (Slack, Jira, Workday, NetSuite, Snowflake, Google Workspace) and <strong>governed Anypoint Exchange APIs</strong> directly as native <strong>Flow Actions</strong> inside Salesforce Flow Builder—eliminating boilerplate Apex HTTP callouts and Named Credential plumbing.</p>
+          </div>
+
+          <h2 id="what-it-lets-you-do">What MuleSoft for Flow: Integration Lets You Do</h2>
+          <ul>
+            <li><strong>Use Third-Party Connectors Directly in Flow:</strong> Drag external SaaS actions (create a Jira ticket, update a NetSuite invoice, post to a Slack channel, or sync Snowflake rows) directly onto your Record-Triggered or Screen Flow canvas.</li>
+            <li><strong>Invoke Governed Anypoint Exchange APIs:</strong> Surface REST APIs built by your MuleSoft team in Anypoint Exchange as strongly-typed invocable actions in Flow Builder via API Catalog.</li>
+            <li><strong>Power Agentforce Actions:</strong> Wrap external Flow actions as Agentforce Topics/Actions so AI agents can trigger governed backend updates safely.</li>
+            <li><strong>Eliminate Custom Apex Callouts:</strong> Admins can configure OAuth/API credentials once and reuse them across Flows without writing `@InvocableMethod` Apex code.</li>
+          </ul>
+
+          <h2 id="flow-vs-composer-vs-anypoint">MuleSoft for Flow vs. Composer vs. Anypoint Mule 4</h2>
+          <table>
+            <thead>
+              <tr><th>Dimension</th><th>MuleSoft for Flow: Integration</th><th>MuleSoft Composer</th><th>Anypoint Studio / ACB (Mule 4)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Where You Build</strong></td><td>Inside Salesforce Flow Builder</td><td>Composer web UI</td><td>Anypoint Code Builder / Studio</td></tr>
+              <tr><td><strong>Target User</strong></td><td>Salesforce Admins &amp; Flow Builders</td><td>Business Ops / Admins</td><td>MuleSoft Developers &amp; Architects</td></tr>
+              <tr><td><strong>High-Volume Batch / ETL</strong></td><td>No (subject to Flow limits)</td><td>No (polling SaaS syncs)</td><td>Yes (Batch Job, Bulk API 2.0)</td></tr>
+              <tr><td><strong>Complex DataWeave</strong></td><td>Basic field mapping</td><td>Simple formula mapping</td><td>Full DataWeave 2.x streaming</td></tr>
+            </tbody>
+          </table>
+
+          <h2 id="setup-steps">Quick Setup Checklist in Salesforce</h2>
+          <ol>
+            <li>Enable <strong>MuleSoft for Flow: Integration</strong> in Salesforce Setup under <em>Automation / MuleSoft</em>.</li>
+            <li>Connect your Anypoint Organization (or enable native third-party connectors) and assign the <strong>MuleSoft for Flow</strong> permission set to Flow Builders.</li>
+            <li>In <strong>Flow Builder</strong>, add an <strong>Action</strong> element, filter by <em>MuleSoft Connectors</em> or <em>Anypoint APIs</em>, map input variables, and test in Flow Debug.</li>
+          </ol>
+        </div>
+
+        <nav class="post-nav" aria-label="More articles">
+          <a class="prev" href="mulesoft-vs-azure-api-management-poc.html"><span>← Previous Guide</span><strong>MuleSoft vs Azure APIM POC</strong></a>
+          <a class="next" href="salesforce-connect-vs-mulesoft-external-systems.html"><span>Next Guide →</span><strong>Salesforce Connect vs MuleSoft</strong></a>
+        </nav>
+      </article>
+    </main>
+    <aside class="post-toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        <li><a href="#what-it-lets-you-do">What It Lets You Do</a></li>
+        <li><a href="#flow-vs-composer-vs-anypoint">Flow vs Composer vs Anypoint</a></li>
+        <li><a href="#setup-steps">Quick Setup Checklist</a></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+<footer class="portal-footer">
+  <p>© 2026 Niranjan Potter · <a href="../index.html">MuleSoft Engineering Blog</a> · <a href="https://niranjanpotter.github.io/" target="_blank" rel="noopener noreferrer">320 Interview Q&amp;As ↗</a> · <a href="https://niranjanpotter.dpdns.org/" target="_blank" rel="noopener noreferrer">Integration Tools ↗</a></p>
+</footer>
+</body>
+</html>
